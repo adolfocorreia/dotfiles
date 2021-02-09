@@ -1,0 +1,41 @@
+config_version: 2
+settings:
+  bindings.commands:
+    global:
+      normal:
+        ',M': hint links spawn mpv {hint-url}
+        ',m': spawn --userscript /usr/share/qutebrowser/userscripts/view_in_mpv {url}
+        <Ctrl+Shift+Tab>: tab-prev
+        <Ctrl+Tab>: tab-next
+  colors.tabs.even.bg:
+    global: silver
+  colors.tabs.even.fg:
+    global: '#666666'
+  colors.tabs.odd.bg:
+    global: gainsboro
+  colors.tabs.odd.fg:
+    global: '#666666'
+  content.autoplay:
+    global: false
+  content.cookies.accept:
+    global: no-3rdparty
+  hints.chars:
+    global: asdhjkl
+  qt.args:
+    global:
+    - autoplay-policy=user-gesture-required
+  scrolling.bar:
+    global: always
+  session.lazy_restore:
+    global: true
+  statusbar.position:
+    global: top
+  tabs.background:
+    global: true
+  tabs.position:
+    global: left
+  url.searchengines:
+    global:
+      ',d': https://duckduckgo.com/?q={}
+      ',gs': https://scholar.google.com/scholar?q={}
+      DEFAULT: https://google.com/search?q={}

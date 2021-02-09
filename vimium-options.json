@@ -1,0 +1,5 @@
+{
+  "keyMappings": "# Insert your preferred key mappings here.\nmap d removeTab\nmap u restoreTab\nmap J nextTab\nmap K previousTab\nmap go Vomnibar.activateEditUrl\nmap <c-d> scrollPageDown\nmap <c-u> scrollPageUp",
+  "linkHintCharacters": "asdhjkl",
+  "grabBackFocus": true
+}

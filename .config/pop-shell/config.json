@@ -1,0 +1,28 @@
+{
+  "float": [
+    {
+      "class": "org.jabref.JabRefMain",
+      "title": "^(?!JabRef$)"
+    },
+    {
+      "class": "mpv"
+    },
+    {
+      "class": "Gnome-calculator"
+    },
+    {
+      "class": "zoom",
+      "disabled": true
+    },
+    {
+      "class": "Totem"
+    },
+    {
+      "class": "Gjs"
+    },
+    {
+      "class": "vlc"
+    }
+  ],
+  "log_on_focus": false
+}
