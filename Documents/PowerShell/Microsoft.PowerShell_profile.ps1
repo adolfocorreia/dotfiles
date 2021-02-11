@@ -4,11 +4,11 @@ if (-Not (Test-Path $tmp)) { New-Item -ItemType Directory $tmp }
 
 
 
-# Load z module (https://github.com/badmotorfinger/z)
-Import-Module z
-
 # Load Pscx module (https://github.com/Pscx/Pscx)
 Import-Module Pscx
+
+# Load z module (https://github.com/badmotorfinger/z)
+Import-Module z
 
 
 
@@ -62,8 +62,6 @@ Remove-PSReadLineKeyHandler -Key Shift+Tab
 
 
 # Create shell aliases and functions
-
-Set-Alias -Name cd -Value Set-Location -Option AllScope  # Revert Pscx "cd" alias
 
 Function Start-Explorer { & explorer . }
 Set-Alias -Name "e." -Value Start-Explorer
