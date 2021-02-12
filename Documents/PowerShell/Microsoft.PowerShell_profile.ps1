@@ -73,6 +73,8 @@ Function ls { & ls.exe --show-control-chars -F --color --ignore=NTUSER.DAT* --ig
 Function ll { & ls.exe -l --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* $args }
 Function la { & ls.exe -la --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* $args }
 
+Function mkdir { & mkdir.exe $args }
+
 
 
 # Load Starship
