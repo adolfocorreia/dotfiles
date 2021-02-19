@@ -15,15 +15,23 @@ settings:
     global: gainsboro
   colors.tabs.odd.fg:
     global: '#666666'
+  colors.webpage.prefers_color_scheme_dark:
+    global: true
   content.autoplay:
     global: false
   content.cookies.accept:
     global: no-3rdparty
+  content.cookies.store:
+    global: false
+  content.notifications:
+    global: false
   hints.chars:
     global: asdhjkl
   qt.args:
     global:
     - autoplay-policy=user-gesture-required
+  qt.process_model:
+    global: process-per-site
   scrolling.bar:
     global: always
   session.lazy_restore:
