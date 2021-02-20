@@ -34,8 +34,8 @@
         "defaults":
         {
             // Put settings here that you want to apply to all profiles.
-            "useAcrylic": true,
-            "acrylicOpacity": 0.75,
+            //"useAcrylic": true,
+            //"acrylicOpacity": 0.75,
             "fontFace": "FiraMono Nerd Font",
         },
         "list":
