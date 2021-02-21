@@ -281,16 +281,20 @@ c.colors.tabs.pinned.selected.odd.bg = base02
 c.colors.tabs.pinned.selected.odd.fg = base05
 
 # Foreground color of selected odd tabs.
-c.colors.tabs.selected.odd.fg = base05
+#c.colors.tabs.selected.odd.fg = base05
+c.colors.tabs.selected.odd.fg = base01
 
 # Background color of selected odd tabs.
-c.colors.tabs.selected.odd.bg = base02
+#c.colors.tabs.selected.odd.bg = base02
+c.colors.tabs.selected.odd.bg = base0A
 
 # Foreground color of selected even tabs.
-c.colors.tabs.selected.even.fg = base05
+#c.colors.tabs.selected.even.fg = base05
+c.colors.tabs.selected.even.fg = base01
 
 # Background color of selected even tabs.
-c.colors.tabs.selected.even.bg = base02
+#c.colors.tabs.selected.even.bg = base02
+c.colors.tabs.selected.even.bg = base0A
 
 # Background color for webpages if unset (or empty to use the theme's
 # color).
