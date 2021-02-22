@@ -1,6 +1,14 @@
-set fish_greeting
+function fish_greeting
+    fortune
+end
 
-#fish_vi_key_bindings
+function fish_user_key_bindings
+    fish_vi_key_bindings
+    bind -M insert \cf forward-char
+end
+
+alias bat=batcat
+alias subl="flatpak run com.sublimetext.three"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!

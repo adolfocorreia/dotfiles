@@ -1,32 +1,10 @@
-# LyX 2.3.4.2 generated this file. If you want to make your own
-# modifications you should do them from inside LyX and save.
-
-Format 24
-
-
-#
-# MISC SECTION ######################################
-#
-
-#
-# SCREEN & FONTS SECTION ############################
-#
-
-\screen_font_roman "Liberation Serif"
-\screen_font_sans "Liberation Sans"
-\screen_font_typewriter "Liberation Mono"
-
-#
-# COLOR SECTION ###################################
-#
-
 \set_color "added_space" "#8ec07c"
 \set_color "addedtext" "#83a598"
 \set_color "appendix" "#83a598"
-\set_color "background" "#282828"
-\set_color "bottomarea" "#282828"
+\set_color "background" "#1d2021"
+\set_color "bottomarea" "#1d2021"
 \set_color "branchlabel" "#fe8019"
-\set_color "buttonbg" "#282828"
+\set_color "buttonbg" "#1d2021"
 \set_color "buttonframe" "#504945"
 \set_color "buttonhoverbg" "#3c3836"
 \set_color "changebar" "#83a598"
@@ -41,7 +19,7 @@ Format 24
 \set_color "commandbg" "#fbf1c7"
 \set_color "commandframe" "#504945"
 \set_color "comment" "#504945"
-\set_color "commentbg" "#282828"
+\set_color "commentbg" "#1d2021"
 \set_color "cursor" "#d5c4a1"
 \set_color "deletedtext" "#d65d0e"
 \set_color "depthbar" "#83a598"
@@ -49,31 +27,31 @@ Format 24
 \set_color "error" "#fb4934"
 \set_color "footlabel" "#8ec07c"
 \set_color "foreground" "#bdae93"
-\set_color "graphicsbg" "#282828"
+\set_color "graphicsbg" "#1d2021"
 \set_color "green" "#b8bb26"
 \set_color "greyedout" "#504945"
-\set_color "greyedoutbg" "#282828"
+\set_color "greyedoutbg" "#1d2021"
 \set_color "indexlabel" "#b8bb26"
 \set_color "inlinecompletion" "#d5c4a1"
 \set_color "insetbg" "#d3869b"
 \set_color "insetframe" "#d3869b"
 \set_color "language" "#83a598"
 \set_color "latex" "#83a598"
-\set_color "listingsbg" "#282828"
+\set_color "listingsbg" "#1d2021"
 \set_color "marginlabel" "#d3869b"
 \set_color "math" "#bdae93"
-\set_color "mathbg" "#282828"
-\set_color "mathcorners" "#282828"
+\set_color "mathbg" "#1d2021"
+\set_color "mathcorners" "#83a598"
 \set_color "mathframe" "#fe8019"
 \set_color "mathline" "#83a598"
-\set_color "mathmacrobg" "#282828"
+\set_color "mathmacrobg" "#1d2021"
 \set_color "mathmacroblend" "#504945"
 \set_color "mathmacroframe" "#504945"
 \set_color "mathmacronewarg" "#504945"
 \set_color "newpage" "#8ec07c"
 \set_color "nonuniqueinlinecompletion" "#504945"
 \set_color "note" "#8ec07c"
-\set_color "notebg" "#282828"
+\set_color "notebg" "#1d2021"
 \set_color "pagebreak" "#8ec07c"
 \set_color "phantomtext" "#504945"
 \set_color "preview" "#bdae93"
@@ -86,53 +64,3 @@ Format 24
 \set_color "tabularonoffline" "#665c54"
 \set_color "urllabel" "#83a598"
 \set_color "urltext" "#83a598"
-
-#
-# PRINTER SECTION ###################################
-#
-
-
-#
-# TEX SECTION #######################################
-#
-
-
-#
-# FILE SECTION ######################################
-#
-
-
-#
-# PLAIN TEXT EXPORT SECTION ##############################
-#
-
-
-#
-# SPELLCHECKER SECTION ##############################
-#
-
-
-#
-# LANGUAGE SUPPORT SECTION ##########################
-#
-
-
-#
-# 2nd MISC SUPPORT SECTION ##########################
-#
-
-
-#
-# FORMATS SECTION ##########################
-#
-
-
-#
-# CONVERTERS SECTION ##########################
-#
-
-
-#
-# COPIERS SECTION ##########################
-#
-

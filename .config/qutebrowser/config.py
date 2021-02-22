@@ -1,12 +1,5 @@
-import dracula.draw
-
 # Load existing settings made via :set
 config.load_autoconfig()
 
-dracula.draw.blood(c, {
-    'spacing': {
-        'vertical': 6,
-        'horizontal': 8
-    }
-})
+config.source('themes/base16-gruvbox-dark-hard.config.py')
 
