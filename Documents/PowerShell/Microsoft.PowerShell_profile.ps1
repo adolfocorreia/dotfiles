@@ -67,8 +67,6 @@ Function Start-Explorer { & explorer . }
 Set-Alias -Name "e." -Value Start-Explorer
 Set-Alias -Name e -Value explorer
 
-Set-Alias -Name vi -Value vim
-
 Function ls { & ls.exe --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* $args }
 Function ll { & ls.exe -l --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* $args }
 Function la { & ls.exe -la --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* $args }

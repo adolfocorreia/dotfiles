@@ -63,6 +63,7 @@
                 //"commandline": "%SCOOP%/apps/cygwin/current/root/Cygwin.bat",
                 "commandline": "%SCOOP%/apps/cygwin/current/root/bin/fish.exe -l -i",
                 "icon": "%SCOOP%/apps/cygwin/current/root/Cygwin.ico",
+                "colorScheme": "Dracula",
                 "hidden": false
             },
             {

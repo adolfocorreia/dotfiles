@@ -3,8 +3,8 @@ settings:
   bindings.commands:
     global:
       normal:
-        ',M': hint links spawn mpv {hint-url}
-        ',m': spawn --userscript /usr/share/qutebrowser/userscripts/view_in_mpv {url}
+        ',M': hint links spawn vlc {hint-url}
+        ',m': spawn vlc {url}
         <Ctrl+Shift+Tab>: tab-prev
         <Ctrl+Tab>: tab-next
   colors.tabs.even.bg:
@@ -27,6 +27,17 @@ settings:
     global: false
   downloads.position:
     global: bottom
+  content.proxy:
+    global: http://localhost:3128
+  editor.command:
+    global:
+    - gvim
+    - -f
+    - '{file}'
+    - -c
+    - normal {line}G{column0}l
+  editor.encoding:
+    global: utf-8
   hints.chars:
     global: asdhjkl
   qt.args:
