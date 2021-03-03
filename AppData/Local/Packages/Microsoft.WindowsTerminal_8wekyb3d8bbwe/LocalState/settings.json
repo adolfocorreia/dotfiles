@@ -47,7 +47,7 @@
             {
                 "guid": "{bfb3dd1d-ccbc-4fc8-8c09-c6d7199ec0ba}",
                 "name": "PowerShell Core",
-                "commandline": "pwsh.exe",
+                "commandline": "pwsh.exe -NoLogo",
                 "startingDirectory": "%USERPROFILE%",
                 "icon": "%USERPROFILE%/Documents/PowerShell/PowerShell.ico",
                 "colorScheme": "Tomorrow Night",
@@ -59,6 +59,7 @@
                 "commandline": "pwsh.exe -ExecutionPolicy ByPass -NoExit -Command \"& '%MINICONDA%/shell/condabin/conda-hook.ps1' ; conda activate '%MINICONDA%' \"",
                 "startingDirectory": "%USERPROFILE%/development",
                 "icon": "%MINICONDA%/Lib/site-packages/conda/shell/conda_icon.ico",
+                "colorScheme": "DjangoRebornAgain",
                 "hidden": false
             },
             {
@@ -86,6 +87,49 @@
     // To learn more about color schemes, visit https://aka.ms/terminal-color-schemes
     "schemes": [
         // https://windowsterminalthemes.dev/
+        {
+            "name": "AlienBlood",
+            "black": "#112616",
+            "red": "#7f2b27",
+            "green": "#2f7e25",
+            "yellow": "#717f24",
+            "blue": "#2f6a7f",
+            "purple": "#47587f",
+            "cyan": "#327f77",
+            "white": "#647d75",
+            "brightBlack": "#3c4812",
+            "brightRed": "#e08009",
+            "brightGreen": "#18e000",
+            "brightYellow": "#bde000",
+            "brightBlue": "#00aae0",
+            "brightPurple": "#0058e0",
+            "brightCyan": "#00e0c4",
+            "brightWhite": "#73fa91",
+            "background": "#0f1610",
+            "foreground": "#637d75"
+        },
+        {
+            "name": "DjangoRebornAgain",
+            "black": "#000000",
+            "red": "#fd6209",
+            "green": "#41a83e",
+            "yellow": "#ffe862",
+            "blue": "#245032",
+            "purple": "#f8f8f8",
+            "cyan": "#9df39f",
+            "white": "#ffffff",
+            //"brightBlack": "#323232",
+            "brightBlack": "#969896",
+            "brightRed": "#ff943b",
+            "brightGreen": "#73da70",
+            "brightYellow": "#ffff94",
+            "brightBlue": "#568264",
+            "brightPurple": "#ffffff",
+            "brightCyan": "#cfffd1",
+            "brightWhite": "#ffffff",
+            "background": "#051f14",
+            "foreground": "#dadedc"
+        },
         {
             "name": "Dracula",
             "black": "#000000",
@@ -172,7 +216,8 @@
         },
         {
             "name": "Tomorrow Night",
-            "black": "#000000",
+            //"black": "#000000",
+            "black": "#1d1f21",
             "red": "#cc6666",
             "green": "#b5bd68",
             "yellow": "#f0c674",
@@ -180,7 +225,8 @@
             "purple": "#b294bb",
             "cyan": "#8abeb7",
             "white": "#ffffff",
-            "brightBlack": "#000000",
+            //"brightBlack": "#000000",
+            "brightBlack": "#969896",
             "brightRed": "#cc6666",
             "brightGreen": "#b5bd68",
             "brightYellow": "#f0c674",

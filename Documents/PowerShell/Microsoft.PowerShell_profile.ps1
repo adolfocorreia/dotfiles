@@ -72,6 +72,12 @@ Function ll { & ls.exe -l --show-control-chars -F --color --ignore=NTUSER.DAT* -
 Function la { & ls.exe -la --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* $args }
 
 Function mkdir { & mkdir.exe $args }
+Function less { & less.exe $args }
+
+function fortune {
+		[System.IO.File]::ReadAllText((Split-Path $profile)+'\fortune.txt') -replace "`r`n", "`n" -split "`n%`n" | Get-Random
+}
+fortune; echo ''
 
 
 

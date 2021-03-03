@@ -3,8 +3,8 @@ settings:
   bindings.commands:
     global:
       normal:
-        ',M': hint links spawn vlc {hint-url}
-        ',m': spawn vlc {url}
+        ',M': hint links spawn vlc.bat {hint-url}
+        ',m': spawn vlc.bat {url}
         <Ctrl+Shift+Tab>: tab-prev
         <Ctrl+Tab>: tab-next
   colors.tabs.even.bg:
@@ -25,10 +25,10 @@ settings:
     global: false
   content.notifications:
     global: false
-  downloads.position:
-    global: bottom
   content.proxy:
     global: http://localhost:3128
+  downloads.position:
+    global: bottom
   editor.command:
     global:
     - gvim
@@ -38,6 +38,10 @@ settings:
     - normal {line}G{column0}l
   editor.encoding:
     global: utf-8
+  fonts.default_family:
+    global: SauceCodePro NF
+  fonts.default_size:
+    global: 11pt
   hints.chars:
     global: asdhjkl
   qt.args:
@@ -57,6 +61,8 @@ settings:
     global: false
   tabs.position:
     global: left
+  tabs.width:
+    global: 20%
   url.searchengines:
     global:
       ',d': https://duckduckgo.com/?q={}
