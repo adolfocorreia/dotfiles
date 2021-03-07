@@ -1,0 +1,4 @@
+'.platform-win32 ink-terminal, .platform-linux ink-terminal':
+  'ctrl-insert': 'ink-terminal:copy'
+  'shift-insert': 'ink-terminal:paste'
+

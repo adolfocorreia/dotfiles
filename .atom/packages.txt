@@ -1,0 +1,9 @@
+Juno
+
+vim-mode-plus
+ex-mode
+
+file-icons
+gruvbox
+gruvbox-dark-ui
+
