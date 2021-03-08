@@ -1,8 +1,11 @@
+""""" General """""
+
 " Select Leader key
 let mapleader = "\<Space>"
 
 
-" => vim-plug
+
+"""""" vim-plug """"""
 
 " Install vim-plug (if not present)
 " Reference: https://github.com/junegunn/vim-plug/wiki/tips
@@ -12,18 +15,38 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-" Load plugins
+" Installation directory for vim-plug plugins
 call plug#begin('~/.vim/plugged')
+
+" Base (sane) configuration (superset of sensible.vim)
 Plug 'sheerun/vimrc'
+
+" Syntax highlighting for several languages
 Plug 'sheerun/vim-polyglot'
+
+" Git support
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+
+" Add (y), change (c), remove (d) surrounding chars/strings
+Plug 'tpope/vim-surround'
+
+" Jump to any forward (s) or backward (S) location specified by two characters
+Plug 'justinmk/vim-sneak'
+
+" Status line
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+
+" gruvbox theme
 Plug 'sainnhe/gruvbox-material'
+
+" Initialize plugin system
 call plug#end()
 
 
 
-" => Airline plugin
+"""""" Airline """"""
 
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
@@ -37,7 +60,7 @@ endif
 
 
 
-" => gruvbox theme
+"""""" Theme """"""
 
 if has('termguicolors')
   set termguicolors
@@ -51,4 +74,11 @@ let g:gruvbox_material_palette = 'original'
 colorscheme gruvbox-material
 
 let g:airline_theme = 'gruvbox_material'
+
+
+
+"""""" Misc """"""
+
+" Enable tab completion
+set wildmenu
 
