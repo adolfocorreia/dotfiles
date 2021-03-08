@@ -1,6 +1,8 @@
 """"" General """""
+
 " Select Leader key
 let mapleader = "\<Space>"
+
 
 
 """""" vim-plug """"""
@@ -20,6 +22,9 @@ Plug 'airblade/vim-gitgutter'
 " Add (y), change (c), remove (d) surrounding chars/strings
 Plug 'tpope/vim-surround'
 
+" Jump to any forward (s) or backward (S) location specified by two characters
+Plug 'justinmk/vim-sneak'
+
 " base16 colorschemes
 Plug 'chriskempson/base16-vim'
 
@@ -27,13 +32,18 @@ Plug 'chriskempson/base16-vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
+" Display a vim tip at startup
+Plug 'michaelb/vim-tips'
+
 " Initialize plugin system
 call plug#end()
+
 
 
 """""" Theme """"""
 colorscheme base16-tomorrow-night
 set termguicolors
+
 
 
 """""" Airline """"""
@@ -47,6 +57,7 @@ let g:airline_theme = 'base16_vim'
 if has('gui_running')
   set guifont=SauceCodePro\ NF:h14
 endif
+
 
 
 """""" Misc """"""
