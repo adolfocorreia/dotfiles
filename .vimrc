@@ -38,6 +38,9 @@ Plug 'justinmk/vim-sneak'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
+" Display a vim tip at startup
+Plug 'michaelb/vim-tips'
+
 " gruvbox theme
 Plug 'sainnhe/gruvbox-material'
 
