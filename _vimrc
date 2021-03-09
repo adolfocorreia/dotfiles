@@ -9,8 +9,8 @@ let mapleader = "\<Space>"
 " Installation directory for vim-plug plugins
 call plug#begin('~/vimfiles/plugged')
 
-" Base (sane) configuration (superset of sensible.vim)
-Plug 'sheerun/vimrc'
+" Base (sane) configuration
+Plug 'tpope/vim-sensible'
 
 " Syntax highlighting for several languages
 Plug 'sheerun/vim-polyglot'
@@ -31,6 +31,9 @@ Plug 'chriskempson/base16-vim'
 " Status line
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+
+" Nerdtree
+Plug 'preservim/nerdtree'
 
 " Display a vim tip at startup
 Plug 'michaelb/vim-tips'
@@ -63,4 +66,12 @@ endif
 """""" Misc """"""
 " Enable tab completion
 set wildmenu
+
+
+
+"""""" Misc plugins """"""
+" Enable sneak labels when moving
+let g:sneak#label = 1
+
+nnoremap <C-n> :NERDTreeToggle<CR>
 
