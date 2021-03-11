@@ -64,9 +64,17 @@ endif
 
 
 """""" Misc """"""
-" Enable tab completion
-set wildmenu
+" Keep 5 lines above or below the cursor when scrolling.
+set scrolloff=5
 
+" Highlight line under cursor. It helps with navigation.
+set cursorline
+
+"	Print the line number in front of each line.
+set number
+
+" Show the line number relative to the line with the cursor in front of each line.
+set relativenumber
 
 
 """""" Misc plugins """"""
