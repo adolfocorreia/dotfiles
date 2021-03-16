@@ -15,8 +15,8 @@ settings:
     global: gainsboro
   colors.tabs.odd.fg:
     global: '#666666'
-  colors.webpage.prefers_color_scheme_dark:
-    global: true
+  colors.webpage.preferred_color_scheme:
+    global: dark
   content.autoplay:
     global: false
   content.cookies.accept:
@@ -60,7 +60,7 @@ settings:
   tabs.mousewheel_switching:
     global: false
   tabs.position:
-    global: left
+    global: top
   tabs.width:
     global: 20%
   url.searchengines:
