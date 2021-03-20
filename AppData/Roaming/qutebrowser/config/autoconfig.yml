@@ -54,7 +54,7 @@ settings:
   session.lazy_restore:
     global: true
   statusbar.position:
-    global: top
+    global: bottom
   tabs.background:
     global: true
   tabs.mousewheel_switching:
