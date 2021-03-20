@@ -1,0 +1,6 @@
+{
+  "SCOOP_REPO": "https://github.com/lukesampson/scoop",
+  "SCOOP_BRANCH": "master",
+  "proxy": "localhost:3128",
+  "shim": "kiennq"
+}
