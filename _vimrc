@@ -12,6 +12,9 @@ call plug#begin('~/vimfiles/plugged')
 " Base (sane) configuration
 Plug 'tpope/vim-sensible'
 
+" Comment out lines (gcc) or comment out with motions (gc_) or selections (gc)
+Plug 'tpope/vim-commentary'
+
 " Syntax highlighting for several languages
 Plug 'sheerun/vim-polyglot'
 
@@ -70,7 +73,7 @@ set scrolloff=5
 " Highlight line under cursor. It helps with navigation.
 set cursorline
 
-"	Print the line number in front of each line.
+" Print the line number in front of each line.
 set number
 
 " Show the line number relative to the line with the cursor in front of each line.
