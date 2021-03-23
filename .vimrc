@@ -44,21 +44,27 @@ Plug 'vim-airline/vim-airline-themes'
 " Nerdtree
 Plug 'preservim/nerdtree'
 
+" Fuzzy find :Files, :GFiles (git files), :Buffers, :Colors, :Lines, :Marks,
+" :Windows, :History (old files), :History: (commands), :History/ (search),
+" :Commits, :Commands, :Maps
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
+
 " Display a vim tip at startup
 Plug 'michaelb/vim-tips'
 
-" gruvbox theme
-Plug 'sainnhe/gruvbox-material'
+" base16 colorschemes
+Plug 'chriskempson/base16-vim'
 
 " Initialize plugin system
 call plug#end()
 
 
 
-"""""" Airline """"""
+"""""" Theme """"""
 
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
+set termguicolors
+colorscheme base16-solarized-dark
 
 " gVim font configuration
 " https://vim.fandom.com/wiki/Change_font
@@ -69,20 +75,11 @@ endif
 
 
 
-"""""" Theme """"""
+"""""" Airline """"""
 
-if has('termguicolors')
-  set termguicolors
-endif
-
-set background=dark
-
-let g:gruvbox_material_background = 'hard'
-let g:gruvbox_material_palette = 'original'
-
-colorscheme gruvbox-material
-
-let g:airline_theme = 'gruvbox_material'
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_theme = 'base16_vim'
 
 
 
@@ -93,6 +90,9 @@ set scrolloff=5
 
 " Highlight line under cursor. It helps with navigation.
 set cursorline
+
+" Highlight column 100. It helps identifying long lines.
+set colorcolumn=100
 
 " Print the line number in front of each line.
 set number
@@ -108,4 +108,6 @@ set relativenumber
 let g:sneak#label = 1
 
 nnoremap <C-n> :NERDTreeToggle<CR>
+
+nnoremap <Leader>f :Files<CR>
 
