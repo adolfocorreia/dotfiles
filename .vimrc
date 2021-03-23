@@ -18,8 +18,11 @@ endif
 " Installation directory for vim-plug plugins
 call plug#begin('~/.vim/plugged')
 
-" Base (sane) configuration (superset of sensible.vim)
-Plug 'sheerun/vimrc'
+" Base (sane) configuration
+Plug 'tpope/vim-sensible'
+
+" Comment out lines (gcc) or comment out with motions (gc_) or selections (gc)
+Plug 'tpope/vim-commentary'
 
 " Syntax highlighting for several languages
 Plug 'sheerun/vim-polyglot'
@@ -37,6 +40,9 @@ Plug 'justinmk/vim-sneak'
 " Status line
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+
+" Nerdtree
+Plug 'preservim/nerdtree'
 
 " Display a vim tip at startup
 Plug 'michaelb/vim-tips'
@@ -82,6 +88,24 @@ let g:airline_theme = 'gruvbox_material'
 
 """""" Misc """"""
 
-" Enable tab completion
-set wildmenu
+" Keep 5 lines above or below the cursor when scrolling.
+set scrolloff=5
+
+" Highlight line under cursor. It helps with navigation.
+set cursorline
+
+" Print the line number in front of each line.
+set number
+
+" Show the line number relative to the line with the cursor in front of each line.
+set relativenumber
+
+
+
+"""""" Misc plugins """"""
+
+" Enable sneak labels when moving
+let g:sneak#label = 1
+
+nnoremap <C-n> :NERDTreeToggle<CR>
 
