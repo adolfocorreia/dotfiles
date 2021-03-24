@@ -4,10 +4,18 @@ end
 
 function fish_user_key_bindings
     fish_vi_key_bindings
-    bind -M insert \cf forward-char
+    
+    # Use Ctrl+Space to autocomplete fish suggestions
+    # References: https://fishshell.com/docs/current/cmds/bind.html
+    #             https://fishshell.com/docs/current/cmds/fish_key_reader.html
+    bind -M insert -k nul accept-autosuggestion
 end
 
-alias bat=batcat
+set EDITOR nvim
+set fzf_fd_opts --hidden --exclude .git --exclude .cache
+
+alias ls=exa
+alias open=xdg-open
 alias subl="flatpak run com.sublimetext.three"
 
 # >>> conda initialize >>>
