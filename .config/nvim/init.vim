@@ -47,6 +47,9 @@ Plug 'preservim/nerdtree'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 
+" Start screen
+Plug 'mhinz/vim-startify'
+
 " Display a vim tip at startup
 Plug 'michaelb/vim-tips'
 
@@ -61,8 +64,6 @@ call plug#end()
 """""" Theme """"""
 
 set termguicolors
-
-set background=dark
 
 let g:gruvbox_material_background = 'hard'
 let g:gruvbox_material_palette = 'original'
@@ -80,6 +81,9 @@ let g:airline_theme = 'gruvbox_material'
 
 
 """""" Misc """"""
+
+" Enable mouse support in all modes
+set mouse=a
 
 " Keep 5 lines above or below the cursor when scrolling.
 set scrolloff=5
