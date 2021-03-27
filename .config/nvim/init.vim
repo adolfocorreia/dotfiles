@@ -50,9 +50,6 @@ Plug 'junegunn/fzf.vim'
 " Start screen
 Plug 'mhinz/vim-startify'
 
-" Navigate between vim splits and tmux panes
-Plug 'christoomey/vim-tmux-navigator'
-
 " Display a vim tip at startup
 Plug 'michaelb/vim-tips'
 
