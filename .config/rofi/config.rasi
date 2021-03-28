@@ -1,0 +1,32 @@
+/*-*- mode: css; -*-*/
+
+/*
+   Use "rofi -dump-config" or "rofi -h" to list all configuration options.
+
+   User scripts:
+   - https://github.com/davatorium/rofi/wiki/User-scripts
+   - https://github.com/marvinkreis/rofi-file-browser-extended
+   - https://rahatzamancse.me/en/posts/you-can-make-anything-with-rofi
+*/
+
+configuration {
+
+  /* Modi */
+  modi: "drun,file-browser,run,window";
+  display-drun: "Applications";
+  display-file-browser: "File browser";
+  display-run: "Shell commands";
+  display-window: "Windows";
+
+  /* Theme */
+  theme: "gruvbox-dark-soft";
+  font: "ubuntu 15";
+  show-icons: true;
+
+  /* Matching */
+  matching: "fuzzy";
+}
+
+
+/* vim:ft=css
+
