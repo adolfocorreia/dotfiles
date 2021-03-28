@@ -41,8 +41,8 @@ Plug 'vim-airline/vim-airline-themes'
 " Nerdtree
 Plug 'preservim/nerdtree'
 
-" Fuzzy find :Files, :GFiles (git files), :Buffers, :Colors, :Lines, :Marks,
-" :Windows, :History (old files), :History: (commands), :History/ (search),
+" Fuzzy find :Files, :Rg (ripgrep), :GFiles (git files), :Buffers, :Colors, :Lines,
+" :Marks, :Windows, :History (old files), :History: (commands), :History/ (search),
 " :Commits, :Commands, :Maps
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
