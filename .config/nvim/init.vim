@@ -46,6 +46,7 @@ Plug 'preservim/nerdtree'
 " :Commits, :Commands, :Maps
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'airblade/vim-rooter'
 
 " Start screen
 Plug 'mhinz/vim-startify'
