@@ -1,52 +1,104 @@
 """"" General """""
 
+" Define vimrc autocommand group
+augroup vimrc
+  " Remove all previously set vimrc autocommands when (re)sourcing this file
+  " Reference: https://learnvimscriptthehardway.stevelosh.com/chapters/14.html
+  autocmd!
+augroup END
+
 " Select Leader key
-let mapleader = "\<Space>"
+let g:mapleader = "\<Space>"
 
 
 
-"""""" vim-plug """"""
+"""""" Plugins """"""
 
 " Install vim-plug (if not present)
 " Reference: https://github.com/junegunn/vim-plug/wiki/tips
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
   silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+  autocmd vimrc VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
 " Installation directory for vim-plug plugins
 call plug#begin(stdpath('data') . '/plugged')
 
-" Comment out lines (gcc) or comment out with motions (gc_) or selections (gc)
-Plug 'tpope/vim-commentary'
 
-" Syntax highlighting for several languages
-Plug 'sheerun/vim-polyglot'
+""" Useful keybingings """
 
-" Git support
-Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
-
-" Add (y), change (c), remove (d) surrounding chars/strings
-Plug 'tpope/vim-surround'
+" Make repeat command (.) plugin compatible
+Plug 'tpope/vim-repeat'
 
 " Jump to any forward (s) or backward (S) location specified by two characters
 Plug 'justinmk/vim-sneak'
 
-" Status line
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+" Add (ys), change (cs), remove (ds) surrounding delimiters (ss for whole line)
+Plug 'tpope/vim-surround'
 
-" Nerdtree
-Plug 'preservim/nerdtree'
+" Comment out lines (gcc) or comment out with motions (gc_) or selections (gc)
+Plug 'tpope/vim-commentary'
 
-" Fuzzy find :Files, :Rg (ripgrep), :GFiles (git files), :Buffers, :Colors, :Lines,
-" :Marks, :Windows, :History (old files), :History: (commands), :History/ (search),
+" Useful [_, ]_ keybindings: b (change buffers), Space (add blank lines),
+" e (exchange line), navigate quickfix (q/Q) and location (l/L) lists;
+" Paste after (]p) or before ([p) linewise, also increasing (>) or
+" decreasing (<) indentation or reindenting (=), after (p) or before (P)
+" linewise (e.g. >p, <P, =P);
+" Toggle common options: oh (hlsearch), oi (ignorecase), ow (wrap)
+Plug 'tpope/vim-unimpaired'
+
+" Text exchange operator: cx{motion}, cxx (current line), X (in visual mode),
+" cxc (clear pending exchanges)
+Plug 'tommcdo/vim-exchange'
+
+" Coerce text cases with: crs (snake_case), crm (MixedCase), crc (camelCase),
+" cru (UPPER_CASE), cr- (dash-case), cr. (dot.case), cr<space> (space case),
+" crt (Title Case)
+Plug 'tpope/vim-abolish'
+
+
+""" Language support plugins """
+
+" Syntax highlighting for several languages
+Plug 'sheerun/vim-polyglot'
+
+" Syntax checking
+Plug 'vim-syntastic/syntastic'
+
+" Insert and delete brackets, parenthesis and quotes in pairs
+Plug 'Raimondi/delimitMate'
+
+
+""" Yank management """
+
+" Maintain history of yanks
+Plug 'svermeulen/vim-yoink'
+
+" Prevent delete operations (c, cc, C, d, dd, D, x, X) from yanking
+Plug 'svermeulen/vim-cutlass'
+
+
+""" Commands """
+
+" Shell commands :Delete, :Move, :Rename, :Mkdir, :Chmod, :Wall (save all)
+Plug 'tpope/vim-eunuch'
+
+" Git support (:Git)
+Plug 'tpope/vim-fugitive'
+
+" Fuzzy find :Files, :GFiles (git files), :Buffers, :Colors, :Lines, :Marks,
+" :Windows, :History (old files), :History: (commands), :History/ (search),
 " :Commits, :Commands, :Maps
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'airblade/vim-rooter'
+
+
+""" Windows and themes """
+
+" Open scratch buffer window with gs and empty buffer with gS
+Plug 'mtth/scratch.vim'
 
 " Start screen
 Plug 'mhinz/vim-startify'
@@ -54,27 +106,58 @@ Plug 'mhinz/vim-startify'
 " Display a vim tip at startup
 Plug 'michaelb/vim-tips'
 
+" Status line
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
+" Show a git diff in the sign column
+Plug 'airblade/vim-gitgutter'
+
+" Nerdtree
+Plug 'preservim/nerdtree'
+
+" Add icons
+Plug 'ryanoasis/vim-devicons'
+
 " gruvbox theme
 Plug 'sainnhe/gruvbox-material'
+
+
+""" Check later """
+
+" Kick off builds and test suites using asynchronous adapters (e.g. tmux)
+" https://github.com/tpope/vim-dispatch
+" https://github.com/preservim/vimux
+" https://github.com/jpalardy/vim-slime
+
+" vim session manager
+" https://github.com/tpope/vim-obsession
+" https://github.com/dhruvasagar/vim-prosession
+
+" Auto close
+" https://github.com/cohama/lexima.vim
+" https://github.com/tmsvg/pear-tree
+" https://github.com/alvan/vim-closetag
+
+" Switch between single and multi line statements
+" https://github.com/AndrewRadev/splitjoin.vim
+
+" LSP support
+" https://github.com/neoclide/coc.nvim
 
 " Initialize plugin system
 call plug#end()
 
 
 
-"""""" Theme """"""
+"""""" Theme settings """"""
 
 set termguicolors
 
 let g:gruvbox_material_background = 'hard'
 let g:gruvbox_material_palette = 'original'
-let g:gruvbox_material_transparent_background = 1
-
+let g:gruvbox_material_transparent_background = 0
 colorscheme gruvbox-material
-
-
-
-"""""" Airline """"""
 
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
@@ -82,10 +165,13 @@ let g:airline_theme = 'gruvbox_material'
 
 
 
-"""""" Misc """"""
+"""""" Misc settings """"""
 
 " Enable mouse support in all modes
 set mouse=a
+
+" Use * and + clipboard registers for yank and put operations
+set clipboard=unnamed,unnamedplus
 
 " Keep 5 lines above or below the cursor when scrolling.
 set scrolloff=5
@@ -102,14 +188,85 @@ set number
 " Show the line number relative to the line with the cursor in front of each line.
 set relativenumber
 
+" Open new split panes to right and bottom
+set splitbelow
+set splitright
 
 
-"""""" Misc plugins """"""
+
+"""""" Plugin settings """"""
 
 " Enable sneak labels when moving
 let g:sneak#label = 1
 
-nnoremap <C-n> :NERDTreeToggle<CR>
+" Make delimitMate ignore double quotes (") on vim files
+autocmd vimrc FileType vim let b:delimitMate_quotes = "' `"
 
+" Sync numbered :registers with yank history
+let g:yoinkSyncNumberedRegisters = 1
+
+" Necessary for Yoink/Cutlass integration
+let g:yoinkIncludeDeleteOperations = 1
+
+" Scratch buffer window autohide
+let g:scratch_autohide = 1
+let g:scratch_insert_autohide = 0
+
+
+
+"""""" Key mappings """"""
+
+" Yank from cursor to end of line (by default Y is synonym to yy)
+nnoremap Y y$
+
+
+" Syntastic settings
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_shell = '/bin/sh'
+
+" vimt reference: https://github.com/Vimjas/vint/wiki/Vint-linting-policy-summary
+let g:syntastic_vim_checkers = ['vint']
+
+let g:syntastic_python_checkers = ['pylint']
+
+
+" Map DelimitMateSwitch
+nnoremap <Leader>d :DelimitMateSwitch<CR>
+
+
+" Map Yoink commands
+nnoremap <Leader>y :Yanks<CR>
+nmap [h <plug>(YoinkRotateBack)
+nmap ]h <plug>(YoinkRotateForward)
+
+" Map delete-and-yank (cut) operations (Cutlass)
+nnoremap dy d
+xnoremap dy d
+nnoremap dyy dd
+nnoremap dY D
+nnoremap yd d
+xnoremap yd d
+nnoremap ydd dd
+nnoremap yD D
+
+" Map change-and-yank operations (Cutlass)
+nnoremap cy c
+xnoremap cy c
+nnoremap cyy cc
+nnoremap cY C
+nnoremap yc c
+xnoremap yc c
+nnoremap ycc cc
+nnoremap yC C
+
+
+" Map fzf file search
 nnoremap <Leader>f :Files<CR>
+
+
+" Map NERDTreeToggle
+nnoremap <Leader>t :NERDTreeToggle<CR>
 
