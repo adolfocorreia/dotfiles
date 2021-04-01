@@ -31,10 +31,13 @@ call plug#begin(stdpath('data') . '/plugged')
 " Make repeat command (.) plugin compatible
 Plug 'tpope/vim-repeat'
 
-" Jump to any forward (s) or backward (S) location specified by two characters
+" Jump to any forward (s__) or backward (S__) location specified by two characters
 Plug 'justinmk/vim-sneak'
 
-" Add (ys), change (cs), remove (ds) surrounding delimiters (ss for whole line)
+" Highlight a unique character in every word when using f/F
+Plug 'unblevable/quick-scope'
+
+" Add (ys_), change (cs_), remove (ds_) surrounding delimiters (_ss for whole line)
 Plug 'tpope/vim-surround'
 
 " Comment out lines (gcc) or comment out with motions (gc_) or selections (gc)
@@ -42,13 +45,13 @@ Plug 'tpope/vim-commentary'
 
 " Useful [_, ]_ keybindings: b (change buffers), Space (add blank lines),
 " e (exchange line), navigate quickfix (q/Q) and location (l/L) lists;
-" Paste after (]p) or before ([p) linewise, also increasing (>) or
-" decreasing (<) indentation or reindenting (=), after (p) or before (P)
+" Paste after (]p) or before ([p) linewise, also increasing (>_) or
+" decreasing (<_) indentation or reindenting (=_), after (_p) or before (_P)
 " linewise (e.g. >p, <P, =P);
-" Toggle common options: oh (hlsearch), oi (ignorecase), ow (wrap)
+" Toggle common options: _oh (hlsearch), _oi (ignorecase), _ow (wrap)
 Plug 'tpope/vim-unimpaired'
 
-" Text exchange operator: cx{motion}, cxx (current line), X (in visual mode),
+" Text exchange operator: cx_, cxx (current line), X (in visual mode),
 " cxc (clear pending exchanges)
 Plug 'tommcdo/vim-exchange'
 
@@ -58,6 +61,16 @@ Plug 'tommcdo/vim-exchange'
 Plug 'tpope/vim-abolish'
 
 
+""" Editing helps """
+
+" Insert and delete brackets, parenthesis and quotes in pairs
+Plug 'Raimondi/delimitMate'
+
+" Align text vertically (e.g. :Tab /=)
+" Cheatsheet: https://devhints.io/tabular
+Plug 'godlygeek/tabular'
+
+
 """ Language support plugins """
 
 " Syntax highlighting for several languages
@@ -65,9 +78,6 @@ Plug 'sheerun/vim-polyglot'
 
 " Syntax checking
 Plug 'vim-syntastic/syntastic'
-
-" Insert and delete brackets, parenthesis and quotes in pairs
-Plug 'Raimondi/delimitMate'
 
 
 """ Yank management """
@@ -198,6 +208,11 @@ set splitright
 
 " Enable sneak labels when moving
 let g:sneak#label = 1
+" Move to next match using s
+let g:sneak#s_next = 1
+
+" Only trigger quick-scope when pressing f or F
+let g:qs_highlight_on_keys = ['f', 'F']
 
 " Make delimitMate ignore double quotes (") on vim files
 autocmd vimrc FileType vim let b:delimitMate_quotes = "' `"
