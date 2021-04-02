@@ -22,6 +22,7 @@ if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
   autocmd vimrc VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
+
 " Installation directory for vim-plug plugins
 call plug#begin(stdpath('data') . '/plugged')
 
@@ -69,6 +70,27 @@ Plug 'Raimondi/delimitMate'
 " Align text vertically (e.g. :Tab /=)
 " Cheatsheet: https://devhints.io/tabular
 Plug 'godlygeek/tabular'
+
+
+""" Custom motions and text objects """
+
+" CamelCase and snake_case motions
+Plug 'bkad/CamelCaseMotion'
+
+" Several text objects with in (i), a (a), inside (I), around (A), next (_n)
+" and last (_l) semantics
+" Pairs: () {} [] <> t (XML/HTML tags)
+" Quotes: ' " `
+" Separators: , . ; : + - = ~ _ * # / | \ & $
+" Arguments: a (surrounded by braces and/or commas)
+" Any Block: b (similar to pairs, but skips pairs in nested contexts)
+" Any Quote: q (similar to quotes, but skips pairs in nested contexts)
+" Reference: https://github.com/wellle/targets.vim/blob/master/cheatsheet.md
+Plug 'wellle/targets.vim'
+
+" Indentation level object: ii (indentation level, ai (ii and line above),
+" aI (ii with lines above/below)
+Plug 'michaeljsmith/vim-indent-object'
 
 
 """ Language support plugins """
@@ -219,6 +241,16 @@ let g:qs_highlight_on_keys = ['f', 'F']
 " Make delimitMate ignore double quotes (") on vim files
 autocmd vimrc FileType vim let b:delimitMate_quotes = "' `"
 
+" Syntastic settings
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_shell = '/bin/sh'
+" vimt reference: https://github.com/Vimjas/vint/wiki/Vint-linting-policy-summary
+let g:syntastic_vim_checkers = ['vint']
+let g:syntastic_python_checkers = ['pylint']
+
 " Sync numbered :registers with yank history
 let g:yoinkSyncNumberedRegisters = 1
 
@@ -233,25 +265,23 @@ let g:scratch_insert_autohide = 0
 
 """""" Key mappings """"""
 
+" - Unused keys reference: https://vim.fandom.com/wiki/Unused_keys
+" - Prefer non recursive maps (_noremap)
+" - Plugin maps (<Plug>) must be recursive
+
+
 " Yank from cursor to end of line (by default Y is synonym to yy)
 nnoremap Y y$
 
 
-" Syntastic settings
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_shell = '/bin/sh'
-
-" vimt reference: https://github.com/Vimjas/vint/wiki/Vint-linting-policy-summary
-let g:syntastic_vim_checkers = ['vint']
-
-let g:syntastic_python_checkers = ['pylint']
-
-
 " Map DelimitMateSwitch
 nnoremap <Leader>d :DelimitMateSwitch<CR>
+
+
+" CamelCaseMotion maps
+map <silent> <M-w> <Plug>CamelCaseMotion_w
+map <silent> <M-b> <Plug>CamelCaseMotion_b
+map <silent> <M-e> <Plug>CamelCaseMotion_e
 
 
 " Map Yoink commands
