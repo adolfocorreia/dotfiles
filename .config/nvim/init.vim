@@ -256,26 +256,28 @@ nnoremap <Leader>d :DelimitMateSwitch<CR>
 
 " Map Yoink commands
 nnoremap <Leader>y :Yanks<CR>
-nmap [h <plug>(YoinkRotateBack)
-nmap ]h <plug>(YoinkRotateForward)
+nmap [h <Plug>(YoinkRotateBack)
+nmap ]h <Plug>(YoinkRotateForward)
 
-" Map delete-and-yank (cut) operations (Cutlass)
+
+" Cutlass cut operation remaps
+
+" In visual mode just use x for cut
+xnoremap x d
+
+" Map delete-and-yank (cut) operations (normal mode)
 nnoremap dy d
-xnoremap dy d
 nnoremap dyy dd
 nnoremap dY D
 nnoremap yd d
-xnoremap yd d
 nnoremap ydd dd
 nnoremap yD D
 
-" Map change-and-yank operations (Cutlass)
+" Map change-and-yank operations (normal mode)
 nnoremap cy c
-xnoremap cy c
 nnoremap cyy cc
 nnoremap cY C
 nnoremap yc c
-xnoremap yc c
 nnoremap ycc cc
 nnoremap yC C
 
