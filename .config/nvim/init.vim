@@ -180,8 +180,10 @@ let g:airline_theme = 'gruvbox_material'
 " Enable mouse support in all modes
 set mouse=a
 
-" Use * and + clipboard registers for yank and put operations
-set clipboard=unnamed,unnamedplus
+" Use * and/or + clipboard registers for yank and put operations
+" Primary selection: "* register / unnamed
+" Sytem clipboard: "+ register / unnamedplus
+set clipboard=unnamedplus
 
 " Keep 5 lines above or below the cursor when scrolling.
 set scrolloff=5
