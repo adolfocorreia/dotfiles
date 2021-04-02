@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+# Synchronize clipboard and primary selections
+autocutsel -fork -buttonup -selection CLIPBOARD 
+autocutsel -fork -buttonup -selection PRIMARY
+
