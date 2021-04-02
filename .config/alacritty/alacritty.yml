@@ -341,13 +341,13 @@ font:
 # The value `0.0` is completely transparent and `1.0` is opaque.
 background_opacity: 0.9
 
-selection:
+#selection:
   # This string contains all characters that are used as separators for
   # "semantic words" in Alacritty.
   #semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
 
   # When set to `true`, selected text will be copied to the primary clipboard.
-  save_to_clipboard: true
+  #save_to_clipboard: false
 
 #cursor:
   # Cursor style
@@ -680,7 +680,7 @@ mouse:
 #
 # If the same trigger is assigned to multiple actions, all of them are executed
 # in the order they were defined in.
-key_bindings:
+#key_bindings:
   #- { key: Paste,                                       action: Paste          }
   #- { key: Copy,                                        action: Copy           }
   #- { key: L,         mods: Control,                    action: ClearLogNotice }
@@ -759,7 +759,6 @@ key_bindings:
   #- { key: B,              mods: Control|Shift, mode: ~Search,    action: SearchBackward   }
   #- { key: C,              mods: Control|Shift, mode: Vi|~Search, action: ClearSelection   }
   #- { key: Insert,         mods: Shift,                           action: PasteSelection   }
-  - { key: Insert,         mods: Shift,                           action: Paste   }
   #- { key: Key0,           mods: Control,                         action: ResetFontSize    }
   #- { key: Equals,         mods: Control,                         action: IncreaseFontSize }
   #- { key: Plus,           mods: Control,                         action: IncreaseFontSize }
