@@ -1,3 +1,7 @@
+# Add non-breaking space as the last character in prompt
+# (used for searching last command in tmux)
+format = "$all "
+
 [conda]
 ignore_base = false
 
