@@ -3,8 +3,8 @@ settings:
   bindings.commands:
     global:
       normal:
-        ',M': hint links spawn mpv {hint-url}
-        ',m': spawn --userscript /usr/share/qutebrowser/userscripts/view_in_mpv {url}
+        ',M': hint links spawn flatpak-spawn --host mpv {hint-url}
+        ',m': spawn flatpak-spawn --host mpv {url}
         <Ctrl+Shift+Tab>: tab-prev
         <Ctrl+Tab>: tab-next
   colors.tabs.even.bg:
@@ -39,15 +39,16 @@ settings:
   session.lazy_restore:
     global: true
   statusbar.position:
-    global: top
+    global: bottom
   tabs.background:
     global: true
   tabs.mousewheel_switching:
     global: false
   tabs.position:
-    global: left
+    global: top
   url.searchengines:
     global:
       ',d': https://duckduckgo.com/?q={}
       ',gs': https://scholar.google.com/scholar?q={}
+      ',nix': https://search.nixos.org/packages?channel=unstable&query={}
       DEFAULT: https://google.com/search?q={}
