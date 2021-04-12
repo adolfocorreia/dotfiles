@@ -37,6 +37,7 @@
             "useAcrylic": true,
             "acrylicOpacity": 0.90,
             "cursorShape": "vintage",
+            "fontSize": 11,
             "fontFace": "SauceCodePro NF",
             //"fontFace": "Hack NF",
             //"fontFace": "FiraMono NF",
@@ -303,8 +304,26 @@
         // To learn more about panes, visit https://aka.ms/terminal-panes
         { "command": { "action": "splitPane", "split": "auto", "splitMode": "duplicate" }, "keys": "alt+shift+d" },
 
+        // tmux-like keybindings
+        // Reference: https://docs.microsoft.com/en-us/windows/terminal/customize-settings/actions
+        { "command": { "action": "splitPane", "splitMode": "duplicate", "split": "horizontal" }, "keys": "alt+shift+_" },
+        { "command": { "action": "splitPane", "splitMode": "duplicate", "split": "vertical" }, "keys": "alt+shift+|" },
+        { "command": { "action": "moveFocus", "direction": "left" }, "keys": "alt+h" },
+        { "command": { "action": "moveFocus", "direction": "down" }, "keys": "alt+j" },
+        { "command": { "action": "moveFocus", "direction": "up" }, "keys": "alt+k" },
+        { "command": { "action": "moveFocus", "direction": "right" }, "keys": "alt+l" },
+        { "command": { "action": "resizePane", "direction": "left" }, "keys": "alt+shift+h" },
+        { "command": { "action": "resizePane", "direction": "down" }, "keys": "alt+shift+j" },
+        { "command": { "action": "resizePane", "direction": "up" }, "keys": "alt+shift+k" },
+        { "command": { "action": "resizePane", "direction": "right" }, "keys": "alt+shift+l" },
+        { "command": "togglePaneZoom", "keys": "alt+shift+z" },
+        { "command": "duplicateTab", "keys": "alt+shift+c" },
+        { "command": "nextTab", "keys": "alt+shift+n" },
+        { "command": "prevTab", "keys": "alt+shift+p" },
+
         // Scroll up and down
         { "command": "scrollUpPage", "keys": "shift+pageup" },
         { "command": "scrollDownPage", "keys": "shift+pagedown" },
     ]
 }
+
