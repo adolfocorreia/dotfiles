@@ -1,0 +1,20 @@
+{
+    "editor.lineNumbers": "relative",
+    "python.languageServer": "Pylance",
+    "python.showStartPage": false,
+    "vim.camelCaseMotion.enable": true,
+    "vim.enableNeovim": true,
+    "vim.leader": "<space>",
+    "vim.showMarksInGutter": true,
+    "vim.sneak": true,
+    "vim.statusBarColorControl": true,
+    "vim.useSystemClipboard": true,
+    "workbench.colorTheme": "Ocean Dark Extended",
+    "workbench.editorAssociations": [
+        {
+            "viewType": "jupyter.notebook.ipynb",
+            "filenamePattern": "*.ipynb"
+        }
+    ],
+}
+
