@@ -5,30 +5,33 @@ if (-Not (Test-Path $tmp)) { New-Item -ItemType Directory $tmp }
 
 
 # Load Pscx module (https://github.com/Pscx/Pscx)
-Import-Module Pscx
+# Import-Module Pscx
 
-# Load z module (https://github.com/badmotorfinger/z)
-Import-Module z
+# Load PSFzf module (https://github.com/kelleyma49/PSFzf)
+Import-Module PSFzf
 
 
 
 ## PSReadLine configuration
 
-#Set-PSReadLineOption -EditMode Emacs
-#Set-PSReadLineKeyHandler -Key Ctrl+d -Function DeleteCharOrExit
+Set-PSReadLineOption -EditMode Vi
 
-Set-PSReadLineOption -PredictionSource History
-Set-PSReadLineOption -HistorySearchCursorMovesToEnd
-
-Set-PSReadLineKeyHandler -Key Ctrl+d -Function MenuComplete
-Set-PSReadLineKeyHandler -Key Ctrl+f -Function ForwardWord
-Set-PSReadLineKeyHandler -Key Ctrl+b -Function BackwardWord
-Set-PSReadLineKeyHandler -Key Ctrl+z -Function Undo
-Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
-Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
-
+# Enable bash style completion
 Set-PSReadLineKeyHandler -Key Tab -Function Complete
 Remove-PSReadLineKeyHandler -Key Shift+Tab
+
+# Enable fish style prediction
+# Reference: https://devblogs.microsoft.com/powershell/announcing-psreadline-2-1-with-predictive-intellisense
+Set-PSReadLineOption -PredictionSource History
+Set-PSReadLineOption -HistorySearchCursorMovesToEnd
+Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
+Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
+Set-PSReadLineKeyHandler -Key Ctrl+Spacebar -Function AcceptSuggestion
+
+# Search paths
+Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t'
+# Search command history
+Set-PsFzfOption -PSReadlineChordReverseHistory 'Ctrl+r'
 
 
 
@@ -66,20 +69,23 @@ Remove-PSReadLineKeyHandler -Key Shift+Tab
 Function Start-Explorer { & explorer . }
 Set-Alias -Name "e." -Value Start-Explorer
 Set-Alias -Name e -Value explorer
+Set-Alias -Name vi -Value nvim
 
 Function ls { & ls.exe --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* $args }
 Function ll { & ls.exe -l --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* $args }
 Function la { & ls.exe -la --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* $args }
 
 Function mkdir { & mkdir.exe $args }
-Function less { & less.exe $args }
 
-function fortune {
-		[System.IO.File]::ReadAllText((Split-Path $profile)+'\fortune.txt') -replace "`r`n", "`n" -split "`n%`n" | Get-Random
-}
-fortune; echo ''
+
+
+# Echo selected path
+$env:_ZO_ECHO=1
+# Load zoxide
+Invoke-Expression (& { (zoxide init --hook pwd powershell) -join "`n" } )
 
 
 
 # Load Starship
 Invoke-Expression (& starship init powershell)
+
