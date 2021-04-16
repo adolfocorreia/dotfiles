@@ -1,0 +1,18 @@
+# get WSL host IP address
+export WSL_HOST_IP=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}')
+
+# set proxy environment variables
+export http_proxy="http://${WSL_HOST_IP}:3129"
+export https_proxy="http://${WSL_HOST_IP}:3129"
+
+# set apt proxy configuration
+cat <<EOF > /etc/apt/apt.conf.d/01proxy
+Acquire {
+  HTTP::proxy "http://${WSL_HOST_IP}:3129";
+  HTTPS::proxy "http://${WSL_HOST_IP}:3129";
+}
+EOF
+
+# set X server display variable
+export DISPLAY=${WSL_HOST_IP}:0.0
+
