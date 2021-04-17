@@ -17,6 +17,48 @@
     "vim.sneak": true,
     "vim.statusBarColorControl": true,
     "vim.useSystemClipboard": true,
+    "vim.normalModeKeyBindings": [
+        {
+            "before": [ "[", " " ],
+            "after": [ "O", "<Esc>", "j" ]
+        },
+        {
+            "before": [ "]", " " ],
+            "after": [ "o", "<Esc>", "k" ]
+        },
+        {
+            "before": [ "[", "b" ],
+            "commands": [ "workbench.action.previousEditor" ]
+        },
+        {
+            "before": [ "]", "b" ],
+            "commands": [ "workbench.action.nextEditor" ]
+        },
+        {
+            "before": [ "[", "c" ],
+            "commands": [ "editor.action.dirtydiff.previous" ]
+        },
+        {
+            "before": [ "]", "c" ],
+            "commands": [ "editor.action.dirtydiff.next" ]
+        },
+        {
+            "before": [ "[", "e" ],
+            "commands": [ "editor.action.moveLinesUpAction" ]
+        },
+        {
+            "before": [ "]", "e" ],
+            "commands": [ "editor.action.moveLinesDownAction" ]
+        },
+        {
+            "before": [ "[", "p" ],
+            "after": [ "O", "<Esc>", "p" ]
+        },
+        {
+            "before": [ "]", "p" ],
+            "after": [ "o", "<Esc>", "p" ]
+        },
+    ],
     "vim.normalModeKeyBindingsNonRecursive": [
         {
             "before": ["<space>"],
