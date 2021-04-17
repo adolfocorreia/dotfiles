@@ -46,6 +46,7 @@ This function should only modify configuration layer settings."
      git
      helm
      helpful  ;; Replaces existing emacs help buffers with more detailed ones.
+     ibuffer
      (julia :variables
             julia-backend 'lsp)
      latex
@@ -58,18 +59,23 @@ This function should only modify configuration layer settings."
              python-backend 'anaconda
              python-shell-interpreter "ipython")
      rust
+     semantic
      (shell :variables
             shell-default-shell 'vterm
-            close-window-with-terminal t
             shell-default-height 30
             shell-default-position 'bottom)
      shell-scripts
      spell-checking
      syntax-checking
-     ;; version-control
+     (tabs :variables
+           tabs-auto-hide t)
      treemacs
+     ;; version-control
      (vimscript :variables
                 vimscript-backend 'company-vimscript)
+     (vinegar :variables
+              vinegar-reuse-dired-buffer nil
+              vinegar-dired-hide-details nil)
      yaml
      )
 
@@ -551,26 +557,29 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
 
-  ;; Map Y to y$ in evil-mode
+  ;; Map Y to y$ in evil-mode.
   (setq evil-want-Y-yank-to-eol t)
 
   ;; Set the number of lines of margin at the top and bottom of windows.
   (setq scroll-margin 5)
 
-  ;; Use eww as the default browser in Emacs
+  ;; Set default projectile switch project action
+  (setq projectile-switch-project-action 'projectile-dired)
+
+  ;; Use eww as the default browser in Emacs.
   (setq browse-url-browser-function 'eww-browse-url)
-  ;; Use qutebrowser as external browser
+  ;; Use qutebrowser as external browser.
   (setq browse-url-generic-program "qutebrowser")
   (setq browse-url-secondary-browser-function 'browse-url-generic)
 
-  ;; Use pdf-view-mode as the default TeX viewer
+  ;; Use pdf-view-mode as the default TeX viewer.
   (setq
    TeX-view-program-selection '((output-pdf "PDF Tools"))
    TeX-source-correlate-start-server t
    )
   (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
 
-  ;; Use vterm shell for Julia REPL
+  ;; Use vterm shell for Julia REPL.
   (eval-after-load "julia-repl"
     '(julia-repl-set-terminal-backend 'vterm))
 
