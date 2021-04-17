@@ -1,0 +1,62 @@
+{
+    "editor.lineNumbers": "relative",
+
+    "julia.enableTelemetry": false,
+
+    "python.languageServer": "Pylance",
+
+    "terminal.integrated.commandsToSkipShell": [
+        "language-julia.interrupt"
+    ],
+
+    "vim.camelCaseMotion.enable": true,
+    "vim.easymotion": true,
+    "vim.enableNeovim": true,
+    "vim.leader": "<space>",
+    "vim.showMarksInGutter": true,
+    "vim.sneak": true,
+    "vim.statusBarColorControl": true,
+    "vim.useSystemClipboard": true,
+    "vim.normalModeKeyBindingsNonRecursive": [
+        {
+            "before": ["<space>"],
+            "commands": ["vspacecode.space"]
+        },
+        {
+            "before": [","],
+            "commands": [
+                "vspacecode.space",
+                {
+                    "command": "whichkey.triggerKey",
+                    "args": "m"
+                }
+            ]
+        }
+    ],
+    "vim.visualModeKeyBindingsNonRecursive": [
+        {
+            "before": ["<space>"],
+            "commands": ["vspacecode.space"]
+        },
+        {
+            "before": [","],
+            "commands": [
+                "vspacecode.space",
+                {
+                    "command": "whichkey.triggerKey",
+                    "args": "m"
+                }
+            ]
+        }
+    ],
+
+    "workbench.colorTheme": "Gruvbox Dark Medium",
+    "workbench.editorAssociations": [
+        {
+            "viewType": "jupyter.notebook.ipynb",
+            "filenamePattern": "*.ipynb"
+        }
+    ],
+
+}
+
