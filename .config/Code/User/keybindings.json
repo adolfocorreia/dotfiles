@@ -18,6 +18,13 @@
         "command": "-workbench.action.quickOpenLeastRecentlyUsedEditorInGroup"
     },
 
+    // Move focus away from terminal by pressing Shift+Esc
+    {
+        "key": "shift+escape",
+        "command": "workbench.action.focusFirstEditorGroup",
+        "when": "terminalFocus"
+    },
+
     // Send selected text (or current line if there is no selection) to terminal
     {
         "key": "ctrl+shift+enter",
