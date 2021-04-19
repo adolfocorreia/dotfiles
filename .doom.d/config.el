@@ -6,8 +6,8 @@
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets.
-; (setq user-full-name "John Doe"
-;       user-mail-address "john@doe.com")
+;; (setq user-full-name "John Doe"
+;;       user-mail-address "john@doe.com")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
@@ -61,15 +61,24 @@
 ;; Enable menu bar
 (menu-bar-mode +1)
 
+;; Set the number of lines of margin at the top and bottom of windows.
+(setq scroll-margin 5)
+
+;; Uses visible buffer as search scope and highlight matches
+(setq evil-snipe-scope 'whole-visible)
+
 ;; Enable 80th column indicator for specific modes
 (add-hook 'emacs-lisp-mode-hook (lambda () (display-fill-column-indicator-mode +1)))
-(add-hook 'julia-mode-hook (lambda () (display-fill-column-indicator-mode +1)))
-(add-hook 'text-mode-hook (lambda () (display-fill-column-indicator-mode +1)))
+(add-hook 'julia-mode-hook      (lambda () (display-fill-column-indicator-mode +1)))
+(add-hook 'text-mode-hook       (lambda () (display-fill-column-indicator-mode +1)))
 
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; Julia settings ;;
 ;;;;;;;;;;;;;;;;;;;;
+
+;; Set number of threads used by Julia
+(setenv "JULIA_NUM_THREADS" "15")
 
 ;; Workaround for "no method matching LanguageServer.FoldingRangeCapabilities"
 ;; error.
@@ -83,7 +92,7 @@
 ;; Project.toml is a symbolic link. As a workaround, rename the link and create
 ;; a new Project.toml file with the same contents in the environment path.
 ;; The default lsp-julia LanguagerServer.jl installation is located at:
-;; ~/.emacs.d/.local/straight/build-27.2/lsp-julia/languageserver
+;; ~/.emacs.doom/.local/straight/build-27.2/lsp-julia/languageserver
 
 ;; Use vterm with julia-repl
 (after! julia-repl (julia-repl-set-terminal-backend 'vterm))
