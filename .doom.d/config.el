@@ -67,6 +67,9 @@
 ;; Uses visible buffer as search scope and highlight matches
 (setq evil-snipe-scope 'whole-visible)
 
+;; Enables eww as default browser
+(setq browse-url-browser-function 'eww-browse-url)
+
 ;; Enable 80th column indicator for specific modes
 (add-hook 'emacs-lisp-mode-hook (lambda () (display-fill-column-indicator-mode +1)))
 (add-hook 'julia-mode-hook      (lambda () (display-fill-column-indicator-mode +1)))
