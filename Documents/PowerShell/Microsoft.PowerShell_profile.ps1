@@ -48,7 +48,7 @@ Set-PsFzfOption -PSReadlineChordReverseHistory 'Ctrl+r'
 "man",
 "mkdir",
 "mv",
-"ps",
+#"ps",
 "pwd",
 "r",
 "rm",
@@ -70,10 +70,11 @@ Function Start-Explorer { & explorer . }
 Set-Alias -Name "e." -Value Start-Explorer
 Set-Alias -Name e -Value explorer
 Set-Alias -Name vi -Value nvim
+Set-Alias -Name trash -Value recycle-bin
 
-Function ls { & ls.exe --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* $args }
-Function ll { & ls.exe -l --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* $args }
-Function la { & ls.exe -la --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* $args }
+Function ls { & ls.exe --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* @args }
+Function ll { & ls.exe -l --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* @args }
+Function la { & ls.exe -la --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* @args }
 
 Function mkdir { & mkdir.exe $args }
 
