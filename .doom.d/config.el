@@ -85,8 +85,9 @@
 (add-hook 'julia-mode-hook      (lambda () (display-fill-column-indicator-mode +1)))
 (add-hook 'text-mode-hook       (lambda () (display-fill-column-indicator-mode +1)))
 
-;; Doom Emacs vterm module configuration adds a hook to hide the modeline.
-;; This restores the modeline in all vterm buffers.
+;; Doom Emacs vterm module configuration adds a hook to hide the modeline in
+;; every vterm buffer. The command below reverts this setting. Note that
+;; popup-rules may still inhibit the modeline from appearing.
 (after! vterm
   (remove-hook 'vterm-mode-hook #'hide-mode-line-mode))
 
@@ -125,11 +126,15 @@
 
 ;; Popup rule for Julia REPL buffer.
 (after! julia-repl
-  (set-popup-rule! "^\\*julia:main\\*$"
-    :actions '(display-buffer-in-previous-window display-buffer-in-side-window)
+  (set-popup-rule! "^\\*julia:.*"  ;; e.g. "*julia:workspace*"
+    :actions '(
+               display-buffer-reuse-window
+               display-buffer-in-previous-window
+               display-buffer-in-side-window)
     :side 'right
     :width 100
     :quit nil
+    :select nil
     :modeline t))
 
 ;; Workaround for "no method matching LanguageServer.FoldingRangeCapabilities" error.
@@ -139,10 +144,5 @@
 (setq lsp-enable-folding t)
 (setq lsp-folding-range-limit 100)
 
-;; For some odd reason, julia cannot instantiate the LSP environment when
-;; Project.toml is a symbolic link. As a workaround, rename the link and create
-;; a new Project.toml file with the same contents in the environment path.
-;; The default lsp-julia LanguagerServer.jl installation is located at:
-;; ~/.emacs.doom/.local/straight/build-27.2/lsp-julia/languageserver
-;; Alternatively, just add LanguageServer.jl and SymbolServer.jl to the default
-;; Julia environment.
+;; It is necessary to add LanguageServer.jl and SymbolServer.jl to the default
+;; Julia environment (e.g. @v1.6) for LSP to work.
