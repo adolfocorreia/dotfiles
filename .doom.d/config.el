@@ -21,11 +21,13 @@
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
+(setq doom-font (font-spec :family "SauceCodePro Nerd Font Mono" :size 14)
+      doom-variable-pitch-font (font-spec :family "Ubuntu" :size 14))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one)
+(setq doom-theme 'doom-gruvbox)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -54,37 +56,83 @@
 ;; they are implemented.
 
 
+
 ;;;;;;;;;;;;;;;;;;;;;;
 ;; General settings ;;
 ;;;;;;;;;;;;;;;;;;;;;;
 
-;; Enable menu bar
+;; Enable menu bar.
 (menu-bar-mode +1)
+
+;; Copy mouse selections to clipboard.
+(setq mouse-drag-copy-region t)
 
 ;; Set the number of lines of margin at the top and bottom of windows.
 (setq scroll-margin 5)
 
-;; Uses visible buffer as search scope and highlight matches
+;; Switch to new window after splitting.
+(setq evil-split-window-below t
+      evil-vsplit-window-right t)
+
+;; Make hints (ophints module) pulse.
+(setq evil-goggles-pulse t)
+
+;; Use visible buffer as search scope and highlight matches.
 (setq evil-snipe-scope 'whole-visible)
 
-;; Enables eww as default browser
-(setq browse-url-browser-function 'eww-browse-url)
-
-;; Enable 80th column indicator for specific modes
+;; Enable 80th column indicator for specific modes.
 (add-hook 'emacs-lisp-mode-hook (lambda () (display-fill-column-indicator-mode +1)))
 (add-hook 'julia-mode-hook      (lambda () (display-fill-column-indicator-mode +1)))
 (add-hook 'text-mode-hook       (lambda () (display-fill-column-indicator-mode +1)))
+
+;; Doom Emacs vterm module configuration adds a hook to hide the modeline.
+;; This restores the modeline in all vterm buffers.
+(after! vterm
+  (remove-hook 'vterm-mode-hook #'hide-mode-line-mode))
+
+;; Group pdf/image buffers together.
+(setq centaur-tabs-buffer-groups-function 'centaur-tabs-buffer-groups-custom-function)
+(defun centaur-tabs-buffer-groups-custom-function ()
+  (cond
+   ((memq major-mode '(pdf-view-mode))
+    (list "Image"))
+   (t
+    (centaur-tabs-buffer-groups))))
+
+;; Enable eww as default browser.
+(setq browse-url-browser-function 'eww-browse-url)
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;
+;; Org mode settings ;;
+;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Hide emphasis characters (e.g. *, /, =).
+(setq org-hide-emphasis-markers nil)
+
 
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; Julia settings ;;
 ;;;;;;;;;;;;;;;;;;;;
 
-;; Set number of threads used by Julia
+;; Set number of threads used by Julia.
 (setenv "JULIA_NUM_THREADS" "15")
 
-;; Workaround for "no method matching LanguageServer.FoldingRangeCapabilities"
-;; error.
+;; Use vterm with julia-repl.
+(after! julia-repl (julia-repl-set-terminal-backend 'vterm))
+
+;; Popup rule for Julia REPL buffer.
+(after! julia-repl
+  (set-popup-rule! "^\\*julia:main\\*$"
+    :actions '(display-buffer-in-previous-window display-buffer-in-side-window)
+    :side 'right
+    :width 100
+    :quit nil
+    :modeline t))
+
+;; Workaround for "no method matching LanguageServer.FoldingRangeCapabilities" error.
 ;; References:
 ;; - https://github.com/non-Jedi/lsp-julia/issues/23
 ;; - https://github.com/non-Jedi/lsp-julia/issues/35
@@ -96,6 +144,5 @@
 ;; a new Project.toml file with the same contents in the environment path.
 ;; The default lsp-julia LanguagerServer.jl installation is located at:
 ;; ~/.emacs.doom/.local/straight/build-27.2/lsp-julia/languageserver
-
-;; Use vterm with julia-repl
-(after! julia-repl (julia-repl-set-terminal-backend 'vterm))
+;; Alternatively, just add LanguageServer.jl and SymbolServer.jl to the default
+;; Julia environment.
