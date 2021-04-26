@@ -34,30 +34,44 @@ This function should only modify configuration layer settings."
    dotspacemacs-configuration-layers
    '(
      auto-completion
-     ;; better-defaults
+     better-defaults
+     bm
+     command-log
      (conda :variables
             conda-anaconda-home "/opt/miniconda")
      csv
-     ess  ;; R language support.
+     (dash :variables
+           dash-autoload-common-docsets nil)
+     ess
      emacs-lisp
+     emoji
+     evil-commentary
+     evil-snipe
      eww
-     evil-commentary  ;; Emulates vim-commentary plugin.
-     evil-snipe  ;; Emulates vim-sneak plugin.
-     git
+     (git :variables
+          git-enable-magit-delta-plugin t)
      helm
-     helpful  ;; Replaces existing emacs help buffers with more detailed ones.
+     helpful
      ibuffer
+     json
      (julia :variables
             julia-backend 'lsp)
-     latex
-     ;; lsp
+     (latex :variables
+            latex-refresh-preview t)
+     lsp
      markdown
      multiple-cursors
-     org
+     nav-flash
+     (org :variables
+          org-enable-reveal-js-support t
+          org-projectile-file "todo.org")
+     outshine
+     parinfer
      pdf
      (python :variables
              python-backend 'anaconda
              python-shell-interpreter "ipython")
+     restclient
      rust
      semantic
      (shell :variables
@@ -68,16 +82,17 @@ This function should only modify configuration layer settings."
      spell-checking
      syntax-checking
      (tabs :variables
-           tabs-auto-hide t)
-     treemacs
+           tabs-auto-hide nil)
+     (treemacs :variables
+               treemacs-use-git-mode 'simple)
      ;; version-control
      (vimscript :variables
                 vimscript-backend 'company-vimscript)
      (vinegar :variables
               vinegar-reuse-dired-buffer nil
               vinegar-dired-hide-details nil)
-     yaml
-     )
+     yaml)
+
 
 
    ;; List of additional packages that will be installed without being wrapped
@@ -94,10 +109,7 @@ This function should only modify configuration layer settings."
    dotspacemacs-frozen-packages '()
 
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages
-   '(
-     evil-escape
-     )
+   dotspacemacs-excluded-packages '(evil-escape)
 
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
@@ -188,7 +200,9 @@ It should only modify the values of Spacemacs settings."
    ;; with `:variables' keyword (similar to layers). Check the editing styles
    ;; section of the documentation for details on available variables.
    ;; (default 'vim)
-   dotspacemacs-editing-style 'vim
+   dotspacemacs-editing-style '(vim :variables
+                                    vim-style-visual-feedback t
+                                    vim-style-remap-Y-to-y$ t)
 
    ;; If non-nil show the version string in the Spacemacs buffer. It will
    ;; appear as (spacemacs version)@(emacs version)
@@ -219,6 +233,9 @@ It should only modify the values of Spacemacs settings."
    ;; True if the home buffer should respond to resize events. (default t)
    dotspacemacs-startup-buffer-responsive t
 
+   ;; The minimum delay in seconds between number key presses. (default 0.4)
+   dotspacemacs-startup-buffer-multi-digit-delay 0.4
+
    ;; Default major mode for a new empty buffer. Possible values are mode
    ;; names such as `text-mode'; and `nil' to use Fundamental mode.
    ;; (default `text-mode')
@@ -243,6 +260,7 @@ It should only modify the values of Spacemacs settings."
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(spacemacs-dark
+                         doom-one
                          doom-gruvbox)
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
@@ -252,7 +270,7 @@ It should only modify the values of Spacemacs settings."
    ;; refer to the DOCUMENTATION.org for more info on how to create your own
    ;; spaceline theme. Value can be a symbol or list with additional properties.
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
-   dotspacemacs-mode-line-theme '(spacemacs :separator arrow-fade :separator-scale 1.5)
+   dotspacemacs-mode-line-theme '(spacemacs :separator wave :separator-scale 1.5)
 
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
@@ -391,12 +409,16 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil unicode symbols are displayed in the mode line.
    ;; If you use Emacs as a daemon and wants unicode characters only in GUI set
    ;; the value to quoted `display-graphic-p'. (default t)
-   dotspacemacs-mode-line-unicode-symbols nil
+   dotspacemacs-mode-line-unicode-symbols t
 
    ;; If non-nil smooth scrolling (native-scrolling) is enabled. Smooth
    ;; scrolling overrides the default behavior of Emacs which recenters point
    ;; when it reaches the top or bottom of the screen. (default t)
    dotspacemacs-smooth-scrolling t
+
+   ;; Show the scroll bar while scrolling. The auto hide time can be configured
+   ;; by setting this variable to a number. (default t)
+   dotspacemacs-scroll-bar-while-scrolling t
 
    ;; Control line numbers activation.
    ;; If set to `t', `relative' or `visual' then line numbers are enabled in all
@@ -540,7 +562,10 @@ See the header of this file for more information."
 This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
-If you are unsure, try setting them in `dotspacemacs/user-config' first.")
+If you are unsure, try setting them in `dotspacemacs/user-config' first."
+
+  ;; Write custom variable definitions to temporary file.
+  (setq custom-file "/tmp/spacemacs.custom"))
 
 
 (defun dotspacemacs/user-load ()
@@ -557,13 +582,10 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
 
-  ;; Map Y to y$ in evil-mode.
-  (setq evil-want-Y-yank-to-eol t)
-
   ;; Set the number of lines of margin at the top and bottom of windows.
   (setq scroll-margin 5)
 
-  ;; Set default projectile switch project action
+  ;; Set default projectile switch project action.
   (setq projectile-switch-project-action 'projectile-dired)
 
   ;; Use eww as the default browser in Emacs.
@@ -575,15 +597,12 @@ before packages are loaded."
   ;; Use pdf-view-mode as the default TeX viewer.
   (setq
    TeX-view-program-selection '((output-pdf "PDF Tools"))
-   TeX-source-correlate-start-server t
-   )
+   TeX-source-correlate-start-server t)
   (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
 
   ;; Use vterm shell for Julia REPL.
   (eval-after-load "julia-repl"
-    '(julia-repl-set-terminal-backend 'vterm))
-
-  )
+    '(julia-repl-set-terminal-backend 'vterm)))
 
 
 ;; Do not write anything past this comment. This is where Emacs will
