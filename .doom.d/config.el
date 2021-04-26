@@ -100,6 +100,9 @@
    (t
     (centaur-tabs-buffer-groups))))
 
+;; Enable midnight mode by default in pdf buffers.
+(add-hook 'pdf-tools-enabled-hook (lambda () (pdf-view-midnight-minor-mode +1)))
+
 ;; Enable eww as default browser.
 (setq browse-url-browser-function 'eww-browse-url)
 
