@@ -16,3 +16,6 @@ EOF
 # set X server display variable
 export DISPLAY=${WSL_HOST_IP}:0.0
 
+# set keyboard layout to us (default: us_intl)
+setxkbmap us
+
