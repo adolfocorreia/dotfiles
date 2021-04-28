@@ -23,7 +23,7 @@ settings:
     global: no-3rdparty
   content.cookies.store:
     global: false
-  content.notifications:
+  content.notifications.enabled:
     global: false
   content.proxy:
     global: http://localhost:3128
