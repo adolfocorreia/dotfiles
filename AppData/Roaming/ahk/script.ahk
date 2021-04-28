@@ -1,6 +1,7 @@
-; Makes CapsLock become Ctrl. Use Shift+CapsLock to turn CapsLock on/off.
+; Makes CapsLock become Ctrl. Press both left and right Shift keys to turn CapsLock on/off.
 ; Reference: https://www.autohotkey.com/docs/misc/Remap.htm
-+CapsLock::CapsLock
+LShift & RShift::CapsLock
+RShift & LShift::CapsLock
 CapsLock::Ctrl
 
 
