@@ -42,9 +42,9 @@ This function should only modify configuration layer settings."
      csv
      (dash :variables
            dash-autoload-common-docsets nil)
-     ess
      emacs-lisp
      emoji
+     ess
      evil-commentary
      evil-snipe
      eww
@@ -71,6 +71,11 @@ This function should only modify configuration layer settings."
      (python :variables
              python-backend 'anaconda
              python-shell-interpreter "ipython")
+     (ranger :variables
+             ranger-show-preview t
+             ranger-show-hidden t
+             ranger-cleanup-eagerly t
+             ranger-cleanup-on-disable t)
      restclient
      rust
      semantic
@@ -79,17 +84,16 @@ This function should only modify configuration layer settings."
             shell-default-height 30
             shell-default-position 'bottom)
      shell-scripts
+     (spacemacs-layouts :variables
+                        spacemacs-layouts-restrict-spc-tab t)
      spell-checking
      syntax-checking
-     (tabs :variables
-           tabs-auto-hide nil)
      (treemacs :variables
                treemacs-use-git-mode 'simple)
      ;; version-control
      (vimscript :variables
                 vimscript-backend 'company-vimscript)
      (vinegar :variables
-              vinegar-reuse-dired-buffer nil
               vinegar-dired-hide-details nil)
      yaml)
 
@@ -261,7 +265,8 @@ It should only modify the values of Spacemacs settings."
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(spacemacs-dark
                          doom-one
-                         doom-gruvbox)
+                         doom-gruvbox
+                         doom-tomorrow-night)
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
    ;; `all-the-icons', `custom', `doom', `vim-powerline' and `vanilla'. The
@@ -270,7 +275,7 @@ It should only modify the values of Spacemacs settings."
    ;; refer to the DOCUMENTATION.org for more info on how to create your own
    ;; spaceline theme. Value can be a symbol or list with additional properties.
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
-   dotspacemacs-mode-line-theme '(spacemacs :separator wave :separator-scale 1.5)
+   dotspacemacs-mode-line-theme '(spacemacs :separator arrow :separator-scale 2.0)
 
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
@@ -321,7 +326,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil the default layout name is displayed in the mode-line.
    ;; (default nil)
-   dotspacemacs-display-default-layout nil
+   dotspacemacs-display-default-layout t
 
    ;; If non-nil then the last auto saved layouts are resumed automatically upon
    ;; start. (default nil)
@@ -409,7 +414,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil unicode symbols are displayed in the mode line.
    ;; If you use Emacs as a daemon and wants unicode characters only in GUI set
    ;; the value to quoted `display-graphic-p'. (default t)
-   dotspacemacs-mode-line-unicode-symbols t
+   dotspacemacs-mode-line-unicode-symbols nil
 
    ;; If non-nil smooth scrolling (native-scrolling) is enabled. Smooth
    ;; scrolling overrides the default behavior of Emacs which recenters point
@@ -503,7 +508,7 @@ It should only modify the values of Spacemacs settings."
    ;; performance issues, instead of calculating the frame title by
    ;; `spacemacs/title-prepare' all the time.
    ;; (default "%I@%S")
-   dotspacemacs-frame-title-format "%I@%S"
+   dotspacemacs-frame-title-format "%I: %a [%t]"
 
    ;; Format specification for setting the icon title format
    ;; (default nil - same as frame-title-format)
@@ -584,6 +589,9 @@ before packages are loaded."
 
   ;; Set the number of lines of margin at the top and bottom of windows.
   (setq scroll-margin 5)
+
+  ;; Consider _ as part of a word (for specific modes).
+  (add-hook 'ess-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
 
   ;; Set default projectile switch project action.
   (setq projectile-switch-project-action 'projectile-dired)
