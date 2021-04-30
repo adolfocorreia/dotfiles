@@ -48,8 +48,7 @@ This function should only modify configuration layer settings."
      evil-commentary
      evil-snipe
      eww
-     (git :variables
-          git-enable-magit-delta-plugin t)
+     git
      helm
      helpful
      ibuffer
@@ -481,7 +480,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil, advise quit functions to keep server open when quitting.
    ;; (default nil)
-   dotspacemacs-persistent-server nil
+   dotspacemacs-persistent-server t
 
    ;; List of search tool executable names. Spacemacs uses the first installed
    ;; tool of the list. Supported tools are `rg', `ag', `pt', `ack' and `grep'.
@@ -552,7 +551,7 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-home-shorten-agenda-source nil
 
    ;; If non-nil then byte-compile some of Spacemacs files.
-   dotspacemacs-byte-compile nil))
+   dotspacemacs-byte-compile t))
 
 (defun dotspacemacs/user-env ()
   "Environment variables setup.
@@ -591,10 +590,13 @@ before packages are loaded."
   (setq scroll-margin 5)
 
   ;; Consider _ as part of a word (for specific modes).
+  (add-hook 'bat-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
   (add-hook 'ess-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
+  (add-hook 'python-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
 
   ;; Set default projectile switch project action.
   (setq projectile-switch-project-action 'projectile-dired)
+  (setq helm-persp-switch-project-action 'projectile-dired)
 
   ;; Use eww as the default browser in Emacs.
   (setq browse-url-browser-function 'eww-browse-url)
