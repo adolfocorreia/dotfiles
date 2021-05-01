@@ -48,3 +48,11 @@
 ;(unpin! pinned-package another-pinned-package)
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
+
+
+;; Evil operator (g~) to cycle text objects through camelCase, kebab-case,
+;; snake_case and UPPER_CASE.
+(package! evil-string-inflection)
+
+;; Show event and command history on a dedicated buffer.
+(package! command-log-mode)

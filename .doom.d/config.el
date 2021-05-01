@@ -67,6 +67,9 @@
 ;; Copy mouse selections to clipboard.
 (setq mouse-drag-copy-region t)
 
+;; Flash modeline on errors
+(doom-themes-visual-bell-config)
+
 ;; Set the number of lines of margin at the top and bottom of windows.
 (setq scroll-margin 5)
 
@@ -91,21 +94,15 @@
 (after! vterm
   (remove-hook 'vterm-mode-hook #'hide-mode-line-mode))
 
-;; Group pdf/image buffers together.
-(setq centaur-tabs-buffer-groups-function 'centaur-tabs-buffer-groups-custom-function)
-(defun centaur-tabs-buffer-groups-custom-function ()
-  (cond
-   ((memq major-mode '(pdf-view-mode))
-    (list "Image"))
-   (t
-    (centaur-tabs-buffer-groups))))
-
 ;; Enable midnight mode by default in pdf buffers.
 (add-hook 'pdf-tools-enabled-hook (lambda () (pdf-view-midnight-minor-mode +1)))
 
 ;; Enable eww as default browser.
 (setq browse-url-browser-function 'eww-browse-url)
 
+;; Evil operator (g~) to cycle text objects through camelCase, kebab-case,
+;; snake_case and UPPER_CASE.
+(use-package! evil-string-inflection)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;
