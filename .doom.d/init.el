@@ -26,7 +26,6 @@
        ;;ido               ; the other *other* search engine...
        (ivy +childframe
             +fuzzy
-            +icons
             +prescient)    ; a search engine for love and life
 
        :ui
@@ -35,7 +34,7 @@
        doom-dashboard      ; a nifty splash screen for Emacs
        doom-quit           ; DOOM quit-message prompts when you quit Emacs
        (emoji +unicode)    ; 🙂
-       fill-column         ; a `fill-column' indicator
+       ;;fill-column       ; a `fill-column' indicator
        hl-todo             ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        hydra
        ;;indent-guides     ; highlighted indent columns
@@ -71,10 +70,9 @@
        word-wrap           ; soft wrapping with language-aware indent
 
        :emacs
-       (dired +icons
-              +ranger)     ; making dired pretty [functional]
+       (dired +ranger)     ; making dired pretty [functional]
        electric            ; smarter, keyword-based electric-indent
-       (ibuffer +icons)    ; interactive buffer management
+       ibuffer             ; interactive buffer management
        undo                ; persistent, smarter undo for your inevitable mistakes
        vc                  ; version-control and Emacs, sitting in a tree
 

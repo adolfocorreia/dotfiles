@@ -21,8 +21,8 @@
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-(setq doom-font (font-spec :family "SauceCodePro Nerd Font Mono" :size 14)
-      doom-variable-pitch-font (font-spec :family "Ubuntu" :size 14))
+(setq doom-font (font-spec :family "Iosevka" :size 16)
+      doom-variable-pitch-font (font-spec :family "Iosevka" :size 17))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -67,7 +67,7 @@
 ;; Copy mouse selections to clipboard.
 (setq mouse-drag-copy-region t)
 
-;; Flash modeline on errors
+;; Flash modeline on errors.
 (doom-themes-visual-bell-config)
 
 ;; Set the number of lines of margin at the top and bottom of windows.
@@ -83,16 +83,23 @@
 ;; Use visible buffer as search scope and highlight matches.
 (setq evil-snipe-scope 'whole-visible)
 
-;; Enable 80th column indicator for specific modes.
-(add-hook 'emacs-lisp-mode-hook (lambda () (display-fill-column-indicator-mode +1)))
-(add-hook 'julia-mode-hook      (lambda () (display-fill-column-indicator-mode +1)))
-(add-hook 'text-mode-hook       (lambda () (display-fill-column-indicator-mode +1)))
+;; Make Emacs ask about loading unsafe local variables (dir-locals).
+;; Doom Emacs configuration changes this variable from its default setting
+;; to silently ignore unsafe local variables.
+(setq enable-local-variables t)
+
+;; Consider _ as part of a word (for specific modes).
+(add-hook 'prog-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
+
+;; Enable 80th column indicator (for specific modes).
+(add-hook 'prog-mode-hook (lambda () (display-fill-column-indicator-mode +1)))
+(add-hook 'text-mode-hook (lambda () (display-fill-column-indicator-mode +1)))
 
 ;; Doom Emacs vterm module configuration adds a hook to hide the modeline in
 ;; every vterm buffer. The command below reverts this setting. Note that
 ;; popup-rules may still inhibit the modeline from appearing.
-(after! vterm
-  (remove-hook 'vterm-mode-hook #'hide-mode-line-mode))
+;; (after! vterm
+;;   (remove-hook 'vterm-mode-hook #'hide-mode-line-mode))
 
 ;; Enable midnight mode by default in pdf buffers.
 (add-hook 'pdf-tools-enabled-hook (lambda () (pdf-view-midnight-minor-mode +1)))
@@ -100,7 +107,7 @@
 ;; Enable eww as default browser.
 (setq browse-url-browser-function 'eww-browse-url)
 
-;; Evil operator (g~) to cycle text objects through camelCase, kebab-case,
+;; Use evil operator (g~) to cycle text objects through camelCase, kebab-case,
 ;; snake_case and UPPER_CASE.
 (use-package! evil-string-inflection)
 
@@ -112,6 +119,13 @@
 ;; Hide emphasis characters (e.g. *, /, =).
 (setq org-hide-emphasis-markers nil)
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Python mode settings ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Set Python interpreter.
+(setq python-shell-interpreter "python3")
 
 
 ;;;;;;;;;;;;;;;;;;;;

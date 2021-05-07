@@ -50,7 +50,7 @@
 ;(unpin! t)
 
 
-;; Evil operator (g~) to cycle text objects through camelCase, kebab-case,
+;; Use evil operator (g~) to cycle text objects through camelCase, kebab-case,
 ;; snake_case and UPPER_CASE.
 (package! evil-string-inflection)
 
