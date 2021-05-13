@@ -14,6 +14,16 @@ let g:mapleader = "\<Space>"
 
 """""" Plugins """"""
 
+" Install vim-plug (if not present)
+" Reference: https://github.com/junegunn/vim-plug/wiki/tips
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  let url = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs '.url
+  autocmd vimrc VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+
 " Installation directory for vim-plug plugins
 call plug#begin(stdpath('data') . '/plugged')
 
