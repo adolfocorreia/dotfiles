@@ -109,7 +109,7 @@ Plug 'vim-syntastic/syntastic'
 Plug 'svermeulen/vim-yoink'
 
 " Prevent delete operations (c, cc, C, d, dd, D, x, X) from yanking
-Plug 'svermeulen/vim-cutlass'
+" Plug 'svermeulen/vim-cutlass'
 
 
 """ Commands """
@@ -248,7 +248,7 @@ let g:syntastic_check_on_wq = 0
 let g:yoinkSyncNumberedRegisters = 1
 
 " Necessary for Yoink/Cutlass integration
-let g:yoinkIncludeDeleteOperations = 1
+" let g:yoinkIncludeDeleteOperations = 1
 
 " Scratch buffer window autohide
 let g:scratch_autohide = 1
@@ -286,23 +286,23 @@ nmap ]h <Plug>(YoinkRotateForward)
 " Cutlass cut operation remaps
 
 " In visual mode just use x for cut
-xnoremap x d
+" xnoremap x d
 
 " Map delete-and-yank (cut) operations (normal mode)
-nnoremap dy d
-nnoremap dyy dd
-nnoremap dY D
-nnoremap yd d
-nnoremap ydd dd
-nnoremap yD D
+" nnoremap dy d
+" nnoremap dyy dd
+" nnoremap dY D
+" nnoremap yd d
+" nnoremap ydd dd
+" nnoremap yD D
 
 " Map change-and-yank operations (normal mode)
-nnoremap cy c
-nnoremap cyy cc
-nnoremap cY C
-nnoremap yc c
-nnoremap ycc cc
-nnoremap yC C
+" nnoremap cy c
+" nnoremap cyy cc
+" nnoremap cY C
+" nnoremap yc c
+" nnoremap ycc cc
+" nnoremap yC C
 
 
 " Map fzf file search
