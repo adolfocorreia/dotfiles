@@ -1,48 +1,48 @@
 """"" General """""
 
-" Define vimrc autocommand group
+" Define vimrc autocommand group.
 augroup vimrc
-  " Remove all previously set vimrc autocommands when (re)sourcing this file
+  " Remove all previously set vimrc autocommands when (re)sourcing this file.
   " Reference: https://learnvimscriptthehardway.stevelosh.com/chapters/14.html
   autocmd!
 augroup END
 
-" Select Leader key
+" Select Leader key.
 let g:mapleader = "\<Space>"
 
 
 
 """""" Plugins """"""
 
-" Install vim-plug (if not present)
+" Install vim-plug (if not present).
 " Reference: https://github.com/junegunn/vim-plug/wiki/tips
-let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+let data_dir = stdpath('data') . '/site'
 if empty(glob(data_dir . '/autoload/plug.vim'))
   let url = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs '.url
+  silent execute '!curl -fLo ' . data_dir . '/autoload/plug.vim --create-dirs ' . url
   autocmd vimrc VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
 
-" Installation directory for vim-plug plugins
+" Installation directory for vim-plug plugins.
 call plug#begin(stdpath('data') . '/plugged')
 
 
 """ Useful keybingings """
 
-" Make repeat command (.) plugin compatible
+" Make repeat command (.) plugin compatible.
 Plug 'tpope/vim-repeat'
 
-" Jump to any forward (s__) or backward (S__) location specified by two characters
+" Jump to any forward (s__) or backward (S__) location specified by two characters.
 Plug 'justinmk/vim-sneak'
 
-" Highlight a unique character in every word when using f/F
+" Highlight a unique character in every word when using f/F.
 Plug 'unblevable/quick-scope'
 
-" Add (ys_), change (cs_), remove (ds_) surrounding delimiters (_ss for whole line)
+" Add (ys_), change (cs_), remove (ds_) surrounding delimiters (_ss for whole line).
 Plug 'tpope/vim-surround'
 
-" Comment out lines (gcc) or comment out with motions (gc_) or selections (gc)
+" Comment out lines (gcc) or comment out with motions (gc_) or selections (gc).
 Plug 'tpope/vim-commentary'
 
 " Useful [_, ]_ keybindings: b (change buffers), Space (add blank lines),
@@ -50,36 +50,36 @@ Plug 'tpope/vim-commentary'
 " Paste after (]p) or before ([p) linewise, also increasing (>_) or
 " decreasing (<_) indentation or reindenting (=_), after (_p) or before (_P)
 " linewise (e.g. >p, <P, =P);
-" Toggle common options: _oh (hlsearch), _oi (ignorecase), _ow (wrap)
+" Toggle common options: _oh (hlsearch), _oi (ignorecase), _ow (wrap).
 Plug 'tpope/vim-unimpaired'
 
 " Text exchange operator: cx_, cxx (current line), X (in visual mode),
-" cxc (clear pending exchanges)
+" cxc (clear pending exchanges).
 Plug 'tommcdo/vim-exchange'
 
 " Coerce text cases with: crs (snake_case), crm (MixedCase), crc (camelCase),
 " cru (UPPER_CASE), cr- (dash-case), cr. (dot.case), cr<space> (space case),
-" crt (Title Case)
+" crt (Title Case).
 Plug 'tpope/vim-abolish'
 
 
 """ Editing helps """
 
-" Insert and delete brackets, parenthesis and quotes in pairs
+" Insert and delete brackets, parenthesis and quotes in pairs.
 Plug 'Raimondi/delimitMate'
 
-" Align text vertically (e.g. :Tab /=)
+" Align text vertically (e.g. :Tab /=).
 " Cheatsheet: https://devhints.io/tabular
 Plug 'godlygeek/tabular'
 
 
 """ Custom motions and text objects """
 
-" CamelCase and snake_case motions
+" CamelCase and snake_case motions.
 Plug 'bkad/CamelCaseMotion'
 
 " Several text objects with in (i), a (a), inside (I), around (A), next (_n)
-" and last (_l) semantics
+" and last (_l) semantics.
 " Pairs: () {} [] <> t (XML/HTML tags)
 " Quotes: ' " `
 " Separators: , . ; : + - = ~ _ * # / | \ & $
@@ -90,39 +90,39 @@ Plug 'bkad/CamelCaseMotion'
 Plug 'wellle/targets.vim'
 
 " Indentation level object: ii (indentation level, ai (ii and line above),
-" aI (ii with lines above/below)
+" aI (ii with lines above/below).
 Plug 'michaeljsmith/vim-indent-object'
 
 
 """ Language support plugins """
 
-" Syntax highlighting for several languages
+" Syntax highlighting for several languages.
 Plug 'sheerun/vim-polyglot'
 
-" Syntax checking
+" Syntax checking.
 Plug 'vim-syntastic/syntastic'
 
 
 """ Yank management """
 
-" Maintain history of yanks
+" Maintain history of yanks.
 Plug 'svermeulen/vim-yoink'
 
-" Prevent delete operations (c, cc, C, d, dd, D, x, X) from yanking
+" Prevent delete operations (c, cc, C, d, dd, D, x, X) from yanking.
 " Plug 'svermeulen/vim-cutlass'
 
 
 """ Commands """
 
-" Shell commands :Delete, :Move, :Rename, :Mkdir, :Chmod, :Wall (save all)
+" Shell commands :Delete, :Move, :Rename, :Mkdir, :Chmod, :Wall (save all).
 Plug 'tpope/vim-eunuch'
 
-" Git support (:Git)
+" Git support (:Git).
 Plug 'tpope/vim-fugitive'
 
 " Fuzzy find :Files, :GFiles (git files), :Buffers, :Colors, :Lines, :Marks,
 " :Windows, :History (old files), :History: (commands), :History/ (search),
-" :Commits, :Commands, :Maps
+" :Commits, :Commands, :Maps.
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'airblade/vim-rooter'
@@ -130,29 +130,29 @@ Plug 'airblade/vim-rooter'
 
 """ Windows and themes """
 
-" Open scratch buffer window with gs and empty buffer with gS
+" Open scratch buffer window with gs and empty buffer with gS.
 Plug 'mtth/scratch.vim'
 
-" Start screen
+" Show start screen.
 Plug 'mhinz/vim-startify'
 
-" Display a vim tip at startup
+" Display a vim tip at startup.
 Plug 'michaelb/vim-tips'
 
-" Status line
+" Status line.
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
-" Show a git diff in the sign column
+" Show a git diff in the sign column.
 Plug 'airblade/vim-gitgutter'
 
-" Nerdtree
+" Nerdtree.
 Plug 'preservim/nerdtree'
 
-" Add icons
+" Add icons.
 Plug 'ryanoasis/vim-devicons'
 
-" base16 colorschemes
+" Use base16 colorschemes.
 Plug 'chriskempson/base16-vim'
 
 """ Check later """
@@ -196,10 +196,10 @@ let g:airline_theme = 'base16_vim'
 
 """""" Misc settings """"""
 
-" Enable mouse support in all modes
+" Enable mouse support in all modes.
 set mouse=a
 
-" Use * and/or + clipboard registers for yank and put operations
+" Use * and/or + clipboard registers for yank and put operations.
 " Primary selection: "* register / unnamed
 " Sytem clipboard: "+ register / unnamedplus
 set clipboard=unnamedplus
@@ -219,38 +219,42 @@ set number
 " Show the line number relative to the line with the cursor in front of each line.
 set relativenumber
 
-" Open new split panes to right and bottom
+" Open new split panes to right and bottom.
 set splitbelow
 set splitright
+
+" Ignore case in patterns (unless upper case characters are used).
+set ignorecase
+set smartcase
 
 
 
 """""" Plugin settings """"""
 
-" Enable sneak labels when moving
+" Enable sneak labels when moving.
 let g:sneak#label = 1
-" Move to next match using s
+" Move to next match using s.
 let g:sneak#s_next = 1
 
-" Only trigger quick-scope when pressing f or F
+" Only trigger quick-scope when pressing f or F.
 let g:qs_highlight_on_keys = ['f', 'F']
 
-" Make delimitMate ignore double quotes (") on vim files
+" Make delimitMate ignore double quotes (") on vim files.
 autocmd vimrc FileType vim let b:delimitMate_quotes = "' `"
 
-" Syntastic settings
+" Syntastic settings.
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
-" Sync numbered :registers with yank history
+" Sync numbered :registers with yank history.
 let g:yoinkSyncNumberedRegisters = 1
 
-" Necessary for Yoink/Cutlass integration
+" Necessary for Yoink/Cutlass integration.
 " let g:yoinkIncludeDeleteOperations = 1
 
-" Scratch buffer window autohide
+" Scratch buffer window autohide.
 let g:scratch_autohide = 1
 let g:scratch_insert_autohide = 0
 
@@ -263,32 +267,32 @@ let g:scratch_insert_autohide = 0
 " - Plugin maps (<Plug>) must be recursive
 
 
-" Yank from cursor to end of line (by default Y is synonym to yy)
+" Yank from cursor to end of line (by default Y is synonym to yy).
 nnoremap Y y$
 
 
-" Map DelimitMateSwitch
+" Map DelimitMateSwitch.
 nnoremap <Leader>d :DelimitMateSwitch<CR>
 
 
-" CamelCaseMotion maps
+" CamelCaseMotion maps.
 map <silent> <M-w> <Plug>CamelCaseMotion_w
 map <silent> <M-b> <Plug>CamelCaseMotion_b
 map <silent> <M-e> <Plug>CamelCaseMotion_e
 
 
-" Map Yoink commands
+" Map Yoink commands.
 nnoremap <Leader>y :Yanks<CR>
 nmap [h <Plug>(YoinkRotateBack)
 nmap ]h <Plug>(YoinkRotateForward)
 
 
-" Cutlass cut operation remaps
+" Cutlass cut operation remaps.
 
-" In visual mode just use x for cut
+" In visual mode just use x for cut.
 " xnoremap x d
 
-" Map delete-and-yank (cut) operations (normal mode)
+" Map delete-and-yank (cut) operations (normal mode).
 " nnoremap dy d
 " nnoremap dyy dd
 " nnoremap dY D
@@ -296,7 +300,7 @@ nmap ]h <Plug>(YoinkRotateForward)
 " nnoremap ydd dd
 " nnoremap yD D
 
-" Map change-and-yank operations (normal mode)
+" Map change-and-yank operations (normal mode).
 " nnoremap cy c
 " nnoremap cyy cc
 " nnoremap cY C
@@ -305,10 +309,10 @@ nmap ]h <Plug>(YoinkRotateForward)
 " nnoremap yC C
 
 
-" Map fzf file search
+" Map fzf file search.
 nnoremap <Leader>f :Files<CR>
 
 
-" Map NERDTreeToggle
+" Map NERDTreeToggle.
 nnoremap <Leader>t :NERDTreeToggle<CR>
 
