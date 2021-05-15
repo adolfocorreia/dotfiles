@@ -27,7 +27,10 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-gruvbox)
+(when IS-LINUX
+  (setq doom-theme 'doom-gruvbox))
+(when IS-WINDOWS
+  (setq doom-theme 'doom-tomorrow-night))
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -131,8 +134,8 @@
 ;; Doom Emacs vterm module configuration adds a hook to hide the modeline in
 ;; every vterm buffer. The command below reverts this setting. Note that
 ;; popup-rules may still inhibit the modeline from appearing.
-;; (after! vterm
-;;   (remove-hook 'vterm-mode-hook #'hide-mode-line-mode))
+(after! vterm
+  (remove-hook 'vterm-mode-hook #'hide-mode-line-mode))
 
 ;; Enable midnight mode by default in pdf buffers.
 (add-hook 'pdf-tools-enabled-hook (lambda () (pdf-view-midnight-minor-mode +1)))
@@ -171,21 +174,16 @@
 ;; Julia settings ;;
 ;;;;;;;;;;;;;;;;;;;;
 
-;; Set number of threads used by Julia.
-(setenv "JULIA_NUM_THREADS" "15")
-
 ;; Use vterm with julia-repl.
-(after! julia-repl (julia-repl-set-terminal-backend 'vterm))
+(after! julia-repl (when IS-LINUX
+                     (julia-repl-set-terminal-backend 'vterm)))
 
 ;; Popup rule for Julia REPL buffer.
 (after! julia-repl
-  (set-popup-rule! "^\\*julia:.*"  ;; e.g. "*julia:workspace*"
-    :actions '(
-               display-buffer-reuse-window
+  (set-popup-rule! "^\\*julia:.*"  ; e.g. "*julia:workspace*"
+    :actions '(display-buffer-reuse-window
                display-buffer-in-previous-window
                display-buffer-in-side-window)
-    :side 'right
-    :width 100
     :quit nil
     :select nil
     :modeline t))
