@@ -79,15 +79,15 @@
        :term
        eshell              ; the elisp shell that works everywhere
        ;;shell             ; simple shell REPL for Emacs
-       (:if IS-WINDOWS
-            term)          ; basic terminal emulator for Emacs
+       ;;term              ; basic terminal emulator for Emacs
        (:if IS-LINUX
             vterm)         ; the best terminal emulation in Emacs
 
        :checkers
        (syntax
               +childframe) ; tasing you for every semicolon you forget
-       (spell +flyspell)   ; tasing you for misspelling mispelling
+       (:if IS-LINUX
+          spell +flyspell) ; tasing you for misspelling mispelling
        ;;grammar           ; tasing grammar mistake every you make
 
        :tools
