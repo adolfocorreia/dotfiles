@@ -204,6 +204,15 @@ set mouse=a
 " Sytem clipboard: "+ register / unnamedplus
 set clipboard=unnamedplus
 
+" Do not redraw screen while executing macros.
+set lazyredraw
+
+" Lines with equal indent form a fold.
+set foldmethod=indent
+set foldnestmax=4
+set foldlevel=2
+set foldcolumn=1
+
 " Keep 5 lines above or below the cursor when scrolling.
 set scrolloff=5
 
