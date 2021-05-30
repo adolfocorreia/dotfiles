@@ -1,10 +1,8 @@
-function fish_greeting
-    fortune
-end
+set -U fish_greeting
 
 function fish_user_key_bindings
     fish_vi_key_bindings
-    
+
     # Use Ctrl+Space to autocomplete fish suggestions
     # References: https://fishshell.com/docs/current/cmds/bind.html
     #             https://fishshell.com/docs/current/cmds/fish_key_reader.html
@@ -16,7 +14,7 @@ set fzf_fd_opts --hidden --exclude .git --exclude .cache
 
 alias ls=exa
 alias open=xdg-open
-alias subl="flatpak run com.sublimetext.three"
+alias qutebrowser="flatpak run org.qutebrowser.qutebrowser"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!

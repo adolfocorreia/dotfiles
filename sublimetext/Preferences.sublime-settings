@@ -1,0 +1,8 @@
+{
+	"ignored_packages":
+	[
+	],
+	"color_scheme": "Packages/gruvbox/gruvbox (Dark) (Medium).sublime-color-scheme",
+	"theme": "Adaptive.sublime-theme",
+	"gtk_client_side_window_decorations": false,
+}
