@@ -1,8 +1,27 @@
 {
-	"ignored_packages":
-	[
-	],
-	"color_scheme": "Packages/gruvbox/gruvbox (Dark) (Medium).sublime-color-scheme",
+	//
+	// User Interface Settings
+	//
+
+	//"color_scheme": "Packages/Base16 Color Schemes/Themes/base16-material-darker.tmTheme",
+	//"color_scheme": "Packages/gruvbox/gruvbox (Dark) (Medium).sublime-color-scheme",
 	"theme": "Adaptive.sublime-theme",
+
+	"highlight_line": true,
+	"show_encoding": true,      // Display file encoding in status bar
+	"show_line_endings": true,  // Display file line endings in status bar
+
+	//
+	// Vintage (vi emulation) settings
+	//
+	"ignored_packages": [],
+	"vintage_start_in_command_mode": true,
+	"vintage_use_clipboard": true,
+	"vintage_ctrl_keys": true,
+	"relative_line_numbers": true,
+
+	//
+	// OS specific settings
+	//
 	"gtk_client_side_window_decorations": false,
 }
