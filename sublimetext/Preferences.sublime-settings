@@ -1,6 +1,14 @@
 {
 	//
-	// User Interface Settings
+	// General settings
+	//
+
+	// Number of context lines to show when scrolling to reveal
+	"scroll_context_lines": 5,
+
+
+	//
+	// User interface settings
 	//
 
 	//"color_scheme": "Packages/Base16 Color Schemes/Themes/base16-material-darker.tmTheme",
@@ -11,17 +19,22 @@
 	"show_encoding": true,      // Display file encoding in status bar
 	"show_line_endings": true,  // Display file line endings in status bar
 
+
 	//
 	// Vintage (vi emulation) settings
 	//
+
 	"ignored_packages": [],
 	"vintage_start_in_command_mode": true,
 	"vintage_use_clipboard": true,
 	"vintage_ctrl_keys": true,
 	"relative_line_numbers": true,
 
+
 	//
 	// OS specific settings
 	//
+
 	"gtk_client_side_window_decorations": false,
+	"color_scheme": "Mariana.sublime-color-scheme",
 }
