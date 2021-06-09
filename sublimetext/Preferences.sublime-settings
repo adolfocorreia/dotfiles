@@ -21,14 +21,18 @@
 
 
 	//
-	// Vintage (vi emulation) settings
+	// NeoVintageous (vi emulation) settings
 	//
 
-	"ignored_packages": [],
-	"vintage_start_in_command_mode": true,
-	"vintage_use_clipboard": true,
-	"vintage_ctrl_keys": true,
 	"relative_line_numbers": true,
+	"vintageous_enable_sneak": true,
+	"vintageous_use_sys_clipboard": true,
+	"neovintageous_build_version": 11100,
+	"ignored_packages": [
+		"Six",
+		"Vintage",
+		"Vintageous",
+	],
 
 
 	//
