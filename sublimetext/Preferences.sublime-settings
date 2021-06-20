@@ -1,8 +1,44 @@
 {
-	"ignored_packages":
-	[
-	],
-	"color_scheme": "Packages/gruvbox/gruvbox (Dark) (Medium).sublime-color-scheme",
+	//
+	// General settings
+	//
+
+	// Number of context lines to show when scrolling to reveal
+	"scroll_context_lines": 5,
+
+
+	//
+	// User interface settings
+	//
+
+	//"color_scheme": "Packages/Base16 Color Schemes/Themes/base16-material-darker.tmTheme",
+	//"color_scheme": "Packages/gruvbox/gruvbox (Dark) (Medium).sublime-color-scheme",
 	"theme": "Adaptive.sublime-theme",
+
+	"highlight_line": true,
+	"show_encoding": true,      // Display file encoding in status bar
+	"show_line_endings": true,  // Display file line endings in status bar
+
+
+	//
+	// NeoVintageous (vi emulation) settings
+	//
+
+	"relative_line_numbers": true,
+	"vintageous_enable_sneak": true,
+	"vintageous_use_sys_clipboard": true,
+	"neovintageous_build_version": 11100,
+	"ignored_packages": [
+		"Six",
+		"Vintage",
+		"Vintageous",
+	],
+
+
+	//
+	// OS specific settings
+	//
+
 	"gtk_client_side_window_decorations": false,
+	"color_scheme": "Mariana.sublime-color-scheme",
 }

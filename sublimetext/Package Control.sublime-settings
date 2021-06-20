@@ -5,7 +5,10 @@
 	],
 	"installed_packages":
 	[
-		"gruvbox",
+		//"Base16 Color Schemes",
+		//"gruvbox",
+		"NeoVintageous",
+		"Origami",
 		"Package Control",
 	],
 }
