@@ -402,9 +402,11 @@ selection:
 #   - (Linux/BSD) user login shell
 #   - (Windows) powershell
 shell:
-  program: /usr/bin/fish
+  program: /usr/bin/bash
   args:
-    - --login
+    - -l
+    - -c
+    - "tmux attach || tmux"
 
 # Startup directory
 #
