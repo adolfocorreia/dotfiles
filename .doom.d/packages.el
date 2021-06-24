@@ -54,6 +54,9 @@
 ;; snake_case and UPPER_CASE.
 (package! evil-string-inflection)
 
+;; Highlight targets for evil-mode's f, F, t and T keys.
+(package! evil-quickscope)
+
 ;; Show event and command history on a dedicated buffer.
 (package! command-log-mode)
 
