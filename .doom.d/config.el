@@ -81,6 +81,9 @@
 ;; to silently ignore unsafe local variables.
 (setq enable-local-variables t)
 
+;; Use system's trash can
+(setq delete-by-moving-to-trash t)
+
 ;; Consider _ as part of a word (for specific modes).
 (add-hook 'prog-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
 
@@ -125,6 +128,12 @@
 ;; snake_case and UPPER_CASE.
 (use-package! evil-string-inflection
   :after evil)
+
+;; Highlight targets for evil-mode's f, F, t and T keys.
+(use-package! evil-quickscope
+  :after evil
+  :config
+  (global-evil-quickscope-mode 1))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;
