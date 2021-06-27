@@ -68,9 +68,18 @@ Plug 'tpope/vim-abolish'
 " Insert and delete brackets, parenthesis and quotes in pairs.
 Plug 'Raimondi/delimitMate'
 
-" Align text vertically (e.g. :Tab /=).
-" Cheatsheet: https://devhints.io/tabular
-Plug 'godlygeek/tabular'
+" Align text by some character or regex adding spaces to the left and/or right.
+" 1. Type gl in visual mode, or gl followed by motion or text object in normal
+"    mode to enter interactive mode.
+" 2. Optionally enter keys to cycle between alignment options (e.g. <C-d> to
+"    cycle between left, right or center alignment).
+" 3. Optionally enter keys to define delimiter occurrences to consider (e.g.
+"    2: second occurence, *: all occurences, -: last ocurrence).
+" 4. Type delimiter key (one of " =:.|&#,", which have predefined rules) or an
+"    arbitrary regex followed by <C-x>.
+" 5. Alternatively, use the :EasyAlign command.
+" Reference: https://github.com/junegunn/vim-easy-align
+Plug 'junegunn/vim-easy-align'
 
 
 """ Custom motions and text objects """
@@ -93,6 +102,10 @@ Plug 'wellle/targets.vim'
 " aI (ii with lines above/below).
 Plug 'michaeljsmith/vim-indent-object'
 
+" Provide operator motions to the beginning ([) or end (]) of text objects
+" (e.g. d]ip deletes from the cursor to the end of the paragraph).
+Plug 'tommcdo/vim-ninja-feet'
+
 
 """ Language support plugins """
 
@@ -107,9 +120,6 @@ Plug 'vim-syntastic/syntastic'
 
 " Maintain history of yanks.
 Plug 'svermeulen/vim-yoink'
-
-" Prevent delete operations (c, cc, C, d, dd, D, x, X) from yanking.
-" Plug 'svermeulen/vim-cutlass'
 
 
 """ Commands """
@@ -130,9 +140,6 @@ Plug 'airblade/vim-rooter'
 
 """ Windows and themes """
 
-" Open scratch buffer window with gs and empty buffer with gS.
-Plug 'mtth/scratch.vim'
-
 " Show start screen.
 Plug 'mhinz/vim-startify'
 
@@ -152,33 +159,11 @@ Plug 'preservim/nerdtree'
 " Add icons.
 Plug 'ryanoasis/vim-devicons'
 
-" gruvbox theme
+" gruvbox theme.
 Plug 'sainnhe/gruvbox-material'
 
 
-""" Check later """
-
-" Kick off builds and test suites using asynchronous adapters (e.g. tmux)
-" https://github.com/tpope/vim-dispatch
-" https://github.com/preservim/vimux
-" https://github.com/jpalardy/vim-slime
-
-" vim session manager
-" https://github.com/tpope/vim-obsession
-" https://github.com/dhruvasagar/vim-prosession
-
-" Auto close
-" https://github.com/cohama/lexima.vim
-" https://github.com/tmsvg/pear-tree
-" https://github.com/alvan/vim-closetag
-
-" Switch between single and multi line statements
-" https://github.com/AndrewRadev/splitjoin.vim
-
-" LSP support
-" https://github.com/neoclide/coc.nvim
-
-" Initialize plugin system
+" Initialize plugin system.
 call plug#end()
 
 
@@ -268,13 +253,6 @@ let g:syntastic_python_checkers = ['pylint']
 " Sync numbered :registers with yank history.
 let g:yoinkSyncNumberedRegisters = 1
 
-" Necessary for Yoink/Cutlass integration.
-" let g:yoinkIncludeDeleteOperations = 1
-
-" Scratch buffer window autohide.
-let g:scratch_autohide = 1
-let g:scratch_insert_autohide = 0
-
 
 
 """""" Key mappings """"""
@@ -304,32 +282,15 @@ nmap [h <Plug>(YoinkRotateBack)
 nmap ]h <Plug>(YoinkRotateForward)
 
 
-" Cutlass cut operation remaps.
-
-" In visual mode just use x for cut.
-" xnoremap x d
-
-" Map delete-and-yank (cut) operations (normal mode).
-" nnoremap dy d
-" nnoremap dyy dd
-" nnoremap dY D
-" nnoremap yd d
-" nnoremap ydd dd
-" nnoremap yD D
-
-" Map change-and-yank operations (normal mode).
-" nnoremap cy c
-" nnoremap cyy cc
-" nnoremap cY C
-" nnoremap yc c
-" nnoremap ycc cc
-" nnoremap yC C
-
-
 " Map fzf file search.
 nnoremap <Leader>f :Files<CR>
 
 
 " Map NERDTreeToggle.
 nnoremap <Leader>t :NERDTreeToggle<CR>
+
+
+" Map vim-easy-align to gl (since ga is already used).
+nmap gl <Plug>(EasyAlign)
+xmap gl <Plug>(EasyAlign)
 
