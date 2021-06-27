@@ -121,6 +121,9 @@ Plug 'vim-syntastic/syntastic'
 " Maintain history of yanks.
 Plug 'svermeulen/vim-yoink'
 
+" Show registers' contents when using ", @ or <C-r>.
+Plug 'junegunn/vim-peekaboo'
+
 
 """ Commands """
 
