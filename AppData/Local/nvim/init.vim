@@ -112,14 +112,8 @@ Plug 'tommcdo/vim-ninja-feet'
 " Syntax highlighting for several languages.
 Plug 'sheerun/vim-polyglot'
 
-" Syntax checking.
-Plug 'vim-syntastic/syntastic'
-
 
 """ Yank management """
-
-" Maintain history of yanks.
-Plug 'svermeulen/vim-yoink'
 
 " Show registers' contents when using ", @ or <C-r>.
 Plug 'junegunn/vim-peekaboo'
@@ -152,12 +146,6 @@ Plug 'michaelb/vim-tips'
 " Status line.
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-
-" Show a git diff in the sign column.
-Plug 'airblade/vim-gitgutter'
-
-" Nerdtree.
-Plug 'preservim/nerdtree'
 
 " Add icons.
 Plug 'ryanoasis/vim-devicons'
@@ -240,15 +228,6 @@ let g:qs_highlight_on_keys = ['f', 'F']
 " Make delimitMate ignore double quotes (") on vim files.
 autocmd vimrc FileType vim let b:delimitMate_quotes = "' `"
 
-" Syntastic settings.
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-
-" Sync numbered :registers with yank history.
-let g:yoinkSyncNumberedRegisters = 1
-
 
 
 """""" Key mappings """"""
@@ -272,18 +251,8 @@ map <silent> <M-b> <Plug>CamelCaseMotion_b
 map <silent> <M-e> <Plug>CamelCaseMotion_e
 
 
-" Map Yoink commands.
-nnoremap <Leader>y :Yanks<CR>
-nmap [h <Plug>(YoinkRotateBack)
-nmap ]h <Plug>(YoinkRotateForward)
-
-
 " Map fzf file search.
 nnoremap <Leader>f :Files<CR>
-
-
-" Map NERDTreeToggle.
-nnoremap <Leader>t :NERDTreeToggle<CR>
 
 
 " Map vim-easy-align to gl (since ga is already used).
