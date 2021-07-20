@@ -4,6 +4,12 @@ if (-Not (Test-Path $tmp)) { New-Item -ItemType Directory $tmp }
 
 
 
+# Set default encoding as UTF-8
+# Reference: https://stackoverflow.com/questions/49476326/displaying-unicode-in-powershell/49481797
+$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
+
+
+
 # Load Pscx module (https://github.com/Pscx/Pscx)
 # Import-Module Pscx
 
