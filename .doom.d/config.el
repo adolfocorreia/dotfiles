@@ -109,6 +109,9 @@
 ;; Use visible buffer as search scope and highlight matches.
 (setq evil-snipe-scope 'whole-visible)
 
+;; Prevent o/O keys from continuing comments
+(setq +evil-want-o/O-to-continue-comments nil)
+
 ;; Provide paste above ([p) and below (]p) unimpaired mappings in evil-mode.
 ;; Reference: evil-unimpaired.el / Spacemacs
 (defun evil-unimpaired-paste-above ()
@@ -128,12 +131,6 @@
 ;; snake_case and UPPER_CASE.
 (use-package! evil-string-inflection
   :after evil)
-
-;; Highlight targets for evil-mode's f, F, t and T keys.
-(use-package! evil-quickscope
-  :after evil
-  :config
-  (global-evil-quickscope-mode 1))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;
@@ -160,6 +157,10 @@
 ;; Directory diff tool.
 (use-package! ztree
   :commands (ztree-diff ztree-dir))
+
+;; vimrc-mode
+(use-package! vimrc-mode
+  :mode ("\\.vim\\'" "\\.vimrc\\'"))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;
