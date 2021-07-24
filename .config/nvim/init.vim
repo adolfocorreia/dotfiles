@@ -118,9 +118,6 @@ Plug 'vim-syntastic/syntastic'
 
 """ Yank management """
 
-" Maintain history of yanks.
-Plug 'svermeulen/vim-yoink'
-
 " Show registers' contents when using ", @ or <C-r>.
 Plug 'junegunn/vim-peekaboo'
 
@@ -228,6 +225,9 @@ set splitright
 set ignorecase
 set smartcase
 
+" List all matches and complete till longest common string.
+set wildmode=list:longest
+
 
 
 """""" Plugin settings """"""
@@ -253,9 +253,6 @@ let g:syntastic_shell = '/bin/sh'
 let g:syntastic_vim_checkers = ['vint']
 let g:syntastic_python_checkers = ['pylint']
 
-" Sync numbered :registers with yank history.
-let g:yoinkSyncNumberedRegisters = 1
-
 
 
 """""" Key mappings """"""
@@ -277,12 +274,6 @@ nnoremap <Leader>d :DelimitMateSwitch<CR>
 map <silent> <M-w> <Plug>CamelCaseMotion_w
 map <silent> <M-b> <Plug>CamelCaseMotion_b
 map <silent> <M-e> <Plug>CamelCaseMotion_e
-
-
-" Map Yoink commands.
-nnoremap <Leader>y :Yanks<CR>
-nmap [h <Plug>(YoinkRotateBack)
-nmap ]h <Plug>(YoinkRotateForward)
 
 
 " Map fzf file search.
