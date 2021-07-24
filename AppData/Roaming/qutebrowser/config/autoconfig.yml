@@ -7,14 +7,12 @@ settings:
         ',m': spawn vlc.bat {url}
         <Ctrl+Shift+Tab>: tab-prev
         <Ctrl+Tab>: tab-next
-  colors.tabs.even.bg:
-    global: silver
-  colors.tabs.even.fg:
-    global: '#666666'
-  colors.tabs.odd.bg:
-    global: gainsboro
-  colors.tabs.odd.fg:
-    global: '#666666'
+      command:
+        <Ctrl+p>: completion-item-focus --history prev
+        <Ctrl+n>: completion-item-focus --history next
+        <Ctrl+l>: command-accept
+        <Shift+PgUp>: command-history-prev
+        <Shift+PgDown>: command-history-next
   colors.webpage.preferred_color_scheme:
     global: dark
   content.autoplay:
@@ -25,6 +23,8 @@ settings:
     global: false
   content.notifications.enabled:
     global: false
+  content.prefers_reduced_motion:
+    global: true
   content.proxy:
     global: http://localhost:3128
   downloads.position:
@@ -66,5 +66,6 @@ settings:
   url.searchengines:
     global:
       ',d': https://duckduckgo.com/?q={}
+      ',g': https://google.com/search?q={}
       ',gs': https://scholar.google.com/scholar?q={}
-      DEFAULT: https://google.com/search?q={}
+      DEFAULT: https://search.brave.com/search?q={}
