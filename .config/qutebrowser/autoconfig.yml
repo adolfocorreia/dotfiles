@@ -1,7 +1,5 @@
 config_version: 2
 settings:
-  backend:
-    global: webengine
   bindings.commands:
     global:
       normal:
@@ -9,6 +7,12 @@ settings:
         ',m': spawn flatpak-spawn --host mpv {url}
         <Ctrl+Shift+Tab>: tab-prev
         <Ctrl+Tab>: tab-next
+      command:
+        <Ctrl+p>: completion-item-focus --history prev
+        <Ctrl+n>: completion-item-focus --history next
+        <Ctrl+l>: command-accept
+        <Shift+PgUp>: command-history-prev
+        <Shift+PgDown>: command-history-next
   colors.webpage.darkmode.enabled:
     global: true
   colors.webpage.preferred_color_scheme:
@@ -21,6 +25,8 @@ settings:
     global: false
   content.notifications.enabled:
     global: false
+  content.prefers_reduced_motion:
+    global: true
   downloads.position:
     global: bottom
   hints.chars:
@@ -45,6 +51,7 @@ settings:
   url.searchengines:
     global:
       ',d': https://duckduckgo.com/?q={}
+      ',g': https://google.com/search?q={}
       ',gs': https://scholar.google.com/scholar?q={}
       ',nix': https://search.nixos.org/packages?channel=unstable&query={}
-      DEFAULT: https://google.com/search?q={}
+      DEFAULT: https://search.brave.com/search?q={}

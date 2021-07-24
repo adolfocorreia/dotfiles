@@ -13,6 +13,8 @@ settings:
         <Ctrl+l>: command-accept
         <Shift+PgUp>: command-history-prev
         <Shift+PgDown>: command-history-next
+  colors.webpage.darkmode.enabled:
+    global: true
   colors.webpage.preferred_color_scheme:
     global: dark
   content.autoplay:
@@ -61,11 +63,10 @@ settings:
     global: false
   tabs.position:
     global: top
-  tabs.width:
-    global: 20%
   url.searchengines:
     global:
       ',d': https://duckduckgo.com/?q={}
       ',g': https://google.com/search?q={}
       ',gs': https://scholar.google.com/scholar?q={}
+      ',nix': https://search.nixos.org/packages?channel=unstable&query={}
       DEFAULT: https://search.brave.com/search?q={}
