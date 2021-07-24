@@ -213,6 +213,9 @@ set splitright
 set ignorecase
 set smartcase
 
+" List all matches and complete till longest common string.
+set wildmode=list:longest
+
 
 
 """""" Plugin settings """"""
