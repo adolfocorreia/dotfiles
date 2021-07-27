@@ -170,6 +170,12 @@
 ;; Hide emphasis characters (e.g. *, /, =).
 (setq org-hide-emphasis-markers nil)
 
+;; Set org directory.
+(setq org-directory "~/org")
+
+;; Set org-roam directory.
+(setq org-roam-directory "~/org-roam")
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Python mode settings ;;
