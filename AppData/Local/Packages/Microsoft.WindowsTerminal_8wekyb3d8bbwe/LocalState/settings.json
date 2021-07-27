@@ -179,6 +179,24 @@
                 "startingDirectory": "%USERPROFILE%/development"
             },
             {
+                "colorScheme": "One Half Dark",
+                "commandline": "mingw64.cmd",
+                "guid": "{b66acca9-afbc-4677-bf5b-6f3a6cbbd86f}",
+                "hidden": false,
+                "icon": "%SCOOP%/apps/msys2/current/mingw64.ico",
+                "name": "mingw64 (MSYS2)",
+                "startingDirectory": "%USERPROFILE%"
+            },
+            {
+                "colorScheme": "One Half Dark",
+                "commandline": "msys2.cmd",
+                "guid": "{1c0ab1d2-3385-465a-bb01-545d53f7f4cc}",
+                "hidden": false,
+                "icon": "%SCOOP%/apps/msys2/current/msys2.ico",
+                "name": "msys (MSYS2)",
+                "startingDirectory": "%USERPROFILE%"
+            },
+            {
                 "commandline": "powershell.exe",
                 "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
                 "hidden": false,
