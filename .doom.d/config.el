@@ -182,6 +182,16 @@
 (setq-hook! 'python-mode-hook
   python-shell-interpreter "python3")
 
+;; Popup rule for Python REPL buffer.
+(after! python
+  (set-popup-rule! "^\\*Python\\*$"
+    :actions '(display-buffer-reuse-window
+               display-buffer-in-previous-window
+               display-buffer-same-window)
+    :quit nil
+    :select t
+    :modeline t))
+
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; Julia settings ;;
@@ -196,9 +206,9 @@
   (set-popup-rule! "^\\*julia:.*"  ; e.g. "*julia:workspace*"
     :actions '(display-buffer-reuse-window
                display-buffer-in-previous-window
-               display-buffer-in-side-window)
+               display-buffer-same-window)
     :quit nil
-    :select nil
+    :select t
     :modeline t))
 
 ;; Workaround for "no method matching LanguageServer.FoldingRangeCapabilities" error.
