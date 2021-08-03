@@ -62,6 +62,14 @@ Plug 'tommcdo/vim-exchange'
 " crt (Title Case).
 Plug 'tpope/vim-abolish'
 
+" Emacs keybindings in insert and command modes:
+" C-b, C-f: back/forward character
+" M-b, M-f: back/forward word
+" C-a, C-e: beginning/end of line
+" M-n, M-p: down/up line
+" C-d, M-d: delete character/word
+Plug 'tpope/vim-rsi'
+
 
 """ Editing helps """
 
