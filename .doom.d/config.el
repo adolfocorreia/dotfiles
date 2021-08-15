@@ -64,6 +64,9 @@
 ;; General settings ;;
 ;;;;;;;;;;;;;;;;;;;;;;
 
+; Load environment variables.
+(doom-load-envvars-file "~/.doom.d/doom_env")
+
 ;; Enable menu bar.
 (menu-bar-mode +1)
 
