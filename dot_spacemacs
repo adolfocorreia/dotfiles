@@ -68,7 +68,7 @@ This function should only modify configuration layer settings."
      pdf
      (python :variables
              python-backend 'anaconda
-             python-shell-interpreter "ipython")
+             python-shell-interpreter "python3")
      (ranger :variables
              ranger-show-preview t
              ranger-show-hidden t
@@ -93,6 +93,7 @@ This function should only modify configuration layer settings."
                 vimscript-backend 'company-vimscript)
      (vinegar :variables
               vinegar-dired-hide-details nil)
+     windows-scripts
      yaml)
 
 
@@ -234,6 +235,9 @@ It should only modify the values of Spacemacs settings."
 
    ;; True if the home buffer should respond to resize events. (default t)
    dotspacemacs-startup-buffer-responsive t
+
+   ;; Show numbers before the startup list lines. (default t)
+   dotspacemacs-show-startup-list-numbers t
 
    ;; The minimum delay in seconds between number key presses. (default 0.4)
    dotspacemacs-startup-buffer-multi-digit-delay 0.4
@@ -585,13 +589,14 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
 
+  (menu-bar-mode +1)
+
   ;; Set the number of lines of margin at the top and bottom of windows.
   (setq scroll-margin 5)
 
   ;; Consider _ as part of a word (for specific modes).
-  (add-hook 'bat-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
-  (add-hook 'ess-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
-  (add-hook 'python-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
+  (add-hook 'text-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
+  (add-hook 'prog-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
 
   ;; Set default projectile switch project action.
   (setq projectile-switch-project-action 'projectile-dired)
