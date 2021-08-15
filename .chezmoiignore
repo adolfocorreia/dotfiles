@@ -8,6 +8,8 @@ README.md
 .bash_aliases
 .tmux.conf
 .xsessionrc
+
+.config/pypoetry
 {{ end }}
 
 # Windows-only files
