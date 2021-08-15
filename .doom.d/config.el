@@ -81,7 +81,7 @@
 ;; to silently ignore unsafe local variables.
 (setq enable-local-variables t)
 
-;; Use system's trash can
+;; Use system's trash can.
 (setq delete-by-moving-to-trash t)
 
 ;; Consider _ as part of a word (for specific modes).
@@ -109,8 +109,11 @@
 ;; Use visible buffer as search scope and highlight matches.
 (setq evil-snipe-scope 'whole-visible)
 
-;; Prevent o/O keys from continuing comments
+;; Prevent o/O keys from continuing comments.
 (setq +evil-want-o/O-to-continue-comments nil)
+
+;; evil-escape with both "jk" and "kj".
+(setq evil-escape-unordered-key-sequence t)
 
 ;; Provide paste above ([p) and below (]p) unimpaired mappings in evil-mode.
 ;; Reference: evil-unimpaired.el / Spacemacs
@@ -158,7 +161,7 @@
 (use-package! ztree
   :commands (ztree-diff ztree-dir))
 
-;; vimrc-mode
+;; vimrc-mode.
 (use-package! vimrc-mode
   :mode ("\\.vim\\'" "\\.vimrc\\'"))
 
