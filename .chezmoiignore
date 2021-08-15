@@ -1,0 +1,27 @@
+# Reference: https://www.chezmoi.io/docs/reference/#chezmoiignore
+
+# General ignore rules
+README.md
+
+# Linux-only files
+{{ if ne .chezmoi.os "linux" }}
+.bash_aliases
+.tmux.conf
+.xsessionrc
+{{ end }}
+
+# Windows-only files
+{{ if ne .chezmoi.os "windows" }}
+AppData
+Documents
+{{ end }}
+
+# Files not (yet) managed by chezmoi
+# (all files beginning with a dot are ignored by default)
+AppData
+Documents
+keypirinha
+sublimetext
+wsl
+vimium-options.json
+
