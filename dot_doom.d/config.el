@@ -87,6 +87,9 @@
 ;; Use system's trash can.
 (setq delete-by-moving-to-trash t)
 
+;; Set idle delay (in seconds) until completion starts.
+(setq company-idle-delay 1.0)
+
 ;; Consider _ as part of a word (for specific modes).
 (add-hook 'prog-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
 
@@ -178,6 +181,11 @@
 
 ;; Set org-roam directory.
 (setq org-roam-directory "~/org/roam")
+
+;; Increase the scale of LaTeX fragments.
+(after! org
+  (setq org-format-latex-options
+        (plist-put org-format-latex-options :scale 2.5)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
