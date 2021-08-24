@@ -8,6 +8,8 @@ README.md
 .tmux.conf
 .xsessionrc
 
+.config/Code
+.config/nvim
 .config/pypoetry
 {{ end }}
 
@@ -19,7 +21,6 @@ Documents
 
 # Files not (yet) managed by chezmoi
 # (all files beginning with a dot are ignored by default)
-AppData
 Documents
 keypirinha
 sublimetext

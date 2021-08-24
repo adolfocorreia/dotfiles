@@ -2,7 +2,6 @@
     "editor.lineNumbers": "relative",
 
     "python.languageServer": "Pylance",
-    "python.showStartPage": false,
 
     "terminal.integrated.copyOnSelection": true,
 
@@ -12,7 +11,6 @@
     "vim.leader": "<space>",
     "vim.showMarksInGutter": true,
     "vim.sneak": true,
-    "vim.statusBarColorControl": true,
     "vim.useSystemClipboard": true,
     "vim.normalModeKeyBindings": [
         {
@@ -89,7 +87,7 @@
         }
     ],
 
-    "workbench.colorTheme": "Ocean Dark Extended",
+    "workbench.colorTheme": "{{ .colorTheme }}",
     "workbench.editorAssociations": [
         {
             "viewType": "jupyter.notebook.ipynb",
@@ -98,4 +96,3 @@
     ],
 
 }
-

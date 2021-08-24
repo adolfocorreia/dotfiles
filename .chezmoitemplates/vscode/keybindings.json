@@ -170,6 +170,4 @@
         "command": "file-browser.stepIn",
         "when": "inFileBrowser"
     }
-
 ]
-

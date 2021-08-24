@@ -10,6 +10,15 @@ augroup END
 " Select Leader key.
 let g:mapleader = "\<Space>"
 
+" Set g:os variable with current OS.
+if !exists("g:os")
+  if has("win64") || has("win32") || has("win16")
+    let g:os = "Windows"
+  else
+    let g:os = substitute(system('uname'), '\n', '', '')
+  endif
+endif
+
 
 
 """""" Plugins """"""
@@ -62,6 +71,14 @@ Plug 'tommcdo/vim-exchange'
 " crt (Title Case).
 Plug 'tpope/vim-abolish'
 
+" Emacs keybindings in insert and command modes:
+" C-b, C-f: back/forward character
+" M-b, M-f: back/forward word
+" C-a, C-e: beginning/end of line
+" M-n, M-p: down/up line
+" C-d, M-d: delete character/word
+Plug 'tpope/vim-rsi'
+
 
 """ Editing helps """
 
@@ -113,7 +130,9 @@ Plug 'tommcdo/vim-ninja-feet'
 Plug 'sheerun/vim-polyglot'
 
 " Syntax checking.
-Plug 'vim-syntastic/syntastic'
+if g:os != "Windows"
+  Plug 'vim-syntastic/syntastic'
+endif
 
 
 """ Yank management """
@@ -153,14 +172,17 @@ Plug 'vim-airline/vim-airline-themes'
 " Show a git diff in the sign column.
 Plug 'airblade/vim-gitgutter'
 
-" Nerdtree.
-Plug 'preservim/nerdtree'
-
 " Add icons.
 Plug 'ryanoasis/vim-devicons'
 
-" gruvbox theme.
-Plug 'sainnhe/gruvbox-material'
+" Color theme.
+if g:os == "Linux"
+  " gruvbox theme.
+  Plug 'sainnhe/gruvbox-material'
+elseif g:os == "Windows"
+  " Use base16 colorschemes.
+  Plug 'chriskempson/base16-vim'
+endif
 
 
 " Initialize plugin system.
@@ -172,14 +194,19 @@ call plug#end()
 
 set termguicolors
 
-let g:gruvbox_material_background = 'hard'
-let g:gruvbox_material_palette = 'original'
-let g:gruvbox_material_transparent_background = 0
-colorscheme gruvbox-material
+if g:os == "Linux"
+  let g:gruvbox_material_background = 'hard'
+  let g:gruvbox_material_palette = 'original'
+  let g:gruvbox_material_transparent_background = 0
+  colorscheme gruvbox-material
+  let g:airline_theme = 'gruvbox_material'
+elseif g:os == "Windows"
+  colorscheme base16-tomorrow-night-eighties
+  let g:airline_theme = 'base16_vim'
+endif
 
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_theme = 'gruvbox_material'
 
 
 
@@ -244,14 +271,16 @@ let g:qs_highlight_on_keys = ['f', 'F']
 autocmd vimrc FileType vim let b:delimitMate_quotes = "' `"
 
 " Syntastic settings.
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_shell = '/bin/sh'
-" vimt reference: https://github.com/Vimjas/vint/wiki/Vint-linting-policy-summary
-let g:syntastic_vim_checkers = ['vint']
-let g:syntastic_python_checkers = ['pylint']
+if exists('g:loaded_syntastic_plugin')
+  let g:syntastic_always_populate_loc_list = 1
+  let g:syntastic_auto_loc_list = 1
+  let g:syntastic_check_on_open = 1
+  let g:syntastic_check_on_wq = 0
+  let g:syntastic_shell = '/bin/sh'
+  " vimt reference: https://github.com/Vimjas/vint/wiki/Vint-linting-policy-summary
+  let g:syntastic_vim_checkers = ['vint']
+  let g:syntastic_python_checkers = ['pylint']
+endif
 
 
 
@@ -278,10 +307,6 @@ map <silent> <M-e> <Plug>CamelCaseMotion_e
 
 " Map fzf file search.
 nnoremap <Leader>f :Files<CR>
-
-
-" Map NERDTreeToggle.
-nnoremap <Leader>t :NERDTreeToggle<CR>
 
 
 " Map vim-easy-align to gl (since ga is already used).
