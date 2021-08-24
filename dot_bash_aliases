@@ -1,2 +1,9 @@
-alias open=xdg-open
-alias subl="flatpak run com.sublimetext.three"
+if command -v xdg-open &> /dev/null
+then
+	alias open=xdg-open
+fi
+
+if command -v flatpak &> /dev/null
+then
+	alias subl="flatpak run com.sublimetext.three"
+fi
