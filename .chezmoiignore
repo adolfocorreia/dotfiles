@@ -5,7 +5,6 @@ README.md
 
 # Linux-only files
 {{ if ne .chezmoi.os "linux" }}
-.bash_aliases
 .tmux.conf
 .xsessionrc
 
