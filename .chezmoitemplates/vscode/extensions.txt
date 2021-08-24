@@ -1,0 +1,27 @@
+# Install each extension with command:
+# code --install-extension <extension-id>
+
+# Base16 Ocean Dark Extended Theme
+kleber-swf.ocean-dark-extended
+
+# Bracket Pair Colorizer 2
+coenraads.bracket-pair-colorizer-2
+
+# Jupyter
+ms-toolsai.jupyter
+
+# Pylance
+ms-python.vscode-pylance
+
+# Python
+ms-python.python
+
+# Rainbow CSV
+mechatroner.rainbow-csv
+
+# vscode-icons
+vscode-icons-team.vscode-icons
+
+# VSpaceCode
+vspacecode.vspacecode
+
