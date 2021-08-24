@@ -17,6 +17,8 @@ README.md
 {{ if ne .chezmoi.os "windows" }}
 AppData
 Documents
+
+.config/scoop
 {{ end }}
 
 # Files not (yet) managed by chezmoi
