@@ -1,3 +1,9 @@
-{{ $email := promptString "email" }}
+{{ $email := promptString "email" -}}
+# Reference: https://www.chezmoi.io/docs/reference/#configuration-file
 [data]
 	email = "{{ $email }}"
+{{ if eq .chezmoi.os "windows" -}}
+[cd]
+	command = "pwsh.exe"
+	args = ["-NoLogo"]
+{{ end -}}
