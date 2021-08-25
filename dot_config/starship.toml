@@ -2,6 +2,8 @@
 # (used for searching last command in tmux)
 format = "$all "
 
+command_timeout = 1000
+
 [conda]
 ignore_base = false
 
