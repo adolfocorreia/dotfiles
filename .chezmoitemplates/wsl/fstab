@@ -1,0 +1,4 @@
+LABEL=cloudimg-rootfs                            /              ext4   defaults          0 1
+tmpfs                                            /tmp           tmpfs  rw,nodev,nosuid   0 0
+X:                                               /mnt/x         drvfs  noauto            0 0
+//server.domain.local/folder\040with\040spaces   /mnt/folder    drvfs  noauto            0 0
