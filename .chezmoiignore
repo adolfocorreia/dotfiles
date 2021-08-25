@@ -1,4 +1,5 @@
 # Reference: https://www.chezmoi.io/docs/reference/#chezmoiignore
+# All files beginning with a dot are ignored by default
 
 # General ignore rules
 README.md
@@ -20,8 +21,3 @@ Documents
 
 .config/scoop
 {{ end }}
-
-# Files not (yet) managed by chezmoi
-# (all files beginning with a dot are ignored by default)
-sublimetext
-
