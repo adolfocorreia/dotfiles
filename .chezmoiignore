@@ -23,6 +23,5 @@ Documents
 
 # Files not (yet) managed by chezmoi
 # (all files beginning with a dot are ignored by default)
-keypirinha
 sublimetext
 
