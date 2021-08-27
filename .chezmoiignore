@@ -10,8 +10,12 @@ README.md
 .xsessionrc
 
 .config/Code
+.config/alacritty
+.config/fish
 .config/nvim
+.config/pop-shell
 .config/pypoetry
+.config/rofi
 .config/sublime-text
 
 .var
