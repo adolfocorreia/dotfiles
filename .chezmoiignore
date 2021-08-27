@@ -12,6 +12,7 @@ README.md
 .config/Code
 .config/nvim
 .config/pypoetry
+.config/sublime-text
 {{ end }}
 
 # Windows-only files
