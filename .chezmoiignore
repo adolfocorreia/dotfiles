@@ -18,6 +18,8 @@ README.md
 .config/rofi
 .config/sublime-text
 
+.lyx
+
 .var
 {{ end }}
 
