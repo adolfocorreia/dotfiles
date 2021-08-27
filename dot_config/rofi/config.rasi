@@ -12,9 +12,10 @@
 configuration {
 
   /* Modi */
-  modi: "drun,file-browser,run,window";
+  /* modi: "drun,file-browser,run,window"; */
+  modi: "drun,run,window";
   display-drun: "Applications";
-  display-file-browser: "File browser";
+  /* display-file-browser: "File browser"; */
   display-run: "Shell commands";
   display-window: "Windows";
 
@@ -23,8 +24,8 @@ configuration {
   font: "ubuntu 15";
   show-icons: true;
 
-  /* Matching */
-  matching: "fuzzy";
+  /* Search */
+  /* matching: "fuzzy"; */
 }
 
 
