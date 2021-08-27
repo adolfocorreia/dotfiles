@@ -23,7 +23,6 @@ c.content.cookies.accept = "no-3rdparty"
 c.content.cookies.store = False
 c.content.notifications.enabled = False
 c.content.prefers_reduced_motion = True
-c.content.proxy = os.getenv("http_proxy")
 c.downloads.position = "bottom"
 c.editor.command = ["gvim", "-f", "'{file}'", "-c", "normal {line}G{column0}l"]
 c.editor.encoding = "utf-8"
@@ -48,6 +47,10 @@ c.url.searchengines[",gs"] = "https://scholar.google.com/scholar?q={}"
 if platform.system() == "Windows":
 	c.fonts.default_family = "SauceCodePro NF"
 	c.fonts.default_size = "11pt"
+
+http_proxy = os.getenv("http_proxy")
+if http_proxy is not None:
+    c.content.proxy = http_proxy
 
 # Load color theme
 if platform.system() == "Linux":
