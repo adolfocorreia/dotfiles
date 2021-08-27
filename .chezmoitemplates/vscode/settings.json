@@ -1,6 +1,8 @@
 {
     "editor.lineNumbers": "relative",
 
+    "julia.enableTelemetry": false,
+
     "python.languageServer": "Pylance",
 
     "terminal.integrated.copyOnSelection": true,
