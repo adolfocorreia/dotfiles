@@ -1,19 +1,39 @@
+# References:
+# https://qutebrowser.org/doc/help/configuring.html
+# https://qutebrowser.org/doc/help/settings.html
+# https://qutebrowser.org/doc/help/commands.html
+
 import os
 import platform
+
+# pylint: disable=C0111
+config = config  # noqa: F821 pylint: disable=E0602,C0103
+c = c            # noqa: F821 pylint: disable=E0602,C0103
+
 
 # Load existing settings made via :set
 config.load_autoconfig()
 
 # Normal mode key bindings
 config.bind("<Ctrl+Shift+Tab>", "tab-prev")
-config.bind("<Ctrl+Tab>", "tab-next")
+config.bind("<Ctrl+Tab>",       "tab-next")
 
 # Command mode key bindings
-config.bind("<Ctrl+p>", "completion-item-focus --history prev", mode="command")
-config.bind("<Ctrl+n>", "completion-item-focus --history next", mode="command")
-config.bind("<Ctrl+l>", "command-accept", mode="command")
-config.bind("<Shift+PgUp>", "command-history-prev", mode="command")
-config.bind("<Shift+PgDown>", "command-history-next", mode="command")
+config.bind("<Ctrl+p>",       "completion-item-focus --history prev", mode="command")
+config.bind("<Ctrl+n>",       "completion-item-focus --history next", mode="command")
+config.bind("<Ctrl+l>",       "command-accept",                       mode="command")
+config.bind("<Shift+PgUp>",   "command-history-prev",                 mode="command")
+config.bind("<Shift+PgDown>", "command-history-next",                 mode="command")
+
+# Insert mode key bindings
+config.bind("<Ctrl+b>", "fake-key <Left>",       mode="insert")
+config.bind("<Ctrl+f>", "fake-key <Right>",      mode="insert")
+config.bind("<Alt+b>",  "fake-key <Ctrl+Left>",  mode="insert")
+config.bind("<Alt+f>",  "fake-key <Ctrl+Right>", mode="insert")
+config.bind("<Ctrl+a>", "fake-key <Home>",       mode="insert")
+config.bind("<Ctrl+e>", "fake-key <End>",        mode="insert")
+config.bind("<Ctrl+p>", "fake-key <Up>",         mode="insert")
+config.bind("<Ctrl+n>", "fake-key <Down>",       mode="insert")
 
 # General configuration
 c.colors.webpage.darkmode.enabled = True
@@ -24,8 +44,6 @@ c.content.cookies.store = False
 c.content.notifications.enabled = False
 c.content.prefers_reduced_motion = True
 c.downloads.position = "bottom"
-c.editor.command = ["gvim", "-f", "'{file}'", "-c", "normal {line}G{column0}l"]
-c.editor.encoding = "utf-8"
 c.hints.chars = "asdhjkl"
 c.qt.args = ["autoplay-policy=user-gesture-required"]
 c.qt.process_model = "process-per-site"
@@ -38,15 +56,15 @@ c.tabs.position = "top"
 
 # Search engines
 c.url.searchengines["DEFAULT"] = "https://search.brave.com/search?q={}"
-c.url.searchengines[",b"] = "https://search.brave.com/search?q={}"
-c.url.searchengines[",d"] = "https://duckduckgo.com/?q={}"
-c.url.searchengines[",g"] = "https://google.com/search?q={}"
-c.url.searchengines[",gs"] = "https://scholar.google.com/scholar?q={}"
+c.url.searchengines[",b"]      = "https://search.brave.com/search?q={}"
+c.url.searchengines[",d"]      = "https://duckduckgo.com/?q={}"
+c.url.searchengines[",g"]      = "https://google.com/search?q={}"
+c.url.searchengines[",gs"]     = "https://scholar.google.com/scholar?q={}"
 
 # Platform specific configuration
 if platform.system() == "Windows":
-	c.fonts.default_family = "SauceCodePro NF"
-	c.fonts.default_size = "11pt"
+    c.fonts.default_family = "SauceCodePro NF"
+    c.fonts.default_size = "11pt"
 
 http_proxy = os.getenv("http_proxy")
 if http_proxy is not None:
@@ -54,16 +72,16 @@ if http_proxy is not None:
 
 # Load color theme
 if platform.system() == "Linux":
-	config.source("base16-gruvbox-dark-hard.config.py")
+    config.source("base16-gruvbox-dark-hard.config.py")
 elif platform.system() == "Windows":
-	config.source("base16-tomorrow-night.config.py")
+    config.source("base16-tomorrow-night.config.py")
 
 # Open external video player keybinding
 if platform.system() == "Linux":
-	cmd = "flatpak-spawn --host mpv"
+    cmd = "flatpak-spawn --host mpv"
 elif platform.system() == "Windows":
-	cmd = "vlc.bat"
+    cmd = "vlc.bat"
 else:
-	cmd = "mpv"
+    cmd = "mpv"
 config.bind(",M", "hint links spawn %s {hint-url}" % cmd)
 config.bind(",m", "spawn %s {url}" % cmd)
