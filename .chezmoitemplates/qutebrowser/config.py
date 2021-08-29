@@ -60,6 +60,9 @@ c.url.searchengines[",b"]      = "https://search.brave.com/search?q={}"
 c.url.searchengines[",d"]      = "https://duckduckgo.com/?q={}"
 c.url.searchengines[",g"]      = "https://google.com/search?q={}"
 c.url.searchengines[",gs"]     = "https://scholar.google.com/scholar?q={}"
+c.url.searchengines[",r"]      = "https://reddit.com/search?q={}"
+c.url.searchengines[",w"]      = "https://en.wikipedia.org/wiki/{}"
+c.url.searchengines[",y"]      = "https://youtube.com/results?search_query={}"
 
 # Platform specific configuration
 if platform.system() == "Windows":
