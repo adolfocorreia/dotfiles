@@ -11,3 +11,12 @@ CapsLock::Ctrl
 ; - http://www.quadibloc.com/comp/scan.htm
 SC073::RCtrl
 
+
+; Keypirinha key bindings.
+; Reference: https://github.com/Keypirinha/Keypirinha/issues/477
+#if WinActive("ahk_class keypirinha_wndcls_run")
+^j::Send {Down}
+^k::Send {Up}
+^n::Send {Down}
+^p::Send {Up}
+#if
