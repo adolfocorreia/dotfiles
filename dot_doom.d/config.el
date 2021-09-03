@@ -240,3 +240,12 @@
 
 ;; It is necessary to add LanguageServer.jl and SymbolServer.jl to the default
 ;; Julia environment (e.g. @v1.6) for LSP to work.
+
+
+;;;;;;;;;;;;;;;;
+;; R settings ;;
+;;;;;;;;;;;;;;;;
+
+;; It is necessary to have the 'styler' package available (globally installed)
+;; in order for code formatting to take place when saving R buffers. The 'gQ'
+;; evil keybing can also be used to format a region.
