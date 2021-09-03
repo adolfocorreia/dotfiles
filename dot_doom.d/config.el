@@ -196,6 +196,11 @@
 (setq-hook! 'python-mode-hook
   python-shell-interpreter "python3")
 
+;; Enable UTF-8 mode for Python in Windows.
+;; Reference: https://www.python.org/dev/peps/pep-0540
+(if (eq system-type 'windows-nt)
+    (setenv "PYTHONUTF8" "1"))
+
 ;; Popup rule for Python REPL buffer.
 (after! python
   (set-popup-rule! "^\\*Python\\*$"
