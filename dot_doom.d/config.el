@@ -192,13 +192,15 @@
 ;; Python mode settings ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Set default Python interpreter.
+;; Set Python-related variables.
 (setq-hook! 'python-mode-hook
-  python-shell-interpreter "python3")
+  python-shell-interpreter "python3"
+  conda-anaconda-home (getenv "ANACONDA_HOME")
+  lsp-python-ms-auto-install-server nil)
 
 ;; Enable UTF-8 mode for Python in Windows.
 ;; Reference: https://www.python.org/dev/peps/pep-0540
-(if (eq system-type 'windows-nt)
+(when IS-WINDOWS
     (setenv "PYTHONUTF8" "1"))
 
 ;; Popup rule for Python REPL buffer.
@@ -211,14 +213,29 @@
     :select t
     :modeline t))
 
+;; Enable LSP functionality by installing the package 'python-lsp-server[all]'
+;; in the project's virtual environment.
+;; Notes:
+;; - Doom Emacs uses the Emacs 'lsp-python-ms' package as a client for both
+;;   pylsp (Spyder IDE's) and mspyls (Microsoft's) LSP servers.
+;; - Microsoft's LSP server implementation is written in C# and is deprecated
+;;   in favor of Pyright/Pylance.
+;; References:
+;; - https://github.com/hlissner/doom-emacs/blob/develop/modules/lang/python/README.org
+;; - https://develop.spacemacs.org/layers/+lang/python/README.html
+;; - https://pypi.org/project/python-lsp-server
+;; - https://github.com/python-lsp/python-lsp-server
+;; - https://emacs-lsp.github.io/lsp-python-ms
+;; - https://github.com/emacs-lsp/lsp-python-ms
+
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; Julia settings ;;
 ;;;;;;;;;;;;;;;;;;;;
 
 ;; Use vterm with julia-repl.
-(after! julia-repl (when IS-LINUX
-                     (julia-repl-set-terminal-backend 'vterm)))
+(when IS-LINUX
+  (after! julia-repl (julia-repl-set-terminal-backend 'vterm)))
 
 ;; Popup rule for Julia REPL buffer.
 (after! julia-repl
