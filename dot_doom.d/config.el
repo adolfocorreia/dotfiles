@@ -195,7 +195,7 @@
 ;; Set Python-related variables.
 (setq-hook! 'python-mode-hook
   python-shell-interpreter "python3"
-  conda-anaconda-home (getenv "ANACONDA_HOME")
+  conda-anaconda-home (getenv "CONDA_HOME")
   lsp-python-ms-auto-install-server nil)
 
 ;; Enable UTF-8 mode for Python in Windows.
