@@ -3,7 +3,7 @@
     // Add custom actions and keybindings to this array.
     // To unbind a key combination from your defaults.json, set the command to "unbound".
     // To learn more about actions and keybindings, visit https://aka.ms/terminal-keybindings
-    "actions": 
+    "actions":
     [
         // Copy and paste are bound to Ctrl+Shift+C and Ctrl+Shift+V in your defaults.json.
         // To learn more about selection, visit https://aka.ms/terminal-selection
@@ -17,7 +17,7 @@
         // - "splitMode": "duplicate" makes the new pane use the focused pane's profile.
         // To learn more about panes, visit https://aka.ms/terminal-panes
         {
-            "command": 
+            "command":
             {
                 "action": "splitPane",
                 "split": "auto",
@@ -28,7 +28,7 @@
         // tmux-like keybindings
         // Reference: https://docs.microsoft.com/en-us/windows/terminal/customize-settings/actions
         {
-            "command": 
+            "command":
             {
                 "action": "splitPane",
                 "split": "horizontal",
@@ -37,7 +37,7 @@
             "keys": "alt+shift+_"
         },
         {
-            "command": 
+            "command":
             {
                 "action": "splitPane",
                 "split": "vertical",
@@ -50,7 +50,7 @@
             "keys": "alt+shift+x"
         },
         {
-            "command": 
+            "command":
             {
                 "action": "moveFocus",
                 "direction": "left"
@@ -58,7 +58,7 @@
             "keys": "alt+h"
         },
         {
-            "command": 
+            "command":
             {
                 "action": "moveFocus",
                 "direction": "down"
@@ -66,7 +66,7 @@
             "keys": "alt+j"
         },
         {
-            "command": 
+            "command":
             {
                 "action": "moveFocus",
                 "direction": "up"
@@ -74,7 +74,7 @@
             "keys": "alt+k"
         },
         {
-            "command": 
+            "command":
             {
                 "action": "moveFocus",
                 "direction": "right"
@@ -82,7 +82,7 @@
             "keys": "alt+l"
         },
         {
-            "command": 
+            "command":
             {
                 "action": "resizePane",
                 "direction": "left"
@@ -90,7 +90,7 @@
             "keys": "alt+shift+h"
         },
         {
-            "command": 
+            "command":
             {
                 "action": "resizePane",
                 "direction": "down"
@@ -98,7 +98,7 @@
             "keys": "alt+shift+j"
         },
         {
-            "command": 
+            "command":
             {
                 "action": "resizePane",
                 "direction": "up"
@@ -106,7 +106,7 @@
             "keys": "alt+shift+k"
         },
         {
-            "command": 
+            "command":
             {
                 "action": "resizePane",
                 "direction": "right"
@@ -143,14 +143,14 @@
     "copyOnSelect": true,
     "defaultProfile": "{bfb3dd1d-ccbc-4fc8-8c09-c6d7199ec0ba}",
     // Prevent dynamic profiles from being generated
-    "disabledProfileSources": 
+    "disabledProfileSources":
     [
         "Windows.Terminal.Azure"
     ],
     "launchMode": "focus",
-    "profiles": 
+    "profiles":
     {
-        "defaults": 
+        "defaults":
         {
             "acrylicOpacity": 0.90,
             "cursorShape": "vintage",
@@ -158,7 +158,7 @@
             "fontSize": 11,
             "useAcrylic": true
         },
-        "list": 
+        "list":
         [
             {
                 "colorScheme": "Tomorrow Night",
@@ -171,30 +171,12 @@
             },
             {
                 "colorScheme": "DjangoRebornAgain",
-                "commandline": "pwsh.exe -ExecutionPolicy ByPass -NoExit -Command \"& '%MINICONDA%/shell/condabin/conda-hook.ps1' ; conda activate '%MINICONDA%' \"",
+                "commandline": "pwsh.exe -ExecutionPolicy ByPass -NoExit -Command \"& '%CONDA_HOME%/shell/condabin/conda-hook.ps1' ; conda activate '%CONDA_HOME%' \"",
                 "guid": "{9e2d3ba6-3809-423e-a85a-24c349c9e55a}",
                 "hidden": false,
-                "icon": "%MINICONDA%/Lib/site-packages/conda/shell/conda_icon.ico",
+                "icon": "%CONDA_HOME%/Lib/site-packages/conda/shell/conda_icon.ico",
                 "name": "Miniconda Powershell Prompt",
                 "startingDirectory": "%USERPROFILE%/development"
-            },
-            {
-                "colorScheme": "One Half Dark",
-                "commandline": "mingw64.cmd",
-                "guid": "{b66acca9-afbc-4677-bf5b-6f3a6cbbd86f}",
-                "hidden": false,
-                "icon": "%SCOOP%/apps/msys2/current/mingw64.ico",
-                "name": "mingw64 (MSYS2)",
-                "startingDirectory": "%USERPROFILE%"
-            },
-            {
-                "colorScheme": "One Half Dark",
-                "commandline": "msys2.cmd",
-                "guid": "{1c0ab1d2-3385-465a-bb01-545d53f7f4cc}",
-                "hidden": false,
-                "icon": "%SCOOP%/apps/msys2/current/msys2.ico",
-                "name": "msys (MSYS2)",
-                "startingDirectory": "%USERPROFILE%"
             },
             {
                 "commandline": "powershell.exe",
@@ -223,7 +205,7 @@
             }
         ]
     },
-    "schemes": 
+    "schemes":
     [
         {
             "background": "#0F1610",
