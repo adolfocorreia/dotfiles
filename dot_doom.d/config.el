@@ -21,24 +21,24 @@
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-(setq doom-font (font-spec :family "Iosevka" :size 14)
-      doom-variable-pitch-font (font-spec :family "Iosevka Aile" :size 14))
+(setq! doom-font (font-spec :family "Iosevka" :size 14)
+       doom-variable-pitch-font (font-spec :family "Iosevka Aile" :size 14))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (when IS-LINUX
-  (setq doom-theme 'doom-gruvbox))
+  (setq! doom-theme 'doom-gruvbox))
 (when IS-WINDOWS
-  (setq doom-theme 'doom-tomorrow-night))
+  (setq! doom-theme 'doom-tomorrow-night))
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org")
+(setq! org-directory "~/org")
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type 'relative)
+(setq! display-line-numbers-type 'relative)
 
 
 ;; Here are some additional functions/macros that could help you configure Doom:
@@ -71,24 +71,24 @@
 (menu-bar-mode +1)
 
 ;; Copy mouse selections to clipboard.
-(setq mouse-drag-copy-region t)
+(setq! mouse-drag-copy-region t)
 
 ;; Flash modeline on errors.
 (doom-themes-visual-bell-config)
 
 ;; Set the number of lines of margin at the top and bottom of windows.
-(setq scroll-margin 5)
+(setq! scroll-margin 5)
 
 ;; Make Emacs ask about loading unsafe local variables (dir-locals).
 ;; Doom Emacs configuration changes this variable from its default setting
 ;; to silently ignore unsafe local variables.
-(setq enable-local-variables t)
+(setq! enable-local-variables t)
 
 ;; Use system's trash can.
-(setq delete-by-moving-to-trash t)
+(setq! delete-by-moving-to-trash t)
 
 ;; Set idle delay (in seconds) until completion starts.
-(setq company-idle-delay 1.0)
+(setq! company-idle-delay 1.0)
 
 ;; Consider _ as part of a word (for specific modes).
 (add-hook 'prog-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
@@ -98,7 +98,7 @@
 (add-hook 'text-mode-hook (lambda () (display-fill-column-indicator-mode +1)))
 
 ;; Enable eww as default browser.
-(setq browse-url-browser-function 'eww-browse-url)
+(setq! browse-url-browser-function 'eww-browse-url)
 
 
 ;;;;;;;;;;;;;;;;;;;
@@ -106,20 +106,20 @@
 ;;;;;;;;;;;;;;;;;;;
 
 ;; Switch to new window after splitting.
-(setq evil-split-window-below t
-      evil-vsplit-window-right t)
+(setq! evil-split-window-below t
+       evil-vsplit-window-right t)
 
 ;; Make hints (ophints module) pulse.
-(setq evil-goggles-pulse t)
+(setq! evil-goggles-pulse t)
 
 ;; Use visible buffer as search scope and highlight matches.
-(setq evil-snipe-scope 'whole-visible)
+(setq! evil-snipe-scope 'whole-visible)
 
 ;; Prevent o/O keys from continuing comments.
-(setq +evil-want-o/O-to-continue-comments nil)
+(setq! +evil-want-o/O-to-continue-comments nil)
 
 ;; evil-escape with both "jk" and "kj".
-(setq evil-escape-unordered-key-sequence t)
+(setq! evil-escape-unordered-key-sequence t)
 
 ;; Provide paste above ([p) and below (]p) unimpaired mappings in evil-mode.
 ;; Reference: evil-unimpaired.el / Spacemacs
@@ -177,14 +177,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Hide emphasis characters (e.g. *, /, =).
-(setq org-hide-emphasis-markers nil)
+(setq! org-hide-emphasis-markers nil)
 
 ;; Set org-roam directory.
-(setq org-roam-directory "~/org/roam")
+(setq! org-roam-directory "~/org/roam")
 
 ;; Increase the scale of LaTeX fragments.
 (after! org
-  (setq org-format-latex-options
+  (setq! org-format-latex-options
         (plist-put org-format-latex-options :scale 2.5)))
 
 
@@ -193,10 +193,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Set Python-related variables.
-(setq-hook! 'python-mode-hook
-  python-shell-interpreter "python3"
-  conda-anaconda-home (getenv "CONDA_HOME")
-  lsp-python-ms-auto-install-server nil)
+(setq!
+ python-shell-interpreter "python3"
+ conda-anaconda-home (getenv "CONDA_HOME")
+ lsp-python-ms-auto-install-server nil)
 
 ;; Enable UTF-8 mode for Python in Windows.
 ;; Reference: https://www.python.org/dev/peps/pep-0540
