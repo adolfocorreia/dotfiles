@@ -1,0 +1,42 @@
+-- -*- mode: Haskell -*-
+
+{-
+References:
+- https://xmobar.org
+- https://wiki.archlinux.org/title/Xmobar
+-}
+
+Config {
+
+  -- Appearance
+    font        = "xft:SauceCodePro Nerd Font Mono:pixelsize=15:antialias=true"
+  , bgColor     = "black"
+  , fgColor     = "grey"
+  , position    = TopW L 100
+  , border      = TopB
+  , borderColor = "black"
+
+  -- Plugin commands
+  , commands =
+    [ Run StdinReader
+    , Run Cpu ["--High", "50", "--high", "red"] 10
+    , Run Memory ["--template", "Mem: <usedratio>%"] 10
+    , Run Swap [] 10
+    , Run Weather "SBJR" [ "--template", "<skyCondition> / <tempC>°C / <rh>%"
+                         , "--Low", "20"
+                         , "--High", "30"
+                         , "--normal", "green"
+                         , "--high", "red"
+                         , "--low", "lightblue"
+                         ] 36000
+    , Run Date "%a %b %_d %Y %H:%M" "date" 10
+    , Run Kbd []
+    ]
+
+  -- Layout
+  , sepChar  = "%"
+  , alignSep = "}{"
+  , template = " %StdinReader% }{ %cpu% | %memory% / %swap% | %SBJR% | <fc=#ee9a00>%date%</fc> | %kbd% "
+  }
+
+-- vi: ft=haskell

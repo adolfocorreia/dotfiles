@@ -17,10 +17,13 @@ README.md
 .config/pypoetry
 .config/rofi
 .config/sublime-text
+.config/xmobar
 
 .lyx
 
 .var
+
+.xmonad
 {{ end }}
 
 # Windows-only files
