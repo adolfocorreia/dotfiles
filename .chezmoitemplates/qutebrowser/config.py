@@ -25,15 +25,20 @@ config.bind("<Ctrl+l>",       "command-accept",                       mode="comm
 config.bind("<Shift+PgUp>",   "command-history-prev",                 mode="command")
 config.bind("<Shift+PgDown>", "command-history-next",                 mode="command")
 
-# Insert mode key bindings
-config.bind("<Ctrl+b>", "fake-key <Left>",       mode="insert")
-config.bind("<Ctrl+f>", "fake-key <Right>",      mode="insert")
-config.bind("<Alt+b>",  "fake-key <Ctrl+Left>",  mode="insert")
-config.bind("<Alt+f>",  "fake-key <Ctrl+Right>", mode="insert")
-config.bind("<Ctrl+a>", "fake-key <Home>",       mode="insert")
-config.bind("<Ctrl+e>", "fake-key <End>",        mode="insert")
-config.bind("<Ctrl+p>", "fake-key <Up>",         mode="insert")
-config.bind("<Ctrl+n>", "fake-key <Down>",       mode="insert")
+# Insert mode key bindings (emacs/readline-like)
+config.bind("<Ctrl+b>", "fake-key <Left>",                     mode="insert")
+config.bind("<Ctrl+f>", "fake-key <Right>",                    mode="insert")
+config.bind("<Alt+b>",  "fake-key <Ctrl+Left>",                mode="insert")
+config.bind("<Alt+f>",  "fake-key <Ctrl+Right>",               mode="insert")
+config.bind("<Ctrl+a>", "fake-key <Home>",                     mode="insert")
+config.bind("<Ctrl+e>", "fake-key <End>",                      mode="insert")
+config.bind("<Ctrl+p>", "fake-key <Up>",                       mode="insert")
+config.bind("<Ctrl+n>", "fake-key <Down>",                     mode="insert")
+config.bind("<Ctrl+u>", "fake-key <Shift+Home><Delete>",       mode="insert")
+config.bind("<Ctrl+k>", "fake-key <Shift+End><Delete>",        mode="insert")
+config.bind("<Ctrl+d>", "fake-key <Delete>",                   mode="insert")
+config.bind("<Alt+d>",  "fake-key <Shift+Ctrl+Right><Delete>", mode="insert")
+config.bind("<Ctrl+w>", "fake-key <Shift+Ctrl+Left><Delete>",  mode="insert")
 
 # General configuration
 c.colors.webpage.darkmode.enabled = True
