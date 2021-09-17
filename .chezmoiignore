@@ -32,4 +32,6 @@ AppData
 Documents
 
 .config/scoop
+
+.workspacer
 {{ end }}
