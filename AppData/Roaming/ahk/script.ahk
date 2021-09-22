@@ -28,8 +28,8 @@ SC073::RCtrl
 #k::SendInput #!k
 #m::SendInput #!m
 #t::SendInput #!t
-#Enter::SendInput #!{Enter}
-#Backspace::SendInput #!{Backspace}
+;#Enter::SendInput #!{Enter}
+;#Backspace::SendInput #!{Backspace}
 #0::SendInput #!0
 #1::SendInput #!1
 #2::SendInput #!2

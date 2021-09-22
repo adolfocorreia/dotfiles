@@ -28,8 +28,8 @@ Action<IConfigContext> doConfig = (context) => {
 
     Color backgroundColor = new Color(0x20, 0x21, 0x24);
     int barHeight = 20;
-    string fontName = "SauceCodePro NF";
-    int fontSize = 11;
+    string fontName = "Hack NF";
+    int fontSize = 10;
 
     KeyModifiers mod   = KeyModifiers.Win;
     KeyModifiers modA  = mod | KeyModifiers.Alt;
@@ -37,8 +37,7 @@ Action<IConfigContext> doConfig = (context) => {
     KeyModifiers modS  = mod | KeyModifiers.Shift;
     KeyModifiers modCS = mod | KeyModifiers.Control | KeyModifiers.Shift;
 
-    /* Some applications work minimized */
-    /* context.CanMinimizeWindows = true; */
+    context.CanMinimizeWindows = true;
 
     /* Keybindings */
     Action setKeybindings = () => {
@@ -131,10 +130,10 @@ Action<IConfigContext> doConfig = (context) => {
         k.Subscribe(modS,  Keys.W,     () => w.MoveFocusedWindowToMonitor(0),                   "move focused window to monitor 1");
         k.Subscribe(modS,  Keys.E,     () => w.MoveFocusedWindowToMonitor(2),                   "move focused window to monitor 2");
         k.Subscribe(modS,  Keys.R,     () => w.MoveFocusedWindowToMonitor(1),                   "move focused window to monitor 3");
-        k.Subscribe(modS,  Keys.H,     () => w.MoveFocusedWindowToNextMonitor(),                "move focused window to previous monitor");
-        k.Subscribe(modS,  Keys.L,     () => w.MoveFocusedWindowToPreviousMonitor(),            "move focused window to next monitor");
-        k.Subscribe(modS,  Keys.Left,  () => w.MoveFocusedWindowToNextMonitor(),                "move focused window to previous monitor");
-        k.Subscribe(modS,  Keys.Right, () => w.MoveFocusedWindowToPreviousMonitor(),            "move focused window to next monitor");
+        k.Subscribe(modCS, Keys.H,     () => w.MoveFocusedWindowToNextMonitor(),                "move focused window to previous monitor");
+        k.Subscribe(modCS, Keys.L,     () => w.MoveFocusedWindowToPreviousMonitor(),            "move focused window to next monitor");
+        k.Subscribe(modCS, Keys.Left,  () => w.MoveFocusedWindowToNextMonitor(),                "move focused window to previous monitor");
+        k.Subscribe(modCS, Keys.Right, () => w.MoveFocusedWindowToPreviousMonitor(),            "move focused window to next monitor");
 
         k.Subscribe(modCS, Keys.D1, () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, 0)), "move all windows to workpace 1");
         k.Subscribe(modCS, Keys.D2, () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, 1)), "move all windows to workpace 2");
@@ -162,22 +161,19 @@ Action<IConfigContext> doConfig = (context) => {
         DefaultWidgetBackground = backgroundColor,
         FontSize = fontSize,
         FontName = fontName,
-        LeftWidgets = () => new IBarWidget[] {
-            new TextWidget(" "),
-            new WorkspaceWidget(),
-            new TextWidget(" ["), new ActiveLayoutWidget(), new TextWidget("] "),
-            new FocusedMonitorWidget(),
-            new TextWidget(" "),
-            new TitleWidget()
-        },
         /* Font Awesome icons: https://fontawesome.com */
+        LeftWidgets = () => new IBarWidget[] {
+            new WorkspaceWidget(),
+            new ActiveLayoutWidget() { LeftPadding = "[", RightPadding = "]" },
+            new TextWidget(" | "),
+            new FocusedMonitorWidget() { FocusedText = "\uf005", },
+            new TitleWidget() { IsShortTitle = true },
+            new FocusedMonitorWidget() { FocusedText = "\uf005", },
+        },
         RightWidgets = () => new IBarWidget[] {
             new TextWidget("\uf242"),
             new BatteryWidget(),
-            new TextWidget("  \uf133"),
-            new TimeWidget(1000, "yyyy-MM-dd"),
-            new TextWidget("  \uf017"),
-            new TimeWidget(1000, "HH:mm "),
+            new TimeWidget(1000, " \uf133 yyyy-MM-dd  \uf017 HH:mm"),
         },
     });
 
@@ -228,9 +224,9 @@ Action<IConfigContext> doConfig = (context) => {
            - increment proportion
            - reverse primary and secondary zones */
         new TallLayoutEngine(1, 0.6, 0.025, false),
+        new HorzLayoutEngine(),
         /* https://github.com/workspacer/workspacer/issues/262 */
         /* new FullLayoutEngine(), */
-        new HorzLayoutEngine(),
     };
     (string, ILayoutEngine[])[] workspaces = {
         ("1st",   defaultLayouts()),
@@ -238,11 +234,11 @@ Action<IConfigContext> doConfig = (context) => {
         ("3rd",   defaultLayouts()),
         ("4th",   defaultLayouts()),
         ("5th",   defaultLayouts()),
-        ("notes", new ILayoutEngine[] { new TallLayoutEngine(1, 0.7, 0.025, false) }),
+        ("notes", new ILayoutEngine[] { new TallLayoutEngine(1, 0.75, 0.025, false) }),
         ("chat",  defaultLayouts()),
-        ("gapps", new ILayoutEngine[] { new VertLayoutEngine() }),
+        ("gapps", new ILayoutEngine[] { new VertLayoutEngine(), new FullLayoutEngine() }),
         ("term",  defaultLayouts()),
-        ("misc",  new ILayoutEngine[] { new HorzLayoutEngine() }),
+        ("misc",  new ILayoutEngine[] { new HorzLayoutEngine(), new FullLayoutEngine() }),
     };
     foreach ((string name, ILayoutEngine[] layouts) in workspaces)  {
         context.WorkspaceContainer.CreateWorkspace(name, layouts);
@@ -253,24 +249,43 @@ Action<IConfigContext> doConfig = (context) => {
 
     // Workspacer cannot properly filter UWP applications:
     // https://github.com/workspacer/workspacer/issues/120
-    context.WindowRouter.IgnoreProcessName("ApplicationFrameHost");
+    /* context.WindowRouter.IgnoreProcessName("ApplicationFrameHost"); */
 
+    // MSI installer
+    context.WindowRouter.IgnoreWindowClass("MsiDialogCloseClass");
+
+    // 7zip
+    context.WindowRouter.IgnoreWindowClass("#32770");
     // AHK
     context.WindowRouter.IgnoreProcessName("AutoHotkeyU64");
     // BIG-IP
     context.WindowRouter.IgnoreProcessName("f5fpclientW");
+    // Colorpicker
+    context.WindowRouter.IgnoreProcessName("Colorpicker");
+    // Jitsi (sharing window)
+    context.WindowRouter.AddFilter((window) =>
+        !(window.Class.Equals("Chrome_WidgetWin_1") & (
+            window.Title.EndsWith("is sharing a window.") |
+            window.Title.EndsWith("is sharing your screen.") |
+            window.Title.EndsWith("está compartilhando uma janela.") |
+            window.Title.EndsWith("está compartilhando sua tela.")
+        )));
     // Keypirinha
     context.WindowRouter.IgnoreProcessName("keypirinha-x64");
     // PortableApps
     context.WindowRouter.IgnoreProcessName("PortableAppsPlatform");
     context.WindowRouter.IgnoreProcessName("PortableAppsUpdater");
+    // SIGA
+    context.WindowRouter.IgnoreProcessName("Siga");
 
-    context.WindowRouter.RouteTitle("Gmail",           "gapps");
-    context.WindowRouter.RouteTitle("Google Calendar", "gapps");
+    context.WindowRouter.RouteProcessName("notes2",          "notes");
+    context.WindowRouter.RouteProcessName("WhatsApp",        "chat");
+    context.WindowRouter.RouteProcessName("WindowsTerminal", "term");
 
-    context.WindowRouter.RouteProcessName("WhatsApp", "chat");
-    context.WindowRouter.RouteProcessName("notes2",   "notes");
-    context.WindowRouter.RouteProcessName("nlnotes",  "notes");
+    context.WindowRouter.RouteTitle("Gmail",                     "gapps");
+    context.WindowRouter.RouteTitle("Google Calendar",           "gapps");
+    context.WindowRouter.RouteTitleMatch(".*gmail.com - Gmail",  "gapps");
+    context.WindowRouter.RouteTitleMatch("Google Calendar - .*", "gapps");
 
 };
 return doConfig;
