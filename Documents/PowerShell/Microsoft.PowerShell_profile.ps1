@@ -33,6 +33,11 @@ Set-PSReadLineOption -HistorySearchCursorMovesToEnd
 Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
 Set-PSReadLineKeyHandler -Key Ctrl+Spacebar -Function AcceptSuggestion
+# Escape code references:
+# - https://en.wikipedia.org/wiki/ANSI_escape_code
+# - https://docs.microsoft.com/en-us/windows/console/console-virtual-terminal-sequences
+# - https://upload.wikimedia.org/wikipedia/commons/1/15/Xterm_256color_chart.svg
+Set-PSReadLineOption -Colors @{ "InlinePrediction"="`e[38;5;244m" }
 
 # Search paths
 Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t'

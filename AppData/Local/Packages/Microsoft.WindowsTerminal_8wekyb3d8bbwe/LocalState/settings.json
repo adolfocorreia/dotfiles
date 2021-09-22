@@ -156,7 +156,8 @@
             "cursorShape": "vintage",
             "fontFace": "SauceCodePro NF",
             "fontSize": 11,
-            "useAcrylic": true
+            "useAcrylic": true,
+            "acrylicOpacity": 0.5
         },
         "list":
         [
