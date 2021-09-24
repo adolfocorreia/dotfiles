@@ -227,7 +227,6 @@ set lazyredraw
 set foldmethod=indent
 set foldnestmax=4
 set foldlevel=2
-set foldcolumn=1
 
 " Keep 5 lines above or below the cursor when scrolling.
 set scrolloff=5
@@ -305,8 +304,9 @@ map <silent> <M-b> <Plug>CamelCaseMotion_b
 map <silent> <M-e> <Plug>CamelCaseMotion_e
 
 
-" Map fzf file search.
+" Map fzf file and buffer search.
 nnoremap <Leader>f :Files<CR>
+nnoremap <Leader>b :Buffers<CR>
 
 
 " Map vim-easy-align to gl (since ga is already used).
