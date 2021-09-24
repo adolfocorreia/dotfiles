@@ -54,9 +54,6 @@
 ;; snake_case and UPPER_CASE.
 (package! evil-string-inflection)
 
-;; Show event and command history on a dedicated buffer.
-(package! command-log-mode)
-
 ;; Directory diff tool.
 (package! ztree)
 

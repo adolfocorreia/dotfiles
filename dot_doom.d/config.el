@@ -159,10 +159,6 @@
 (add-hook 'projectile-after-switch-project-hook
           (lambda () (projectile-invalidate-cache nil)))
 
-;; Show event and command history on a dedicated buffer.
-(use-package! command-log-mode
-  :commands (command-log-mode global-command-log-mode))
-
 ;; Directory diff tool.
 (use-package! ztree
   :commands (ztree-diff ztree-dir))

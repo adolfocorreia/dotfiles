@@ -33,7 +33,7 @@
        doom-quit           ; DOOM quit-message prompts when you quit Emacs
        ;;(emoji +unicode)  ; 🙂
        hl-todo             ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
-       ;;hydra
+       hydra
        ;;indent-guides     ; highlighted indent columns
        ;;ligatures         ; ligatures and symbols to make your code pretty again
        ;;minimap           ; show a map of the code on the side
@@ -74,7 +74,7 @@
        vc                  ; version-control and Emacs, sitting in a tree
 
        :term
-       eshell              ; the elisp shell that works everywhere
+       ;;eshell            ; the elisp shell that works everywhere
        ;;shell             ; simple shell REPL for Emacs
        ;;term              ; basic terminal emulator for Emacs
        (:if IS-LINUX
@@ -95,9 +95,8 @@
        ;;ein               ; tame Jupyter notebooks with emacs
        (eval +overlay)     ; run code, run (also, repls)
        ;;gist              ; interacting with github gists
-       (lookup +dictionary
-               +docsets)   ; navigate your code and its documentation
-       (lsp +peek)         ; M-x vscode
+       lookup              ; navigate your code and its documentation
+       lsp                 ; M-x vscode
        magit               ; a git porcelain for Emacs
        ;;make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
@@ -143,7 +142,8 @@
        json                ; At least it ain't XML
        ;;(java +meghanada) ; the poster child for carpal tunnel syndrome
        ;;javascript        ; all(hope(abandon(ye(who(enter(here))))))
-       (julia +lsp)        ; a better, faster MATLAB
+       (:if IS-LINUX
+        julia +lsp)        ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
        (:if IS-LINUX
         latex +latexmk
