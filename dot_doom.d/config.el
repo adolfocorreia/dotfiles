@@ -199,16 +199,6 @@
 (when IS-WINDOWS
     (setenv "PYTHONUTF8" "1"))
 
-;; Popup rule for Python REPL buffer.
-(after! python
-  (set-popup-rule! "^\\*Python\\*$"
-    :actions '(display-buffer-reuse-window
-               display-buffer-in-previous-window
-               display-buffer-same-window)
-    :quit nil
-    :select t
-    :modeline t))
-
 ;; Enable LSP functionality by installing the package 'python-lsp-server[all]'
 ;; in the project's virtual environment.
 ;; Notes:
@@ -235,12 +225,7 @@
 
 ;; Popup rule for Julia REPL buffer.
 (after! julia-repl
-  (set-popup-rule! "^\\*julia:.*"  ; e.g. "*julia:workspace*"
-    :actions '(display-buffer-reuse-window
-               display-buffer-in-previous-window
-               display-buffer-same-window)
-    :quit nil
-    :select t
+  (set-popup-rule! "^\\*julia.*\\*$"  ; e.g. "*julia:workspace*"
     :modeline t))
 
 ;; Workaround for "no method matching LanguageServer.FoldingRangeCapabilities" error.
