@@ -11,9 +11,9 @@ augroup END
 let g:mapleader = "\<Space>"
 
 " Set g:os variable with current OS.
-if !exists("g:os")
-  if has("win64") || has("win32") || has("win16")
-    let g:os = "Windows"
+if !exists('g:os')
+  if has('win64') || has('win32') || has('win16')
+    let g:os = 'Windows'
   else
     let g:os = substitute(system('uname'), '\n', '', '')
   endif
@@ -130,7 +130,7 @@ Plug 'tommcdo/vim-ninja-feet'
 Plug 'sheerun/vim-polyglot'
 
 " Syntax checking.
-if g:os != "Windows"
+if g:os !=# 'Windows'
   Plug 'vim-syntastic/syntastic'
 endif
 
@@ -176,10 +176,10 @@ Plug 'airblade/vim-gitgutter'
 Plug 'ryanoasis/vim-devicons'
 
 " Color theme.
-if g:os == "Linux"
+if g:os ==# 'Linux'
   " gruvbox theme.
   Plug 'sainnhe/gruvbox-material'
-elseif g:os == "Windows"
+elseif g:os ==# 'Windows'
   " Use base16 colorschemes.
   Plug 'chriskempson/base16-vim'
 endif
@@ -194,13 +194,13 @@ call plug#end()
 
 set termguicolors
 
-if g:os == "Linux"
+if g:os ==# 'Linux'
   let g:gruvbox_material_background = 'hard'
   let g:gruvbox_material_palette = 'original'
   let g:gruvbox_material_transparent_background = 0
   colorscheme gruvbox-material
   let g:airline_theme = 'gruvbox_material'
-elseif g:os == "Windows"
+elseif g:os ==# 'Windows'
   colorscheme base16-tomorrow-night-eighties
   let g:airline_theme = 'base16_vim'
 endif
@@ -254,6 +254,14 @@ set smartcase
 " List all matches and complete till longest common string.
 set wildmode=list:longest
 
+" File patterns to ignore.
+set wildignore+=*.zip
+set wildignore+=*.pdf
+set wildignore+=*.png,*.jpg,*.gif
+set wildignore+=*.pyc,*.pyo,*.pyd
+
+" Highlight yank region.
+" autocmd vimrc TextYankPost * silent! lua vim.highlight.on_yank()
 
 
 """""" Plugin settings """"""
@@ -294,6 +302,10 @@ endif
 nnoremap Y y$
 
 
+" Clear last search highlighting.
+nnoremap <silent> <Leader><Esc> :nohlsearch<CR>
+
+
 " Map DelimitMateSwitch.
 nnoremap <Leader>d :DelimitMateSwitch<CR>
 
@@ -304,9 +316,10 @@ map <silent> <M-b> <Plug>CamelCaseMotion_b
 map <silent> <M-e> <Plug>CamelCaseMotion_e
 
 
-" Map fzf file and buffer search.
+" Map fzf search commands.
 nnoremap <Leader>f :Files<CR>
 nnoremap <Leader>b :Buffers<CR>
+nnoremap <Leader>l :Lines<CR>
 
 
 " Map vim-easy-align to gl (since ga is already used).
