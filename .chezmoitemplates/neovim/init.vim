@@ -212,6 +212,9 @@ let g:airline#extensions#tabline#enabled = 1
 
 """""" Misc settings """"""
 
+" Use ':set option?' to check current option value.
+" Use ':verbose set option?' to check where it was set.
+
 " Enable mouse support in all modes.
 set mouse=a
 
@@ -230,6 +233,9 @@ set foldlevel=2
 
 " Keep 5 lines above or below the cursor when scrolling.
 set scrolloff=5
+
+" Keep 5 columns to the left or to the right of the cursor.
+set sidescrolloff=5
 
 " Highlight line under cursor. It helps with navigation.
 set cursorline
@@ -251,12 +257,17 @@ set splitright
 set ignorecase
 set smartcase
 
+" Disable line wrapping.
+set nowrap
+
 " List all matches and complete till longest common string.
 set wildmode=list:longest
 
 " File patterns to ignore.
-set wildignore+=*.zip
+set wildignore+=*.swp
+set wildignore+=*.zip,*.7z,*.tar,*.gz
 set wildignore+=*.pdf
+set wildignore+=*.doc,*.docx,*.xls,*.xslx,*.ppt,*.pptx
 set wildignore+=*.png,*.jpg,*.gif
 set wildignore+=*.pyc,*.pyo,*.pyd
 
