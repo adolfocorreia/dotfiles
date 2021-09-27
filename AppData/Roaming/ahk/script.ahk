@@ -15,10 +15,25 @@ SC073::RCtrl
 ; Keypirinha key bindings.
 ; Reference: https://github.com/Keypirinha/Keypirinha/issues/477
 #if WinActive("ahk_class keypirinha_wndcls_run")
-^j::Send {Down}
-^k::Send {Up}
-^n::Send {Down}
-^p::Send {Up}
+  ^j::SendInput {Down}
+  ^k::SendInput {Up}
+  ^n::SendInput {Down}
+  ^p::SendInput {Up}
+#if
+
+
+; Disable Alt+<number> Notes key bindings.
+; Reference: https://stackoverflow.com/questions/5954682/create-lotus-notes-hotkey-shortcut-key-for-reply-to-all-with-history
+#if WinActive("ahk_exe notes2.exe")
+  !1::
+  !2::
+  !3::
+  !4::
+  !5::
+  !6::
+  !7::
+  !8::
+  !9::
 #if
 
 
@@ -28,8 +43,6 @@ SC073::RCtrl
 #k::SendInput #!k
 #m::SendInput #!m
 #t::SendInput #!t
-;#Enter::SendInput #!{Enter}
-;#Backspace::SendInput #!{Backspace}
 #0::SendInput #!0
 #1::SendInput #!1
 #2::SendInput #!2
@@ -40,4 +53,14 @@ SC073::RCtrl
 #7::SendInput #!7
 #8::SendInput #!8
 #9::SendInput #!9
+
+; Disable problematic Windows bindings.
+; Reference: https://support.microsoft.com/en-us/windows/keyboard-shortcuts-in-windows-dcc61a57-8ff0-cffe-9796-cb9706c75eec
+#Tab::
+#Up::
+#Down::
+#Left::
+#Right::
+#+Left::
+#+Right::
 

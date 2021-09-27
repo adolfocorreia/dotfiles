@@ -11,10 +11,16 @@ Examples:
 #r "C:\apps\workspacer\plugins\workspacer.FocusIndicator\workspacer.FocusIndicator.dll"
 #r "C:\apps\workspacer\plugins\workspacer.Gap\workspacer.Gap.dll"
 #r "C:\apps\workspacer\plugins\workspacer.TitleBar\workspacer.TitleBar.dll"
+#r "C:\apps\workspacer\Microsoft.VisualBasic.dll"
+#r "C:\apps\workspacer\System.Diagnostics.PerformanceCounter.dll"
+
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Timers;
+using Microsoft.VisualBasic.Devices;
 using workspacer;
 using workspacer.ActionMenu;
 using workspacer.Bar;
@@ -22,6 +28,41 @@ using workspacer.Bar.Widgets;
 using workspacer.FocusIndicator;
 using workspacer.Gap;
 using workspacer.TitleBar;
+
+
+class CpuMemWidget : BarWidgetBase {
+    private double _interval;
+    private string _template;
+    private ulong _totalMemory;
+    private Timer _timer;
+    private PerformanceCounter _cpuCounter;
+    private PerformanceCounter _memCounter;
+    private string _text;
+    public CpuMemWidget(double interval, string template) {
+        _interval = interval;
+        _template = template;
+    }
+    public override void Initialize() {
+        _totalMemory = new ComputerInfo().TotalPhysicalMemory / (1024*1024);
+        _cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total", true);
+        _memCounter = new PerformanceCounter("Memory", "Available MBytes", true);
+        _text = _GenerateTextFromCounters();
+        _timer = new Timer(_interval);
+        _timer.Elapsed += (s, e) => {
+            _text = _GenerateTextFromCounters();
+            Context.MarkDirty();
+        };
+        _timer.Enabled = true;
+    }
+    public override IBarWidgetPart[] GetParts() {
+        return Parts(Part(_text, fontname: FontName));
+    }
+    private string _GenerateTextFromCounters() {
+        string cpu = Convert.ToInt32(_cpuCounter.NextValue()).ToString();
+        string mem = Convert.ToInt32((1 - _memCounter.NextValue()/_totalMemory) * 100).ToString();
+        return _template.Replace("[cpu]", cpu).Replace("[mem]", mem);
+    }
+}
 
 
 Action<IConfigContext> doConfig = (context) => {
@@ -57,8 +98,8 @@ Action<IConfigContext> doConfig = (context) => {
         k.Subscribe(modS, Keys.OemQuestion, () => k.ShowKeybindDialog(),                      "open keybind window");
         k.Subscribe(modS, Keys.Enter,       () => System.Diagnostics.Process.Start("wt.exe"), "launch terminal");
         k.Subscribe(modS, Keys.C,           () => w.FocusedWorkspace.CloseFocusedWindow(),    "close focused window");
-        k.Subscribe(modS, Keys.Q,           () => context.Quit(),                             "quit workspacer");
         k.Subscribe(modA, Keys.Q,           () => context.Restart(),                          "restart workspacer");
+        k.Subscribe(modS, Keys.Q,           () => context.Quit(),                             "quit workspacer");
         k.Subscribe(modA, Keys.Escape,      () => context.Enabled = !context.Enabled,         "enable/disable workspacer");
 
         /* Window keybindings */
@@ -171,7 +212,8 @@ Action<IConfigContext> doConfig = (context) => {
             new FocusedMonitorWidget() { FocusedText = "\uf005", },
         },
         RightWidgets = () => new IBarWidget[] {
-            new TextWidget("\uf242"),
+            new CpuMemWidget(1000 * 15, " \uf2db [cpu]%  \uf538 [mem]%"),
+            new TextWidget(" \uf242"),
             new BatteryWidget(),
             new TimeWidget(1000, " \uf133 yyyy-MM-dd  \uf017 HH:mm"),
         },
@@ -234,10 +276,10 @@ Action<IConfigContext> doConfig = (context) => {
         ("3rd",   defaultLayouts()),
         ("4th",   defaultLayouts()),
         ("5th",   defaultLayouts()),
+        ("term",  defaultLayouts()),
         ("notes", new ILayoutEngine[] { new TallLayoutEngine(1, 0.75, 0.025, false) }),
         ("chat",  defaultLayouts()),
         ("gapps", new ILayoutEngine[] { new VertLayoutEngine(), new FullLayoutEngine() }),
-        ("term",  defaultLayouts()),
         ("misc",  new ILayoutEngine[] { new HorzLayoutEngine(), new FullLayoutEngine() }),
     };
     foreach ((string name, ILayoutEngine[] layouts) in workspaces)  {
@@ -277,6 +319,8 @@ Action<IConfigContext> doConfig = (context) => {
     context.WindowRouter.IgnoreProcessName("PortableAppsUpdater");
     // SIGA
     context.WindowRouter.IgnoreProcessName("Siga");
+    // SpeedCrunch
+    context.WindowRouter.IgnoreProcessName("speedcrunch");
 
     context.WindowRouter.RouteProcessName("notes2",          "notes");
     context.WindowRouter.RouteProcessName("WhatsApp",        "chat");
