@@ -1,7 +1,11 @@
 {{ $email := promptString "email" -}}
 # Reference: https://www.chezmoi.io/docs/reference/#configuration-file
+
+pager = "bat"
+
 [data]
 	email = "{{ $email }}"
+
 {{ if eq .chezmoi.os "windows" -}}
 [cd]
 	command = "pwsh.exe"
