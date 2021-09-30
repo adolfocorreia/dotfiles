@@ -5,14 +5,14 @@ Examples:
 - https://gist.github.com/haoxiangliew/fcb925d1e6987d0e1824848cf9659730
 */
 
-#r "C:\apps\workspacer\workspacer.Shared.dll"
-#r "C:\apps\workspacer\plugins\workspacer.ActionMenu\workspacer.ActionMenu.dll"
-#r "C:\apps\workspacer\plugins\workspacer.Bar\workspacer.Bar.dll"
-#r "C:\apps\workspacer\plugins\workspacer.FocusIndicator\workspacer.FocusIndicator.dll"
-#r "C:\apps\workspacer\plugins\workspacer.Gap\workspacer.Gap.dll"
-#r "C:\apps\workspacer\plugins\workspacer.TitleBar\workspacer.TitleBar.dll"
-#r "C:\apps\workspacer\Microsoft.VisualBasic.dll"
-#r "C:\apps\workspacer\System.Diagnostics.PerformanceCounter.dll"
+#r "C:/apps/workspacer/workspacer.Shared.dll"
+#r "C:/apps/workspacer/plugins/workspacer.ActionMenu/workspacer.ActionMenu.dll"
+#r "C:/apps/workspacer/plugins/workspacer.Bar/workspacer.Bar.dll"
+#r "C:/apps/workspacer/plugins/workspacer.FocusIndicator/workspacer.FocusIndicator.dll"
+#r "C:/apps/workspacer/plugins/workspacer.Gap/workspacer.Gap.dll"
+#r "C:/apps/workspacer/plugins/workspacer.TitleBar/workspacer.TitleBar.dll"
+#r "C:/apps/workspacer/Microsoft.VisualBasic.dll"
+#r "C:/apps/workspacer/System.Diagnostics.PerformanceCounter.dll"
 
 
 using System;
@@ -78,6 +78,13 @@ Action<IConfigContext> doConfig = (context) => {
     KeyModifiers modS  = mod | KeyModifiers.Shift;
     KeyModifiers modCS = mod | KeyModifiers.Control | KeyModifiers.Shift;
 
+    string ws_notes  = "notes";
+    string ws_chat   = "chat";
+    string ws_gapps  = "gapps";
+    int ws_notes_num = 10;
+    int ws_chat_num  = 11;
+    int ws_gapps_num = 12;
+
     context.CanMinimizeWindows = true;
 
     /* Keybindings */
@@ -98,13 +105,14 @@ Action<IConfigContext> doConfig = (context) => {
         k.Subscribe(modS, Keys.OemQuestion, () => k.ShowKeybindDialog(),                      "open keybind window");
         k.Subscribe(modS, Keys.Enter,       () => System.Diagnostics.Process.Start("wt.exe"), "launch terminal");
         k.Subscribe(modS, Keys.C,           () => w.FocusedWorkspace.CloseFocusedWindow(),    "close focused window");
+        k.Subscribe(modS, Keys.X,           () => w.FocusedWorkspace.CloseFocusedWindow(),    "close focused window");
         k.Subscribe(modA, Keys.Q,           () => context.Restart(),                          "restart workspacer");
         k.Subscribe(modS, Keys.Q,           () => context.Quit(),                             "quit workspacer");
         k.Subscribe(modA, Keys.Escape,      () => context.Enabled = !context.Enabled,         "enable/disable workspacer");
 
         /* Window keybindings */
         k.Subscribe(modS, Keys.Space,     () => w.FocusedWorkspace.NextLayoutEngine(),                "next layout");
-        k.Subscribe(modA, Keys.N,         () => w.FocusedWorkspace.ResetLayout(),                     "reset layout");
+        k.Subscribe(modA, Keys.B,         () => w.FocusedWorkspace.ResetLayout(),                     "reset layout");
         k.Subscribe(modA, Keys.J,         () => w.FocusedWorkspace.FocusNextWindow(),                 "focus next window");
         k.Subscribe(modA, Keys.K,         () => w.FocusedWorkspace.FocusPreviousWindow(),             "focus previous window");
         k.Subscribe(modA, Keys.Down,      () => w.FocusedWorkspace.FocusNextWindow(),                 "focus next window");
@@ -140,8 +148,11 @@ Action<IConfigContext> doConfig = (context) => {
         k.Subscribe(modA,  Keys.D6,    () => w.SwitchToWorkspace(5),                            "switch to workspace 6");
         k.Subscribe(modA,  Keys.D7,    () => w.SwitchToWorkspace(6),                            "switch to workspace 7");
         k.Subscribe(modA,  Keys.D8,    () => w.SwitchToWorkspace(7),                            "switch to workspace 8");
-        k.Subscribe(modA,  Keys.D9,    () => w.SwitchToWorkspace(8),                            "switch to workpsace 9");
-        k.Subscribe(modA,  Keys.D0,    () => w.SwitchToWorkspace(9),                            "switch to workpsace 10");
+        k.Subscribe(modA,  Keys.D9,    () => w.SwitchToWorkspace(8),                            "switch to workspace 9");
+        k.Subscribe(modA,  Keys.D0,    () => w.SwitchToWorkspace(9),                            "switch to workspace 10");
+        k.Subscribe(modA,  Keys.N,     () => w.SwitchToWorkspace(ws_notes_num),                 "switch to workspace " + ws_notes);
+        k.Subscribe(modA,  Keys.Z,     () => w.SwitchToWorkspace(ws_chat_num),                  "switch to workspace " + ws_chat);
+        k.Subscribe(modA,  Keys.G,     () => w.SwitchToWorkspace(ws_gapps_num),                 "switch to workspace " + ws_gapps);
         k.Subscribe(modC,  Keys.J,     () => w.SwitchToNextWorkspace(),                         "switch to next workspace");
         k.Subscribe(modC,  Keys.K,     () => w.SwitchToPreviousWorkspace(),                     "switch to previous workspace");
         k.Subscribe(modC,  Keys.Down,  () => w.SwitchToNextWorkspace(),                         "switch to next workspace");
@@ -164,6 +175,9 @@ Action<IConfigContext> doConfig = (context) => {
         k.Subscribe(modS,  Keys.D8,    () => w.MoveFocusedWindowToWorkspace(7),                 "move focused window to workspace 8");
         k.Subscribe(modS,  Keys.D9,    () => w.MoveFocusedWindowToWorkspace(8),                 "move focused window to workspace 9");
         k.Subscribe(modS,  Keys.D0,    () => w.MoveFocusedWindowToWorkspace(9),                 "move focused window to workspace 10");
+        k.Subscribe(modS,  Keys.N,     () => w.MoveFocusedWindowToWorkspace(ws_notes_num),      "move focused window to workspace " + ws_notes);
+        k.Subscribe(modS,  Keys.Z,     () => w.MoveFocusedWindowToWorkspace(ws_chat_num),       "move focused window to workspace " + ws_chat);
+        k.Subscribe(modS,  Keys.G,     () => w.MoveFocusedWindowToWorkspace(ws_gapps_num),      "move focused window to workspace " + ws_gapps);
         k.Subscribe(modCS, Keys.J,     () => w.MoveFocusedWindowAndSwitchToNextWorkspace(),     "move focused window to next workspace");
         k.Subscribe(modCS, Keys.K,     () => w.MoveFocusedWindowAndSwitchToPreviousWorkspace(), "move focused window to previous workspace");
         k.Subscribe(modCS, Keys.Down,  () => w.MoveFocusedWindowAndSwitchToNextWorkspace(),     "move focused window to next workspace");
@@ -176,16 +190,19 @@ Action<IConfigContext> doConfig = (context) => {
         k.Subscribe(modCS, Keys.Left,  () => w.MoveFocusedWindowToNextMonitor(),                "move focused window to previous monitor");
         k.Subscribe(modCS, Keys.Right, () => w.MoveFocusedWindowToPreviousMonitor(),            "move focused window to next monitor");
 
-        k.Subscribe(modCS, Keys.D1, () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, 0)), "move all windows to workpace 1");
-        k.Subscribe(modCS, Keys.D2, () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, 1)), "move all windows to workpace 2");
-        k.Subscribe(modCS, Keys.D3, () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, 2)), "move all windows to workpace 3");
-        k.Subscribe(modCS, Keys.D4, () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, 3)), "move all windows to workpace 4");
-        k.Subscribe(modCS, Keys.D5, () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, 4)), "move all windows to workpace 5");
-        k.Subscribe(modCS, Keys.D6, () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, 5)), "move all windows to workpace 6");
-        k.Subscribe(modCS, Keys.D7, () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, 6)), "move all windows to workpace 7");
-        k.Subscribe(modCS, Keys.D8, () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, 7)), "move all windows to workpace 8");
-        k.Subscribe(modCS, Keys.D9, () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, 8)), "move all windows to workpace 9");
-        k.Subscribe(modCS, Keys.D0, () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, 9)), "move all windows to workpace 10");
+        k.Subscribe(modCS, Keys.D1, () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, 0)),            "move all windows to workspace 1");
+        k.Subscribe(modCS, Keys.D2, () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, 1)),            "move all windows to workspace 2");
+        k.Subscribe(modCS, Keys.D3, () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, 2)),            "move all windows to workspace 3");
+        k.Subscribe(modCS, Keys.D4, () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, 3)),            "move all windows to workspace 4");
+        k.Subscribe(modCS, Keys.D5, () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, 4)),            "move all windows to workspace 5");
+        k.Subscribe(modCS, Keys.D6, () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, 5)),            "move all windows to workspace 6");
+        k.Subscribe(modCS, Keys.D7, () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, 6)),            "move all windows to workspace 7");
+        k.Subscribe(modCS, Keys.D8, () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, 7)),            "move all windows to workspace 8");
+        k.Subscribe(modCS, Keys.D9, () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, 8)),            "move all windows to workspace 9");
+        k.Subscribe(modCS, Keys.D0, () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, 9)),            "move all windows to workspace 10");
+        k.Subscribe(modCS, Keys.N,  () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, ws_notes_num)), "move all windows to workspace " + ws_notes);
+        k.Subscribe(modCS, Keys.Z,  () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, ws_chat_num)),  "move all windows to workspace " + ws_chat);
+        k.Subscribe(modCS, Keys.G,  () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, ws_gapps_num)), "move all windows to workspace " + ws_gapps);
 
         /* Debug keybindings */
         k.Subscribe(modA, Keys.O, () => context.Windows.DumpWindowDebugOutput(),            "dump debug info to console for all windows");
@@ -215,7 +232,8 @@ Action<IConfigContext> doConfig = (context) => {
             new CpuMemWidget(1000 * 15, " \uf2db [cpu]%  \uf538 [mem]%"),
             new TextWidget(" \uf242"),
             new BatteryWidget(),
-            new TimeWidget(1000, " \uf133 yyyy-MM-dd  \uf017 HH:mm"),
+            /* new TimeWidget(1000, " \uf133 yyyy-MM-dd  \uf017 HH:mm"), */
+            new TimeWidget(1000, " \uf133 ddd dd.MMM.yyyy  \uf017 HH:mm"),
         },
     });
 
@@ -271,16 +289,19 @@ Action<IConfigContext> doConfig = (context) => {
         /* new FullLayoutEngine(), */
     };
     (string, ILayoutEngine[])[] workspaces = {
-        ("1st",   defaultLayouts()),
-        ("2nd",   defaultLayouts()),
-        ("3rd",   defaultLayouts()),
-        ("4th",   defaultLayouts()),
-        ("5th",   defaultLayouts()),
-        ("term",  defaultLayouts()),
-        ("notes", new ILayoutEngine[] { new TallLayoutEngine(1, 0.75, 0.025, false) }),
-        ("chat",  defaultLayouts()),
-        ("gapps", new ILayoutEngine[] { new VertLayoutEngine(), new FullLayoutEngine() }),
-        ("misc",  new ILayoutEngine[] { new HorzLayoutEngine(), new FullLayoutEngine() }),
+        ("1st",    defaultLayouts()),
+        ("2nd",    defaultLayouts()),
+        ("3rd",    defaultLayouts()),
+        ("4th",    defaultLayouts()),
+        ("5th",    defaultLayouts()),
+        ("6th",    defaultLayouts()),
+        ("7th",    defaultLayouts()),
+        ("8th",    defaultLayouts()),
+        ("9th",    defaultLayouts()),
+        ("10th",   new ILayoutEngine[] { new HorzLayoutEngine(), new FullLayoutEngine() }),
+        (ws_notes, new ILayoutEngine[] { new TallLayoutEngine(1, 0.75, 0.025, false) }),
+        (ws_chat,  defaultLayouts()),
+        (ws_gapps, new ILayoutEngine[] { new VertLayoutEngine(), new FullLayoutEngine() }),
     };
     foreach ((string name, ILayoutEngine[] layouts) in workspaces)  {
         context.WorkspaceContainer.CreateWorkspace(name, layouts);
@@ -300,18 +321,23 @@ Action<IConfigContext> doConfig = (context) => {
     context.WindowRouter.IgnoreWindowClass("#32770");
     // AHK
     context.WindowRouter.IgnoreProcessName("AutoHotkeyU64");
+    // ARC
+    context.WindowRouter.AddFilter((window) =>
+        !(window.ProcessName.Equals("RiskControl") &
+          window.Title.EndsWith("Risk Control Software")));
     // BIG-IP
     context.WindowRouter.IgnoreProcessName("f5fpclientW");
     // Colorpicker
     context.WindowRouter.IgnoreProcessName("Colorpicker");
+    // Explorer (operation status window)
+    context.WindowRouter.IgnoreWindowClass("OperationStatusWindow");
     // Jitsi (sharing window)
     context.WindowRouter.AddFilter((window) =>
         !(window.Class.Equals("Chrome_WidgetWin_1") & (
             window.Title.EndsWith("is sharing a window.") |
             window.Title.EndsWith("is sharing your screen.") |
             window.Title.EndsWith("está compartilhando uma janela.") |
-            window.Title.EndsWith("está compartilhando sua tela.")
-        )));
+            window.Title.EndsWith("está compartilhando sua tela."))));
     // Keypirinha
     context.WindowRouter.IgnoreProcessName("keypirinha-x64");
     // PortableApps
@@ -322,14 +348,15 @@ Action<IConfigContext> doConfig = (context) => {
     // SpeedCrunch
     context.WindowRouter.IgnoreProcessName("speedcrunch");
 
-    context.WindowRouter.RouteProcessName("notes2",          "notes");
-    context.WindowRouter.RouteProcessName("WhatsApp",        "chat");
-    context.WindowRouter.RouteProcessName("WindowsTerminal", "term");
+    context.WindowRouter.RouteProcessName("notes2",   ws_notes);
+    context.WindowRouter.RouteProcessName("WhatsApp", ws_chat);
 
-    context.WindowRouter.RouteTitle("Gmail",                     "gapps");
-    context.WindowRouter.RouteTitle("Google Calendar",           "gapps");
-    context.WindowRouter.RouteTitleMatch(".*gmail.com - Gmail",  "gapps");
-    context.WindowRouter.RouteTitleMatch("Google Calendar - .*", "gapps");
+    context.WindowRouter.RouteTitle("Gmail",                     ws_gapps);
+    context.WindowRouter.RouteTitle("Google Calendar",           ws_gapps);
+    context.WindowRouter.RouteTitleMatch(".*gmail.com - Gmail",  ws_gapps);
+    context.WindowRouter.RouteTitleMatch("Google Calendar - .*", ws_gapps);
+
+    context.WindowRouter.RouteProcessName("Amazon Music", "9th");
 
 };
 return doConfig;
