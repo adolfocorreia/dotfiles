@@ -165,6 +165,15 @@ Plug 'mhinz/vim-startify'
 " Display a vim tip at startup.
 Plug 'michaelb/vim-tips'
 
+" Vinegar-like path navigator. Use - to open, gq to quit and g? for help.
+" Go to parent directory (-), reload (R), open file at cursor (i) or selected
+" (I), show file info (K), preview file at cursor (p), next (C-N), previous
+" (C-P) and go to home (~).
+Plug 'justinmk/vim-dirvish'
+" File manipulation commands for dirvish. Create file (a), directory (A),
+" delete (dd), rename (r), yank (yy), copy (pp) and move (PP).
+Plug 'roginfarrer/vim-dirvish-dovish'
+
 " Status line.
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -275,7 +284,12 @@ set wildignore+=*.pyc,*.pyo,*.pyd
 " autocmd vimrc TextYankPost * silent! lua vim.highlight.on_yank()
 
 
+
 """""" Plugin settings """"""
+
+" Disable netrw.
+let g:loaded_netrw = 1
+let g:loaded_netrwPlugin = 1
 
 " Enable sneak labels when moving.
 let g:sneak#label = 1
