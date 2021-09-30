@@ -154,7 +154,9 @@
         {
             "acrylicOpacity": 0.90,
             "cursorShape": "vintage",
-            "fontFace": "SauceCodePro NF",
+            "fontFace": "Hack NF",
+            //"fontFace": "SauceCodePro NF",
+            //"fontFace": "VictorMono NF",
             "fontSize": 11,
             "useAcrylic": true,
             "acrylicOpacity": 0.5
