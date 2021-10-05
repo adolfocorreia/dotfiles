@@ -98,6 +98,9 @@ Plug 'Raimondi/delimitMate'
 " Reference: https://github.com/junegunn/vim-easy-align
 Plug 'junegunn/vim-easy-align'
 
+" Highlight yanked region.
+Plug 'machakann/vim-highlightedyank'
+
 
 """ Custom motions and text objects """
 
@@ -115,7 +118,7 @@ Plug 'bkad/CamelCaseMotion'
 " Reference: https://github.com/wellle/targets.vim/blob/master/cheatsheet.md
 Plug 'wellle/targets.vim'
 
-" Indentation level object: ii (indentation level, ai (ii and line above),
+" Indentation level object: ii (indentation level), ai (ii and line above),
 " aI (ii with lines above/below).
 Plug 'michaeljsmith/vim-indent-object'
 
@@ -124,7 +127,7 @@ Plug 'michaeljsmith/vim-indent-object'
 Plug 'tommcdo/vim-ninja-feet'
 
 
-""" Language support plugins """
+""" Language support """
 
 " Syntax highlighting for several languages.
 Plug 'sheerun/vim-polyglot'
@@ -133,6 +136,14 @@ Plug 'sheerun/vim-polyglot'
 if g:os !=# 'Windows'
   Plug 'vim-syntastic/syntastic'
 endif
+
+
+""" External process interaction """
+
+" Send code to REPL: open window (y<CR>), send motion in normal mode (yr_)
+" or visual mode (R), send previous region (yp), send line (yrr) and send
+" buffer (yr<CR>).
+Plug 'urbainvaes/vim-ripple'
 
 
 """ Yank management """
@@ -167,8 +178,8 @@ Plug 'michaelb/vim-tips'
 
 " Vinegar-like path navigator. Use - to open, gq to quit and g? for help.
 " Go to parent directory (-), reload (R), open file at cursor (i) or selected
-" (I), show file info (K), preview file at cursor (p), next (C-N), previous
-" (C-P) and go to home (~).
+" (I), show file info (K), preview file at cursor (p), next (C-n), previous
+" (C-p) and go to home (~).
 Plug 'justinmk/vim-dirvish'
 " File manipulation commands for dirvish. Create file (a), directory (A),
 " delete (dd), rename (r), yank (yy), copy (pp) and move (PP).
@@ -280,8 +291,13 @@ set wildignore+=*.doc,*.docx,*.xls,*.xslx,*.ppt,*.pptx
 set wildignore+=*.png,*.jpg,*.gif
 set wildignore+=*.pyc,*.pyo,*.pyd
 
-" Highlight yank region.
-" autocmd vimrc TextYankPost * silent! lua vim.highlight.on_yank()
+" Default shell.
+if g:os ==# 'Windows'
+  set shell=powershell
+endif
+
+" Disable numbering in terminal buffers.
+autocmd vimrc TermOpen * setlocal nonumber norelativenumber
 
 
 
@@ -314,6 +330,17 @@ if exists('g:loaded_syntastic_plugin')
   let g:syntastic_python_checkers = ['pylint']
 endif
 
+" Vim-ripple settings.
+let g:ripple_always_return = 1
+let g:ripple_repls = {
+  \ 'python': {
+    \ 'command': 'ipython',
+    \ 'pre': "\<esc>[200~",
+    \ 'post': "\<esc>[201~",
+    \ 'addcr': 1,
+    \ }
+  \ }
+
 
 
 """""" Key mappings """"""
@@ -325,6 +352,13 @@ endif
 
 " Yank from cursor to end of line (by default Y is synonym to yy).
 nnoremap Y y$
+
+
+" Terminal mappings.
+" Use Esc to return to normal mode.
+tnoremap <Esc> <C-\><C-n>
+" Send Esc in terminal mode (note that <C-[> and <Esc> are equivalent in vi).
+tnoremap <M-[> <Esc>
 
 
 " Clear last search highlighting.
