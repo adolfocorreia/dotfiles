@@ -329,6 +329,10 @@ Action<IConfigContext> doConfig = (context) => {
     context.WindowRouter.IgnoreProcessName("f5fpclientW");
     // Colorpicker
     context.WindowRouter.IgnoreProcessName("Colorpicker");
+    // DBeaver
+    context.WindowRouter.AddFilter((window) =>
+        !(window.ProcessName.Equals("dbeaver") &
+          window.Class.Equals("Static")));
     // Explorer (operation status window)
     context.WindowRouter.IgnoreWindowClass("OperationStatusWindow");
     // Jitsi (sharing window)
