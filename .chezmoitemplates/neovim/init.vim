@@ -44,6 +44,7 @@ Plug 'tpope/vim-repeat'
 
 " Jump to any forward (s__) or backward (S__) location specified by two characters.
 Plug 'justinmk/vim-sneak'
+" TODO: evaluate hop.nvim
 
 " Highlight a unique character in every word when using f/F.
 Plug 'unblevable/quick-scope'
@@ -281,7 +282,8 @@ set scrolloff=5
 set sidescrolloff=5
 
 " Highlight line under cursor. It helps with navigation.
-set cursorline
+autocmd vimrc WinEnter * set cursorline
+autocmd vimrc WinLeave * set nocursorline
 
 " Highlight column 80. It helps identifying long lines.
 set colorcolumn=80
@@ -395,9 +397,8 @@ lua require'lspconfig'.pyright.setup{on_attach=require'completion'.on_attach}
 nnoremap Y y$
 
 
-" Clear last search highlighting.
-" TODO: remap to something else
-nnoremap <silent> <Leader><Esc> :nohlsearch<CR>
+" Clear last search highlighting (Esc is not mapped to anything in normal mode).
+nnoremap <silent> <Esc> :noh<CR><Esc>
 
 
 " Map DelimitMateSwitch.
@@ -450,21 +451,24 @@ nnoremap <M-l> <C-w>l
 " w =:         make windows equal in size
 " w HJKL:      swapping windows?
 " w w:         next window
+" w T:         move buffer to new tab
+" w rR:        rotate windows
+" w <>+-:      increase/decrease window
 
 " b - buffers
 " b b:       fzf :Buffers
 " b np:      next/previous buffer
 " b cd:      close buffer
 " b ws:      write/save buffer
-" b 123...:  go to buffer
-" b x:       open scratch buffer
+" b x:       open scratch buffer (e.g. :enew or /tmp/xxx)
 " b m:       open messages buffer
 
 " t - tabs
-" t np:      tab next/previous
-" t e:       new edit tab
+" t ne:      new edit tab
 " t cd:      tabclose
 " t 123...:  go to tab
+" t o:       tab only
+" t m:       tab move
 
 " f - files
 " f f:  fzf :Files
@@ -479,6 +483,7 @@ nnoremap <M-l> <C-w>l
 " o r:  open registries
 " o s:  open saved sessions?
 " o d:  toggle DelimitMateSwitch?
+" o g:  toggle GoldenRatioResize? (https://github.com/roman/golden-ratio)
 
 " v - vi
 " v v:     open vimrc/init.vim
