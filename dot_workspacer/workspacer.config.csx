@@ -353,6 +353,10 @@ Action<IConfigContext> doConfig = (context) => {
     context.WindowRouter.IgnoreProcessName("Siga");
     // SpeedCrunch
     context.WindowRouter.IgnoreProcessName("speedcrunch");
+    // XMind
+    context.WindowRouter.AddFilter((window) =>
+        !(window.ProcessName.Equals("XMind") &
+          window.Class.Equals("Static")));
 
     context.WindowRouter.RouteProcessName("notes2",   ws_notes);
     context.WindowRouter.RouteProcessName("WhatsApp", ws_chat);
