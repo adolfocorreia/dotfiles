@@ -32,7 +32,11 @@ Set-PSReadLineOption -PredictionSource History
 Set-PSReadLineOption -HistorySearchCursorMovesToEnd
 Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
+Set-PSReadLineKeyHandler -Key Ctrl+p -Function HistorySearchBackward
+Set-PSReadLineKeyHandler -Key Ctrl+n -Function HistorySearchForward
 Set-PSReadLineKeyHandler -Key Ctrl+Spacebar -Function AcceptSuggestion
+
+# Increase color contrast of inline predictions.
 # Escape code references:
 # - https://en.wikipedia.org/wiki/ANSI_escape_code
 # - https://docs.microsoft.com/en-us/windows/console/console-virtual-terminal-sequences
@@ -40,9 +44,9 @@ Set-PSReadLineKeyHandler -Key Ctrl+Spacebar -Function AcceptSuggestion
 Set-PSReadLineOption -Colors @{ "InlinePrediction"="`e[38;5;244m" }
 
 # Search paths
-Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t'
+Set-PsFzfOption -PSReadlineChordProvider Ctrl+t
 # Search command history
-Set-PsFzfOption -PSReadlineChordReverseHistory 'Ctrl+r'
+Set-PsFzfOption -PSReadlineChordReverseHistory Ctrl+r
 
 
 
@@ -83,8 +87,8 @@ Set-Alias -Name e -Value explorer
 Set-Alias -Name vi -Value nvim
 Set-Alias -Name trash -Value recycle-bin
 
-Function ls { & ls.exe --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* @args }
-Function ll { & ls.exe -l --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* @args }
+Function ls { & ls.exe     --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* @args }
+Function ll { & ls.exe -l  --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* @args }
 Function la { & ls.exe -la --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* @args }
 
 Function mkdir { & mkdir.exe $args }
