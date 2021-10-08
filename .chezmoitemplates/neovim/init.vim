@@ -82,8 +82,16 @@ Plug 'tpope/vim-rsi'
 
 """ Editing helps """
 
+" Sublime Text-like multiple cursor editing.
+" To activate, select words with M-d, characters with S-Arrows or create cursors
+" vertically with C-Up/C-Down. Use n/N to get more occurrences and [/] to navigate
+" between selections. Press q to skip current occurrence and get the next one
+" and Q to remove current selection. Start insert mode with i, a or c.
+Plug 'mg979/vim-visual-multi'
+
 " Insert and delete brackets, parenthesis and quotes in pairs.
 Plug 'Raimondi/delimitMate'
+" TODO: evaluate alternatives (e.g. https://github.com/windwp/nvim-autopairs)
 
 " Align text by some character or regex adding spaces to the left and/or right.
 " 1. Type gl in visual mode, or gl followed by motion or text object in normal
@@ -136,6 +144,14 @@ Plug 'sheerun/vim-polyglot'
 if g:os !=# 'Windows'
   Plug 'vim-syntastic/syntastic'
 endif
+" TODO: profile syntastic
+" TODO: evaluate treesitter
+
+" LSP configuration.
+Plug 'neovim/nvim-lspconfig'
+
+" LSP completion.
+Plug 'nvim-lua/completion-nvim'
 
 
 """ External process interaction """
@@ -144,6 +160,7 @@ endif
 " or visual mode (R), send previous region (yp), send line (yrr) and send
 " buffer (yr<CR>).
 Plug 'urbainvaes/vim-ripple'
+" TODO: change mappings to gr_
 
 
 """ Yank management """
@@ -166,6 +183,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'airblade/vim-rooter'
+" TODO: evaluate telescope
 
 
 """ Windows and themes """
@@ -200,8 +218,8 @@ if g:os ==# 'Linux'
   " gruvbox theme.
   Plug 'sainnhe/gruvbox-material'
 elseif g:os ==# 'Windows'
-  " Use base16 colorschemes.
-  Plug 'chriskempson/base16-vim'
+  " Use onedark theme.
+  Plug 'joshdick/onedark.vim'
 endif
 
 
@@ -221,8 +239,9 @@ if g:os ==# 'Linux'
   colorscheme gruvbox-material
   let g:airline_theme = 'gruvbox_material'
 elseif g:os ==# 'Windows'
-  colorscheme base16-tomorrow-night-eighties
-  let g:airline_theme = 'base16_vim'
+  let g:onedark_terminal_italics = 1
+  colorscheme onedark
+  let g:airline_theme = 'onedark'
 endif
 
 let g:airline_powerline_fonts = 1
@@ -234,6 +253,10 @@ let g:airline#extensions#tabline#enabled = 1
 
 " Use ':set option?' to check current option value.
 " Use ':verbose set option?' to check where it was set.
+
+" Buffers become hidden when abandoned.
+set hidden
+" TODO: evaluate how to avoid exiting without saving (e.g. :q!)
 
 " Enable mouse support in all modes.
 set mouse=a
@@ -260,8 +283,8 @@ set sidescrolloff=5
 " Highlight line under cursor. It helps with navigation.
 set cursorline
 
-" Highlight column 100. It helps identifying long lines.
-set colorcolumn=100
+" Highlight column 80. It helps identifying long lines.
+set colorcolumn=80
 
 " Print the line number in front of each line.
 set number
@@ -291,11 +314,6 @@ set wildignore+=*.doc,*.docx,*.xls,*.xslx,*.ppt,*.pptx
 set wildignore+=*.png,*.jpg,*.gif
 set wildignore+=*.pyc,*.pyo,*.pyd
 
-" Default shell.
-if g:os ==# 'Windows'
-  set shell=powershell
-endif
-
 " Disable numbering in terminal buffers.
 autocmd vimrc TermOpen * setlocal nonumber norelativenumber
 
@@ -309,11 +327,26 @@ let g:loaded_netrwPlugin = 1
 
 " Enable sneak labels when moving.
 let g:sneak#label = 1
-" Move to next match using s.
-let g:sneak#s_next = 1
 
-" Only trigger quick-scope when pressing f or F.
-let g:qs_highlight_on_keys = ['f', 'F']
+" Disable quick-scope highlighting for certain buffers and file types.
+let g:qs_buftype_blacklist = ['terminal', 'nofile', 'help']
+let g:qs_filetype_blacklist = ['startify', 'fugitive']
+
+" Add underline to quick-scope highlighted characters.
+" References:
+" - https://github.com/unblevable/quick-scope
+" - https://stackoverflow.com/questions/18774910/how-to-partially-link-highlighting-groups
+exec 'highlight QuickScopePrimary gui=underline cterm=underline' .
+  \' guifg='   . synIDattr(synIDtrans(hlID('Function')), 'fg', 'gui') .
+  \' ctermfg=' . synIDattr(synIDtrans(hlID('Function')), 'fg', 'cterm')
+exec 'highlight QuickScopeSecondary gui=underline cterm=underline' .
+  \' guifg=' .   synIDattr(synIDtrans(hlID('Define')), 'fg', 'gui') .
+  \' ctermfg=' . synIDattr(synIDtrans(hlID('Define')), 'fg', 'cterm')
+
+" Visual Multi plugin key mappings.
+let g:VM_maps = {}
+let g:VM_maps['Find Under']         = '<M-d>'
+let g:VM_maps['Find Subword Under'] = '<M-d>'
 
 " Make delimitMate ignore double quotes (") on vim files.
 autocmd vimrc FileType vim let b:delimitMate_quotes = "' `"
@@ -334,7 +367,7 @@ endif
 let g:ripple_always_return = 1
 let g:ripple_repls = {
   \ 'python': {
-    \ 'command': 'ipython',
+    \ 'command': 'ipython --profile=vi',
     \ 'pre': "\<esc>[200~",
     \ 'post': "\<esc>[201~",
     \ 'addcr': 1,
@@ -343,8 +376,16 @@ let g:ripple_repls = {
 
 
 
+"""""" LSP settings """"""
+
+" Python
+lua require'lspconfig'.pyright.setup{on_attach=require'completion'.on_attach}
+
+
+
 """""" Key mappings """"""
 
+" - Used keys reference: :help index
 " - Unused keys reference: https://vim.fandom.com/wiki/Unused_keys
 " - Prefer non recursive maps (_noremap)
 " - Plugin maps (<Plug>) must be recursive
@@ -354,19 +395,14 @@ let g:ripple_repls = {
 nnoremap Y y$
 
 
-" Terminal mappings.
-" Use Esc to return to normal mode.
-tnoremap <Esc> <C-\><C-n>
-" Send Esc in terminal mode (note that <C-[> and <Esc> are equivalent in vi).
-tnoremap <M-[> <Esc>
-
-
 " Clear last search highlighting.
+" TODO: remap to something else
 nnoremap <silent> <Leader><Esc> :nohlsearch<CR>
 
 
 " Map DelimitMateSwitch.
-nnoremap <Leader>d :DelimitMateSwitch<CR>
+" TODO: remap to something else
+" nnoremap <Leader>d :DelimitMateSwitch<CR>
 
 
 " CamelCaseMotion maps.
@@ -376,6 +412,7 @@ map <silent> <M-e> <Plug>CamelCaseMotion_e
 
 
 " Map fzf search commands.
+" TODO: remap to something else
 nnoremap <Leader>f :Files<CR>
 nnoremap <Leader>b :Buffers<CR>
 nnoremap <Leader>l :Lines<CR>
@@ -384,4 +421,94 @@ nnoremap <Leader>l :Lines<CR>
 " Map vim-easy-align to gl (since ga is already used).
 nmap gl <Plug>(EasyAlign)
 xmap gl <Plug>(EasyAlign)
+
+
+" Window navigation mappings.
+tnoremap <M-h> <C-\><C-n><C-w>h
+tnoremap <M-j> <C-\><C-n><C-w>j
+tnoremap <M-k> <C-\><C-n><C-w>k
+tnoremap <M-l> <C-\><C-n><C-w>l
+inoremap <M-h> <C-\><C-n><C-w>h
+inoremap <M-j> <C-\><C-n><C-w>j
+inoremap <M-k> <C-\><C-n><C-w>k
+inoremap <M-l> <C-\><C-n><C-w>l
+nnoremap <M-h> <C-w>h
+nnoremap <M-j> <C-w>j
+nnoremap <M-k> <C-w>k
+nnoremap <M-l> <C-w>l
+
+
+" Leader key mappings.
+" TODO: add mappings
+" TODO: add bindings to which-keys plugin
+
+" w - windows
+" w hjkl:      window switching
+" w cd:        close/delete window
+" w o:         only window
+" w vs\-VS_|:  window splitting
+" w =:         make windows equal in size
+" w HJKL:      swapping windows?
+" w w:         next window
+
+" b - buffers
+" b b:       fzf :Buffers
+" b np:      next/previous buffer
+" b cd:      close buffer
+" b ws:      write/save buffer
+" b 123...:  go to buffer
+" b x:       open scratch buffer
+" b m:       open messages buffer
+
+" t - tabs
+" t np:      tab next/previous
+" t e:       new edit tab
+" t cd:      tabclose
+" t 123...:  go to tab
+
+" f - files
+" f f:  fzf :Files
+" f g:  fzf :GFiles
+" f h:  fzf :History
+
+" o - open/options
+" o -:  open dirvish
+" o t:  open terminal
+" o q:  open quickfix list
+" o l:  open location list
+" o r:  open registries
+" o s:  open saved sessions?
+" o d:  toggle DelimitMateSwitch?
+
+" v - vi
+" v v:     open vimrc/init.vim
+" v r:     reload vimrc
+" v ucig:  plug update/clean/install/upgrade
+" v h:     startify/home
+" v m:     fzf :Maps
+" v s:     save session?
+
+" s - search
+" s l:   fzf :Lines/:BLines
+" s p:   search project fzf :Rg
+" s sc:  clear search
+
+" l - LSP
+" format buffer
+" lsp info, stop, start etc.
+" go to definition, find references
+" toggle showing errors/warnings
+" TODO: trim lines when saving
+
+" h - help
+" options, keys, commands etc.
+" h t:  tips
+
+" q - quit
+" q q:  quit
+" q s:  save session and quit
+
+" g - git
+" g gs:  :Git (status)
+" g p:   :Git push
 
