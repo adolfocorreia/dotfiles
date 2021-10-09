@@ -148,6 +148,9 @@ endif
 " TODO: profile syntastic
 " TODO: evaluate treesitter
 
+" Code formatting.
+Plug 'sbdchd/neoformat'
+
 " LSP configuration.
 Plug 'neovim/nvim-lspconfig'
 
@@ -214,6 +217,9 @@ Plug 'airblade/vim-gitgutter'
 " Add icons.
 Plug 'ryanoasis/vim-devicons'
 
+" Color highlighter.
+Plug 'norcalli/nvim-colorizer.lua'
+
 " Color theme.
 if g:os ==# 'Linux'
   " gruvbox theme.
@@ -222,6 +228,8 @@ elseif g:os ==# 'Windows'
   " Use onedark theme.
   Plug 'joshdick/onedark.vim'
 endif
+
+" TODO: evaluate 'TaDaa/vimade'
 
 
 " Initialize plugin system.
@@ -248,6 +256,14 @@ endif
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 
+" TODO: improve this
+" " Set colors for non-current windows (NormalNC highlight group).
+" exec 'highlight NormalNC' .
+"   \' guibg='   . synIDattr(synIDtrans(hlID('ColorColumn')), 'bg', 'gui') .
+"   \' ctermbg=' . synIDattr(synIDtrans(hlID('ColorColumn')), 'bg', 'cterm') .
+"   \' guifg='   . synIDattr(synIDtrans(hlID('Normal')),      'fg', 'gui') .
+"   \' ctermfg=' . synIDattr(synIDtrans(hlID('Normal')),      'fg', 'cterm')
+
 
 
 """""" Misc settings """"""
@@ -258,6 +274,7 @@ let g:airline#extensions#tabline#enabled = 1
 " Buffers become hidden when abandoned.
 set hidden
 " TODO: evaluate how to avoid exiting without saving (e.g. :q!)
+set confirm
 
 " Enable mouse support in all modes.
 set mouse=a
@@ -281,9 +298,13 @@ set scrolloff=5
 " Keep 5 columns to the left or to the right of the cursor.
 set sidescrolloff=5
 
-" Highlight line under cursor. It helps with navigation.
+" Highlight line and column under cursor. It helps with navigation.
+set cursorline
 autocmd vimrc WinEnter * set cursorline
 autocmd vimrc WinLeave * set nocursorline
+set cursorcolumn
+autocmd vimrc WinEnter * set cursorcolumn
+autocmd vimrc WinLeave * set nocursorcolumn
 
 " Highlight column 80. It helps identifying long lines.
 set colorcolumn=80
@@ -293,6 +314,8 @@ set number
 
 " Show the line number relative to the line with the cursor in front of each line.
 set relativenumber
+autocmd vimrc WinEnter * set relativenumber
+autocmd vimrc WinLeave * set norelativenumber
 
 " Open new split panes to right and bottom.
 set splitbelow
@@ -376,9 +399,16 @@ let g:ripple_repls = {
     \ }
   \ }
 
+" nvim-colorizer settings.
+lua require'colorizer'.setup()
+
 
 
 """""" LSP settings """"""
+
+" Completion.
+set completeopt=menuone,noinsert,noselect
+set shortmess+=c
 
 " Python
 lua require'lspconfig'.pyright.setup{on_attach=require'completion'.on_attach}
