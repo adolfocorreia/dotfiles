@@ -14,6 +14,19 @@ c = c            # noqa: F821 pylint: disable=E0602,C0103
 # Load existing settings made via :set
 config.load_autoconfig()
 
+
+# Key bindings configuration.
+# Default bindings reference:
+# - https://qutebrowser.org/doc/help/settings.html#bindings.default
+# - qute://help/img/cheatsheet-big.png
+# Show current bindings with :bind
+# Commands reference: qute://help/commands.html
+
+# Bind Shift-Insert to clipboard selection on Linux.
+if platform.system() == "Linux":
+    config.bind("<Shift-Ins>", "insert-text -- {clipboard}",  mode="insert")
+    config.bind("<Shift-Ins>", "set-cmd-text -a {clipboard}", mode="command")
+
 # Normal mode key bindings
 config.bind("<Ctrl+Shift+Tab>", "tab-prev")
 config.bind("<Ctrl+Tab>",       "tab-next")
@@ -39,6 +52,7 @@ config.bind("<Ctrl+k>", "fake-key <Shift+End><Delete>",        mode="insert")
 config.bind("<Ctrl+d>", "fake-key <Delete>",                   mode="insert")
 config.bind("<Alt+d>",  "fake-key <Shift+Ctrl+Right><Delete>", mode="insert")
 config.bind("<Ctrl+w>", "fake-key <Shift+Ctrl+Left><Delete>",  mode="insert")
+
 
 # General configuration
 c.colors.webpage.darkmode.enabled = True
