@@ -7,7 +7,6 @@ README.md
 # Linux-only files
 {{ if ne .chezmoi.os "linux" }}
 .tmux.conf
-.xsessionrc
 
 .config/Code
 .config/alacritty
