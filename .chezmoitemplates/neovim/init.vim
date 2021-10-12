@@ -300,11 +300,8 @@ set sidescrolloff=5
 
 " Highlight line and column under cursor. It helps with navigation.
 set cursorline
-autocmd vimrc WinEnter * set cursorline
-autocmd vimrc WinLeave * set nocursorline
-set cursorcolumn
-autocmd vimrc WinEnter * set cursorcolumn
-autocmd vimrc WinLeave * set nocursorcolumn
+autocmd vimrc WinEnter * setlocal cursorline
+autocmd vimrc WinLeave * setlocal nocursorline
 
 " Highlight column 80. It helps identifying long lines.
 set colorcolumn=80
@@ -314,8 +311,9 @@ set number
 
 " Show the line number relative to the line with the cursor in front of each line.
 set relativenumber
-autocmd vimrc WinEnter * set relativenumber
-autocmd vimrc WinLeave * set norelativenumber
+let rnu_blacklist = ['terminal']
+autocmd vimrc WinEnter * if index(rnu_blacklist, &buftype) < 0 | setlocal relativenumber
+autocmd vimrc WinLeave * if index(rnu_blacklist, &buftype) < 0 | setlocal norelativenumber
 
 " Open new split panes to right and bottom.
 set splitbelow
