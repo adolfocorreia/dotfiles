@@ -1,3 +1,5 @@
+scriptencoding utf-8
+
 """"" General """""
 
 " Define vimrc autocommand group.
@@ -220,16 +222,31 @@ Plug 'ryanoasis/vim-devicons'
 " Color highlighter.
 Plug 'norcalli/nvim-colorizer.lua'
 
-" Color theme.
-if g:os ==# 'Linux'
-  " gruvbox theme.
-  Plug 'sainnhe/gruvbox-material'
-elseif g:os ==# 'Windows'
-  " Use onedark theme.
-  Plug 'joshdick/onedark.vim'
-endif
+" Fade inactive buffers.
+Plug 'TaDaa/vimade'
 
-" TODO: evaluate 'TaDaa/vimade'
+" Color themes.
+" - edge
+Plug 'sainnhe/edge'
+" - everforest
+Plug 'sainnhe/everforest'
+" - gruvbox-material
+Plug 'sainnhe/gruvbox-material'
+" - nord
+Plug 'arcticicestudio/nord-vim'
+" - onedark
+Plug 'joshdick/onedark.vim'
+" - palenight
+Plug 'drewtempelmeyer/palenight.vim'
+" - sonokai
+Plug 'sainnhe/sonokai'
+" - tender
+Plug 'jacoborus/tender.vim'
+
+" Theme integration between vim airline and tmux statusline.
+if executable('tmux')
+  Plug 'edkolev/tmuxline.vim'
+endif
 
 
 " Initialize plugin system.
@@ -241,29 +258,76 @@ call plug#end()
 
 set termguicolors
 
-if g:os ==# 'Linux'
-  let g:gruvbox_material_background = 'hard'
-  let g:gruvbox_material_palette = 'original'
-  let g:gruvbox_material_transparent_background = 0
-  colorscheme gruvbox-material
-  let g:airline_theme = 'gruvbox_material'
-elseif g:os ==# 'Windows'
-  let g:onedark_terminal_italics = 1
-  colorscheme onedark
-  let g:airline_theme = 'onedark'
-endif
+" Set theme properties.
+" - edge
+let g:edge_background = 'hard'
+" - everforest
+let g:everforest_background = 'hard'
+" - gruvbox-material
+let g:gruvbox_material_palette = 'original'
+let g:gruvbox_material_background = 'hard'
 
+let g:onedark_terminal_italics = 1
+" - palenight
+let g:palenight_terminal_italics = 1
+" - sonokai
+let g:sonokai_background = 'hard'
+
+" Set vim-airline properties.
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 
-" TODO: improve this
-" " Set colors for non-current windows (NormalNC highlight group).
-" exec 'highlight NormalNC' .
-"   \' guibg='   . synIDattr(synIDtrans(hlID('ColorColumn')), 'bg', 'gui') .
-"   \' ctermbg=' . synIDattr(synIDtrans(hlID('ColorColumn')), 'bg', 'cterm') .
-"   \' guifg='   . synIDattr(synIDtrans(hlID('Normal')),      'fg', 'gui') .
-"   \' ctermfg=' . synIDattr(synIDtrans(hlID('Normal')),      'fg', 'cterm')
+" Load default color scheme.
+if g:os ==# 'Linux'
+  colorscheme gruvbox-material
+elseif g:os ==# 'Windows'
+  colorscheme palenight
+endif
 
+
+" Also use vimade to fade inactive windows with the same buffer.
+" References:
+" - https://github.com/TaDaa/vimade/issues/17
+" - https://github.com/TaDaa/vimade/issues/50
+autocmd vimrc WinLeave * call OnWinLeave()
+autocmd vimrc WinEnter * call OnWinEnter()
+autocmd vimrc TextChangedI,TextChanged * call UpdateBufferAsync()
+function OnWinEnter()
+  VimadeFadeActive
+  VimadeWinDisable
+endfunction
+function OnWinLeave()
+  VimadeWinEnable
+endfunction
+function UpdateBufferAsync()
+  if exists('g:update_vimade')
+    return
+  endif
+  let g:update_vimade = timer_start(1, 'DoUpdateBuffer')
+endfunction
+function DoUpdateBuffer(w)
+  unlet g:update_vimade
+  call vimade#BufDisable()
+  call vimade#BufEnable()
+endfunction
+
+
+" Use tmuxline to configure tmux's statusline.
+" References:
+" - https://github.com/wfxr/tmux-power
+" - https://github.com/tmux-plugins/tmux-prefix-highlight
+if executable('tmux')
+  let g:tmuxline_preset = {
+    \'a'    : '',
+    \'b'    : ' #(whoami)@#h',
+    \'c'    : ' #S',
+    \'win'  : '#I:#W#F',
+    \'cwin' : '#I:#W#F',
+    \'x'    : '#{?client_prefix,#[reverse]prefix#[noreverse],#{?pane_in_mode,  #[reverse]copy#[noreverse],       }}',
+    \'y'    : ' %R',
+    \'z'    : ' %a %F'
+  \}
+endif
 
 
 """""" Misc settings """"""
@@ -274,6 +338,8 @@ let g:airline#extensions#tabline#enabled = 1
 " Buffers become hidden when abandoned.
 set hidden
 " TODO: evaluate how to avoid exiting without saving (e.g. :q!)
+
+" Raise dialog when quitting changed buffer.
 set confirm
 
 " Enable mouse support in all modes.
@@ -298,20 +364,22 @@ set scrolloff=5
 " Keep 5 columns to the left or to the right of the cursor.
 set sidescrolloff=5
 
-" Highlight line and column under cursor. It helps with navigation.
+" Highlight line under cursor. It helps with navigation.
 set cursorline
 autocmd vimrc WinEnter * setlocal cursorline
 autocmd vimrc WinLeave * setlocal nocursorline
 
 " Highlight column 80. It helps identifying long lines.
 set colorcolumn=80
+autocmd vimrc WinEnter * setlocal colorcolumn+=80
+autocmd vimrc WinLeave * setlocal colorcolumn-=80
 
 " Print the line number in front of each line.
 set number
 
 " Show the line number relative to the line with the cursor in front of each line.
 set relativenumber
-let rnu_blacklist = ['terminal']
+let rnu_blacklist = ['help', 'terminal']
 autocmd vimrc WinEnter * if index(rnu_blacklist, &buftype) < 0 | setlocal relativenumber
 autocmd vimrc WinLeave * if index(rnu_blacklist, &buftype) < 0 | setlocal norelativenumber
 
@@ -423,6 +491,16 @@ lua require'lspconfig'.pyright.setup{on_attach=require'completion'.on_attach}
 
 " Yank from cursor to end of line (by default Y is synonym to yy).
 nnoremap Y y$
+
+
+" Use @p to paste with a space before the inserted text.
+let @p="a \<Esc>p"
+
+
+" Disable C-q (tmux prefix).
+noremap  <C-q> <Nop>
+lnoremap <C-q> <Nop>
+tnoremap <C-q> <Nop>
 
 
 " Clear last search highlighting (Esc is not mapped to anything in normal mode).
@@ -538,7 +616,7 @@ nnoremap <M-l> <C-w>l
 " h t:  tips
 
 " q - quit
-" q q:  quit
+" q q:  quit - :confirm qall
 " q s:  save session and quit
 
 " g - git
