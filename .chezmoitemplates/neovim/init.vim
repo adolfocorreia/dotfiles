@@ -156,17 +156,23 @@ Plug 'sbdchd/neoformat'
 " LSP configuration.
 Plug 'neovim/nvim-lspconfig'
 
-" LSP completion.
-Plug 'nvim-lua/completion-nvim'
+" LSP completion (with completion sources).
+" List of completion sources: https://github.com/topics/nvim-cmp
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-nvim-lua'
+Plug 'L3MON4D3/LuaSnip'
+Plug 'saadparwaiz1/cmp_luasnip'
 
 
 """ External process interaction """
 
-" Send code to REPL: open window (y<CR>), send motion in normal mode (yr_)
-" or visual mode (R), send previous region (yp), send line (yrr) and send
-" buffer (yr<CR>).
+" Send code to REPL: open window (g<CR>), send motion in normal mode (gr_)
+" or visual mode (gr), send previous region (grp), send line (grr) and send
+" buffer (gr<CR>).
 Plug 'urbainvaes/vim-ripple'
-" TODO: change mappings to gr_
 
 
 """ Yank management """
@@ -230,6 +236,8 @@ Plug 'TaDaa/vimade'
 Plug 'sainnhe/edge'
 " - everforest
 Plug 'sainnhe/everforest'
+" - gruvbox
+Plug 'gruvbox-community/gruvbox'
 " - gruvbox-material
 Plug 'sainnhe/gruvbox-material'
 " - nord
@@ -243,7 +251,7 @@ Plug 'sainnhe/sonokai'
 " - tender
 Plug 'jacoborus/tender.vim'
 
-" Theme integration between vim airline and tmux statusline.
+" Theme integration between vim airline and tmux status line.
 if executable('tmux')
   Plug 'edkolev/tmuxline.vim'
 endif
@@ -263,10 +271,12 @@ set termguicolors
 let g:edge_background = 'hard'
 " - everforest
 let g:everforest_background = 'hard'
+" - gruvbox
+let g:gruvbox_italic = 1
+let g:gruvbox_contrast_dark = 'hard'
 " - gruvbox-material
-let g:gruvbox_material_palette = 'original'
 let g:gruvbox_material_background = 'hard'
-
+" - onedark
 let g:onedark_terminal_italics = 1
 " - palenight
 let g:palenight_terminal_italics = 1
@@ -279,40 +289,13 @@ let g:airline#extensions#tabline#enabled = 1
 
 " Load default color scheme.
 if g:os ==# 'Linux'
-  colorscheme gruvbox-material
+  colorscheme gruvbox
 elseif g:os ==# 'Windows'
   colorscheme palenight
 endif
 
 
-" Also use vimade to fade inactive windows with the same buffer.
-" References:
-" - https://github.com/TaDaa/vimade/issues/17
-" - https://github.com/TaDaa/vimade/issues/50
-autocmd vimrc WinLeave * call OnWinLeave()
-autocmd vimrc WinEnter * call OnWinEnter()
-autocmd vimrc TextChangedI,TextChanged * call UpdateBufferAsync()
-function OnWinEnter()
-  VimadeFadeActive
-  VimadeWinDisable
-endfunction
-function OnWinLeave()
-  VimadeWinEnable
-endfunction
-function UpdateBufferAsync()
-  if exists('g:update_vimade')
-    return
-  endif
-  let g:update_vimade = timer_start(1, 'DoUpdateBuffer')
-endfunction
-function DoUpdateBuffer(w)
-  unlet g:update_vimade
-  call vimade#BufDisable()
-  call vimade#BufEnable()
-endfunction
-
-
-" Use tmuxline to configure tmux's statusline.
+" Use tmuxline to configure tmux's status line.
 " References:
 " - https://github.com/wfxr/tmux-power
 " - https://github.com/tmux-plugins/tmux-prefix-highlight
@@ -347,7 +330,7 @@ set mouse=a
 
 " Use * and/or + clipboard registers for yank and put operations.
 " Primary selection: "* register / unnamed
-" Sytem clipboard: "+ register / unnamedplus
+" Sytem clipboard:   "+ register / unnamedplus
 set clipboard=unnamedplus
 
 " Do not redraw screen while executing macros.
@@ -366,8 +349,9 @@ set sidescrolloff=5
 
 " Highlight line under cursor. It helps with navigation.
 set cursorline
-autocmd vimrc WinEnter * setlocal cursorline
-autocmd vimrc WinLeave * setlocal nocursorline
+let cul_blacklist = ['terminal']
+autocmd vimrc WinEnter * if index(cul_blacklist, &buftype) < 0 | setlocal cursorline
+autocmd vimrc WinLeave * if index(cul_blacklist, &buftype) < 0 | setlocal nocursorline
 
 " Highlight column 80. It helps identifying long lines.
 set colorcolumn=80
@@ -405,6 +389,10 @@ set wildignore+=*.doc,*.docx,*.xls,*.xslx,*.ppt,*.pptx
 set wildignore+=*.png,*.jpg,*.gif
 set wildignore+=*.pyc,*.pyo,*.pyd
 
+" Completion.
+" set completeopt=menu,menuone,noselect
+" set shortmess+=c
+
 " Disable numbering in terminal buffers.
 autocmd vimrc TermOpen * setlocal nonumber norelativenumber
 
@@ -427,10 +415,10 @@ let g:qs_filetype_blacklist = ['startify', 'fugitive']
 " References:
 " - https://github.com/unblevable/quick-scope
 " - https://stackoverflow.com/questions/18774910/how-to-partially-link-highlighting-groups
-exec 'highlight QuickScopePrimary gui=underline cterm=underline' .
+execute 'highlight QuickScopePrimary gui=underline cterm=underline' .
   \' guifg='   . synIDattr(synIDtrans(hlID('Function')), 'fg', 'gui') .
   \' ctermfg=' . synIDattr(synIDtrans(hlID('Function')), 'fg', 'cterm')
-exec 'highlight QuickScopeSecondary gui=underline cterm=underline' .
+execute 'highlight QuickScopeSecondary gui=underline cterm=underline' .
   \' guifg=' .   synIDattr(synIDtrans(hlID('Define')), 'fg', 'gui') .
   \' ctermfg=' . synIDattr(synIDtrans(hlID('Define')), 'fg', 'cterm')
 
@@ -455,6 +443,7 @@ if exists('g:loaded_syntastic_plugin')
 endif
 
 " Vim-ripple settings.
+let g:ripple_enable_mappings = 0
 let g:ripple_always_return = 1
 let g:ripple_repls = {
   \ 'python': {
@@ -465,19 +454,8 @@ let g:ripple_repls = {
     \ }
   \ }
 
-" nvim-colorizer settings.
-lua require'colorizer'.setup()
-
-
-
-"""""" LSP settings """"""
-
-" Completion.
-set completeopt=menuone,noinsert,noselect
-set shortmess+=c
-
-" Python
-lua require'lspconfig'.pyright.setup{on_attach=require'completion'.on_attach}
+" Load lua plugins' settings.
+execute 'luafile ' . stdpath('config') . '/config.lua'
 
 
 
@@ -528,6 +506,15 @@ nnoremap <Leader>l :Lines<CR>
 " Map vim-easy-align to gl (since ga is already used).
 nmap gl <Plug>(EasyAlign)
 xmap gl <Plug>(EasyAlign)
+
+
+" Map vim-ripple commands.
+nmap g<CR>  <Plug>(ripple_open_repl)
+nmap gr     <Plug>(ripple_send_motion)
+nmap gr<CR> <Plug>(ripple_send_buffer)
+nmap grr    <Plug>(ripple_send_line)
+nmap grp    <Plug>(ripple_send_previous)
+xmap gr     <Plug>(ripple_send_selection)
 
 
 " Window navigation mappings.
