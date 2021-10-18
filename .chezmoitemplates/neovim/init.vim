@@ -1,5 +1,6 @@
 scriptencoding utf-8
 
+
 """"" General """""
 
 " Define vimrc autocommand group.
@@ -133,22 +134,18 @@ Plug 'wellle/targets.vim'
 " aI (ii with lines above/below).
 Plug 'michaeljsmith/vim-indent-object'
 
-" Provide operator motions to the beginning ([) or end (]) of text objects
-" (e.g. d]ip deletes from the cursor to the end of the paragraph).
-Plug 'tommcdo/vim-ninja-feet'
-
 
 """ Language support """
 
 " Syntax highlighting for several languages.
 Plug 'sheerun/vim-polyglot'
+" TODO: evaluate treesitter
 
 " Syntax checking.
 if g:os !=# 'Windows'
   Plug 'vim-syntastic/syntastic'
 endif
 " TODO: profile syntastic
-" TODO: evaluate treesitter
 
 " Code formatting.
 Plug 'sbdchd/neoformat'
@@ -156,23 +153,28 @@ Plug 'sbdchd/neoformat'
 " LSP configuration.
 Plug 'neovim/nvim-lspconfig'
 
-" LSP completion (with completion sources).
-" List of completion sources: https://github.com/topics/nvim-cmp
-Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-path'
-Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'hrsh7th/cmp-nvim-lua'
-Plug 'L3MON4D3/LuaSnip'
-Plug 'saadparwaiz1/cmp_luasnip'
+" LSP completion.
+Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
 
 
-""" External process interaction """
+""" Terminal, shell and file management support """
 
 " Send code to REPL: open window (g<CR>), send motion in normal mode (gr_)
 " or visual mode (gr), send previous region (grp), send line (grr) and send
 " buffer (gr<CR>).
 Plug 'urbainvaes/vim-ripple'
+
+" Shell commands :Delete, :Move, :Rename, :Mkdir, :Chmod, :Wall (save all).
+Plug 'tpope/vim-eunuch'
+
+" Vinegar-like path navigator. Use - to open, gq to quit and g? for help.
+" Go to parent directory (-), reload (R), open file at cursor (i) or selected
+" (I), show file info (K), preview file at cursor (p), next (C-n), previous
+" (C-p) and go to home (~).
+Plug 'justinmk/vim-dirvish'
+" File manipulation commands for dirvish. Create file (a), directory (A),
+" delete (dd), rename (r), yank (yy), copy (pp) and move (PP).
+Plug 'roginfarrer/vim-dirvish-dovish'
 
 
 """ Yank management """
@@ -181,13 +183,16 @@ Plug 'urbainvaes/vim-ripple'
 Plug 'junegunn/vim-peekaboo'
 
 
-""" Commands """
-
-" Shell commands :Delete, :Move, :Rename, :Mkdir, :Chmod, :Wall (save all).
-Plug 'tpope/vim-eunuch'
+""" Git integration """
 
 " Git support (:Git).
 Plug 'tpope/vim-fugitive'
+
+" Show a git diff in the sign column.
+Plug 'airblade/vim-gitgutter'
+
+
+""" Search commands """
 
 " Fuzzy find :Files, :GFiles (git files), :Buffers, :Colors, :Lines, :Marks,
 " :Windows, :History (old files), :History: (commands), :History/ (search),
@@ -202,25 +207,14 @@ Plug 'airblade/vim-rooter'
 
 " Show start screen.
 Plug 'mhinz/vim-startify'
+" TODO: evaluate nvim alternative
 
 " Display a vim tip at startup.
 Plug 'michaelb/vim-tips'
 
-" Vinegar-like path navigator. Use - to open, gq to quit and g? for help.
-" Go to parent directory (-), reload (R), open file at cursor (i) or selected
-" (I), show file info (K), preview file at cursor (p), next (C-n), previous
-" (C-p) and go to home (~).
-Plug 'justinmk/vim-dirvish'
-" File manipulation commands for dirvish. Create file (a), directory (A),
-" delete (dd), rename (r), yank (yy), copy (pp) and move (PP).
-Plug 'roginfarrer/vim-dirvish-dovish'
-
 " Status line.
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-
-" Show a git diff in the sign column.
-Plug 'airblade/vim-gitgutter'
 
 " Add icons.
 Plug 'ryanoasis/vim-devicons'
@@ -232,6 +226,8 @@ Plug 'norcalli/nvim-colorizer.lua'
 Plug 'TaDaa/vimade'
 
 " Color themes.
+" - base16
+Plug 'chriskempson/base16-vim'
 " - edge
 Plug 'sainnhe/edge'
 " - everforest
@@ -264,6 +260,7 @@ call plug#end()
 
 """""" Theme settings """"""
 
+" Enable 24-bit RGB colors in terminal mode.
 set termguicolors
 
 " Set theme properties.
@@ -289,7 +286,7 @@ let g:airline#extensions#tabline#enabled = 1
 
 " Load default color scheme.
 if g:os ==# 'Linux'
-  colorscheme gruvbox
+  colorscheme sonokai
 elseif g:os ==# 'Windows'
   colorscheme palenight
 endif
@@ -320,7 +317,7 @@ endif
 
 " Buffers become hidden when abandoned.
 set hidden
-" TODO: evaluate how to avoid exiting without saving (e.g. :q!)
+" TODO: evaluate how to avoid exiting without confirmation when many buffers are open (e.g. :q!)
 
 " Raise dialog when quitting changed buffer.
 set confirm
@@ -355,8 +352,9 @@ autocmd vimrc WinLeave * if index(cul_blacklist, &buftype) < 0 | setlocal nocurs
 
 " Highlight column 80. It helps identifying long lines.
 set colorcolumn=80
-autocmd vimrc WinEnter * setlocal colorcolumn+=80
-autocmd vimrc WinLeave * setlocal colorcolumn-=80
+let cc_blacklist = ['nofile']
+autocmd vimrc WinEnter * if index(cc_blacklist, &buftype) < 0 | setlocal colorcolumn+=80
+autocmd vimrc WinLeave * if index(cc_blacklist, &buftype) < 0 | setlocal colorcolumn-=80
 
 " Print the line number in front of each line.
 set number
@@ -389,12 +387,8 @@ set wildignore+=*.doc,*.docx,*.xls,*.xslx,*.ppt,*.pptx
 set wildignore+=*.png,*.jpg,*.gif
 set wildignore+=*.pyc,*.pyo,*.pyd
 
-" Completion.
-" set completeopt=menu,menuone,noselect
-" set shortmess+=c
-
-" Disable numbering in terminal buffers.
-autocmd vimrc TermOpen * setlocal nonumber norelativenumber
+" Disable numbering and cursor highlighting in terminal buffers.
+autocmd vimrc TermOpen * setlocal nonumber norelativenumber nocursorline
 
 
 
@@ -439,7 +433,7 @@ if exists('g:loaded_syntastic_plugin')
   let g:syntastic_shell = '/bin/sh'
   " vimt reference: https://github.com/Vimjas/vint/wiki/Vint-linting-policy-summary
   let g:syntastic_vim_checkers = ['vint']
-  let g:syntastic_python_checkers = ['pylint']
+  " let g:syntastic_python_checkers = ['pylint']
 endif
 
 " Vim-ripple settings.
@@ -501,6 +495,9 @@ map <silent> <M-e> <Plug>CamelCaseMotion_e
 nnoremap <Leader>f :Files<CR>
 nnoremap <Leader>b :Buffers<CR>
 nnoremap <Leader>l :Lines<CR>
+nnoremap <Leader>c :Colors<CR>
+nnoremap <Leader>/ :History/<CR>
+nnoremap <Leader>: :History:<CR>
 
 
 " Map vim-easy-align to gl (since ga is already used).
@@ -537,6 +534,7 @@ nnoremap <M-l> <C-w>l
 " TODO: add bindings to which-keys plugin
 
 " w - windows
+" Reference: :h CTRL-W
 " w hjkl:      window switching
 " w cd:        close/delete window
 " w o:         only window
