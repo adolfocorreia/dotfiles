@@ -18,9 +18,18 @@ font:
   # Normal (roman) font face
   normal:
     # Font family
-    family: Hack Nerd Font Mono
+    # family: FantasqueSansMono Nerd Font Mono
+    #* family: Hack Nerd Font Mono
+    # family: InconsolataGo Nerd Font Mono
+    # family: Lekton Nerd Font Mono
+    # family: Monofur Nerd Font Mono
+    family: mononoki Nerd Font Mono
     # family: SauceCodePro Nerd Font Mono
+    # family: ShureTechMono Nerd Font Mono
+    # family: TerminessTTF Nerd Font Mono
+    #* family: UbuntuMono Nerd Font Mono
     # family: VictorMono Nerd Font Mono
+    # family: Iosevka
 
 
 # Background opacity
