@@ -10,8 +10,9 @@ augroup vimrc
   autocmd!
 augroup END
 
-" Select Leader key.
-let g:mapleader = "\<Space>"
+" Select Leader keys.
+let g:mapleader      = "\<Space>"
+let g:maplocalleader = '\\'
 
 " Set g:os variable with current OS.
 if !exists('g:os')
@@ -177,12 +178,6 @@ Plug 'justinmk/vim-dirvish'
 Plug 'roginfarrer/vim-dirvish-dovish'
 
 
-""" Yank management """
-
-" Show registers' contents when using ", @ or <C-r>.
-Plug 'junegunn/vim-peekaboo'
-
-
 """ Git integration """
 
 " Git support (:Git).
@@ -211,6 +206,9 @@ Plug 'mhinz/vim-startify'
 
 " Display a vim tip at startup.
 Plug 'michaelb/vim-tips'
+
+" Display popup with key bindings.
+Plug 'folke/which-key.nvim'
 
 " Status line.
 Plug 'vim-airline/vim-airline'
@@ -283,6 +281,7 @@ let g:sonokai_background = 'hard'
 " Set vim-airline properties.
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#tab_nr_type = 1
 
 " Load default color scheme.
 if g:os ==# 'Linux'
@@ -492,8 +491,8 @@ map <silent> <M-e> <Plug>CamelCaseMotion_e
 
 " Map fzf search commands.
 " TODO: remap to something else
-nnoremap <Leader>f :Files<CR>
-nnoremap <Leader>b :Buffers<CR>
+" nnoremap <Leader>f :Files<CR>
+" nnoremap <Leader>b :Buffers<CR>
 nnoremap <Leader>l :Lines<CR>
 nnoremap <Leader>c :Colors<CR>
 nnoremap <Leader>/ :History/<CR>
@@ -531,58 +530,18 @@ nnoremap <M-l> <C-w>l
 
 " Leader key mappings.
 " TODO: add mappings
-" TODO: add bindings to which-keys plugin
-
-" w - windows
-" Reference: :h CTRL-W
-" w hjkl:      window switching
-" w cd:        close/delete window
-" w o:         only window
-" w vs\-VS_|:  window splitting
-" w =:         make windows equal in size
-" w HJKL:      swapping windows?
-" w w:         next window
-" w T:         move buffer to new tab
-" w rR:        rotate windows
-" w <>+-:      increase/decrease window
-
-" b - buffers
-" b b:       fzf :Buffers
-" b np:      next/previous buffer
-" b cd:      close buffer
-" b ws:      write/save buffer
-" b x:       open scratch buffer (e.g. :enew or /tmp/xxx)
-" b m:       open messages buffer
-
-" t - tabs
-" t ne:      new edit tab
-" t cd:      tabclose
-" t 123...:  go to tab
-" t o:       tab only
-" t m:       tab move
-
-" f - files
-" f f:  fzf :Files
-" f g:  fzf :GFiles
-" f h:  fzf :History
 
 " o - open/options
 " o -:  open dirvish
 " o t:  open terminal
 " o q:  open quickfix list
 " o l:  open location list
-" o r:  open registries
-" o s:  open saved sessions?
+" o s:  open saved sessions? - Startify
 " o d:  toggle DelimitMateSwitch?
 " o g:  toggle GoldenRatioResize? (https://github.com/roman/golden-ratio)
 
 " v - vi
-" v v:     open vimrc/init.vim
-" v r:     reload vimrc
-" v ucig:  plug update/clean/install/upgrade
-" v h:     startify/home
-" v m:     fzf :Maps
-" v s:     save session?
+" v s:     save session? - Startify
 
 " s - search
 " s l:   fzf :Lines/:BLines
@@ -605,6 +564,5 @@ nnoremap <M-l> <C-w>l
 " q s:  save session and quit
 
 " g - git
-" g gs:  :Git (status)
 " g p:   :Git push
 
