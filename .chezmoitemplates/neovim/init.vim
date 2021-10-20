@@ -111,9 +111,6 @@ Plug 'Raimondi/delimitMate'
 " Reference: https://github.com/junegunn/vim-easy-align
 Plug 'junegunn/vim-easy-align'
 
-" Highlight yanked region.
-Plug 'machakann/vim-highlightedyank'
-
 
 """ Custom motions and text objects """
 
@@ -160,10 +157,9 @@ Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
 
 """ Terminal, shell and file management support """
 
-" Send code to REPL: open window (g<CR>), send motion in normal mode (gr_)
-" or visual mode (gr), send previous region (grp), send line (grr) and send
-" buffer (gr<CR>).
-Plug 'urbainvaes/vim-ripple'
+" Send code to REPL: send motion in normal mode (gr_) or visual mode (gr),
+" send line (grr) and send file (grR).
+Plug 'kassio/neoterm'
 
 " Shell commands :Delete, :Move, :Rename, :Mkdir, :Chmod, :Wall (save all).
 Plug 'tpope/vim-eunuch'
@@ -435,17 +431,14 @@ if exists('g:loaded_syntastic_plugin')
   " let g:syntastic_python_checkers = ['pylint']
 endif
 
-" Vim-ripple settings.
-let g:ripple_enable_mappings = 0
-let g:ripple_always_return = 1
-let g:ripple_repls = {
-  \ 'python': {
-    \ 'command': 'ipython --profile=vi',
-    \ 'pre': "\<esc>[200~",
-    \ 'post': "\<esc>[201~",
-    \ 'addcr': 1,
-    \ }
-  \ }
+" neoterm settings.
+let g:neoterm_default_mod = 'vertical'
+let g:neoterm_direct_open_repl = 1
+let g:neoterm_repl_python = ['ipython --profile=vi']
+let g:neoterm_repl_enable_ipython_paste_magic = 1
+if g:os ==# 'Linux'
+  let g:neoterm_shell = 'bash'
+endif
 
 " Load lua plugins' settings.
 execute 'luafile ' . stdpath('config') . '/config.lua'
@@ -491,8 +484,6 @@ map <silent> <M-e> <Plug>CamelCaseMotion_e
 
 " Map fzf search commands.
 " TODO: remap to something else
-" nnoremap <Leader>f :Files<CR>
-" nnoremap <Leader>b :Buffers<CR>
 nnoremap <Leader>l :Lines<CR>
 nnoremap <Leader>c :Colors<CR>
 nnoremap <Leader>/ :History/<CR>
@@ -504,13 +495,11 @@ nmap gl <Plug>(EasyAlign)
 xmap gl <Plug>(EasyAlign)
 
 
-" Map vim-ripple commands.
-nmap g<CR>  <Plug>(ripple_open_repl)
-nmap gr     <Plug>(ripple_send_motion)
-nmap gr<CR> <Plug>(ripple_send_buffer)
-nmap grr    <Plug>(ripple_send_line)
-nmap grp    <Plug>(ripple_send_previous)
-xmap gr     <Plug>(ripple_send_selection)
+" Map neoterm commands.
+xmap gr <Plug>(neoterm-repl-send)
+nmap gr <Plug>(neoterm-repl-send)
+nmap grr <Plug>(neoterm-repl-send-line)
+nmap grR :TREPLSendFile
 
 
 " Window navigation mappings.
