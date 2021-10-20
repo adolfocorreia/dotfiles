@@ -16,7 +16,9 @@ wk.register({
     L        = {'<C-w>L',  'Move far right'},
     J        = {'<C-w>J',  'Move to bottom'},
     K        = {'<C-w>K',  'Move to top'},
-    c        = {'<C-w>c',  'Close'},
+    c        = {'<C-w>c',  'Close window'},
+    d        = {'<C-w>c',  'Delete window'},
+    q        = {'<C-w>q',  'Quit window'},
     n        = {'<C-w>n',  'New window'},
     o        = {'<C-w>o',  'Only window'},
     s        = {'<C-w>s',  'Split horizontally'},
@@ -26,7 +28,7 @@ wk.register({
     r        = {'<C-w>r',  'Rotate downwards'},
     R        = {'<C-w>R',  'Rotate upwards'},
     T        = {'<C-w>T',  'Move to new tab'},
-    ['=']    = {'<C-w>=',  'Make windows same size'},
+    ['=']    = {'<C-w>=',  'Make same size'},
     ['+']    = {'<C-w>+',  'Increase height'},
     ['-']    = {'<C-w>-',  'Decrease height'},
     ['>']    = {'<C-w>2>', 'Increase width'},
@@ -44,18 +46,20 @@ wk.register({
     a    = {'<Cmd>wall<CR>',      'Write all buffers'},
   },
 
-  t = {
-    name  = 'tab',
-    e     = {'<Cmd>tabedit<CR>',     'Edit new tab'},
-    c     = {'<Cmd>tabclose<CR>',    'Close tab'},
-    o     = {'<Cmd>tabonly<CR>',     'Only tab'},
-    n     = {'<Cmd>tabnext<CR>',     'Next tab'},
-    p     = {'<Cmd>tabprevious<CR>', 'Previous tab'},
-    ['1'] = {'1gt',                  'Go to tab 1'},
-    ['2'] = {'2gt',                  'Go to tab 2'},
-    ['3'] = {'3gt',                  'Go to tab 3'},
-    ['4'] = {'4gt',                  'Go to tab 4'},
-    ['5'] = {'5gt',                  'Go to tab 5'},
+  ['<Tab>'] = {
+    name      = 'tab',
+    ['<Tab>'] = {'<Cmd>tabedit<CR>',     'Edit new tab'},
+    e         = {'<Cmd>tabedit<CR>',     'Edit new tab'},
+    c         = {'<Cmd>tabclose<CR>',    'Close tab'},
+    d         = {'<Cmd>tabclose<CR>',    'Delete tab'},
+    o         = {'<Cmd>tabonly<CR>',     'Only tab'},
+    n         = {'<Cmd>tabnext<CR>',     'Next tab'},
+    p         = {'<Cmd>tabprevious<CR>', 'Previous tab'},
+    ['1']     = {'1gt',                  'Go to tab 1'},
+    ['2']     = {'2gt',                  'Go to tab 2'},
+    ['3']     = {'3gt',                  'Go to tab 3'},
+    ['4']     = {'4gt',                  'Go to tab 4'},
+    ['5']     = {'5gt',                  'Go to tab 5'},
   },
 
   f = {
@@ -99,3 +103,4 @@ require('colorizer').setup()
 require('lspconfig').pyright.setup({
   require('coq').lsp_ensure_capabilities()
 })
+
