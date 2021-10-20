@@ -385,6 +385,9 @@ set wildignore+=*.pyc,*.pyo,*.pyd
 " Disable numbering and cursor highlighting in terminal buffers.
 autocmd vimrc TermOpen * setlocal nonumber norelativenumber nocursorline
 
+" Highlight yanked region.
+autocmd vimrc TextYankPost * silent! lua vim.highlight.on_yank{timeout=500}
+
 
 
 """""" Plugin settings """"""
@@ -436,6 +439,7 @@ let g:neoterm_default_mod = 'vertical'
 let g:neoterm_direct_open_repl = 1
 let g:neoterm_repl_python = ['ipython --profile=vi']
 let g:neoterm_repl_enable_ipython_paste_magic = 1
+" let g:neoterm_bracketed_paste = 1
 if g:os ==# 'Linux'
   let g:neoterm_shell = 'bash'
 endif
@@ -485,7 +489,7 @@ map <silent> <M-e> <Plug>CamelCaseMotion_e
 " Map fzf search commands.
 " TODO: remap to something else
 nnoremap <Leader>l :Lines<CR>
-nnoremap <Leader>c :Colors<CR>
+" nnoremap <Leader>c :Colors<CR>
 nnoremap <Leader>/ :History/<CR>
 nnoremap <Leader>: :History:<CR>
 
