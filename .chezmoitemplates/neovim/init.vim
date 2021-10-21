@@ -47,8 +47,8 @@ call plug#begin(stdpath('data') . '/plugged')
 Plug 'tpope/vim-repeat'
 
 " Jump to any forward (s__) or backward (S__) location specified by two characters.
-Plug 'justinmk/vim-sneak'
-" TODO: evaluate hop.nvim
+" In case of multiple targets, a third character (label) can be used.
+Plug 'ggandor/lightspeed.nvim'
 
 " Highlight a unique character in every word when using f/F.
 Plug 'unblevable/quick-scope'
@@ -469,6 +469,14 @@ let @p="a \<Esc>p"
 noremap  <C-q> <Nop>
 lnoremap <C-q> <Nop>
 tnoremap <C-q> <Nop>
+
+
+" Workaround to unmap lightspeed's f/F/t/T mappings.
+" Reference: https://github.com/ggandor/lightspeed.nvim/issues/11
+noremap f f
+noremap F F
+noremap t t
+noremap T T
 
 
 " Clear last search highlighting (Esc is not mapped to anything in normal mode).
