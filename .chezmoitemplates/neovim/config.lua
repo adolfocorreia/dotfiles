@@ -79,6 +79,12 @@ wk.register({
     ['h'] = {'<Cmd>Startify<CR>',                             'Open home buffer'},
   },
 
+  o = {
+    name = 'open',
+    ['q'] = {'<Cmd>copen<CR>', 'Quickfix list'},
+    ['l'] = {'<Cmd>lopen<CR>', 'Location list'},
+  },
+
   c = {
     name  = 'code',
     ['f'] = {'<Cmd>Neoformat<CR>', 'Format buffer'},

@@ -461,6 +461,11 @@ execute 'luafile ' . stdpath('config') . '/config.lua'
 nnoremap Y y$
 
 
+" Auto center on matched string.
+noremap n nzz
+noremap N Nzz
+
+
 " Use @p to paste with a space before the inserted text.
 let @p="a \<Esc>p"
 
