@@ -4,7 +4,7 @@
 
 {{ if eq .chezmoi.os "linux" -}}
 [credential]
-	helper = /usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret
+	helper = /usr/lib/git-core/git-credential-libsecret
 {{ else if eq .chezmoi.os "windows" -}}
 [credential]
 	helper = manager-core
