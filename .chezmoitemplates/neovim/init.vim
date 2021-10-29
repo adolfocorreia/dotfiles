@@ -281,7 +281,7 @@ let g:airline#extensions#tabline#tab_nr_type = 1
 
 " Load default color scheme.
 if g:os ==# 'Linux'
-  colorscheme sonokai
+  colorscheme gruvbox-material
 elseif g:os ==# 'Windows'
   colorscheme palenight
 endif
