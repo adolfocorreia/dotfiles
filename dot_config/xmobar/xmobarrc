@@ -1,10 +1,8 @@
 -- -*- mode: Haskell -*-
 
-{-
-References:
-- https://xmobar.org
-- https://wiki.archlinux.org/title/Xmobar
--}
+-- References:
+-- - https://xmobar.org
+-- - https://wiki.archlinux.org/title/Xmobar
 
 Config {
 
