@@ -11,10 +11,6 @@ function fish_user_key_bindings
     bind -M insert -k nul accept-autosuggestion
 end
 
-function fish_right_prompt
-    date +"[%H:%M:%S]"
-end
-
 # Commands to run in interactive sessions can go here
 if status is-interactive
 
@@ -26,11 +22,15 @@ if status is-interactive
     set fzf_fd_opts --hidden --exclude .git --exclude .cache
 
     # Set aliases
+    alias vi=nvim
     alias ls=exa
     alias open=xdg-open
 
     # Load conda
-    eval /opt/miniconda/bin/conda "shell.fish" "hook" $argv | source
+    # Reference: https://stackoverflow.com/questions/34280113/add-conda-to-path-in-fish
+    if type -q /opt/miniconda3/bin/conda
+        eval /opt/miniconda3/bin/conda "shell.fish" "hook" $argv | source
+    end
 
     # Load starship
     starship init fish | source
