@@ -217,7 +217,9 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'norcalli/nvim-colorizer.lua'
 
 " Fade inactive buffers.
-Plug 'TaDaa/vimade'
+if has('python') || has('python3')
+  Plug 'TaDaa/vimade'
+endif
 
 " Color themes.
 " - base16
