@@ -111,6 +111,9 @@ Plug 'Raimondi/delimitMate'
 " Reference: https://github.com/junegunn/vim-easy-align
 Plug 'junegunn/vim-easy-align'
 
+" Reopen files at last edit position.
+Plug 'farmergreg/vim-lastplace'
+
 
 """ Custom motions and text objects """
 
@@ -221,6 +224,9 @@ if has('python') || has('python3')
   Plug 'TaDaa/vimade'
 endif
 
+
+" TODO: evaluate 'junegunn/limelight.vim'
+
 " Color themes.
 " - base16
 Plug 'chriskempson/base16-vim'
@@ -286,6 +292,18 @@ if g:os ==# 'Linux'
   colorscheme gruvbox-material
 elseif g:os ==# 'Windows'
   colorscheme palenight
+endif
+
+" Manually fade inactive windows if vimade is not loaded.
+if !exists('g:vimade_loaded')
+  " Set colors for non-current windows (NormalNC highlight group).
+  exec 'highlight NormalNC' .
+    \' guibg='   . synIDattr(synIDtrans(hlID('ColorColumn')), 'bg', 'gui') .
+    \' ctermbg=' . synIDattr(synIDtrans(hlID('ColorColumn')), 'bg', 'cterm')
+
+  " Turn off syntax in inactive windows.
+  autocmd vimrc WinEnter * ownsyntax on
+  autocmd vimrc WinLeave * ownsyntax off
 endif
 
 
