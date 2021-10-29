@@ -12,14 +12,13 @@ README.md
 .config/nvim
 .config/pop-shell
 .config/pypoetry
+.config/qutebrowser
 .config/rofi
 .config/sublime-text
 .config/tmux
 .config/xmobar
 
 .lyx
-
-.var
 
 .xmonad
 {{ end }}
