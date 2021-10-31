@@ -10,5 +10,4 @@ ignore_base = false
 command = """ date +"[%H:%M:%S]" """
 when = "true"
 description = "The current time stamp"
-style = "green"
 os = "linux"
