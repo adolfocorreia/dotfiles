@@ -7,6 +7,9 @@
    - https://github.com/davatorium/rofi/wiki/User-scripts
    - https://github.com/marvinkreis/rofi-file-browser-extended
    - https://rahatzamancse.me/en/posts/you-can-make-anything-with-rofi
+
+   Default themes:
+   - https://github.com/davatorium/rofi/tree/next/themes
 */
 
 configuration {
@@ -20,14 +23,11 @@ configuration {
   display-window: "Windows";
 
   /* Theme */
-  theme: "gruvbox-dark-soft";
-  font: "ubuntu 15";
+  theme: "Arc-Dark";
   show-icons: true;
 
   /* Search */
   /* matching: "fuzzy"; */
 }
 
-
 /* vim:ft=css
-
