@@ -18,6 +18,9 @@ README.md
 .config/tmux
 .config/xmobar
 
+.bash_profile
+.bashrc
+
 .lyx
 
 .xmonad

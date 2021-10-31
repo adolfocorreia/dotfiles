@@ -1,0 +1,33 @@
+# ~/.bashrc
+
+# If not running interactively, don't do anything.
+[[ $- != *i* ]] && return
+
+
+# Don't put duplicate line or lines starting with space in the history.
+HISTCONTROL=ignoreboth
+# Append to the history file, don't overwrite it.
+shopt -s histappend
+
+
+# Useful aliases.
+alias ls='ls --color=auto'
+alias ll='ls -l'
+alias la='ls -la'
+
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+
+alias cp='cp -i'
+alias mv='mv -i'
+alias rm='rm -i'
+
+alias lynx='lynx -vikeys'
+
+alias vi=nvim
+
+
+# Find packages that provide unavailable commands.
+[ -r /usr/share/doc/pkgfile/command-not-found.bash ] && . /usr/share/doc/pkgfile/command-not-found.bash
+

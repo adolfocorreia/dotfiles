@@ -1,0 +1,15 @@
+# ~/.bash_profile
+
+# Enable numlock on shell login (tty).
+if [[ "$TERM" == "linux" ]]; then
+  setleds -D +num
+fi
+
+# Add extra directories to PATH.
+[ -d "$HOME/.local/bin" ]   && PATH="$HOME/.local/bin:${PATH}"
+[ -d "$HOME/.emacs.d/bin" ] && PATH="${PATH}:$HOME/.emacs.d/bin"
+export PATH
+
+
+[[ -r ~/.bashrc ]] && . ~/.bashrc
+
