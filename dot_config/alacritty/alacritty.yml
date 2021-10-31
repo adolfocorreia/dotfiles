@@ -18,18 +18,21 @@ font:
   # Normal (roman) font face
   normal:
     # Font family
+    # family: DejaVu Sans Mono Nerd Font Mono
     # family: FantasqueSansMono Nerd Font Mono
-    #* family: Hack Nerd Font Mono
+    family: Hack Nerd Font Mono
     # family: InconsolataGo Nerd Font Mono
     # family: Lekton Nerd Font Mono
     # family: Monofur Nerd Font Mono
-    family: mononoki Nerd Font Mono
-    # family: SauceCodePro Nerd Font Mono
+    # family: mononoki Nerd Font Mono
+    #* family: SauceCodePro Nerd Font Mono
     # family: ShureTechMono Nerd Font Mono
     # family: TerminessTTF Nerd Font Mono
     #* family: UbuntuMono Nerd Font Mono
     # family: VictorMono Nerd Font Mono
-    # family: Iosevka
+
+  # Point size
+  size: 9.0
 
 
 # Background opacity
@@ -70,4 +73,40 @@ mouse:
 # - `mode`: Indicate a binding for only specific terminal reported modes
 key_bindings:
   - { key: Insert, mods: Shift, action: Paste }
+
+
+# Color schemes
+# References:
+# - https://github.com/alacritty/alacritty/wiki/Color-schemes
+# - https://github.com/rajasegar/alacritty-themes
+schemes:
+
+  # Nord
+  nord: &nord
+    # Default colors
+    primary:
+      background: '#2E3440'
+      foreground: '#D8DEE9'
+    # Normal colors
+    normal:
+      black:   '#3B4252'
+      red:     '#BF616A'
+      green:   '#A3BE8C'
+      yellow:  '#EBCB8B'
+      blue:    '#81A1C1'
+      magenta: '#B48EAD'
+      cyan:    '#88C0D0'
+      white:   '#E5E9F0'
+    # Bright colors
+    bright:
+      black:   '#4C566A'
+      red:     '#BF616A'
+      green:   '#A3BE8C'
+      yellow:  '#EBCB8B'
+      blue:    '#81A1C1'
+      magenta: '#B48EAD'
+      cyan:    '#8FBCBB'
+      white:   '#ECEFF4'
+
+colors: *nord
 
