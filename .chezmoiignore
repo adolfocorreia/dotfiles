@@ -23,6 +23,7 @@ README.md
 
 .lyx
 
+.xinitrc
 .xmonad
 {{ end }}
 
