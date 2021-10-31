@@ -19,11 +19,10 @@ if status is-interactive
 
     # Set environment variables
     set EDITOR nvim
-    set fzf_fd_opts --hidden --exclude .git --exclude .cache
 
     # Set aliases
-    alias vi=nvim
     alias ls=exa
+    alias vi=nvim
     alias open=xdg-open
 
     # Load conda
