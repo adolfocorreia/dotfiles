@@ -289,13 +289,13 @@ let g:airline#extensions#tabline#tab_nr_type = 1
 
 " Load default color scheme.
 if g:os ==# 'Linux'
-  colorscheme gruvbox-material
+  colorscheme nord
 elseif g:os ==# 'Windows'
   colorscheme palenight
 endif
 
 " Manually fade inactive windows if vimade is not loaded.
-if !exists('g:vimade_loaded')
+if !(has('python') || has('python3'))
   " Set colors for non-current windows (NormalNC highlight group).
   exec 'highlight NormalNC' .
     \' guibg='   . synIDattr(synIDtrans(hlID('ColorColumn')), 'bg', 'gui') .
@@ -482,12 +482,17 @@ nnoremap Y y$
 
 
 " Auto center on matched string.
-noremap n nzz
-noremap N Nzz
+noremap n nzzzv
+noremap N Nzzzv
 
 
 " Use @p to paste with a space before the inserted text.
 let @p="a \<Esc>p"
+
+
+" Add big j/k jumps to jumplist.
+nnoremap <expr> j (v:count >= 10 ? "m'" . v:count : "") . 'j'
+nnoremap <expr> k (v:count >= 10 ? "m'" . v:count : "") . 'k'
 
 
 " Disable C-q (tmux prefix).
