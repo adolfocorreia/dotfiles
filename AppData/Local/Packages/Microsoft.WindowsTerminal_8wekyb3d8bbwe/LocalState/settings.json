@@ -155,11 +155,10 @@
         "defaults":
         {
             "cursorShape": "vintage",
-            //"fontFace": "Hack NF",
+            "fontFace": "Hack NF",
             //"fontFace": "SauceCodePro NF",
             //"fontFace": "VictorMono NF",
-            "fontFace": "Iosevka",
-            "fontSize": 11,
+            "fontSize": 9,
             "scrollbarState": "hidden",
             "useAcrylic": true,
             "acrylicOpacity": 0.5
