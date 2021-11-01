@@ -67,7 +67,17 @@ class CpuMemWidget : BarWidgetBase {
 
 Action<IConfigContext> doConfig = (context) => {
 
-    Color backgroundColor = new Color(0x20, 0x21, 0x24);
+    /* Nord theme */
+    Color backgroundColor = new Color(0x2e, 0x34, 0x40);
+    Color foregroundColor = new Color(0xd8, 0xde, 0xe9);
+    Color gray            = new Color(0x4c, 0x56, 0x6a);
+    Color red             = new Color(0xbf, 0x61, 0x6a);
+    Color yellow          = new Color(0xeb, 0xcb, 0x8b);
+    Color orange          = new Color(0xd0, 0x87, 0x70);
+    Color green           = new Color(0xa3, 0xbe, 0x8c);
+    Color blue            = new Color(0x81, 0xa1, 0xc1);
+    Color teal            = new Color(0x8f, 0xbc, 0xbb);
+
     int barHeight = 20;
     string fontName = "Hack NF";
     int fontSize = 10;
@@ -216,24 +226,32 @@ Action<IConfigContext> doConfig = (context) => {
     /* Menu bar */
     context.AddBar(new BarPluginConfig() {
         BarHeight = barHeight,
+        Background = backgroundColor,
         DefaultWidgetBackground = backgroundColor,
+        DefaultWidgetForeground = foregroundColor,
         FontSize = fontSize,
         FontName = fontName,
-        /* Font Awesome icons: https://fontawesome.com */
+        /* Icon databases:
+         * Nerd Fonts: nerdfonts.com/cheat-sheet
+         * Font Awesome: fontawesome.com */
         LeftWidgets = () => new IBarWidget[] {
-            new WorkspaceWidget(),
+            new TextWidget(" \uf878 "),
+            new WorkspaceWidget() {
+                WorkspaceHasFocusColor = red,
+                WorkspaceEmptyColor = gray,
+                WorkspaceIndicatingBackColor = teal },
             new ActiveLayoutWidget() { LeftPadding = "[", RightPadding = "]" },
             new TextWidget(" | "),
             new FocusedMonitorWidget() { FocusedText = "\uf005", },
-            new TitleWidget() { IsShortTitle = true },
+            new TitleWidget() { IsShortTitle = true, MonitorHasFocusColor = red },
             new FocusedMonitorWidget() { FocusedText = "\uf005", },
         },
         RightWidgets = () => new IBarWidget[] {
-            new CpuMemWidget(1000 * 15, " \uf2db [cpu]%  \uf538 [mem]%"),
+            new CpuMemWidget(1000 * 15, " \uf109 [cpu]%  \uf978 [mem]%"),
             new TextWidget(" \uf242"),
-            new BatteryWidget(),
+            new BatteryWidget() { LowChargeColor = red, MedChargeColor = yellow, HighChargeColor = green },
             /* new TimeWidget(1000, " \uf133 yyyy-MM-dd  \uf017 HH:mm"), */
-            new TimeWidget(1000, " \uf133 ddd dd.MMM.yyyy  \uf017 HH:mm"),
+            new TimeWidget(1000, " \uf133 ddd dd.MMM.yyyy  \uf017 HH:mm "),
         },
     });
 
@@ -353,6 +371,11 @@ Action<IConfigContext> doConfig = (context) => {
     context.WindowRouter.IgnoreProcessName("Siga");
     // SpeedCrunch
     context.WindowRouter.IgnoreProcessName("speedcrunch");
+    // Sublime Text
+    context.WindowRouter.AddFilter((window) =>
+        !(window.ProcessName.Equals("sublime_text") & (
+          window.Title.Equals("Changelog") |
+          window.Title.Equals("Update"))));
     // XMind
     context.WindowRouter.AddFilter((window) =>
         !(window.ProcessName.Equals("XMind") &
