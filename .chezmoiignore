@@ -9,6 +9,7 @@ README.md
 .config/Code
 .config/alacritty
 .config/fish
+.config/gtk-3.0
 .config/nvim
 .config/pop-shell
 .config/pypoetry
