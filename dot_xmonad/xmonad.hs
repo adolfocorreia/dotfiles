@@ -64,6 +64,8 @@ myLayoutHook = avoidStruts (tall ||| full)
         border = Border gap gap gap gap
         gap    = 4
 
+clickable ws = "<action=xdotool key super+" ++ ws ++ ">" ++ ws ++ "</action>"
+
 
 -- Theme colors
 
@@ -88,7 +90,7 @@ main = do
     , terminal           = myTerminal
     , focusedBorderColor = myRed
     , normalBorderColor  = myWhite
-    , borderWidth        = 1
+    , borderWidth        = 2
     , startupHook        = myStartupHook
     , layoutHook         = myLayoutHook
     , manageHook         = manageDocks <+> manageHook def
@@ -98,7 +100,8 @@ main = do
                         >> hPutStrLn xmproc1 x
         , ppSep     = " <fc=" ++ myWhite ++ ">|</fc> "
         , ppCurrent = xmobarColor myBlue "" . wrap ("<box type=Bottom width=1 mb=1 color=" ++ myBlue ++ ">[") "]</box>"
-        , ppVisible = wrap "<box type=Bottom width=1 mb=1>(" ")</box>"
+        , ppVisible = wrap "<box type=Bottom width=1 mb=1>(" ")</box>" . clickable
+        , ppHidden  = clickable
         , ppUrgent  = xmobarColor myRed myYellow . wrap "!" "!"
         , ppTitle   = xmobarColor myRed "" . shorten 60
         }

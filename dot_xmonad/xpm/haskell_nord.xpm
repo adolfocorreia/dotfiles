@@ -2,9 +2,9 @@
 static char * haskell_nord_xpm[] = {
 "20 20 4 1",
 " 	c None",
-",	c #81a1c1",
-".	c #5e81ac",
-";	c #8fbcbb",
+",	c #5e81ac",
+".	c #88c0d0",
+";	c #b48ead",
 "                    ",
 "                    ",
 "                    ",
