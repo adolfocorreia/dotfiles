@@ -7,34 +7,60 @@
 Config {
 
   -- Appearance
-    font        = "xft:SauceCodePro Nerd Font Mono:pixelsize=15:antialias=true"
-  , bgColor     = "black"
-  , fgColor     = "grey"
-  , position    = TopW L 100
-  , border      = TopB
-  , borderColor = "black"
+    font        = "xft:Hack Nerd Font Mono:pixelsize=14:antialias=true"
+  , additionalFonts = [ "xft:Font Awesome 5 Free Solid:pixelsize=12" ]
+  , bgColor     = "#2e3440"
+  , fgColor     = "#d8dee9"
+  , position    = TopSize L 100 24
+  , iconRoot    = ".xmonad/xpm/"
 
   -- Plugin commands
+     -- Find icons at fontawesome.com or nerdfonts.com/cheat-sheet
+     -- The refresh rate is given in tenths of seconds (10 = 1 second, 36000 = 1 hour)
   , commands =
     [ Run StdinReader
-    , Run Cpu ["--High", "50", "--high", "red"] 10
-    , Run Memory ["--template", "Mem: <usedratio>%"] 10
-    , Run Swap [] 10
-    , Run Weather "SBJR" [ "--template", "<skyCondition> / <tempC>°C / <rh>%"
-                         , "--Low", "20"
-                         , "--High", "30"
-                         , "--normal", "green"
-                         , "--high", "red"
-                         , "--low", "lightblue"
-                         ] 36000
-    , Run Date "%a %b %_d %Y %H:%M" "date" 10
+    , Run Cpu           ["--template", "<fn=1>\xf108</fn> <total>%", "--High", "50", "--high", "red"] 50
+    , Run MultiCoreTemp ["--template", "<max>°C"] 50
+    , Run Memory        ["--template", "<fn=1>\xf7c2</fn> <usedratio>%"] 50
+    , Run Swap          ["--template", "<usedratio>%"] 50
+    -- Weather data source/reference:
+    -- - https://tgftp.nws.noaa.gov/data/observations/metar/decoded/SBJR.TXT
+    -- - https://tgftp.nws.noaa.gov/weather/current/SBJR.html
+    -- - https://forecast.weather.gov/glossary.php?word=sky%20condition
+    , Run WeatherX "SBJR"
+                [ ("clear",                   "\xf185")   -- 0/8 cloud coverage
+                , ("sunny",                   "\xf185")   -- 0/8 cloud coverage
+                , ("mostly clear",            "\xf185")   -- 1/8 to 2/8 cloud coverage
+                , ("mostly sunny",            "\xf185")   -- 1/8 to 2/8 cloud coverage
+                , ("partly cloudy",           "\xf6c4")   -- 3/8 to 4/8 cloud coverage
+                , ("partly sunny",            "\xf6c4")   -- 3/8 to 4/8 cloud coverage
+                , ("mostly cloudy",           "\xf0c2")   -- 5/8 to 7/8 cloud coverage
+                , ("considerable cloudiness", "\xf0c2")   -- 5/8 to 7/8 cloud coverage
+                , ("cloudy",                  "\xf0c2")   -- 8/8 cloud coverage
+                , ("overcast",                "\xf0c2")   -- sky is completely covered
+                , ("fair",                    "\xf186")]  -- less than 3/8 opaque clouds, no precipitation, no extremes of visibility/temperature/wind (mainly for night)
+                [ "--template", "<fn=1><skyConditionS></fn> <tempC>°C (<rh>%)"] 18000
+    , Run Date "<fn=1>\xf133</fn> %a %b.%_d.%Y" "date"     10
+    , Run Date "<fn=1>\xf017</fn> %H:%M"        "time"     10
+    , Run Com  "echo" ["<fn=1>\xf11c</fn>"]     "kbd_icon"  0
+    , Run Alsa "default" "Master" ["--template", "<fn=1>\xf028</fn> <volume>%"]
     , Run Kbd []
+    , Run UnsafeStdinReader
     ]
 
   -- Layout
+  -- TODO: create color variables
   , sepChar  = "%"
   , alignSep = "}{"
-  , template = " %StdinReader% }{ %cpu% | %memory% / %swap% | %SBJR% | <fc=#ee9a00>%date%</fc> | %kbd% "
+  , template = " <icon=haskell_nord.xpm/> <fc=#d8dee9>|</fc> %UnsafeStdinReader% }{ \
+               \<box type=Bottom width=1 mb=1 color=#bf616a><fc=#bf616a>%cpu% (%multicoretemp%)</fc></box>  \
+               \<box type=Bottom width=1 mb=1 color=#d08770><fc=#d08770>%memory% (%swap%)</fc></box>  \
+               \<box type=Bottom width=1 mb=1 color=#ebcb8b><fc=#ebcb8b>%SBJR%</fc></box>  \
+               \<box type=Bottom width=1 mb=1 color=#a3be8c><fc=#a3be8c>%date%</fc></box>  \
+               \<box type=Bottom width=1 mb=1 color=#b48ead><fc=#b48ead>%time%</fc></box>  \
+               \<box type=Bottom width=1 mb=1 color=#5e81ac><fc=#5e81ac>%alsa:default:Master%</fc></box>  \
+               \<box type=Bottom width=1 mb=1 color=#81a1c1><fc=#81a1c1>%kbd_icon% %kbd%</fc></box> "
+
   }
 
 -- vi: ft=haskell
