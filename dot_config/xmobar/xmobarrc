@@ -4,6 +4,11 @@
 -- - https://xmobar.org
 -- - https://wiki.archlinux.org/title/Xmobar
 
+-- TODO: covert xmobarrc into a real Haskell program
+-- -- https://xmobar.org/#configurations-written-in-pure-haskell
+-- -- https://www.reddit.com/r/xmonad/comments/otuk3u/how_to_make_a_variable_for_color_on_xmobarrc
+-- -- https://github.com/alternateved/dotfiles/blob/main/xmobar/xmobar.hs
+
 Config {
 
   -- Appearance
@@ -19,6 +24,7 @@ Config {
      -- The refresh rate is given in tenths of seconds (10 = 1 second, 36000 = 1 hour)
   , commands =
     [ Run StdinReader
+    -- TODO: set low/high colors
     , Run Cpu           ["--template", "<fn=1>\xf108</fn> <total>%", "--High", "50", "--high", "red"] 50
     , Run MultiCoreTemp ["--template", "<max>°C"] 50
     , Run Memory        ["--template", "<fn=1>\xf7c2</fn> <usedratio>%"] 50
@@ -52,7 +58,7 @@ Config {
   -- TODO: create color variables
   , sepChar  = "%"
   , alignSep = "}{"
-  , template = " <icon=haskell_nord.xpm/> <fc=#d8dee9>|</fc> %UnsafeStdinReader% }{ \
+  , template = " <icon=haskell_nord.xpm/> <fc=#d8dee9>|</fc> %UnsafeStdinReader% }{  \
                \<box type=Bottom width=1 mb=1 color=#bf616a><fc=#bf616a>%cpu% (%multicoretemp%)</fc></box>  \
                \<box type=Bottom width=1 mb=1 color=#d08770><fc=#d08770>%memory% (%swap%)</fc></box>  \
                \<box type=Bottom width=1 mb=1 color=#ebcb8b><fc=#ebcb8b>%SBJR%</fc></box>  \

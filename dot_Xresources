@@ -1,0 +1,6 @@
+! X resources reference: https://wiki.archlinux.org/title/x_resources
+
+! Mouse cursor size
+! Reference: https://wiki.archlinux.org/title/Cursor_themes#X_resources
+Xcursor.size: 16
+

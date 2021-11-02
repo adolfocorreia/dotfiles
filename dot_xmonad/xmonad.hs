@@ -34,12 +34,11 @@ myTerminal = "alacritty"
 
 myStartupHook :: X ()
 myStartupHook = do
+  -- TODO: move X commands to X configuration files
   -- Monitor configuration (check monitors with 'xrandr --listmonitors')
   spawnOnce "xrandr --output DP-0 --primary --left-of DP-3 --output DP-3 --auto &"
   -- Keyboard configuration: CapsLock as Ctrl, both Shifts to toggle CapsLock
   spawnOnce "setxkbmap -option ctrl:nocaps,shift:both_capslock &"
-  -- Mouse cursor
-  spawnOnce "xsetroot -cursor_name left_ptr &"
   -- Desktop background
   spawnOnce "feh --randomize --bg-fill ~/Pictures/Wallpapers/* &"
   -- Desktop compositor
@@ -103,6 +102,6 @@ main = do
         , ppVisible = wrap "<box type=Bottom width=1 mb=1>(" ")</box>" . clickable
         , ppHidden  = clickable
         , ppUrgent  = xmobarColor myRed myYellow . wrap "!" "!"
-        , ppTitle   = xmobarColor myRed "" . shorten 60
+        , ppTitle   = xmobarColor myRed ""
         }
     } `additionalKeysP` myKeys

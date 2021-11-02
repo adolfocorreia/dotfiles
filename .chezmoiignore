@@ -24,6 +24,7 @@ README.md
 
 .lyx
 
+.Xresources
 .xinitrc
 .xmonad
 {{ end }}
