@@ -11,7 +11,7 @@ README.md
 .config/fish
 .config/gtk-3.0
 .config/nvim
-.config/pop-shell
+.config/picom
 .config/pypoetry
 .config/qutebrowser
 .config/rofi
