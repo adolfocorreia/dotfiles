@@ -64,6 +64,7 @@ c.content.notifications.enabled = False
 c.content.prefers_reduced_motion = True
 c.downloads.position = "bottom"
 c.hints.chars = "asdhjkl"
+c.hints.uppercase = True
 c.qt.args = ["autoplay-policy=user-gesture-required"]
 c.qt.process_model = "process-per-site"
 c.scrolling.bar = "always"
@@ -82,28 +83,36 @@ c.url.searchengines[",gs"]     = "https://scholar.google.com/scholar?q={}"
 c.url.searchengines[",r"]      = "https://reddit.com/search?q={}"
 c.url.searchengines[",w"]      = "https://en.wikipedia.org/wiki/{}"
 c.url.searchengines[",y"]      = "https://youtube.com/results?search_query={}"
+c.url.searchengines[",aw"]     = "https://wiki.archlinux.org/index.php?search={}"
+c.url.searchengines[",ap"]     = "https://archlinux.org/packages/?q={}"
+c.url.searchengines[",aa"]     = "https://aur.archlinux.org/packages/?K={}"
+
+
+# Fonts
+c.fonts.default_family = "Iosevka Aile"
+c.fonts.default_size = "10pt"
+c.fonts.hints = "bold 9pt default_family"
+
 
 # Platform specific configuration
-if platform.system() == "Windows":
-    c.fonts.default_family = "SauceCodePro NF"
-    c.fonts.default_size = "11pt"
 
+# Web proxy
 http_proxy = os.getenv("http_proxy")
 if http_proxy is not None:
     c.content.proxy = http_proxy
 
-# Load color theme
+# Color theme
+# Set colors.webpage.bg to dark to avoid white flashes when loading tabs
+# Reference: https://github.com/qutebrowser/qutebrowser/issues/2912
 if platform.system() == "Linux":
-    config.source("base16-gruvbox-dark-hard.config.py")
+    config.source("base16-nord.config.py")
 elif platform.system() == "Windows":
     config.source("base16-tomorrow-night.config.py")
 
-# Open external video player keybinding
+# External video player keybinding
 if platform.system() == "Linux":
-    cmd = "flatpak-spawn --host mpv"
+    cmd = "mpv"
 elif platform.system() == "Windows":
     cmd = "vlc.bat"
-else:
-    cmd = "mpv"
 config.bind(",M", "hint links spawn %s {hint-url}" % cmd)
 config.bind(",m", "spawn %s {url}" % cmd)

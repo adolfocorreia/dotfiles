@@ -1,23 +1,23 @@
 # base16-qutebrowser (https://github.com/theova/base16-qutebrowser)
 # Base16 qutebrowser template by theova
-# Tomorrow Night scheme by Chris Kempson (http://chriskempson.com)
+# Nord scheme by arcticicestudio
 
-base00 = "#1d1f21"
-base01 = "#282a2e"
-base02 = "#373b41"
-base03 = "#969896"
-base04 = "#b4b7b4"
-base05 = "#c5c8c6"
-base06 = "#e0e0e0"
-base07 = "#ffffff"
-base08 = "#cc6666"
-base09 = "#de935f"
-base0A = "#f0c674"
-base0B = "#b5bd68"
-base0C = "#8abeb7"
-base0D = "#81a2be"
-base0E = "#b294bb"
-base0F = "#a3685a"
+base00 = "#2E3440"
+base01 = "#3B4252"
+base02 = "#434C5E"
+base03 = "#4C566A"
+base04 = "#D8DEE9"
+base05 = "#E5E9F0"
+base06 = "#ECEFF4"
+base07 = "#8FBCBB"
+base08 = "#BF616A"
+base09 = "#D08770"
+base0A = "#EBCB8B"
+base0B = "#A3BE8C"
+base0C = "#88C0D0"
+base0D = "#81A1C1"
+base0E = "#B48EAD"
+base0F = "#5E81AC"
 
 # set qutebrowser colors
 
@@ -44,22 +44,28 @@ c.colors.completion.category.border.top = base00
 c.colors.completion.category.border.bottom = base00
 
 # Foreground color of the selected completion item.
-c.colors.completion.item.selected.fg = base05
+# c.colors.completion.item.selected.fg = base05
+c.colors.completion.item.selected.fg = base01
 
 # Background color of the selected completion item.
-c.colors.completion.item.selected.bg = base02
+# c.colors.completion.item.selected.bg = base02
+c.colors.completion.item.selected.bg = base07
 
 # Top border color of the selected completion item.
-c.colors.completion.item.selected.border.top = base02
+# c.colors.completion.item.selected.border.top = base02
+c.colors.completion.item.selected.border.top = base07
 
 # Bottom border color of the selected completion item.
-c.colors.completion.item.selected.border.bottom = base02
+# c.colors.completion.item.selected.border.bottom = base02
+c.colors.completion.item.selected.border.bottom = base07
 
 # Foreground color of the matched text in the selected completion item.
-c.colors.completion.item.selected.match.fg = base0B
+# c.colors.completion.item.selected.match.fg = base0B
+c.colors.completion.item.selected.match.fg = base08
 
 # Foreground color of the matched text in the completion.
-c.colors.completion.match.fg = base0B
+# c.colors.completion.match.fg = base0B
+c.colors.completion.match.fg = base08
 
 # Color of the scrollbar handle in the completion view.
 c.colors.completion.scrollbar.fg = base05
@@ -284,19 +290,19 @@ c.colors.tabs.pinned.selected.odd.bg = base02
 c.colors.tabs.pinned.selected.odd.fg = base05
 
 # Foreground color of selected odd tabs.
-#c.colors.tabs.selected.odd.fg = base05
-c.colors.tabs.selected.odd.fg = base00
+# c.colors.tabs.selected.odd.fg = base05
+c.colors.tabs.selected.odd.fg = base01
 
 # Background color of selected odd tabs.
-#c.colors.tabs.selected.odd.bg = base02
+# c.colors.tabs.selected.odd.bg = base02
 c.colors.tabs.selected.odd.bg = base0A
 
 # Foreground color of selected even tabs.
-#c.colors.tabs.selected.even.fg = base05
-c.colors.tabs.selected.even.fg = base00
+# c.colors.tabs.selected.even.fg = base05
+c.colors.tabs.selected.even.fg = base01
 
 # Background color of selected even tabs.
-#c.colors.tabs.selected.even.bg = base02
+# c.colors.tabs.selected.even.bg = base02
 c.colors.tabs.selected.even.bg = base0A
 
 # Background color for webpages if unset (or empty to use the theme's
