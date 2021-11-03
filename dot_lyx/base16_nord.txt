@@ -1,22 +1,3 @@
-Format 24
-
-
-#
-# MISC SECTION ######################################
-#
-
-#
-# SCREEN & FONTS SECTION ############################
-#
-
-\screen_font_roman "Liberation Serif"
-\screen_font_sans "Liberation Sans"
-\screen_font_typewriter "Liberation Mono"
-
-#
-# COLOR SECTION ###################################
-#
-
 \set_color "added_space" "#d08770"
 \set_color "addedtext" "#ebcb8b"
 \set_color "appendix" "#ebcb8b"
@@ -83,53 +64,3 @@ Format 24
 \set_color "tabularonoffline" "#4c566a"
 \set_color "urllabel" "#ebcb8b"
 \set_color "urltext" "#ebcb8b"
-
-#
-# PRINTER SECTION ###################################
-#
-
-
-#
-# TEX SECTION #######################################
-#
-
-
-#
-# FILE SECTION ######################################
-#
-
-
-#
-# PLAIN TEXT EXPORT SECTION ##############################
-#
-
-
-#
-# SPELLCHECKER SECTION ##############################
-#
-
-
-#
-# LANGUAGE SUPPORT SECTION ##########################
-#
-
-
-#
-# 2nd MISC SUPPORT SECTION ##########################
-#
-
-
-#
-# FORMATS SECTION ##########################
-#
-
-
-#
-# CONVERTERS SECTION ##########################
-#
-
-
-#
-# COPIERS SECTION ##########################
-#
-
