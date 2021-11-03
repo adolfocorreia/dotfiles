@@ -42,3 +42,7 @@ kleber-swf.ocean-dark-extended
 
 # Gruvbox Theme
 jdinhlife.gruvbox
+
+# Nord Theme
+arcticicestudio.nord-visual-studio-code
+
