@@ -7,12 +7,14 @@ README.md
 # Linux-only files
 {{ if ne .chezmoi.os "linux" }}
 .config/Code
+.config/Kvantum
 .config/alacritty
 .config/fish
 .config/gtk-3.0
 .config/nvim
 .config/picom
 .config/pypoetry
+.config/qt5ct
 .config/qutebrowser
 .config/rofi
 .config/sublime-text
