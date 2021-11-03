@@ -158,7 +158,7 @@
             "fontFace": "Hack NF",
             //"fontFace": "SauceCodePro NF",
             //"fontFace": "VictorMono NF",
-            "fontSize": 9,
+            "fontSize": 10,
             "scrollbarState": "hidden",
             "useAcrylic": true,
             "acrylicOpacity": 0.5
