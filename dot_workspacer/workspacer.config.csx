@@ -150,55 +150,51 @@ Action<IConfigContext> doConfig = (context) => {
         }, "swap focus and primary window");
 
         /* Workspace keybindings */
-        k.Subscribe(modA,  Keys.D1,    () => w.SwitchToWorkspace(0),                            "switch to workspace 1");
-        k.Subscribe(modA,  Keys.D2,    () => w.SwitchToWorkspace(1),                            "switch to workspace 2");
-        k.Subscribe(modA,  Keys.D3,    () => w.SwitchToWorkspace(2),                            "switch to workspace 3");
-        k.Subscribe(modA,  Keys.D4,    () => w.SwitchToWorkspace(3),                            "switch to workspace 4");
-        k.Subscribe(modA,  Keys.D5,    () => w.SwitchToWorkspace(4),                            "switch to workspace 5");
-        k.Subscribe(modA,  Keys.D6,    () => w.SwitchToWorkspace(5),                            "switch to workspace 6");
-        k.Subscribe(modA,  Keys.D7,    () => w.SwitchToWorkspace(6),                            "switch to workspace 7");
-        k.Subscribe(modA,  Keys.D8,    () => w.SwitchToWorkspace(7),                            "switch to workspace 8");
-        k.Subscribe(modA,  Keys.D9,    () => w.SwitchToWorkspace(8),                            "switch to workspace 9");
-        k.Subscribe(modA,  Keys.D0,    () => w.SwitchToWorkspace(9),                            "switch to workspace 10");
-        k.Subscribe(modA,  Keys.N,     () => w.SwitchToWorkspace(ws_notes_num),                 "switch to workspace " + ws_notes);
-        k.Subscribe(modA,  Keys.Z,     () => w.SwitchToWorkspace(ws_chat_num),                  "switch to workspace " + ws_chat);
-        k.Subscribe(modA,  Keys.G,     () => w.SwitchToWorkspace(ws_gapps_num),                 "switch to workspace " + ws_gapps);
-        k.Subscribe(modC,  Keys.J,     () => w.SwitchToNextWorkspace(),                         "switch to next workspace");
-        k.Subscribe(modC,  Keys.K,     () => w.SwitchToPreviousWorkspace(),                     "switch to previous workspace");
-        k.Subscribe(modC,  Keys.Down,  () => w.SwitchToNextWorkspace(),                         "switch to next workspace");
-        k.Subscribe(modC,  Keys.Up,    () => w.SwitchToPreviousWorkspace(),                     "switch to previous workspace");
-        k.Subscribe(modA,  Keys.Back,  () => w.SwitchToLastFocusedWorkspace(),                  "switch to last focused workspace");
-        k.Subscribe(modA,  Keys.W,     () => w.SwitchFocusedMonitor(0),                         "siwtch to monitor 1");
-        k.Subscribe(modA,  Keys.E,     () => w.SwitchFocusedMonitor(2),                         "siwtch to monitor 2");
-        k.Subscribe(modA,  Keys.R,     () => w.SwitchFocusedMonitor(1),                         "siwtch to monitor 3");
-        k.Subscribe(modC,  Keys.H,     () => w.SwitchFocusToNextMonitor(),                      "switch to previous monitor");
-        k.Subscribe(modC,  Keys.L,     () => w.SwitchFocusToPreviousMonitor(),                  "switch to next monitor");
-        k.Subscribe(modC,  Keys.Left,  () => w.SwitchFocusToNextMonitor(),                      "switch to previous monitor");
-        k.Subscribe(modC,  Keys.Right, () => w.SwitchFocusToPreviousMonitor(),                  "switch to next monitor");
-        k.Subscribe(modS,  Keys.D1,    () => w.MoveFocusedWindowToWorkspace(0),                 "move focused window to workspace 1");
-        k.Subscribe(modS,  Keys.D2,    () => w.MoveFocusedWindowToWorkspace(1),                 "move focused window to workspace 2");
-        k.Subscribe(modS,  Keys.D3,    () => w.MoveFocusedWindowToWorkspace(2),                 "move focused window to workspace 3");
-        k.Subscribe(modS,  Keys.D4,    () => w.MoveFocusedWindowToWorkspace(3),                 "move focused window to workspace 4");
-        k.Subscribe(modS,  Keys.D5,    () => w.MoveFocusedWindowToWorkspace(4),                 "move focused window to workspace 5");
-        k.Subscribe(modS,  Keys.D6,    () => w.MoveFocusedWindowToWorkspace(5),                 "move focused window to workspace 6");
-        k.Subscribe(modS,  Keys.D7,    () => w.MoveFocusedWindowToWorkspace(6),                 "move focused window to workspace 7");
-        k.Subscribe(modS,  Keys.D8,    () => w.MoveFocusedWindowToWorkspace(7),                 "move focused window to workspace 8");
-        k.Subscribe(modS,  Keys.D9,    () => w.MoveFocusedWindowToWorkspace(8),                 "move focused window to workspace 9");
-        k.Subscribe(modS,  Keys.D0,    () => w.MoveFocusedWindowToWorkspace(9),                 "move focused window to workspace 10");
-        k.Subscribe(modS,  Keys.N,     () => w.MoveFocusedWindowToWorkspace(ws_notes_num),      "move focused window to workspace " + ws_notes);
-        k.Subscribe(modS,  Keys.Z,     () => w.MoveFocusedWindowToWorkspace(ws_chat_num),       "move focused window to workspace " + ws_chat);
-        k.Subscribe(modS,  Keys.G,     () => w.MoveFocusedWindowToWorkspace(ws_gapps_num),      "move focused window to workspace " + ws_gapps);
-        k.Subscribe(modCS, Keys.J,     () => w.MoveFocusedWindowAndSwitchToNextWorkspace(),     "move focused window to next workspace");
-        k.Subscribe(modCS, Keys.K,     () => w.MoveFocusedWindowAndSwitchToPreviousWorkspace(), "move focused window to previous workspace");
-        k.Subscribe(modCS, Keys.Down,  () => w.MoveFocusedWindowAndSwitchToNextWorkspace(),     "move focused window to next workspace");
-        k.Subscribe(modCS, Keys.Up,    () => w.MoveFocusedWindowAndSwitchToPreviousWorkspace(), "move focused window to previous workspace");
-        k.Subscribe(modS,  Keys.W,     () => w.MoveFocusedWindowToMonitor(0),                   "move focused window to monitor 1");
-        k.Subscribe(modS,  Keys.E,     () => w.MoveFocusedWindowToMonitor(2),                   "move focused window to monitor 2");
-        k.Subscribe(modS,  Keys.R,     () => w.MoveFocusedWindowToMonitor(1),                   "move focused window to monitor 3");
-        k.Subscribe(modCS, Keys.H,     () => w.MoveFocusedWindowToNextMonitor(),                "move focused window to previous monitor");
-        k.Subscribe(modCS, Keys.L,     () => w.MoveFocusedWindowToPreviousMonitor(),            "move focused window to next monitor");
-        k.Subscribe(modCS, Keys.Left,  () => w.MoveFocusedWindowToNextMonitor(),                "move focused window to previous monitor");
-        k.Subscribe(modCS, Keys.Right, () => w.MoveFocusedWindowToPreviousMonitor(),            "move focused window to next monitor");
+        k.Subscribe(modA, Keys.D1,    () => w.SwitchToWorkspace(0),                       "switch to workspace 1");
+        k.Subscribe(modA, Keys.D2,    () => w.SwitchToWorkspace(1),                       "switch to workspace 2");
+        k.Subscribe(modA, Keys.D3,    () => w.SwitchToWorkspace(2),                       "switch to workspace 3");
+        k.Subscribe(modA, Keys.D4,    () => w.SwitchToWorkspace(3),                       "switch to workspace 4");
+        k.Subscribe(modA, Keys.D5,    () => w.SwitchToWorkspace(4),                       "switch to workspace 5");
+        k.Subscribe(modA, Keys.D6,    () => w.SwitchToWorkspace(5),                       "switch to workspace 6");
+        k.Subscribe(modA, Keys.D7,    () => w.SwitchToWorkspace(6),                       "switch to workspace 7");
+        k.Subscribe(modA, Keys.D8,    () => w.SwitchToWorkspace(7),                       "switch to workspace 8");
+        k.Subscribe(modA, Keys.D9,    () => w.SwitchToWorkspace(8),                       "switch to workspace 9");
+        k.Subscribe(modA, Keys.D0,    () => w.SwitchToWorkspace(9),                       "switch to workspace 10");
+        k.Subscribe(modA, Keys.N,     () => w.SwitchToWorkspace(ws_notes_num),            "switch to workspace " + ws_notes);
+        k.Subscribe(modA, Keys.Z,     () => w.SwitchToWorkspace(ws_chat_num),             "switch to workspace " + ws_chat);
+        k.Subscribe(modA, Keys.G,     () => w.SwitchToWorkspace(ws_gapps_num),            "switch to workspace " + ws_gapps);
+        k.Subscribe(modC, Keys.J,     () => w.SwitchToNextWorkspace(),                    "switch to next workspace");
+        k.Subscribe(modC, Keys.K,     () => w.SwitchToPreviousWorkspace(),                "switch to previous workspace");
+        k.Subscribe(modC, Keys.Down,  () => w.SwitchToNextWorkspace(),                    "switch to next workspace");
+        k.Subscribe(modC, Keys.Up,    () => w.SwitchToPreviousWorkspace(),                "switch to previous workspace");
+        k.Subscribe(modA, Keys.Back,  () => w.SwitchToLastFocusedWorkspace(),             "switch to last focused workspace");
+        k.Subscribe(modA, Keys.W,     () => w.SwitchFocusedMonitor(0),                    "siwtch to monitor 1");
+        k.Subscribe(modA, Keys.E,     () => w.SwitchFocusedMonitor(2),                    "siwtch to monitor 2");
+        k.Subscribe(modA, Keys.R,     () => w.SwitchFocusedMonitor(1),                    "siwtch to monitor 3");
+        k.Subscribe(modC, Keys.H,     () => w.SwitchFocusToNextMonitor(),                 "switch to previous monitor");
+        k.Subscribe(modC, Keys.L,     () => w.SwitchFocusToPreviousMonitor(),             "switch to next monitor");
+        k.Subscribe(modC, Keys.Left,  () => w.SwitchFocusToNextMonitor(),                 "switch to previous monitor");
+        k.Subscribe(modC, Keys.Right, () => w.SwitchFocusToPreviousMonitor(),             "switch to next monitor");
+        k.Subscribe(modS, Keys.D1,    () => w.MoveFocusedWindowToWorkspace(0),            "move focused window to workspace 1");
+        k.Subscribe(modS, Keys.D2,    () => w.MoveFocusedWindowToWorkspace(1),            "move focused window to workspace 2");
+        k.Subscribe(modS, Keys.D3,    () => w.MoveFocusedWindowToWorkspace(2),            "move focused window to workspace 3");
+        k.Subscribe(modS, Keys.D4,    () => w.MoveFocusedWindowToWorkspace(3),            "move focused window to workspace 4");
+        k.Subscribe(modS, Keys.D5,    () => w.MoveFocusedWindowToWorkspace(4),            "move focused window to workspace 5");
+        k.Subscribe(modS, Keys.D6,    () => w.MoveFocusedWindowToWorkspace(5),            "move focused window to workspace 6");
+        k.Subscribe(modS, Keys.D7,    () => w.MoveFocusedWindowToWorkspace(6),            "move focused window to workspace 7");
+        k.Subscribe(modS, Keys.D8,    () => w.MoveFocusedWindowToWorkspace(7),            "move focused window to workspace 8");
+        k.Subscribe(modS, Keys.D9,    () => w.MoveFocusedWindowToWorkspace(8),            "move focused window to workspace 9");
+        k.Subscribe(modS, Keys.D0,    () => w.MoveFocusedWindowToWorkspace(9),            "move focused window to workspace 10");
+        k.Subscribe(modS, Keys.N,     () => w.MoveFocusedWindowToWorkspace(ws_notes_num), "move focused window to workspace " + ws_notes);
+        k.Subscribe(modS, Keys.Z,     () => w.MoveFocusedWindowToWorkspace(ws_chat_num),  "move focused window to workspace " + ws_chat);
+        k.Subscribe(modS, Keys.G,     () => w.MoveFocusedWindowToWorkspace(ws_gapps_num), "move focused window to workspace " + ws_gapps);
+        k.Subscribe(modS, Keys.W,     () => w.MoveFocusedWindowToMonitor(0),              "move focused window to monitor 1");
+        k.Subscribe(modS, Keys.E,     () => w.MoveFocusedWindowToMonitor(2),              "move focused window to monitor 2");
+        k.Subscribe(modS, Keys.R,     () => w.MoveFocusedWindowToMonitor(1),              "move focused window to monitor 3");
+        k.Subscribe(modS, Keys.H,     () => w.MoveFocusedWindowToNextMonitor(),           "move focused window to previous monitor");
+        k.Subscribe(modS, Keys.L,     () => w.MoveFocusedWindowToPreviousMonitor(),       "move focused window to next monitor");
+        k.Subscribe(modS, Keys.Left,  () => w.MoveFocusedWindowToNextMonitor(),           "move focused window to previous monitor");
+        k.Subscribe(modS, Keys.Right, () => w.MoveFocusedWindowToPreviousMonitor(),       "move focused window to next monitor");
 
         k.Subscribe(modCS, Keys.D1, () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, 0)),            "move all windows to workspace 1");
         k.Subscribe(modCS, Keys.D2, () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, 1)),            "move all windows to workspace 2");
@@ -247,7 +243,7 @@ Action<IConfigContext> doConfig = (context) => {
             new FocusedMonitorWidget() { FocusedText = "\uf005", },
         },
         RightWidgets = () => new IBarWidget[] {
-            new CpuMemWidget(1000 * 15, " \uf109 [cpu]%  \uf978 [mem]%"),
+            new CpuMemWidget(1000 * 15, "  \uf109 [cpu]%  \uf978 [mem]%"),
             new TextWidget(" \uf242"),
             new BatteryWidget() { LowChargeColor = red, MedChargeColor = yellow, HighChargeColor = green },
             /* new TimeWidget(1000, " \uf133 yyyy-MM-dd  \uf017 HH:mm"), */
@@ -258,10 +254,9 @@ Action<IConfigContext> doConfig = (context) => {
 
     /* Window focus indicator */
     context.AddFocusIndicator(new FocusIndicatorPluginConfig() {
-        /* BorderColor = new Color(0x8E, 0xAE, 0xCB), */
-        BorderColor = new Color(0xDF, 0x5F, 0x00),
+        BorderColor = red,
         BorderSize = 8,
-        /* TimeToShow = 500, */
+        TimeToShow = 400,
     });
 
 
@@ -345,6 +340,8 @@ Action<IConfigContext> doConfig = (context) => {
           window.Title.EndsWith("Risk Control Software")));
     // BIG-IP
     context.WindowRouter.IgnoreProcessName("f5fpclientW");
+    // Bloomberg
+    context.WindowRouter.IgnoreProcessName("bplus.wtk2");
     // Colorpicker
     context.WindowRouter.IgnoreProcessName("Colorpicker");
     // DBeaver
@@ -353,6 +350,8 @@ Action<IConfigContext> doConfig = (context) => {
           window.Class.Equals("Static")));
     // Explorer (operation status window)
     context.WindowRouter.IgnoreWindowClass("OperationStatusWindow");
+    // GWSL
+    context.WindowRouter.IgnoreProcessName("GWSL");
     // Jitsi (sharing window)
     context.WindowRouter.AddFilter((window) =>
         !(window.Class.Equals("Chrome_WidgetWin_1") & (
