@@ -155,10 +155,12 @@
         "defaults":
         {
             "cursorShape": "vintage",
-            "fontFace": "Hack NF",
+            //"fontFace": "Hack NF",
+            //"fontFace": "InconsolataGo NF",
             //"fontFace": "SauceCodePro NF",
+            "fontFace": "UbuntuMono NF",
             //"fontFace": "VictorMono NF",
-            "fontSize": 10,
+            "fontSize": 12,
             "scrollbarState": "hidden",
             "useAcrylic": true,
             "acrylicOpacity": 0.5
