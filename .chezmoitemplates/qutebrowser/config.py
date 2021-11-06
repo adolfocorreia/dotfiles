@@ -111,7 +111,7 @@ elif platform.system() == "Windows":
 
 # External video player keybinding
 if platform.system() == "Linux":
-    cmd = "mpv"
+    cmd = "mpv --profile=qutebrowser"
 elif platform.system() == "Windows":
     cmd = "vlc.bat"
 config.bind(",M", "hint links spawn %s {hint-url}" % cmd)
