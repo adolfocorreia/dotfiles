@@ -135,8 +135,8 @@ Action<IConfigContext> doConfig = (context) => {
         k.Subscribe(modA, Keys.H,         () => w.FocusedWorkspace.ShrinkPrimaryArea(),               "shrink primary area");
         k.Subscribe(modA, Keys.L,         () => w.FocusedWorkspace.ExpandPrimaryArea(),               "expand primary area");
         k.Subscribe(modA, Keys.T,         () => context.Windows.ToggleFocusedWindowTiling(),          "toggle tiling for focused window");
-        k.Subscribe(modA, Keys.Oemcomma,  () => w.FocusedWorkspace.IncrementNumberOfPrimaryWindows(), "increment # primary windows");
-        k.Subscribe(modA, Keys.OemPeriod, () => w.FocusedWorkspace.DecrementNumberOfPrimaryWindows(), "decrement # primary windows");
+        k.Subscribe(modA, Keys.OemPeriod, () => w.FocusedWorkspace.IncrementNumberOfPrimaryWindows(), "increment # primary windows");
+        k.Subscribe(modA, Keys.Oemcomma,  () => w.FocusedWorkspace.DecrementNumberOfPrimaryWindows(), "decrement # primary windows");
 
         k.Subscribe(modA, Keys.Enter, () => {
             IList<IWindow> windows = w.FocusedWorkspace.ManagedWindows;
