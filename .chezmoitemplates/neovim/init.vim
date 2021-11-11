@@ -524,14 +524,6 @@ map <silent> <M-b> <Plug>CamelCaseMotion_b
 map <silent> <M-e> <Plug>CamelCaseMotion_e
 
 
-" Map fzf search commands.
-" TODO: remap to something else
-nnoremap <Leader>l :Lines<CR>
-" nnoremap <Leader>c :Colors<CR>
-nnoremap <Leader>/ :History/<CR>
-nnoremap <Leader>: :History:<CR>
-
-
 " Map vim-easy-align to gl (since ga is already used).
 nmap gl <Plug>(EasyAlign)
 xmap gl <Plug>(EasyAlign)
@@ -563,10 +555,6 @@ nnoremap <M-l> <C-w>l
 " TODO: add mappings
 
 " o - open/options
-" o -:  open dirvish
-" o t:  open terminal
-" o q:  open quickfix list
-" o l:  open location list
 " o s:  open saved sessions? - Startify
 " o d:  toggle DelimitMateSwitch?
 " o g:  toggle GoldenRatioResize? (https://github.com/roman/golden-ratio)
@@ -574,13 +562,7 @@ nnoremap <M-l> <C-w>l
 " v - vi
 " v s:     save session? - Startify
 
-" s - search
-" s l:   fzf :Lines/:BLines
-" s p:   search project fzf :Rg
-" s sc:  clear search
-
 " l - LSP
-" format buffer
 " lsp info, stop, start etc.
 " go to definition, find references
 " toggle showing errors/warnings

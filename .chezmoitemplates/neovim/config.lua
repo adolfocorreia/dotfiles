@@ -80,9 +80,12 @@ wk.register({
   },
 
   o = {
-    name = 'open',
-    ['q'] = {'<Cmd>copen<CR>', 'Quickfix list'},
-    ['l'] = {'<Cmd>lopen<CR>', 'Location list'},
+    name = 'open/options',
+    ['-'] = {'<Plug>(dirvish_up)', 'Directory tree'},
+    ['t'] = {'<Cmd>terminal<CR>',  'Terminal'},
+    ['q'] = {'<Cmd>copen<CR>',     'Quickfix list'},
+    ['l'] = {'<Cmd>lopen<CR>',     'Location list'},
+    ['c'] = {'<Cmd>Colors<CR>',    'Colorscheme'},
   },
 
   c = {
@@ -93,6 +96,16 @@ wk.register({
   g = {
     name  = 'git',
     ['g'] = {'<Cmd>Git<CR>', 'Git status' },
+  },
+
+  s = {
+    name  = 'search',
+    ['p'] = {'<Cmd>Rg<CR>',       'Project'},
+    ['l'] = {'<Cmd>Lines<CR>',    'Lines'},
+    ['b'] = {'<Cmd>BLines<CR>',   'Buffer lines'},
+    ['/'] = {'<Cmd>History/<CR>', 'Search history'},
+    [':'] = {'<Cmd>History:<CR>', 'Command history'},
+    ['m'] = {'<Cmd>Maps<CR>',     'Maps'},
   },
 
 }, { prefix = '<Leader>' })
