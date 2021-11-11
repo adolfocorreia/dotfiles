@@ -239,14 +239,19 @@ Action<IConfigContext> doConfig = (context) => {
             new ActiveLayoutWidget() { LeftPadding = "[", RightPadding = "]" },
             new TextWidget(" | "),
             new FocusedMonitorWidget() { FocusedText = "\uf005", },
-            new TitleWidget() { IsShortTitle = true, MonitorHasFocusColor = red },
+            new TitleWidget() {
+                IsShortTitle = true,
+                MonitorHasFocusColor = red,
+                NoWindowMessage = "" },
             new FocusedMonitorWidget() { FocusedText = "\uf005", },
         },
         RightWidgets = () => new IBarWidget[] {
             new CpuMemWidget(1000 * 15, "  \uf109 [cpu]%  \uf978 [mem]%"),
             new TextWidget(" \uf242"),
-            new BatteryWidget() { LowChargeColor = red, MedChargeColor = yellow, HighChargeColor = green },
-            /* new TimeWidget(1000, " \uf133 yyyy-MM-dd  \uf017 HH:mm"), */
+            new BatteryWidget() {
+                LowChargeColor = red,
+                MedChargeColor = yellow,
+                HighChargeColor = green },
             new TimeWidget(1000, " \uf133 ddd dd.MMM.yyyy  \uf017 HH:mm "),
         },
     });
@@ -334,6 +339,8 @@ Action<IConfigContext> doConfig = (context) => {
     context.WindowRouter.IgnoreWindowClass("#32770");
     // AHK
     context.WindowRouter.IgnoreProcessName("AutoHotkeyU64");
+    // Ant Renamer
+    context.WindowRouter.IgnoreProcessName("Renamer");
     // ARC
     context.WindowRouter.AddFilter((window) =>
         !(window.ProcessName.Equals("RiskControl") &
