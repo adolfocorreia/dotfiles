@@ -102,24 +102,14 @@ Invoke-Expression (& { (zoxide init --hook pwd powershell) -join "`n" } )
 
 
 
-# Load Starship
-Invoke-Expression $(& starship init powershell)
-
-# Change terminal window title
-# Reference: https://github.com/starship/starship/issues/1676
-$PromptScript = (Get-Item Function:Prompt).ScriptBlock
-Function Prompt {
-  # Before doing anything else, capture current $?
-  $PreservedExitStatus = $?
-
+# Make Starship change terminal window title
+# Reference: https://github.com/starship/starship/pull/3115
+Function Invoke-Starship-PreCommand {
   $CurrentWorkingDirectory = Split-Path -Path (Get-Location) -Leaf
   $CurrentWorkingProcess = (Get-Process -Id $PID).ProcessName
   $Host.UI.RawUI.WindowTitle = "$CurrentWorkingProcess / $CurrentWorkingDirectory"
-
-  if ($? -ne $PreservedExitStatus) {
-    # Reset $? to False
-    Write-Error "" -ErrorAction Ignore # Powershell 7+
-  }
-  Invoke-Command $PromptScript
 }
+
+# Load Starship
+Invoke-Expression $(& starship init powershell)
 
