@@ -342,30 +342,37 @@ Action<IConfigContext> doConfig = (context) => {
     // Ant Renamer
     context.WindowRouter.IgnoreProcessName("Renamer");
     // ARC
-    context.WindowRouter.AddFilter((window) =>
-        !(window.ProcessName.Equals("RiskControl") &
-          window.Title.EndsWith("Risk Control Software")));
+    context.WindowRouter.AddFilter((w) => !(
+        w.ProcessName.Equals("RiskControl") && w.Title.EndsWith("Risk Control Software")
+    ));
     // BIG-IP
     context.WindowRouter.IgnoreProcessName("f5fpclientW");
     // Bloomberg
-    context.WindowRouter.IgnoreProcessName("bplus.wtk2");
+    context.WindowRouter.AddFilter((w) => !(
+        w.ProcessName.Equals("bplus.wtk2") && !w.Class.Equals("wdm-DesktopWindow")
+    ));
+    context.WindowRouter.AddFilter((w) => !(
+        w.ProcessName.Equals("bplus.wtk2") && w.Title.StartsWith("BLOOMBERG")
+    ));
     // Colorpicker
     context.WindowRouter.IgnoreProcessName("Colorpicker");
     // DBeaver
-    context.WindowRouter.AddFilter((window) =>
-        !(window.ProcessName.Equals("dbeaver") &
-          window.Class.Equals("Static")));
+    context.WindowRouter.AddFilter((w) => !(
+        w.ProcessName.Equals("dbeaver") && w.Class.Equals("Static")
+    ));
     // Explorer (operation status window)
     context.WindowRouter.IgnoreWindowClass("OperationStatusWindow");
     // GWSL
     context.WindowRouter.IgnoreProcessName("GWSL");
     // Jitsi (sharing window)
-    context.WindowRouter.AddFilter((window) =>
-        !(window.Class.Equals("Chrome_WidgetWin_1") & (
-            window.Title.EndsWith("is sharing a window.") |
-            window.Title.EndsWith("is sharing your screen.") |
-            window.Title.EndsWith("está compartilhando uma janela.") |
-            window.Title.EndsWith("está compartilhando sua tela."))));
+    context.WindowRouter.AddFilter((w) => !(
+        w.Class.Equals("Chrome_WidgetWin_1") && (
+            w.Title.EndsWith("is sharing a window.") ||
+            w.Title.EndsWith("is sharing your screen.") ||
+            w.Title.EndsWith("está compartilhando uma janela.") ||
+            w.Title.EndsWith("está compartilhando sua tela.")
+        )
+    ));
     // Keypirinha
     context.WindowRouter.IgnoreProcessName("keypirinha-x64");
     // PortableApps
@@ -378,14 +385,15 @@ Action<IConfigContext> doConfig = (context) => {
     // SpeedCrunch
     context.WindowRouter.IgnoreProcessName("speedcrunch");
     // Sublime Text
-    context.WindowRouter.AddFilter((window) =>
-        !(window.ProcessName.Equals("sublime_text") & (
-          window.Title.Equals("Changelog") |
-          window.Title.Equals("Update"))));
+    context.WindowRouter.AddFilter((w) => !(
+        w.ProcessName.Equals("sublime_text") && (
+          w.Title.Equals("Changelog") || w.Title.Equals("Update")
+        )
+    ));
     // XMind
-    context.WindowRouter.AddFilter((window) =>
-        !(window.ProcessName.Equals("XMind") &
-          window.Class.Equals("Static")));
+    context.WindowRouter.AddFilter((w) => !(
+        w.ProcessName.Equals("XMind") && w.Class.Equals("Static")
+    ));
 
     context.WindowRouter.RouteProcessName("notes2",   ws_notes);
     context.WindowRouter.RouteProcessName("WhatsApp", ws_chat);
