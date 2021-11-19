@@ -37,23 +37,6 @@ SC073::RCtrl
 #if
 
 
-; Workspacer key bindings.
-; Workaround for https://github.com/workspacer/workspacer/issues/110
-#j::SendInput #!j
-#k::SendInput #!k
-#m::SendInput #!m
-#t::SendInput #!t
-#0::SendInput #!0
-#1::SendInput #!1
-#2::SendInput #!2
-#3::SendInput #!3
-#4::SendInput #!4
-#5::SendInput #!5
-#6::SendInput #!6
-#7::SendInput #!7
-#8::SendInput #!8
-#9::SendInput #!9
-
 ; Disable problematic Windows bindings.
 ; Reference: https://support.microsoft.com/en-us/windows/keyboard-shortcuts-in-windows-dcc61a57-8ff0-cffe-9796-cb9706c75eec
 #Tab::
@@ -63,4 +46,14 @@ SC073::RCtrl
 #Right::
 #+Left::
 #+Right::
-
+#^d::
+#0::
+#1::
+#2::
+#3::
+#4::
+#5::
+#6::
+#7::
+#8::
+#9::
