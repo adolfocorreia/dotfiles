@@ -59,3 +59,7 @@
 
 ;; vimrc-mode.
 (package! vimrc-mode)
+
+;; For some reason, Doom is not loading the lsp-haskell package.
+(when IS-LINUX
+  (package! lsp-haskell))
