@@ -30,6 +30,17 @@ fi
 # Reference: https://wiki.archlinux.org/title/Cursor_themes#Change_X_shaped_default_cursor
 xsetroot -cursor_name left_ptr
 
+# Monitor configuration (check monitors with 'xrandr --listmonitors')
+xrandr --output DP-0 --primary --left-of DP-3 --output DP-3 --auto
+
+# Keyboard configuration (man xkeyboard-config)
+# - Use Win+Space to toggle keyboard layouts
+setxkbmap -layout 'us,us(intl)' -option grp:win_space_toggle
+# - CapsLock as Ctrl, both Shifts to toggle CapsLock
+setxkbmap -option ctrl:nocaps,shift:both_capslock
+# Enable numlock in X
+numlockx
+
 # Execute Xmonad
 exec xmonad
 
