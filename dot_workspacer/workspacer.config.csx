@@ -404,6 +404,7 @@ Action<IConfigContext> doConfig = (context) => {
     context.WindowRouter.RouteTitleMatch("Google Calendar - .*", ws_gapps);
 
     context.WindowRouter.RouteProcessName("Amazon Music", "9th");
+    context.WindowRouter.RouteProcessName("Spotify",      "9th");
 
 };
 return doConfig;
