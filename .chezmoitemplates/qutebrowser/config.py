@@ -22,10 +22,9 @@ config.load_autoconfig()
 # Show current bindings with :bind
 # Commands reference: qute://help/commands.html
 
-# Bind Shift-Insert to clipboard selection on Linux.
-if platform.system() == "Linux":
-    config.bind("<Shift-Ins>", "insert-text -- {clipboard}",  mode="insert")
-    config.bind("<Shift-Ins>", "set-cmd-text -a {clipboard}", mode="command")
+# Bind Shift-Insert to clipboard selection.
+config.bind("<Shift-Ins>", "insert-text -- {clipboard}",  mode="insert")
+config.bind("<Shift-Ins>", "set-cmd-text -a {clipboard}", mode="command")
 
 # Normal mode key bindings
 config.bind("<Ctrl+Shift+Tab>", "tab-prev")
@@ -66,7 +65,7 @@ c.downloads.position = "bottom"
 c.hints.chars = "asdhjkl"
 c.hints.uppercase = True
 c.qt.args = ["autoplay-policy=user-gesture-required"]
-c.qt.process_model = "process-per-site"
+#c.qt.process_model = "process-per-site"
 c.scrolling.bar = "always"
 c.session.lazy_restore = True
 c.statusbar.position = "bottom"
