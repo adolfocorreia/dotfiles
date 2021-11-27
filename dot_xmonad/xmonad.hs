@@ -52,6 +52,9 @@ myVisibleColor = "#8fbcbb"
 myHiddenColor = myWhite
 myHiddenNoWindowsColor = "#4c566a"
 
+myBarBackgroundColor :: String
+myBarBackgroundColor = "#3b4242"
+
 -- Base settings
 myModMask :: KeyMask
 myModMask = mod4Mask -- Super/Windows key
@@ -101,6 +104,19 @@ myRemoveKeys =
     "M-<Space>"
   ]
 
+-- System tray
+mySystemTrayCommand :: String
+mySystemTrayCommand = unwords ["stalonetray", arguments, "&"]
+  where
+    arguments = unwords [backgroundArg, geometryArg, growGravityArg, iconSizeArg]
+    backgroundArg = "--background '" ++ myBarBackgroundColor ++ "'"
+    geometryArg = "--geometry 1x1+" ++ show (monitor1 + monitor2 - iconSize - 4) ++ "+3"
+    growGravityArg = "--grow-gravity E"
+    iconSizeArg = "--icon-size " ++ show iconSize
+    iconSize = 18
+    monitor1 = 2560
+    monitor2 = 1440
+
 -- Startup processes
 myStartupHook :: X ()
 myStartupHook = do
@@ -110,6 +126,8 @@ myStartupHook = do
   spawnOnce "feh --randomize --bg-fill ~/Pictures/Wallpapers/* &"
   -- Desktop compositor
   spawnOnce "picom &"
+  -- Icon tray
+  spawnOnce mySystemTrayCommand
 
 -- Layout configuration
 myLayoutHook :: ModifiedLayout _ _ _

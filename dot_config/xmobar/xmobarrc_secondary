@@ -16,16 +16,12 @@ Config {
   -- Plugin commands
   , commands =
     [ Run UnsafeStdinReader
-    , Run Date "<fc=#8fbcbb><fn=1>\xf133</fn></fc> %Y-%m-%d" "date" 10
-    , Run Date "<fc=#8fbcbb><fn=1>\xf017</fn></fc> %H:%M"    "time" 10
     ]
 
   -- Layout
   , sepChar  = "%"
   , alignSep = "}{"
-  , template = " %UnsafeStdinReader% \
-               \   }{   \
-               \<box color=#8fbcbb type=Bottom width=3>%date%  %time%</box> "
+  , template = " %UnsafeStdinReader% "
   }
 
 -- vi: ft=haskell
