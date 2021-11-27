@@ -22,12 +22,13 @@ configuration {
   display-run: "Shell commands";
   display-window: "Windows";
 
-  /* Theme */
-  theme: "Arc-Dark";
+  /* Appearance */
   show-icons: true;
 
   /* Search */
   /* matching: "fuzzy"; */
 }
+
+@theme "Arc-Dark"
 
 /* vim:ft=css
