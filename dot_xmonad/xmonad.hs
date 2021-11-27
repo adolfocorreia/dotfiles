@@ -123,7 +123,8 @@ myStartupHook = do
   -- Session manager / polkit authentication agent
   spawnOnce "lxsession --session XMonad &"
   -- Desktop background
-  spawnOnce "feh --randomize --bg-fill ~/Pictures/Wallpapers/* &"
+  spawnOnce "feh --randomize --bg-fill /usr/share/backgrounds/**/*.jpg &"
+  spawnOnce "variety &"
   -- Desktop compositor
   spawnOnce "picom &"
   -- Icon tray
@@ -166,7 +167,7 @@ myManageHook =
         [title =? t --> doFloat | t <- myTitleFloats]
       ]
   where
-    myClassFloats = ["mpv", "SpeedCrunch", "vlc"]
+    myClassFloats = ["mpv", "SpeedCrunch", "Variety", "vlc"]
     myTitleFloats = []
 
 -- TODO: add window/workspaces routing rules (firefox, brave, emacs, vscode, lyx, whatsapp, libreoffice)

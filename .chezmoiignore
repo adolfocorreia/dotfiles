@@ -20,6 +20,7 @@ README.md
 .config/rofi
 .config/sublime-text
 .config/tmux
+.config/variety
 .config/xmobar
 
 .bash_profile
