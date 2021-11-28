@@ -24,6 +24,7 @@ import XMonad.Actions.DwmPromote
 import XMonad.Actions.GroupNavigation
 import XMonad.Config.Desktop
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.DynamicProperty
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
 import XMonad.Layout.LayoutModifier
@@ -108,10 +109,11 @@ myRemoveKeys =
 mySystemTrayCommand :: String
 mySystemTrayCommand = unwords ["stalonetray", arguments, "&"]
   where
-    arguments = unwords [backgroundArg, geometryArg, growGravityArg, iconSizeArg]
+    arguments = unwords [backgroundArg, geometryArg, growGravityArg, iconGravityArg, iconSizeArg]
     backgroundArg = "--background '" ++ myBarBackgroundColor ++ "'"
     geometryArg = "--geometry 1x1+" ++ show (monitor1 + monitor2 - iconSize - 4) ++ "+3"
     growGravityArg = "--grow-gravity E"
+    iconGravityArg = "--icon-gravity E"
     iconSizeArg = "--icon-size " ++ show iconSize
     iconSize = 18
     monitor1 = 2560
@@ -164,13 +166,35 @@ myManageHook =
   composeAll
     . concat
     $ [ [className =? c --> doFloat | c <- myClassFloats],
-        [title =? t --> doFloat | t <- myTitleFloats]
+        [title =? t --> doFloat | t <- myTitleFloats],
+        [className =? c --> doShift ws | (ws, c) <- myClassShifts],
+        [title =? t --> doShift ws | (ws, t) <- myTitleShifts]
       ]
   where
     myClassFloats = ["mpv", "SpeedCrunch", "Variety", "vlc"]
     myTitleFloats = []
+    myClassShifts =
+      [ ("www", "Brave-browser"),
+        ("www", "firefox"),
+        ("dev", "code-oss"),
+        ("dev", "Emacs"),
+        ("doc", "libreoffice-startcenter"),
+        ("doc", "lyx"),
+        ("chat", "whatsapp-nativefier-d40211")
+      ]
+    myTitleShifts = []
 
--- TODO: add window/workspaces routing rules (firefox, brave, emacs, vscode, lyx, whatsapp, libreoffice)
+-- Some apps change their classes late in their startup process
+-- TODO: find way to discover initial class name of these apps
+myDynamicManageHook :: ManageHook
+myDynamicManageHook =
+  composeAll $ [className =? c --> doShift ws | (ws, c) <- myClassShifts]
+  where
+    myClassShifts =
+      [ ("doc", "libreoffice-calc"),
+        ("doc", "libreoffice-writer"),
+        ("www", "firefox")
+      ]
 
 -- Xmobar configuration
 -- Reference:  https://hackage.haskell.org/package/xmonad-contrib/docs/XMonad-Hooks-DynamicLog.html
@@ -216,7 +240,10 @@ main = do
             startupHook = myStartupHook,
             layoutHook = myLayoutHook,
             manageHook = myManageHook <+> manageDocks <+> manageHook def,
-            handleEventHook = handleEventHook def <+> docksEventHook,
+            handleEventHook =
+              dynamicPropertyChange "WM_CLASS" myDynamicManageHook
+                <+> handleEventHook def
+                <+> docksEventHook,
             logHook = dynamicLogWithPP (myXmobarConfig xm0 xm1)
           }
         `removeKeysP` myRemoveKeys
