@@ -161,6 +161,8 @@ workspaceIcon "term" = "<fn=2>\xf07b7</fn>"
 workspaceIcon str = ""
 
 -- Windows management
+-- Check classes using 'xprop' or 'xwininfo -root -tree | grep -i app_name'.
+-- Note: some apps (e.g. firefox, libreoffice) change their classes after startup.
 myManageHook :: Query (_ WindowSet)
 myManageHook =
   composeAll
@@ -174,27 +176,30 @@ myManageHook =
     myClassFloats = ["mpv", "SpeedCrunch", "Variety", "vlc"]
     myTitleFloats = []
     myClassShifts =
-      [ ("www", "Brave-browser"),
+      [ -- Brave
+        ("www", "Brave-browser"),
+        -- Firefox
+        ("www", "Firefox"),
         ("www", "firefox"),
+        -- Visual Studio Code
         ("dev", "code-oss"),
+        -- Emacs
         ("dev", "Emacs"),
+        -- LibreOffice
+        ("doc", "Soffice"),
+        ("doc", "libreoffice-calc"),
+        ("doc", "libreoffice-writer"),
         ("doc", "libreoffice-startcenter"),
+        -- Lyx
         ("doc", "lyx"),
-        ("chat", "whatsapp-nativefier-d40211")
+        -- PCManFM
+        ("file", "Pcmanfm"),
+        -- Whatsapp (nativefier)
+        ("chat", "whatsapp-nativefier-d40211"),
+        -- Zoom
+        ("vid", "zoom")
       ]
     myTitleShifts = []
-
--- Some apps change their classes late in their startup process
--- TODO: find way to discover initial class name of these apps
-myDynamicManageHook :: ManageHook
-myDynamicManageHook =
-  composeAll $ [className =? c --> doShift ws | (ws, c) <- myClassShifts]
-  where
-    myClassShifts =
-      [ ("doc", "libreoffice-calc"),
-        ("doc", "libreoffice-writer"),
-        ("www", "firefox")
-      ]
 
 -- Xmobar configuration
 -- Reference:  https://hackage.haskell.org/package/xmonad-contrib/docs/XMonad-Hooks-DynamicLog.html
@@ -240,10 +245,7 @@ main = do
             startupHook = myStartupHook,
             layoutHook = myLayoutHook,
             manageHook = myManageHook <+> manageDocks <+> manageHook def,
-            handleEventHook =
-              dynamicPropertyChange "WM_CLASS" myDynamicManageHook
-                <+> handleEventHook def
-                <+> docksEventHook,
+            handleEventHook = handleEventHook def <+> docksEventHook,
             logHook = dynamicLogWithPP (myXmobarConfig xm0 xm1)
           }
         `removeKeysP` myRemoveKeys
