@@ -47,13 +47,36 @@ SC073::RCtrl
 #+Left::
 #+Right::
 #^d::
-#0::
-#1::
-#2::
-#3::
-#4::
-#5::
-#6::
-#7::
-#8::
-#9::
+
+
+; Workspacer bindings.
+#0::#!0
+#1::#!1
+#2::#!2
+#3::#!3
+#4::#!4
+#5::#!5
+#6::#!6
+#7::#!7
+#8::#!8
+#9::#!9
+#g::#!g
+#n::#!n
+#z::#!z
+
+
+; Multimedia keys remapping.
+; Browser_Home
+; Volume_Down
+; Volume_Up
+; Volume_Mute
+; Media_Play_Pause
+; Media_Stop
+; Media_Prev
+; Media_Next
+; Launch_Media
+; Launch_Mail
+; Ctrl+Shift+Esc
+Launch_App2::Run speedcrunch.exe
+
+
