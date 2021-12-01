@@ -330,10 +330,6 @@ endif
 " Use ':set option?' to check current option value.
 " Use ':verbose set option?' to check where it was set.
 
-" Buffers become hidden when abandoned.
-set hidden
-" TODO: evaluate how to avoid exiting without confirmation when many buffers are open (e.g. :q!)
-
 " Raise dialog when quitting changed buffer.
 set confirm
 
@@ -475,10 +471,6 @@ execute 'luafile ' . stdpath('config') . '/config.lua'
 " - Unused keys reference: https://vim.fandom.com/wiki/Unused_keys
 " - Prefer non recursive maps (_noremap)
 " - Plugin maps (<Plug>) must be recursive
-
-
-" Yank from cursor to end of line (by default Y is synonym to yy).
-nnoremap Y y$
 
 
 " Auto center on matched string.
