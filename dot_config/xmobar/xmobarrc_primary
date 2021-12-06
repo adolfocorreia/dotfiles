@@ -64,7 +64,7 @@ Config {
     -- - https://tgftp.nws.noaa.gov/data/observations/metar/decoded/SBJR.TXT
     -- - https://tgftp.nws.noaa.gov/weather/current/SBJR.html
     -- - https://forecast.weather.gov/glossary.php?word=sky%20condition
-    , Run WeatherX "SBJR"
+    , Run WeatherX "SBRJ"
                 [ ("clear",                   "\xf185")   -- 0/8 cloud coverage
                 , ("sunny",                   "\xf185")   -- 0/8 cloud coverage
                 , ("mostly clear",            "\xf185")   -- 1/8 to 2/8 cloud coverage
@@ -105,7 +105,7 @@ Config {
   , alignSep = "}{"
   , template = " %UnsafeStdinReader% \
                \ }   \
-               \<box color=#8fbcbb type=Bottom width=3>%SBJR%</box>  \
+               \<box color=#8fbcbb type=Bottom width=3>%SBRJ%</box>  \
                \<box color=#b48ead type=Bottom width=3>%date%  %time%</box> \
                \   { \
                \<box color=#8fbcbb type=Bottom width=3>%cpu%  %memory%  %multicoretemp%</box>  \
