@@ -194,6 +194,8 @@ myManageHook =
         ("doc", "lyx"),
         -- PCManFM
         ("file", "Pcmanfm"),
+        -- Chromium
+        ("mail", "Chromium"),
         -- Whatsapp (nativefier)
         ("chat", "whatsapp-nativefier-d40211"),
         -- Zoom
