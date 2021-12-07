@@ -78,9 +78,9 @@ Action<IConfigContext> doConfig = (context) => {
     Color blue            = new Color(0x81, 0xa1, 0xc1);
     Color teal            = new Color(0x8f, 0xbc, 0xbb);
 
-    int barHeight = 20;
+    int barHeight = 16;
     string fontName = "Hack NF";
-    int fontSize = 10;
+    int fontSize = 9;
 
     KeyModifiers mod   = KeyModifiers.Win;
     KeyModifiers modA  = mod | KeyModifiers.Alt;
@@ -266,7 +266,7 @@ Action<IConfigContext> doConfig = (context) => {
 
 
     /* Gap */
-    int gap = 8;
+    int gap = 4;
     context.AddGap(new GapPluginConfig() {
         InnerGap = gap,
         OuterGap = gap/2,
@@ -362,6 +362,8 @@ Action<IConfigContext> doConfig = (context) => {
     ));
     // Explorer (operation status window)
     context.WindowRouter.IgnoreWindowClass("OperationStatusWindow");
+    // git credential helper
+    context.WindowRouter.IgnoreWindowClass("CredentialHelperSelector");
     // GWSL
     context.WindowRouter.IgnoreProcessName("GWSL");
     // Jitsi (sharing window)
