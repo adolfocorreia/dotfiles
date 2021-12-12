@@ -22,6 +22,7 @@ import XMonad
 import XMonad.Actions.CycleWS
 import XMonad.Actions.DwmPromote
 import XMonad.Actions.GroupNavigation
+import XMonad.Actions.UpdatePointer
 import XMonad.Config.Desktop
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.DynamicProperty
@@ -69,7 +70,8 @@ myTerminal = "alacritty"
 -- - https://hackage.haskell.org/package/xmonad-contrib/docs/XMonad-Util-EZConfig.html
 myAdditionalKeys :: [(String, X ())]
 myAdditionalKeys =
-  [ ("M-p", spawn "rofi -show"),
+  [ -- Spawn app launcher (rofi)
+    ("M-p", spawn "rofi -show"),
     ("M-\\", spawn "rofi -show"),
     -- Close the focused window
     ("M-S-x", kill),
@@ -79,24 +81,37 @@ myAdditionalKeys =
     ("M-0", windows $ W.greedyView $ myWorkspaces !! (10 - 1)),
     ("M-S-0", windows $ W.shift $ myWorkspaces !! (10 - 1)),
     -- TODO: add F1-12 workspaces
-    -- Volume controls
-    ("<XF86AudioLowerVolume>", spawn "amixer -q sset Master 5%- unmute"),
-    ("<XF86AudioRaiseVolume>", spawn "amixer -q sset Master 5%+ unmute"),
-    ("<XF86AudioMute>", spawn "amixer set Master toggle"),
-    -- Swap master windows
+    -- Swap master window
     ("M-<Return>", dwmpromote),
+    -- Swap windows
+    ("M-S-<Down>", windows W.swapDown),
+    ("M-S-<Up>", windows W.swapUp),
+    -- Resize master/slave ratio
+    ("M-<Left>", sendMessage Shrink),
+    ("M-<Right>", sendMessage Expand),
+    -- Switch windows focus
+    ("M-<Down>", windows W.focusDown),
+    ("M-<Up>", windows W.focusUp),
     -- Switch focus to next monitor
     ("M-C-h", prevScreen),
     ("M-C-l", nextScreen),
+    ("M-C-<Left>", prevScreen),
+    ("M-C-<Right>", nextScreen),
     -- Shift window to next monitor
-    ("M-S-h", shiftPrevScreen),
-    ("M-S-l", shiftNextScreen),
+    ("M-S-h", shiftPrevScreen >> prevScreen),
+    ("M-S-l", shiftNextScreen >> nextScreen),
+    ("M-S-<Left>", shiftPrevScreen >> prevScreen),
+    ("M-S-<Right>", shiftNextScreen >> nextScreen),
     -- Use Alt-Tab to cycle through visible windows
     ("M1-<Tab>", nextMatch Forward isOnAnyVisibleWS),
     ("M1-S-<Tab>", nextMatch Backward isOnAnyVisibleWS),
     -- Cycle through non-empty workspaces
     ("M-<Tab>", moveTo Next NonEmptyWS),
-    ("M-S-<Tab>", moveTo Prev NonEmptyWS)
+    ("M-S-<Tab>", moveTo Prev NonEmptyWS),
+    -- Volume controls
+    ("<XF86AudioLowerVolume>", spawn "amixer -q sset Master 5%- unmute"),
+    ("<XF86AudioRaiseVolume>", spawn "amixer -q sset Master 5%+ unmute"),
+    ("<XF86AudioMute>", spawn "amixer set Master toggle")
   ]
 
 myRemoveKeys :: [String]
@@ -248,7 +263,7 @@ main = do
             layoutHook = myLayoutHook,
             manageHook = myManageHook <+> manageDocks <+> manageHook def,
             handleEventHook = handleEventHook def <+> docksEventHook,
-            logHook = dynamicLogWithPP (myXmobarConfig xm0 xm1)
+            logHook = dynamicLogWithPP (myXmobarConfig xm0 xm1) >> updatePointer (0.25, 0.05) (0.0, 0.0)
           }
         `removeKeysP` myRemoveKeys
         `additionalKeysP` myAdditionalKeys
