@@ -26,13 +26,21 @@ fi
 # - wiki.archlinux.org/title/Qt#Configuration_of_Qt5_apps_under_environments_other_than_KDE_Plasma
 [ -x /usr/bin/qt5ct ] && export QT_QPA_PLATFORMTHEME=qt5ct
 
-# Set mouse cursor
-# Reference: https://wiki.archlinux.org/title/Cursor_themes#Change_X_shaped_default_cursor
-xsetroot -cursor_name left_ptr
-
 # Monitor configuration (check monitors with 'xrandr --listmonitors')
 # xrandr --output DP-0 --primary --left-of DP-3 --output DP-3 --auto
 xrandr --output HDMI-0 --primary --left-of DP-3 --output DP-3 --auto
+
+# Tweak mouse wheel behavior
+imwheel --buttons 45
+
+# Remap mouse buttons
+xinput --set-button-map 'Kensington Expert Mouse' 1 1 3 4 5 6 7 2 2
+# Decrease pointer acceleration
+xinput --set-prop 'Kensington Expert Mouse' 'libinput Accel Speed' -0.5
+
+# Set mouse cursor
+# Reference: https://wiki.archlinux.org/title/Cursor_themes#Change_X_shaped_default_cursor
+xsetroot -cursor_name left_ptr
 
 # Keyboard configuration (man xkeyboard-config)
 # - Use Win+Space to toggle keyboard layouts

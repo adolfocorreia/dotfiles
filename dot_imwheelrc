@@ -1,0 +1,22 @@
+# imwheelrc definitions:
+# Key modifiers input (e.g. Shift_L, None), Mouse action input (e.g. Up, Down), KeyA action output (e.g. Button4, Button5), Repetitions
+
+# Speed up mouse wheel scrolling
+"^Brave-browser$"
+	None, Up,   Button4, 4
+	None, Down, Button5, 4
+"^Chromium$"
+	None, Up,   Button4, 4
+	None, Down, Button5, 4
+"^firefox$"
+	None, Up,   Button4, 4
+	None, Down, Button5, 4
+"^lyx$"
+	None, Up,   Button4, 3
+	None, Down, Button5, 3
+"^Xreader$"
+	None, Up,   Button4, 2
+	None, Down, Button5, 2
+"^Zathura$"
+	None, Up,   Button4, 5
+	None, Down, Button5, 5
