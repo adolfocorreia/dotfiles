@@ -13,7 +13,7 @@
   "filterLinkHints": false,
   "waitForEnterForFilteredHints": true,
   "hideHud": false,
-  "keyMappings": "# qutebrowser-like keybindings\n\n# Navigating the page\nunmap <c-e>\nunmap <c-y>\nmap <c-d> scrollFullPageDown\nmap <c-u> scrollFullPageUp\nunmap `\nmap b Marks.activateGotoMode\n\n# Using the vomnibar\nunmap B\nmap gt Vomnibar.activateTabSelection\nunmap ge\nunmap gE\nmap go Vomnibar.activateEditUrl\nmap gO Vomnibar.activateEditUrlInNewTab\n\n# Manipulating tabs\nunmap gT\nmap J nextTab\nmap K previousTab\nunmap yt\nmap gC duplicateTab\nunmap x\nunmap X\nmap d removeTab\nmap u restoreTab\nunmap W\nmap gD moveTabToNewWindow",
+  "keyMappings": "# qutebrowser-like keybindings\n\n# Navigating the page\nmap <c-d> scrollPageDown\nmap <c-u> scrollPageUp\nmap <c-f> scrollFullPageDown\nmap <c-b> scrollFullPageUp\nunmap p\nunmap P\nmap pp openCopiedUrlInCurrentTab\nmap pP openCopiedUrlInCurrentTab\nmap Pp openCopiedUrlInNewTab\nmap PP openCopiedUrlInNewTab\nunmap gF\nmap b Marks.activateGotoMode\n\n# Using the vomnibar\nunmap B\nmap gt Vomnibar.activateTabSelection\nunmap ge\nunmap gE\nmap go Vomnibar.activateEditUrl\nmap gO Vomnibar.activateEditUrlInNewTab\n\n# Manipulating tabs\nunmap gT\nmap J nextTab\nmap K previousTab\nunmap yt\nmap gC duplicateTab\nunmap x\nunmap X\nmap d removeTab\nmap u restoreTab\nunmap W\nmap gD moveTabToNewWindow\nmap co closeOtherTabs\nmap gK moveTabLeft\nmap gJ moveTabRight\n\n# Miscellaneous\nunmap gs\nmap gf toggleViewSource",
   "linkHintCharacters": "asdhjkl",
   "linkHintNumbers": "0123456789",
   "newTabUrl": "about:newtab",
