@@ -28,6 +28,7 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.DynamicProperty
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.WorkspaceHistory
 import XMonad.Layout.LayoutModifier
 import XMonad.Layout.Renamed
 import XMonad.Layout.ResizableTile
@@ -81,6 +82,8 @@ myAdditionalKeys =
     ("M-0", windows $ W.greedyView $ myWorkspaces !! (10 - 1)),
     ("M-S-0", windows $ W.shift $ myWorkspaces !! (10 - 1)),
     -- TODO: add F1-12 workspaces
+    -- Switch to previously displayed workspace
+    ("M-<Backspace>", toggleWS),
     -- Swap master window
     ("M-<Return>", dwmpromote),
     -- Swap windows
@@ -263,7 +266,10 @@ main = do
             layoutHook = myLayoutHook,
             manageHook = myManageHook <+> manageDocks <+> manageHook def,
             handleEventHook = handleEventHook def <+> docksEventHook,
-            logHook = dynamicLogWithPP (myXmobarConfig xm0 xm1) >> updatePointer (0.25, 0.05) (0.0, 0.0)
+            logHook =
+              dynamicLogWithPP (myXmobarConfig xm0 xm1)
+                >> workspaceHistoryHook
+                >> updatePointer (0.25, 0.05) (0.0, 0.0)
           }
         `removeKeysP` myRemoveKeys
         `additionalKeysP` myAdditionalKeys
