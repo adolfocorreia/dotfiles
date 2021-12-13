@@ -34,7 +34,12 @@ xrandr --output HDMI-0 --primary --left-of DP-3 --output DP-3 --auto
 imwheel --buttons 45
 
 # Remap mouse buttons
-xinput --set-button-map 'Kensington Expert Mouse' 1 1 3 4 5 6 7 2 2
+# 1: left, 2: middle, 3: right, 4/5: mouse wheel up/down, 6/7: mouse wheel left/right, 8/9: back/forward
+# Default | Custom
+#   2 8   |   1 3
+#    .    |    .
+#   1 3   |   1 2
+xinput --set-button-map 'Kensington Expert Mouse' 1 1 2 4 5 6 7 3 3
 # Decrease pointer acceleration
 xinput --set-prop 'Kensington Expert Mouse' 'libinput Accel Speed' -0.5
 
