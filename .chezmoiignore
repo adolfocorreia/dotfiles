@@ -6,11 +6,11 @@ README.md
 
 # Linux-only files
 {{ if ne .chezmoi.os "linux" }}
-.config/Code
-.config/Kvantum
 .config/alacritty
+.config/Code
 .config/fish
 .config/gtk-3.0
+.config/Kvantum
 .config/mpv
 .config/nvim
 .config/picom
@@ -28,9 +28,10 @@ README.md
 
 .lyx
 
-.Xresources
+.imwheelrc
 .xinitrc
 .xmonad
+.Xresources
 {{ end }}
 
 # Windows-only files
