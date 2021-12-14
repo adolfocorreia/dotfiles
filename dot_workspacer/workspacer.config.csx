@@ -64,6 +64,14 @@ class CpuMemWidget : BarWidgetBase {
     }
 }
 
+class ColorFocusedMonitorWidget : FocusedMonitorWidget {
+    public Color ForegroundColor { get; set; }
+    public override IBarWidgetPart[] GetParts() {
+        string text = Context.MonitorContainer.FocusedMonitor == Context.Monitor ? FocusedText : UnfocusedText;
+        return Parts(Part(text, fore: ForegroundColor, fontname: FontName));
+    }
+}
+
 
 Action<IConfigContext> doConfig = (context) => {
 
@@ -76,6 +84,7 @@ Action<IConfigContext> doConfig = (context) => {
     Color orange          = new Color(0xd0, 0x87, 0x70);
     Color green           = new Color(0xa3, 0xbe, 0x8c);
     Color blue            = new Color(0x81, 0xa1, 0xc1);
+    Color purple          = new Color(0xb4, 0x8e, 0xad);
     Color teal            = new Color(0x8f, 0xbc, 0xbb);
 
     int barHeight = 16;
@@ -233,17 +242,21 @@ Action<IConfigContext> doConfig = (context) => {
         LeftWidgets = () => new IBarWidget[] {
             new TextWidget(" \uf878 "),
             new WorkspaceWidget() {
-                WorkspaceHasFocusColor = red,
+                WorkspaceHasFocusColor = yellow,
                 WorkspaceEmptyColor = gray,
                 WorkspaceIndicatingBackColor = teal },
             new ActiveLayoutWidget() { LeftPadding = "[", RightPadding = "]" },
             new TextWidget(" | "),
-            new FocusedMonitorWidget() { FocusedText = "\uf005", },
+            new ColorFocusedMonitorWidget() {
+                FocusedText = "\uf005\uf005",
+                ForegroundColor = yellow },
             new TitleWidget() {
                 IsShortTitle = true,
-                MonitorHasFocusColor = red,
+                MonitorHasFocusColor = yellow,
                 NoWindowMessage = "" },
-            new FocusedMonitorWidget() { FocusedText = "\uf005", },
+            new ColorFocusedMonitorWidget() {
+                FocusedText = "\uf005\uf005",
+                ForegroundColor = yellow },
         },
         RightWidgets = () => new IBarWidget[] {
             new CpuMemWidget(1000 * 15, "  \uf109 [cpu]%  \uf978 [mem]%"),
