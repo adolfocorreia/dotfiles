@@ -248,14 +248,14 @@ Action<IConfigContext> doConfig = (context) => {
             new ActiveLayoutWidget() { LeftPadding = "[", RightPadding = "]" },
             new TextWidget(" | "),
             new ColorFocusedMonitorWidget() {
-                FocusedText = "\uf005\uf005",
+                FocusedText = "\uf005\uf005\uf005\uf005\uf005",
                 ForegroundColor = yellow },
             new TitleWidget() {
                 IsShortTitle = true,
                 MonitorHasFocusColor = yellow,
-                NoWindowMessage = "" },
+                NoWindowMessage = "-" },
             new ColorFocusedMonitorWidget() {
-                FocusedText = "\uf005\uf005",
+                FocusedText = "\uf005\uf005\uf005\uf005\uf005",
                 ForegroundColor = yellow },
         },
         RightWidgets = () => new IBarWidget[] {
