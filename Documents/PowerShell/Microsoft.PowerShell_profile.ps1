@@ -113,7 +113,8 @@ Set-PSReadLineKeyHandler -Key Ctrl+o -ScriptBlock {
   lfcd
   [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
 }
-# Set-Alias -Name lf -Value lfcd
+# Set LF_ICONS environment variable
+. $env:LOCALAPPDATA\lf\icons.ps1
 
 
 # Echo selected path
