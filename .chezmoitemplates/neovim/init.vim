@@ -487,18 +487,15 @@ nnoremap <expr> j (v:count >= 10 ? "m'" . v:count : "") . 'j'
 nnoremap <expr> k (v:count >= 10 ? "m'" . v:count : "") . 'k'
 
 
+" Insert blank line above or below (in insert mode).
+inoremap <C-j> <C-o>o
+inoremap <C-k> <C-o>O
+
+
 " Disable C-q (tmux prefix).
 noremap  <C-q> <Nop>
 lnoremap <C-q> <Nop>
 tnoremap <C-q> <Nop>
-
-
-" Workaround to unmap lightspeed's f/F/t/T mappings.
-" Reference: https://github.com/ggandor/lightspeed.nvim/issues/11
-noremap f f
-noremap F F
-noremap t t
-noremap T T
 
 
 " Clear last search highlighting (Esc is not mapped to anything in normal mode).
