@@ -56,5 +56,4 @@ setxkbmap -option ctrl:nocaps,shift:both_capslock
 numlockx
 
 # Execute Xmonad
-exec xmonad
-
+exec xmonad > ~/.var/xsession-errors 2>&1

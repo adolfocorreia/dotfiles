@@ -142,13 +142,13 @@ myStartupHook :: X ()
 myStartupHook = do
   -- Session manager / polkit authentication agent
   spawnOnce "lxsession --session XMonad &"
-  -- Desktop background
-  spawnOnce "feh --randomize --bg-fill /usr/share/backgrounds/**/*.jpg &"
-  spawnOnce "variety &"
   -- Desktop compositor
   spawnOnce "picom &"
   -- Icon tray
   spawnOnce mySystemTrayCommand
+  -- Desktop background
+  spawnOnce "feh --randomize --bg-fill /usr/share/backgrounds/**/*.jpg &"
+  spawnOnce "variety &"
 
 -- Layout configuration
 myLayoutHook :: ModifiedLayout _ _ _
@@ -241,7 +241,7 @@ myXmobarConfig xm0 xm1 =
       ppHiddenNoWindows = xmobarColor myHiddenNoWindowsColor "" . clickableWS,
       ppUrgent = xmobarColor myRed myYellow . wrap "!" "!",
       ppLayout = clickableLayout,
-      ppTitle = xmobarColor myCurrentColor "" . boxed myCurrentColor
+      ppTitle = xmobarColor myCurrentColor "" . boxed myCurrentColor . xmobarStrip
     }
   where
     clickableLayout = wrap "<action=`xdotool key super+shift+space`>" "</action>"
