@@ -130,13 +130,17 @@ mySystemTrayCommand = unwords ["stalonetray", arguments, "&"]
   where
     arguments = unwords [backgroundArg, geometryArg, growGravityArg, iconGravityArg, iconSizeArg]
     backgroundArg = "--background '" ++ myBarBackgroundColor ++ "'"
-    geometryArg = "--geometry 1x1+" ++ show (monitor1 + monitor2 - iconSize - 4) ++ "+3"
+    geometryArg = "--geometry 1x1+" ++ show x ++ "+" ++ show y
     growGravityArg = "--grow-gravity E"
     iconGravityArg = "--icon-gravity E"
     iconSizeArg = "--icon-size " ++ show iconSize
     iconSize = 18
-    monitor1 = 2560
-    monitor2 = 1440
+    x = monitor1w + monitor2w - iconSize - 4
+    y = (monitor1h - monitor2h) `div` 2 + 3
+    monitor1w = 2560
+    monitor1h = 1440
+    monitor2w = 1440
+    monitor2h = 900
 
 -- Startup processes
 myStartupHook :: X ()
