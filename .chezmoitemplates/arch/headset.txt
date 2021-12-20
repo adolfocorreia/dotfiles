@@ -1,0 +1,34 @@
+In some kernel versions (e.g. 5.15.10), the headset's microphone is not recognized by default.
+
+As a workaround, use `hdajackretask` to override the default settings:
+- Set options: 'Show uncommented pins' and 'Advanced override'
+- Override pin 0x19 and set options:
+	- Connectivity: Jack
+	- Location: Front
+	- Device: Microphone
+	- Jack: 3.5 mm
+	- Color: Black
+	- Jack detection: Not present
+- Click 'Install boot override'
+- Reboot
+
+This will create the files:
+- /etc/modprobe.d/hda-jack-retask.conf
+- /lib/firmware/hda-jack-retask.fw
+
+References:
+- https://www.kernel.org/doc/html/v5.15/sound/hd-audio/notes.html
+- https://bbs.archlinux.org/viewtopic.php?pid=1958979#p1958979
+- https://archived.forum.manjaro.org/t/headsets-microphone-is-not-detected-by-the-system/32137/8
+- https://askubuntu.com/questions/1078911/smartphone-headset-microphone-not-working-only-internal-does
+- https://superuser.com/questions/1312970/headset-microphone-not-detected-by-pulse-und-alsa
+- https://forum.manjaro.org/t/headphone-mic-doesnt-get-detected/54469/7
+- https://forums.linuxmint.com/viewtopic.php?t=326885&start=20
+
+Useful commands:
+- sudo alsa-info.sh --no-upload
+- sudo hdajacksensetest -a --card=0
+- arecord --list-devices
+- arecord --format=cd --duration=5 /tmp/test.wav
+- aplay /tmp/test.wav
+
