@@ -113,8 +113,8 @@ Config {
                \   { \
                \<box color=#8fbcbb type=Bottom width=3>%cpu%  %memory%  %multicoretemp%</box>  \
                \<box color=#b48ead type=Bottom width=3>%pkgs_icon% %pkgs%</box>  \
-               \<action=`amixer set Master toggle`><box color=#8fbcbb type=Bottom width=3>%alsa:hw:0:Master%</box></action>  \
-               \<action=`xkb-switch -n`><box color=#b48ead type=Bottom width=3>%kbd_icon% %kbd%</box></action> "
+               \<box color=#8fbcbb type=Bottom width=3><action=`pamixer -t` button=1><action=`pavucontrol` button=3>%alsa:hw:0:Master%</action></action></box>  \
+               \<box color=#b48ead type=Bottom width=3><action=`xkb-switch -n`>%kbd_icon% %kbd%</action></box> "
   }
 
 -- vi: ft=haskell

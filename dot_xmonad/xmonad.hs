@@ -75,6 +75,7 @@ myAdditionalKeys =
     ("M-p", spawn "rofi -show"),
     ("M-\\", spawn "rofi -show"),
     -- Close the focused window
+    -- TODO: use M-Q to kill
     ("M-S-x", kill),
     -- Toggle workspace layout
     ("M-S-<Space>", sendMessage NextLayout),
@@ -112,9 +113,9 @@ myAdditionalKeys =
     ("M-<Tab>", moveTo Next NonEmptyWS),
     ("M-S-<Tab>", moveTo Prev NonEmptyWS),
     -- Volume controls
-    ("<XF86AudioLowerVolume>", spawn "amixer -q sset Master 5%- unmute"),
-    ("<XF86AudioRaiseVolume>", spawn "amixer -q sset Master 5%+ unmute"),
-    ("<XF86AudioMute>", spawn "amixer set Master toggle")
+    ("<XF86AudioLowerVolume>", spawn "pamixer --decrease 5 --unmute"),
+    ("<XF86AudioRaiseVolume>", spawn "pamixer --increase 5 --unmute"),
+    ("<XF86AudioMute>", spawn "pamixer --toggle-mute")
   ]
 
 myRemoveKeys :: [String]
@@ -191,7 +192,14 @@ myManageHook =
         [title =? t --> doShift ws | (ws, t) <- myTitleShifts]
       ]
   where
-    myClassFloats = ["mpv", "SpeedCrunch", "Variety", "vlc"]
+    myClassFloats =
+      [ "Hdajackretask",
+        "mpv",
+        "Pavucontrol",
+        "SpeedCrunch",
+        "Variety",
+        "vlc"
+      ]
     myTitleFloats = []
     myClassShifts =
       [ -- Brave
