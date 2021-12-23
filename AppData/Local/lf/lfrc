@@ -3,9 +3,14 @@
 # - https://github.com/gokcehan/lf/blob/master/etc/lfrc.cmd.example
 # - https://github.com/gokcehan/lf/blob/master/etc/lfrc.ps1.example
 # - https://pkg.go.dev/github.com/gokcehan/lf
+# - https://github.com/BrodieRobertson/dotfiles/blob/master/config/lf/lfrc
 
 # Check https://pkg.go.dev/github.com/gokcehan/lf#hdr-Quick_Reference for
 # default options and commands.
+
+
+# TODO: add PDF/DOC previewer
+# https://github.com/BrodieRobertson/dotfiles/blob/master/config/lf/preview
 
 
 ## Custom options ##
@@ -13,7 +18,7 @@
 # Shell executable to use for shell commands.
 set shell cmd
 
-# Show icons before each item in the list. 
+# Show icons before each item in the list.
 set icons true
 
 # Number of lines shown in the top and the bottom of the screen when scrolling.
@@ -51,8 +56,29 @@ cmd trash %recycle-bin %fx%
 ## Custom mappings ##
 
 map - updir
+map . $explorer %PWD%
 map D trash
 map md mkdir
 map mf mkfile
 map w $pwsh -NoLogo
+
+
+## Directory mappings ##
+
+map g~ cd ~
+map gh cd ~
+
+map gA cd ~/AppData
+map ga cd C:/apps
+map ge cd ~/Desktop
+map go cd ~/Downloads
+map gt cd ~/AppData/Local/Temp/tmp
+map gv cd ~/development
+
+map gC cd C:/
+map gH cd H:/
+map gI cd I:/
+map gJ cd J:/
+map gS cd S:/
+map gT cd T:/
 
