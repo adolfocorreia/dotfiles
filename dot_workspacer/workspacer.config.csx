@@ -354,6 +354,11 @@ Action<IConfigContext> doConfig = (context) => {
     context.WindowRouter.IgnoreProcessName("AutoHotkeyU64");
     // Ant Renamer
     context.WindowRouter.IgnoreProcessName("Renamer");
+    // AppRV
+    context.WindowRouter.IgnoreTitle("Aplicativos RV");
+    context.WindowRouter.AddFilter((w) => !(
+        w.Title.Equals("pythonw") && w.Class.Equals("Qt5152QWindowIcon")
+    ));
     // ARC
     context.WindowRouter.AddFilter((w) => !(
         w.ProcessName.Equals("RiskControl") && w.Title.EndsWith("Risk Control Software")
@@ -390,6 +395,8 @@ Action<IConfigContext> doConfig = (context) => {
     ));
     // Keypirinha
     context.WindowRouter.IgnoreProcessName("keypirinha-x64");
+    // PDFCreator
+    context.WindowRouter.IgnoreProcessName("PDFCreator");
     // PortableApps
     context.WindowRouter.IgnoreProcessName("PortableAppsPlatform");
     context.WindowRouter.IgnoreProcessName("PortableAppsUpdater");
