@@ -42,19 +42,19 @@ Config {
      -- The refresh rate is given in tenths of seconds (10 = 1 second, 36000 = 1 hour)
   , commands =
     [ Run UnsafeStdinReader
-    , Run Cpu           [ "--template", "<fc=#8fbcbb><fn=1>\xf233</fn></fc> <total>"
+    , Run Cpu           [ "--template", "<fc=#8fbcbb><fn=1>\xf108</fn></fc> <total>"
                         , "--low",    "#d8dee9", "--Low",  "50"
                         , "--normal", "#ebcb8b"
                         , "--high",   "#bf616a", "--High", "80"
                         , "--suffix", "True"
                         ] 50
-    , Run Memory        [ "--template", "<fc=#8fbcbb><fn=1>\xf538</fn></fc> <usedratio>"
+    , Run Memory        [ "--template", "<fc=#8fbcbb><fn=1>\xf7c2</fn></fc> <usedratio>"
                         , "--low",    "#d8dee9", "--Low",  "75"
                         , "--normal", "#ebcb8b"
                         , "--high",   "#bf616a", "--High", "90"
                         , "--suffix", "True"
                         ] 50
-    , Run MultiCoreTemp [ "--template", "<fc=#8fbcbb><fn=1>\xf06d</fn></fc> <max>°C"
+    , Run MultiCoreTemp [ "--template", "<fc=#8fbcbb><fn=1>\xf2c9</fn></fc> <max>°C"
                         , "--low",    "#d8dee9", "--Low",  "50"
                         , "--normal", "#ebcb8b"
                         , "--high",   "#bf616a", "--High", "80"
