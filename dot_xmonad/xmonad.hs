@@ -125,18 +125,20 @@ myRemoveKeys =
   ]
 
 -- System tray
+-- TODO: move config to .stalonetrayrc
 mySystemTrayCommand :: String
 mySystemTrayCommand = unwords ["stalonetray", arguments, "&"]
   where
-    arguments = unwords [backgroundArg, geometryArg, growGravityArg, iconGravityArg, iconSizeArg]
+    arguments = unwords [backgroundArg, geometryArg, growGravityArg, iconGravityArg, iconSizeArg, slotSizeArg]
     backgroundArg = "--background '" ++ myBarBackgroundColor ++ "'"
     geometryArg = "--geometry 1x1+" ++ show x ++ "+" ++ show y
     growGravityArg = "--grow-gravity E"
     iconGravityArg = "--icon-gravity E"
     iconSizeArg = "--icon-size " ++ show iconSize
+    slotSizeArg = "--slot-size " ++ show (iconSize + 2)
     iconSize = 18
     x = monitor1w + monitor2w - iconSize - 4
-    y = (monitor1h - monitor2h) `div` 2 + 3
+    y = (monitor1h - monitor2h) `div` 2 + 1
     monitor1w = 2560
     monitor1h = 1440
     monitor2w = 1440
@@ -149,11 +151,17 @@ myStartupHook = do
   spawnOnce "lxsession --session XMonad &"
   -- Desktop compositor
   spawnOnce "picom &"
+  -- Notification manager
+  spawnOnce "dunst &"
   -- Icon tray
   spawnOnce mySystemTrayCommand
   -- Desktop background
   spawnOnce "feh --randomize --bg-fill /usr/share/backgrounds/**/*.jpg &"
   spawnOnce "variety &"
+  -- Clipboard manager
+  spawnOnce "copyq &"
+  -- Removable media manager
+  spawnOnce "udiskie --tray &"
 
 -- Layout configuration
 myLayoutHook :: ModifiedLayout _ _ _
@@ -197,7 +205,8 @@ myManageHook =
       ]
   where
     myClassFloats =
-      [ "Hdajackretask",
+      [ "copyq",
+        "Hdajackretask",
         "mpv",
         "Pavucontrol",
         "SpeedCrunch",
