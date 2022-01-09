@@ -83,11 +83,12 @@
        :checkers
        syntax              ; tasing you for every semicolon you forget
        (:if IS-LINUX
-          spell +flyspell) ; tasing you for misspelling mispelling
+        (spell +flyspell)) ; tasing you for misspelling mispelling
        ;;grammar           ; tasing grammar mistake every you make
 
        :tools
        ;;ansible
+       ;;biblio            ; Writes a PhD for you (citation needed)
        ;;debugger          ; FIXME stepping through code, to help you add bugs
        ;;direnv
        ;;docker
@@ -131,12 +132,13 @@
        ess                 ; emacs speaks statistics
        ;;factor
        ;;faust             ; dsp, but you get to keep your soul
+       ;;fortran           ; in FORTRAN, GOD is REAL (unless declared INTEGER)
        ;;fsharp            ; ML stands for Microsoft's Language
        ;;fstar             ; (dependent) types and (monadic) effects and Z3
        ;;gdscript          ; the language you waited for
        ;;(go +lsp)         ; the hipster dialect
        (:if IS-LINUX
-        haskell +lsp)      ; a language that's lazier than I am
+        (haskell +lsp))    ; a language that's lazier than I am
        ;;hy                ; readability of scheme w/ speed of python
        ;;idris             ; a language you can depend on
        json                ; At least it ain't XML
@@ -146,9 +148,9 @@
         julia)             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
        (:if IS-LINUX
-        latex +latexmk
-              +cdlatex
-              +fold)       ; writing papers in Emacs has never been so fun
+        (latex +latexmk
+               +cdlatex
+               +fold))     ; writing papers in Emacs has never been so fun
        ;;lean              ; for folks with too much to prove
        ;;ledger            ; be audit you can be
        ;;lua               ; one-based indices? one-based indices
@@ -161,8 +163,13 @@
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
-       (python +conda
-               +poetry)    ; beautiful is better than ugly
+       (:if IS-WINDOWS
+        python)
+       (:if IS-LINUX
+        (python +poetry
+                +pyenv
+                +lsp
+                +pyright)) ; beautiful is better than ugly
        ;;qt                ; the 'cutest' gui framework ever
        ;;racket            ; a DSL for DSLs
        ;;raku              ; the artist formerly known as perl6
