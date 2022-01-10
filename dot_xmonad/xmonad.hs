@@ -15,8 +15,12 @@ Partial type signature reference:
 
 -- Imports
 
+import Control.Monad
+import Data.Foldable
 import qualified Data.Map as M
 import Data.Maybe
+import Data.Monoid
+import Foreign.C
 import System.IO
 import XMonad
 import XMonad.Actions.CycleWS
@@ -86,7 +90,7 @@ myAdditionalKeys =
     -- Switch to previously displayed workspace
     ("M-<Backspace>", toggleWS),
     -- Swap master window
-    ("M-<Return>", dwmpromote),
+    ("M-<Return>", dwmpromote >> uP),
     -- Swap windows
     ("M-S-<Down>", windows W.swapDown),
     ("M-S-<Up>", windows W.swapUp),
@@ -97,18 +101,18 @@ myAdditionalKeys =
     ("M-<Down>", windows W.focusDown),
     ("M-<Up>", windows W.focusUp),
     -- Switch focus to next monitor
-    ("M-C-h", prevScreen),
-    ("M-C-l", nextScreen),
-    ("M-C-<Left>", prevScreen),
-    ("M-C-<Right>", nextScreen),
+    ("M-C-h", prevScreen >> uP),
+    ("M-C-l", nextScreen >> uP),
+    ("M-C-<Left>", prevScreen >> uP),
+    ("M-C-<Right>", nextScreen >> uP),
     -- Shift window to next monitor
-    ("M-S-h", shiftPrevScreen >> prevScreen),
-    ("M-S-l", shiftNextScreen >> nextScreen),
-    ("M-S-<Left>", shiftPrevScreen >> prevScreen),
-    ("M-S-<Right>", shiftNextScreen >> nextScreen),
+    ("M-S-h", shiftPrevScreen >> prevScreen >> uP),
+    ("M-S-l", shiftNextScreen >> nextScreen >> uP),
+    ("M-S-<Left>", shiftPrevScreen >> prevScreen >> uP),
+    ("M-S-<Right>", shiftNextScreen >> nextScreen >> uP),
     -- Use Alt-Tab to cycle through visible windows
-    ("M1-<Tab>", nextMatch Forward isOnAnyVisibleWS),
-    ("M1-S-<Tab>", nextMatch Backward isOnAnyVisibleWS),
+    ("M1-<Tab>", nextMatch Forward isOnAnyVisibleWS >> uP),
+    ("M1-S-<Tab>", nextMatch Backward isOnAnyVisibleWS >> uP),
     -- Cycle through non-empty workspaces
     ("M-<Tab>", moveTo Next NonEmptyWS),
     ("M-S-<Tab>", moveTo Prev NonEmptyWS),
@@ -117,6 +121,8 @@ myAdditionalKeys =
     ("<XF86AudioRaiseVolume>", spawn "pamixer --increase 5 --unmute"),
     ("<XF86AudioMute>", spawn "pamixer --toggle-mute")
   ]
+  where
+    uP = updatePointer (0.25, 0.05) (0.0, 0.0)
 
 myRemoveKeys :: [String]
 myRemoveKeys =
@@ -268,6 +274,39 @@ myXmobarConfig xm0 xm1 =
     clickableLayout = wrap "<action=`xdotool key super+shift+space`>" "</action>"
     boxed color = wrap ("<box type=Bottom width=3 color=" ++ color ++ ">") "</box>"
 
+-- Focus workspace on cursor hover
+-- References:
+-- - https://reddit.com/r/xmonad/comments/qi1tlm/focus_empty_workspace_on_cursor_hover
+-- - https://hackage.haskell.org/package/X11/docs/Graphics-X11-Xlib-Extras.html
+
+multiScreenFocusHook :: Event -> X All
+multiScreenFocusHook MotionEvent {ev_x = x, ev_y = y} = do
+  s <- getScreenForPos x y
+  case s of
+    Just cursorScreen -> do
+      let cursorScreenId = W.screen cursorScreen
+      focussedScreenId <- gets (W.screen . W.current . windowset)
+      when (cursorScreenId /= focussedScreenId) (focusWS $ W.tag $ W.workspace cursorScreen)
+      return (All True)
+    _ -> return (All True)
+  where
+    getScreenForPos :: CInt -> CInt -> X (Maybe (W.Screen WorkspaceId (Layout Window) Window ScreenId ScreenDetail))
+    getScreenForPos x y = do
+      ws <- windowset <$> get
+      let screens = W.current ws : W.visible ws
+          inRects = map (inRect x y . screenRect . W.screenDetail) screens
+      return $ fst <$> find snd (zip screens inRects)
+    inRect :: CInt -> CInt -> Rectangle -> Bool
+    inRect x y rect =
+      let l = fromIntegral (rect_x rect)
+          r = l + fromIntegral (rect_width rect)
+          t = fromIntegral (rect_y rect)
+          b = t + fromIntegral (rect_height rect)
+       in x >= l && x < r && y >= t && y < b
+    focusWS :: WorkspaceId -> X ()
+    focusWS ws = windows (W.view ws)
+multiScreenFocusHook _ = return (All True)
+
 -- Main
 main :: IO ()
 main = do
@@ -285,12 +324,12 @@ main = do
             workspaces = myWorkspaces,
             startupHook = myStartupHook,
             layoutHook = myLayoutHook,
-            manageHook = myManageHook <+> manageDocks <+> manageHook def,
-            handleEventHook = handleEventHook def <+> docksEventHook,
+            manageHook = manageHook def <+> manageDocks <+> myManageHook,
+            handleEventHook = handleEventHook def <+> docksEventHook <+> multiScreenFocusHook,
+            rootMask = rootMask def .|. pointerMotionMask,
             logHook =
               dynamicLogWithPP (myXmobarConfig xm0 xm1)
                 >> workspaceHistoryHook
-                >> updatePointer (0.25, 0.05) (0.0, 0.0)
           }
         `removeKeysP` myRemoveKeys
         `additionalKeysP` myAdditionalKeys
