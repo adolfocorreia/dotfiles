@@ -8,6 +8,7 @@ README.md
 {{ if ne .chezmoi.os "linux" }}
 .config/alacritty
 .config/Code
+.config/dunst
 .config/fish
 .config/gtk-3.0
 .config/Kvantum
