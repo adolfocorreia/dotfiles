@@ -104,6 +104,9 @@ Action<IConfigContext> doConfig = (context) => {
     int ws_chat_num  = 11;
     int ws_gapps_num = 12;
 
+    /* Disable auto-updates */
+    context.Branch = Branch.None;
+
     context.CanMinimizeWindows = true;
 
     /* Keybindings */
