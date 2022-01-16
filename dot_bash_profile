@@ -6,9 +6,14 @@ if [[ "$TERM" == "linux" ]]; then
 fi
 
 # Add extra directories to PATH.
-[ -d "$HOME/.local/bin" ]   && PATH="$HOME/.local/bin:${PATH}"
-[ -d "$HOME/.emacs.d/bin" ] && PATH="${PATH}:$HOME/.emacs.d/bin"
+[[ -d "$HOME/.local/bin" ]]   && PATH="$HOME/.local/bin:${PATH}"
+[[ -d "$HOME/.emacs.d/bin" ]] && PATH="${PATH}:$HOME/.emacs.d/bin"
 export PATH
+
+# Init pyenv by adding it to PATH.
+if [[ -x /usr/bin/pyenv ]]; then
+  eval "$(pyenv init --path)"
+fi
 
 
 [[ -r ~/.bashrc ]] && . ~/.bashrc

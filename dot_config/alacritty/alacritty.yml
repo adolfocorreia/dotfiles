@@ -50,11 +50,7 @@ selection:
 # `/bin/fish`. Entries in `shell.args` are passed unmodified as arguments to the
 # shell.
 shell:
-  program: /usr/bin/bash
-  args:
-    - --login
-    - -c
-    - tmux
+  program: /usr/bin/tmux
 
 
 mouse:

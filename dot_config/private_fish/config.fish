@@ -28,7 +28,12 @@ if status is-interactive
     # Load conda
     # Reference: https://stackoverflow.com/questions/34280113/add-conda-to-path-in-fish
     if type -q /opt/miniconda3/bin/conda
-        eval /opt/miniconda3/bin/conda "shell.fish" "hook" $argv | source
+        /opt/miniconda3/bin/conda "shell.fish" "hook" $argv | source
+    end
+
+    # Load pyenv
+    if type -q pyenv
+        pyenv init - | source
     end
 
     # Load starship
