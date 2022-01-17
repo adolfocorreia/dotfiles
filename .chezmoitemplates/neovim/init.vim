@@ -23,6 +23,13 @@ if !exists('g:os')
   endif
 endif
 
+" Disable external providers support.
+let g:loaded_python_provider = 0
+let g:loaded_python3_provider = 0
+let g:loaded_ruby_provider = 0
+let g:loaded_node_provider = 0
+let g:loaded_perl_provider = 0
+
 
 
 """""" Plugins """"""
@@ -219,11 +226,6 @@ Plug 'ryanoasis/vim-devicons'
 " Color highlighter.
 Plug 'norcalli/nvim-colorizer.lua'
 
-" Fade inactive buffers.
-if has('python') || has('python3')
-  Plug 'TaDaa/vimade'
-endif
-
 
 " TODO: evaluate 'junegunn/limelight.vim'
 
@@ -292,18 +294,6 @@ if g:os ==# 'Linux'
   colorscheme nord
 elseif g:os ==# 'Windows'
   colorscheme palenight
-endif
-
-" Manually fade inactive windows if vimade is not loaded.
-if !(has('python') || has('python3'))
-  " Set colors for non-current windows (NormalNC highlight group).
-  exec 'highlight NormalNC' .
-    \' guibg='   . synIDattr(synIDtrans(hlID('ColorColumn')), 'bg', 'gui') .
-    \' ctermbg=' . synIDattr(synIDtrans(hlID('ColorColumn')), 'bg', 'cterm')
-
-  " Turn off syntax in inactive windows.
-  autocmd vimrc WinEnter * ownsyntax on
-  autocmd vimrc WinLeave * ownsyntax off
 endif
 
 
@@ -427,7 +417,7 @@ execute 'highlight QuickScopePrimary gui=underline cterm=underline' .
   \' guifg='   . synIDattr(synIDtrans(hlID('Function')), 'fg', 'gui') .
   \' ctermfg=' . synIDattr(synIDtrans(hlID('Function')), 'fg', 'cterm')
 execute 'highlight QuickScopeSecondary gui=underline cterm=underline' .
-  \' guifg=' .   synIDattr(synIDtrans(hlID('Define')), 'fg', 'gui') .
+  \' guifg='   . synIDattr(synIDtrans(hlID('Define')), 'fg', 'gui') .
   \' ctermfg=' . synIDattr(synIDtrans(hlID('Define')), 'fg', 'cterm')
 
 " Visual Multi plugin key mappings.
@@ -522,7 +512,7 @@ xmap gl <Plug>(EasyAlign)
 xmap gr <Plug>(neoterm-repl-send)
 nmap gr <Plug>(neoterm-repl-send)
 nmap grr <Plug>(neoterm-repl-send-line)
-nmap grR :TREPLSendFile
+nmap grR :TREPLSendFile<CR>
 
 
 " Window navigation mappings.
