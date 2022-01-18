@@ -13,10 +13,10 @@ usermodmap=$HOME/.Xmodmap
 
 # Start some nice programs
 if [ -d /etc/X11/xinit/xinitrc.d ]; then
- for f in /etc/X11/xinit/xinitrc.d/?*.sh ; do
-  [ -x "$f" ] && . "$f"
- done
- unset f
+	for f in /etc/X11/xinit/xinitrc.d/?*.sh ; do
+		[ -x "$f" ] && . "$f"
+	done
+	unset f
 fi
 
 
@@ -57,6 +57,11 @@ setxkbmap -layout 'us,us(intl)' -option grp:win_space_toggle
 setxkbmap -option ctrl:nocaps,shift:both_capslock
 # Enable numlock in X
 numlockx
+
+# Screen locking
+# Reference: https://wiki.archlinux.org/title/Session_lock
+xset s 300
+xss-lock -- betterlockscreen --lock --quiet --time-format "%H:%M" &
 
 # Execute Xmonad
 exec xmonad > ~/.var/xsession-errors 2>&1

@@ -168,6 +168,8 @@ myStartupHook = do
   spawnOnce "copyq &"
   -- Removable media manager
   spawnOnce "udiskie --tray &"
+  -- Screen locker
+  spawnOnce "betterlockscreen --update ~/Wallpapers &"
 
 -- Layout configuration
 myLayoutHook :: ModifiedLayout _ _ _
