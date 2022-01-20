@@ -1,0 +1,10 @@
+# Reference: https://wiki.archlinux.org/title/Xdg-utils
+
+[Default Applications]
+application/pdf=xreader.desktop
+text/html=brave-browser.desktop
+text/plain=sublime_text.desktop
+x-scheme-handler/about=brave-browser.desktop
+x-scheme-handler/http=brave-browser.desktop
+x-scheme-handler/https=brave-browser.desktop
+x-scheme-handler/unknown=brave-browser.desktop
