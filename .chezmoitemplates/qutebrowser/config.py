@@ -29,6 +29,10 @@ config.bind("<Shift-Ins>", "set-cmd-text -a {clipboard}", mode="command")
 # Normal mode key bindings
 config.bind("<Ctrl+Shift+Tab>", "tab-prev")
 config.bind("<Ctrl+Tab>",       "tab-next")
+config.bind("<Ctrl+p>",         "scroll-page 0 -0.75")
+config.bind("<Ctrl+n>",         "scroll-page 0 0.75")
+config.bind("<Ctrl+y>",         "scroll up")
+config.bind("<Ctrl+e>",         "scroll down")
 
 # Command mode key bindings
 config.bind("<Ctrl+p>",       "completion-item-focus --history prev", mode="command")
@@ -51,6 +55,13 @@ config.bind("<Ctrl+k>", "fake-key <Shift+End><Delete>",        mode="insert")
 config.bind("<Ctrl+d>", "fake-key <Delete>",                   mode="insert")
 config.bind("<Alt+d>",  "fake-key <Shift+Ctrl+Right><Delete>", mode="insert")
 config.bind("<Ctrl+w>", "fake-key <Shift+Ctrl+Left><Delete>",  mode="insert")
+config.bind("<Ctrl+y>", "insert-text {primary}",               mode="insert")
+
+# Mode leave key bindings
+config.bind("<Ctrl+g>", "mode-leave", mode="caret")
+config.bind("<Ctrl+g>", "mode-leave", mode="command")
+config.bind("<Ctrl+g>", "mode-leave", mode="hint")
+config.bind("<Ctrl+g>", "mode-leave", mode="insert")
 
 
 # General configuration
