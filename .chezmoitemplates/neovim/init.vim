@@ -1,6 +1,3 @@
-scriptencoding utf-8
-
-
 """"" General """""
 
 " Define vimrc autocommand group.
@@ -23,7 +20,7 @@ if !exists('g:os')
   endif
 endif
 
-" Disable external providers support.
+" Disable external providers support to improve startup time.
 let g:loaded_python_provider = 0
 let g:loaded_python3_provider = 0
 let g:loaded_ruby_provider = 0
@@ -101,9 +98,9 @@ Plug 'tpope/vim-rsi'
 " and Q to remove current selection. Start insert mode with i, a or c.
 Plug 'mg979/vim-visual-multi'
 
+" TODO: evaluate alternatives (e.g. https://github.com/windwp/nvim-autopairs)
 " Insert and delete brackets, parenthesis and quotes in pairs.
 Plug 'Raimondi/delimitMate'
-" TODO: evaluate alternatives (e.g. https://github.com/windwp/nvim-autopairs)
 
 " Align text by some character or regex adding spaces to the left and/or right.
 " 1. Type gl in visual mode, or gl followed by motion or text object in normal
@@ -142,18 +139,23 @@ Plug 'wellle/targets.vim'
 " aI (ii with lines above/below).
 Plug 'michaeljsmith/vim-indent-object'
 
+" TODO: evaluate treesitter text objects plugin.
+
 
 """ Language support """
 
-" Syntax highlighting for several languages.
-Plug 'sheerun/vim-polyglot'
-" TODO: evaluate treesitter
+" Syntax highlighting, indentation, folding and more using ASTs.
+Plug 'nvim-treesitter/nvim-treesitter', {'do': 'TSUpdate'}
 
+" TODO: evaluate if sleuth is really necessary with treesitter
+" Automatic tab/indenting configuration.
+Plug 'tpope/vim-sleuth'
+
+" TODO: use LSP for more languages instead of syntastic
 " Syntax checking.
 if g:os !=# 'Windows'
   Plug 'vim-syntastic/syntastic'
 endif
-" TODO: profile syntastic
 
 " Code formatting.
 Plug 'sbdchd/neoformat'
@@ -164,6 +166,8 @@ Plug 'neovim/nvim-lspconfig'
 " LSP completion.
 Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
 
+" TODO: evaluate null-ls plugin
+
 
 """ Terminal, shell and file management support """
 
@@ -171,6 +175,7 @@ Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
 " send line (grr) and send file (grR).
 Plug 'kassio/neoterm'
 
+" TODO: create key mappings
 " Shell commands :Delete, :Move, :Rename, :Mkdir, :Chmod, :Wall (save all).
 Plug 'tpope/vim-eunuch'
 
@@ -186,6 +191,7 @@ Plug 'roginfarrer/vim-dirvish-dovish'
 
 """ Git integration """
 
+" TODO: evaluate neogit
 " Git support (:Git).
 Plug 'tpope/vim-fugitive'
 
@@ -195,66 +201,52 @@ Plug 'airblade/vim-gitgutter'
 
 """ Search commands """
 
+" TODO: evaluate telescope
 " Fuzzy find :Files, :GFiles (git files), :Buffers, :Colors, :Lines, :Marks,
 " :Windows, :History (old files), :History: (commands), :History/ (search),
 " :Commits, :Commands, :Maps.
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'airblade/vim-rooter'
-" TODO: evaluate telescope
 
 
 """ Windows and themes """
 
+" TODO: evaluate dashboard-nvim
 " Show start screen.
 Plug 'mhinz/vim-startify'
-" TODO: evaluate nvim alternative
-
-" Display a vim tip at startup.
-Plug 'michaelb/vim-tips'
 
 " Display popup with key bindings.
 Plug 'folke/which-key.nvim'
 
 " Status line.
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+Plug 'nvim-lualine/lualine.nvim'
 
 " Add icons.
-Plug 'ryanoasis/vim-devicons'
+Plug 'kyazdani42/nvim-web-devicons'
 
 " Color highlighter.
 Plug 'norcalli/nvim-colorizer.lua'
 
+" TODO: evaluate this better and create key mappings
+" Auto focusing and resizing windows.
+Plug 'beauwilliams/focus.nvim'
 
-" TODO: evaluate 'junegunn/limelight.vim'
 
 " Color themes.
-" - base16
-Plug 'chriskempson/base16-vim'
-" - edge
-Plug 'sainnhe/edge'
-" - everforest
-Plug 'sainnhe/everforest'
-" - gruvbox
-Plug 'gruvbox-community/gruvbox'
-" - gruvbox-material
-Plug 'sainnhe/gruvbox-material'
-" - nord
-Plug 'arcticicestudio/nord-vim'
-" - onedark
-Plug 'joshdick/onedark.vim'
-" - palenight
-Plug 'drewtempelmeyer/palenight.vim'
-" - sonokai
-Plug 'sainnhe/sonokai'
-" - tender
-Plug 'jacoborus/tender.vim'
 
-" Theme integration between vim airline and tmux status line.
-if executable('tmux')
-  Plug 'edkolev/tmuxline.vim'
-endif
+" Treesitter supported colorschemes:
+" - https://github.com/nvim-treesitter/nvim-treesitter/wiki/Colorschemes
+" - https://github.com/rockerBOO/awesome-neovim#tree-sitter-supported-colorscheme
+
+" Tokyo Night
+Plug 'folke/tokyonight.nvim'
+
+
+""" Neovim management """
+
+" Startup profiling.
+Plug 'dstein64/vim-startuptime'
 
 
 " Initialize plugin system.
@@ -268,51 +260,11 @@ call plug#end()
 set termguicolors
 
 " Set theme properties.
-" - edge
-let g:edge_background = 'hard'
-" - everforest
-let g:everforest_background = 'hard'
-" - gruvbox
-let g:gruvbox_italic = 1
-let g:gruvbox_contrast_dark = 'hard'
-" - gruvbox-material
-let g:gruvbox_material_background = 'hard'
-" - onedark
-let g:onedark_terminal_italics = 1
-" - palenight
-let g:palenight_terminal_italics = 1
-" - sonokai
-let g:sonokai_background = 'hard'
-
-" Set vim-airline properties.
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#tab_nr_type = 1
+let g:tokyonight_style = 'storm'
+let g:tokyonight_lualine_bold = 1
 
 " Load default color scheme.
-if g:os ==# 'Linux'
-  colorscheme nord
-elseif g:os ==# 'Windows'
-  colorscheme palenight
-endif
-
-
-" Use tmuxline to configure tmux's status line.
-" References:
-" - https://github.com/wfxr/tmux-power
-" - https://github.com/tmux-plugins/tmux-prefix-highlight
-if executable('tmux')
-  let g:tmuxline_preset = {
-    \'a'    : '',
-    \'b'    : ' #(whoami)@#h',
-    \'c'    : ' #S',
-    \'win'  : '#I:#W#F',
-    \'cwin' : '#I:#W#F',
-    \'x'    : '#{?client_prefix,#[reverse]prefix#[noreverse],#{?pane_in_mode,  #[reverse]copy#[noreverse],       }}',
-    \'y'    : ' %R',
-    \'z'    : ' %a %F'
-  \}
-endif
+colorscheme tokyonight
 
 
 """""" Misc settings """"""
@@ -335,7 +287,8 @@ set clipboard=unnamedplus
 set lazyredraw
 
 " Lines with equal indent form a fold.
-set foldmethod=indent
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
 set foldnestmax=4
 set foldlevel=2
 
@@ -345,26 +298,31 @@ set scrolloff=5
 " Keep 5 columns to the left or to the right of the cursor.
 set sidescrolloff=5
 
+" TODO: remove following lines after evaluating focus plugin
 " Highlight line under cursor. It helps with navigation.
-set cursorline
-let cul_blacklist = ['terminal']
-autocmd vimrc WinEnter * if index(cul_blacklist, &buftype) < 0 | setlocal cursorline
-autocmd vimrc WinLeave * if index(cul_blacklist, &buftype) < 0 | setlocal nocursorline
+" set cursorline
+" let cul_blacklist = ['terminal']
+" autocmd vimrc WinEnter * if index(cul_blacklist, &buftype) < 0 | setlocal cursorline
+" autocmd vimrc WinLeave * if index(cul_blacklist, &buftype) < 0 | setlocal nocursorline
 
 " Highlight column 80. It helps identifying long lines.
-set colorcolumn=80
-let cc_blacklist = ['nofile']
-autocmd vimrc WinEnter * if index(cc_blacklist, &buftype) < 0 | setlocal colorcolumn+=80
-autocmd vimrc WinLeave * if index(cc_blacklist, &buftype) < 0 | setlocal colorcolumn-=80
+" set colorcolumn=80
+" let cc_blacklist = ['nofile']
+" autocmd vimrc WinEnter * if index(cc_blacklist, &buftype) < 0 | setlocal colorcolumn+=80
+" autocmd vimrc WinLeave * if index(cc_blacklist, &buftype) < 0 | setlocal colorcolumn-=80
 
 " Print the line number in front of each line.
-set number
+" set number
 
 " Show the line number relative to the line with the cursor in front of each line.
-set relativenumber
-let rnu_blacklist = ['help', 'terminal']
-autocmd vimrc WinEnter * if index(rnu_blacklist, &buftype) < 0 | setlocal relativenumber
-autocmd vimrc WinLeave * if index(rnu_blacklist, &buftype) < 0 | setlocal norelativenumber
+" set relativenumber
+" let rnu_blacklist = ['help', 'terminal']
+" autocmd vimrc WinEnter * if index(rnu_blacklist, &buftype) < 0 | setlocal relativenumber
+" autocmd vimrc WinLeave * if index(rnu_blacklist, &buftype) < 0 | setlocal norelativenumber
+
+" Disable numbering and cursor highlighting in terminal buffers.
+" autocmd vimrc TermOpen * setlocal nonumber norelativenumber nocursorline
+
 
 " Open new split panes to right and bottom.
 set splitbelow
@@ -388,9 +346,6 @@ set wildignore+=*.doc,*.docx,*.xls,*.xslx,*.ppt,*.pptx
 set wildignore+=*.png,*.jpg,*.gif
 set wildignore+=*.pyc,*.pyo,*.pyd
 
-" Disable numbering and cursor highlighting in terminal buffers.
-autocmd vimrc TermOpen * setlocal nonumber norelativenumber nocursorline
-
 " Highlight yanked region.
 autocmd vimrc TextYankPost * silent! lua vim.highlight.on_yank{timeout=500}
 
@@ -402,9 +357,6 @@ autocmd vimrc TextYankPost * silent! lua vim.highlight.on_yank{timeout=500}
 let g:loaded_netrw = 1
 let g:loaded_netrwPlugin = 1
 
-" Enable sneak labels when moving.
-let g:sneak#label = 1
-
 " Disable quick-scope highlighting for certain buffers and file types.
 let g:qs_buftype_blacklist = ['terminal', 'nofile', 'help']
 let g:qs_filetype_blacklist = ['startify', 'fugitive']
@@ -413,12 +365,10 @@ let g:qs_filetype_blacklist = ['startify', 'fugitive']
 " References:
 " - https://github.com/unblevable/quick-scope
 " - https://stackoverflow.com/questions/18774910/how-to-partially-link-highlighting-groups
-execute 'highlight QuickScopePrimary gui=underline cterm=underline' .
-  \' guifg='   . synIDattr(synIDtrans(hlID('Function')), 'fg', 'gui') .
-  \' ctermfg=' . synIDattr(synIDtrans(hlID('Function')), 'fg', 'cterm')
-execute 'highlight QuickScopeSecondary gui=underline cterm=underline' .
-  \' guifg='   . synIDattr(synIDtrans(hlID('Define')), 'fg', 'gui') .
-  \' ctermfg=' . synIDattr(synIDtrans(hlID('Define')), 'fg', 'cterm')
+execute 'highlight QuickScopePrimary gui=underline' .
+  \' guifg='   . synIDattr(synIDtrans(hlID('ErrorMsg')), 'fg', 'gui')
+execute 'highlight QuickScopeSecondary gui=underline' .
+  \' guifg='   . synIDattr(synIDtrans(hlID('WarningMsg')), 'fg', 'gui')
 
 " Visual Multi plugin key mappings.
 let g:VM_maps = {}

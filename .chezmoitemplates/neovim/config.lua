@@ -122,3 +122,39 @@ require('lspconfig').pyright.setup({
   require('coq').lsp_ensure_capabilities()
 })
 
+
+-- treesitter
+require('nvim-treesitter.configs').setup({
+  ensure_installed = "maintained",
+  sync_install = false,
+  highlight = { enable = true },
+  indent = { enable = true },
+})
+
+
+-- lualine
+require('lualine').setup({
+  sections = {
+    lualine_a = { 'mode' },
+    lualine_b = { 'branch', 'diff', 'diagnostics' },
+    lualine_c = { 'filename' },
+    lualine_x = { { 'filetype', colored = false } },
+    lualine_y = { 'encoding', 'fileformat' },
+    lualine_z = { 'progress', 'location' },
+  },
+  tabline = {
+    lualine_a = { { 'buffers', mode = 0 } },
+    lualine_z = { { 'tabs', mode = 0 } },
+  }
+})
+
+-- focus
+require('focus').setup({
+  excluded_buftypes = { 'help', 'nofile', 'popup', 'prompt', 'terminal', 'vim-plug' },
+  excluded_filetypes = { 'toggleterm', 'vim-plug' },
+  minwidth = 80,
+  cursorline = true,
+  cursorcolumn = true,
+  colorcolumn = { enable = true, width = 100 },
+  hybridnumber = true,
+})
