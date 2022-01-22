@@ -98,9 +98,9 @@ Plug 'tpope/vim-rsi'
 " and Q to remove current selection. Start insert mode with i, a or c.
 Plug 'mg979/vim-visual-multi'
 
-" TODO: evaluate alternatives (e.g. https://github.com/windwp/nvim-autopairs)
+" TODO: evaluate this better
 " Insert and delete brackets, parenthesis and quotes in pairs.
-Plug 'Raimondi/delimitMate'
+Plug 'windwp/nvim-autopairs'
 
 " Align text by some character or regex adding spaces to the left and/or right.
 " 1. Type gl in visual mode, or gl followed by motion or text object in normal
@@ -246,6 +246,7 @@ Plug 'folke/tokyonight.nvim'
 """ Neovim management """
 
 " Startup profiling.
+" It may be necessary to disable focus.nvim to use this.
 Plug 'dstein64/vim-startuptime'
 
 
@@ -374,9 +375,6 @@ execute 'highlight QuickScopeSecondary gui=underline' .
 let g:VM_maps = {}
 let g:VM_maps['Find Under']         = '<M-d>'
 let g:VM_maps['Find Subword Under'] = '<M-d>'
-
-" Make delimitMate ignore double quotes (") on vim files.
-autocmd vimrc FileType vim let b:delimitMate_quotes = "' `"
 
 " Syntastic settings.
 if exists('g:loaded_syntastic_plugin')

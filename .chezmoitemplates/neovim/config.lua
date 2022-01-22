@@ -1,3 +1,14 @@
+--- LSP configuration.
+
+-- Python
+require('lspconfig').pyright.setup({
+  require('coq').lsp_ensure_capabilities()
+})
+
+
+
+--- Plugin configuration.
+
 -- whick-key.nvim settings.
 local wk = require('which-key')
 wk.setup()
@@ -115,15 +126,7 @@ wk.register({
 require('colorizer').setup()
 
 
--- LSP configuration.
-
--- Python
-require('lspconfig').pyright.setup({
-  require('coq').lsp_ensure_capabilities()
-})
-
-
--- treesitter
+-- nvim-treesitter settings.
 require('nvim-treesitter.configs').setup({
   ensure_installed = "maintained",
   sync_install = false,
@@ -132,7 +135,7 @@ require('nvim-treesitter.configs').setup({
 })
 
 
--- lualine
+-- lualine.nvim settings.
 require('lualine').setup({
   sections = {
     lualine_a = { 'mode' },
@@ -148,8 +151,10 @@ require('lualine').setup({
   }
 })
 
--- focus
+
+-- focus.nvim settings.
 require('focus').setup({
+  enable = true,
   excluded_buftypes = { 'help', 'nofile', 'popup', 'prompt', 'terminal', 'vim-plug' },
   excluded_filetypes = { 'toggleterm', 'vim-plug' },
   minwidth = 80,
@@ -158,3 +163,8 @@ require('focus').setup({
   colorcolumn = { enable = true, width = 100 },
   hybridnumber = true,
 })
+
+
+-- nvim-autopairs settings.
+require('nvim-autopairs').setup()
+
