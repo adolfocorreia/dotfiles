@@ -1,0 +1,30 @@
+# References:
+# - https://github.com/dunst-project/dunst/blob/master/dunstrc
+# - https://github.com/khamer/base16-dunst/blob/master/themes/base16-nord.dunstrc
+
+
+[global]
+	offset = 8x32
+
+	font = Iosevka Aile 15
+
+	frame_color     = "#bb9af7"
+	separator_color = "#bb9af7"
+
+
+[base16_low]
+	msg_urgency = low
+	background  = "#1d202f"
+	foreground  = "#a9b1d6"
+
+[base16_normal]
+	msg_urgency = normal
+	background  = "#24283b"
+	foreground  = "#c0caf5"
+
+[base16_critical]
+	msg_urgency = critical
+	background  = "#7dcfff"
+	foreground  = "#c0caf5"
+
+# vim: ft=cfg

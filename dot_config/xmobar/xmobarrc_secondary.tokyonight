@@ -1,0 +1,27 @@
+Config {
+
+  -- Appearance
+    font            = "xft:Roboto Mono:pixelsize=14:antialias=true:weight=semibold"
+  , additionalFonts = [ "xft:Font Awesome 5 Free Solid:pixelsize=14"
+                      , "xft:Material Design Icons:pixelsize=18"]
+  , bgColor         = "#292e42"
+  , fgColor         = "#c0caf5"
+  , position        = TopSize L 100 24
+
+  -- Behaviour
+  , allDesktops  = False
+  , pickBroadest = False
+
+
+  -- Plugin commands
+  , commands =
+    [ Run UnsafeStdinReader
+    ]
+
+  -- Layout
+  , sepChar  = "%"
+  , alignSep = "}{"
+  , template = " %UnsafeStdinReader% "
+  }
+
+-- vi: ft=haskell

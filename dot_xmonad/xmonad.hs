@@ -39,24 +39,44 @@ import XMonad.Util.Run
 import XMonad.Util.SpawnOnce
 
 -- Nord theme colors
+-- myBlack, myBlue, myGreen, myOrange, myPink, myRed, myWhite, myYellow :: String
+-- myBlack = "#2e3440"
+-- myBlue = "#81a1c1"
+-- myGreen = "#a3be8c"
+-- myOrange = "#d08770"
+-- myPink = "#b48ead"
+-- myRed = "#bf616a"
+-- myWhite = "#d8dee9"
+-- myYellow = "#ebcb8b"
+
+-- myCurrentColor, myVisibleColor, myHiddenColor, myHiddenNoWindowsColor :: String
+-- myCurrentColor = myPink
+-- myVisibleColor = "#8fbcbb"
+-- myHiddenColor = myWhite
+-- myHiddenNoWindowsColor = "#4c566a"
+
+-- myBarBackgroundColor :: String
+-- myBarBackgroundColor = "#3b4242"
+
+-- Tokyo Night theme colors
 myBlack, myBlue, myGreen, myOrange, myPink, myRed, myWhite, myYellow :: String
-myBlack = "#2e3440"
-myBlue = "#81a1c1"
-myGreen = "#a3be8c"
-myOrange = "#d08770"
-myPink = "#b48ead"
-myRed = "#bf616a"
-myWhite = "#d8dee9"
-myYellow = "#ebcb8b"
+myBlack = "#24283b"
+myBlue = "#7aa2f7"
+myGreen = "#9ece6a"
+myOrange = "#ff9e64"
+myPink = "#bb9af7"
+myRed = "#f7768e"
+myWhite = "#c0caf5"
+myYellow = "#e0af68"
 
 myCurrentColor, myVisibleColor, myHiddenColor, myHiddenNoWindowsColor :: String
 myCurrentColor = myPink
-myVisibleColor = "#8fbcbb"
+myVisibleColor = "#7dcfff"
 myHiddenColor = myWhite
-myHiddenNoWindowsColor = "#4c566a"
+myHiddenNoWindowsColor = "#414868"
 
 myBarBackgroundColor :: String
-myBarBackgroundColor = "#3b4242"
+myBarBackgroundColor = "#1d202f"
 
 -- Base settings
 myModMask :: KeyMask
@@ -290,7 +310,7 @@ main = do
             terminal = myTerminal,
             focusedBorderColor = myCurrentColor,
             normalBorderColor = myBlack,
-            borderWidth = 3,
+            borderWidth = 1,
             workspaces = myWorkspaces,
             startupHook = myStartupHook,
             layoutHook = myLayoutHook,
