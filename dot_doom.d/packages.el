@@ -48,18 +48,3 @@
 ;(unpin! pinned-package another-pinned-package)
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
-
-
-;; Use evil operator (g~) to cycle text objects through camelCase, kebab-case,
-;; snake_case and UPPER_CASE.
-(package! evil-string-inflection)
-
-;; Directory diff tool.
-(package! ztree)
-
-;; vimrc-mode.
-(package! vimrc-mode)
-
-;; For some reason, Doom is not loading the lsp-haskell package.
-(when IS-LINUX
-  (package! lsp-haskell))
