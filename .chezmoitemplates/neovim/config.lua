@@ -57,7 +57,7 @@ wk.register({
     ['w'] = {'<Cmd>write<CR>',     'Write buffer'},
     ['n'] = {'<Cmd>bnext<CR>',     'Next buffer'},
     ['p'] = {'<Cmd>bprevious<CR>', 'Previous buffer'},
-    ['d'] = {'<Cmd>bdelete<CR>',   'Delete buffer'},
+    ['d'] = {'<Cmd>Bdelete<CR>',   'Delete buffer'},
     ['e'] = {'<Cmd>enew<CR>',      'Edit new buffer'},
     ['a'] = {'<Cmd>wall<CR>',      'Write all buffers'},
   },
@@ -125,6 +125,16 @@ wk.register({
     ['m'] = {'<Cmd>Maps<CR>',     'Maps'},
   },
 
+  t = {
+    name = 'trouble',
+    ['t'] = {'<Cmd>TroubleToggle<CR>', 'Toggle Trouble'},
+    ['w'] = {'<Cmd>TroubleToggle workspace_diagnostics<CR>', 'Workspace diagnostics'},
+    ['d'] = {'<Cmd>TroubleToggle document_diagnostics<CR>', 'Document diagnostics'},
+    ['q'] = {'<Cmd>TroubleToggle quickfix<CR>', 'Quickfix'},
+    ['l'] = {'<Cmd>TroubleToggle loclist<CR>', 'Loclist'},
+    ['r'] = {'<Cmd>TroubleToggle lsp_references<CR>', 'LSP references'},
+  },
+
 }, { prefix = '<Leader>' })
 
 
@@ -139,6 +149,8 @@ require('nvim-treesitter.configs').setup({
   highlight = { enable = true },
   indent = { enable = true },
   rainbow = { enable = true },
+  -- https://github.com/nvim-treesitter/nvim-treesitter#i-want-to-use-a-http-proxy-for-downloading-the-parsers
+  prefer_git = true,
 })
 
 
@@ -159,21 +171,10 @@ require('lualine').setup({
 })
 
 
--- focus.nvim settings.
-require('focus').setup({
-  enable = true,
-  excluded_buftypes = { 'help', 'nofile', 'popup', 'prompt', 'terminal', 'vim-plug' },
-  excluded_filetypes = { 'toggleterm', 'vim-plug' },
-  minwidth = 80,
-  cursorline = true,
-  cursorcolumn = true,
-  colorcolumn = { enable = true, width = 100 },
-  hybridnumber = true,
-})
-
-
 -- nvim-autopairs settings.
-require('nvim-autopairs').setup()
+require('nvim-autopairs').setup({
+  map_bs = false,
+})
 
 
 -- null-ls.nvim settings.
@@ -185,7 +186,7 @@ require('null-ls').setup({
     -- Python
     require('null-ls').builtins.diagnostics.pylint,
     require('null-ls').builtins.formatting.black,
-    require('null-ls').builtins.formatting.isort,
+    -- require('null-ls').builtins.formatting.isort,
   }
 })
 
@@ -196,7 +197,7 @@ require('gitsigns').setup()
 
 
 -- neogit settings.
-require('neogit').setup({})
+-- require('neogit').setup({})
 
 
 -- trouble.nvim settings.

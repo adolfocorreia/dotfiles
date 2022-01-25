@@ -124,6 +124,8 @@ Plug 'junegunn/vim-easy-align'
 " TODO: evaluate this better
 " Insert and delete brackets, parenthesis and quotes in pairs.
 Plug 'windwp/nvim-autopairs'
+" Note: nvim-autopairs backspace map is incompatible with vim-visual-multi
+" Evaluate 'LunarWatcher/auto-pairs' since it might be compatible
 
 " Reopen files at last edit position.
 Plug 'farmergreg/vim-lastplace'
@@ -204,8 +206,8 @@ Plug 'roginfarrer/vim-dirvish-dovish'
 
 " TODO: evaluate neogit
 " Git support (:Git).
-" Plug 'tpope/vim-fugitive'
-Plug 'TimUntersberger/neogit'
+Plug 'tpope/vim-fugitive'
+" Plug 'TimUntersberger/neogit'
 
 " Show a git diff in the sign column.
 Plug 'lewis6991/gitsigns.nvim'
@@ -237,16 +239,15 @@ Plug 'nvim-lualine/lualine.nvim'
 " Add icons.
 Plug 'kyazdani42/nvim-web-devicons'
 
+" Delete buffers without losing window layout.
+Plug 'famiu/bufdelete.nvim'
+
 " List for showing diagnostics, references, search results, quickfix and
 " location lists.
 Plug 'folke/trouble.nvim'
 
 " Color highlighter.
 Plug 'norcalli/nvim-colorizer.lua'
-
-" TODO: evaluate this better and create key mappings
-" Auto focusing and resizing windows.
-Plug 'beauwilliams/focus.nvim'
 
 " Treesitter supported colorschemes:
 " - https://github.com/nvim-treesitter/nvim-treesitter/wiki/Colorschemes
@@ -259,7 +260,6 @@ Plug 'folke/tokyonight.nvim'
 """ Neovim management """
 
 " Startup profiling.
-" It may be necessary to disable focus.nvim to use this.
 Plug 'dstein64/vim-startuptime'
 
 
@@ -312,30 +312,33 @@ set scrolloff=5
 " Keep 5 columns to the left or to the right of the cursor.
 set sidescrolloff=5
 
-" TODO: remove following lines after evaluating focus plugin
-" Highlight line under cursor. It helps with navigation.
+" TODO: organize commands below as functions (in lua?)
+" Highlight line and column under cursor. It helps with navigation.
 " set cursorline
-" let cul_blacklist = ['terminal']
-" autocmd vimrc WinEnter * if index(cul_blacklist, &buftype) < 0 | setlocal cursorline
-" autocmd vimrc WinLeave * if index(cul_blacklist, &buftype) < 0 | setlocal nocursorline
+" set cursorcolumn
+let cul_cuc_blacklist = ['terminal']
+autocmd vimrc BufWinEnter * if index(cul_cuc_blacklist, &buftype) < 0 | setlocal cul   | setlocal cuc   | endif
+autocmd vimrc WinEnter    * if index(cul_cuc_blacklist, &buftype) < 0 | setlocal cul   | setlocal cuc   | endif
+autocmd vimrc WinLeave    * if index(cul_cuc_blacklist, &buftype) < 0 | setlocal nocul | setlocal nocuc | endif
 
 " Highlight column 80. It helps identifying long lines.
 " set colorcolumn=80
-" let cc_blacklist = ['nofile']
-" autocmd vimrc WinEnter * if index(cc_blacklist, &buftype) < 0 | setlocal colorcolumn+=80
-" autocmd vimrc WinLeave * if index(cc_blacklist, &buftype) < 0 | setlocal colorcolumn-=80
+let cc_blacklist = ['help', 'nofile', 'nowrite', 'terminal']
+autocmd vimrc BufWinEnter * if index(cc_blacklist, &buftype) < 0 | setlocal colorcolumn+=80
+autocmd vimrc WinEnter    * if index(cc_blacklist, &buftype) < 0 | setlocal colorcolumn+=80
+autocmd vimrc WinLeave    * if index(cc_blacklist, &buftype) < 0 | setlocal colorcolumn-=80
 
-" Print the line number in front of each line.
+" Show the line number relative to the cursor in front of each line and the
+" absolute line number for the one with the cursor.
 " set number
-
-" Show the line number relative to the line with the cursor in front of each line.
 " set relativenumber
-" let rnu_blacklist = ['help', 'terminal']
-" autocmd vimrc WinEnter * if index(rnu_blacklist, &buftype) < 0 | setlocal relativenumber
-" autocmd vimrc WinLeave * if index(rnu_blacklist, &buftype) < 0 | setlocal norelativenumber
+let nu_rnu_blacklist = ['help', 'nofile', 'nowrite', 'terminal']
+autocmd vimrc BufWinEnter * if index(nu_rnu_blacklist, &buftype) < 0 | setlocal nu   | setlocal rnu   | endif
+autocmd vimrc WinEnter    * if index(nu_rnu_blacklist, &buftype) < 0 | setlocal nu   | setlocal rnu   | endif
+autocmd vimrc WinLeave    * if index(nu_rnu_blacklist, &buftype) < 0 | setlocal nonu | setlocal nornu | endif
 
 " Disable numbering and cursor highlighting in terminal buffers.
-" autocmd vimrc TermOpen * setlocal nonumber norelativenumber nocursorline
+autocmd vimrc TermOpen * setlocal nonumber norelativenumber nocursorline nocursorcolumn
 
 
 " Open new split panes to right and bottom.
@@ -461,7 +464,12 @@ xmap gl <Plug>(EasyAlign)
 xmap gr <Plug>(neoterm-repl-send)
 nmap gr <Plug>(neoterm-repl-send)
 nmap grr <Plug>(neoterm-repl-send-line)
-nmap grR :TREPLSendFile<CR>
+nmap <silent> grR :TREPLSendFile<CR>
+
+
+" Map vim-better-whitespace commands.
+nnoremap <silent> ]w :NextTrailingWhitespace<CR>
+nnoremap <silent> [w :PrevTrailingWhitespace<CR>
 
 
 " Window navigation mappings.
