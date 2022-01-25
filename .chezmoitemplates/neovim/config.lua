@@ -1,13 +1,19 @@
 --- LSP configuration.
+-- Reference: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 
--- Python
+-- Python (pyright)
+-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#pyright
 require('lspconfig').pyright.setup({
   require('coq').lsp_ensure_capabilities()
 })
 
+-- Julia (julials)
+-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#julials
+require('lspconfig').julials.setup({})
 
 
---- Plugin configuration.
+
+--- Plugin settings.
 
 -- whick-key.nvim settings.
 local wk = require('which-key')
@@ -101,7 +107,7 @@ wk.register({
 
   c = {
     name  = 'code',
-    ['f'] = {'<Cmd>Neoformat<CR>', 'Format buffer'},
+    ['f'] = {'<Cmd>lua vim.lsp.buf.formatting()<CR>', 'Format buffer'},
   },
 
   g = {
@@ -132,6 +138,7 @@ require('nvim-treesitter.configs').setup({
   sync_install = false,
   highlight = { enable = true },
   indent = { enable = true },
+  rainbow = { enable = true },
 })
 
 
@@ -167,4 +174,31 @@ require('focus').setup({
 
 -- nvim-autopairs settings.
 require('nvim-autopairs').setup()
+
+
+-- null-ls.nvim settings.
+-- Reference: https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
+require('null-ls').setup({
+  sources = {
+    -- Code actions
+    require('null-ls').builtins.code_actions.gitsigns,
+    -- Python
+    require('null-ls').builtins.diagnostics.pylint,
+    require('null-ls').builtins.formatting.black,
+    require('null-ls').builtins.formatting.isort,
+  }
+})
+
+
+-- gitsigns.nvim settings.
+-- TODO: set key bindings: https://github.com/lewis6991/gitsigns.nvim#keymaps
+require('gitsigns').setup()
+
+
+-- neogit settings.
+require('neogit').setup({})
+
+
+-- trouble.nvim settings.
+require('trouble').setup({})
 

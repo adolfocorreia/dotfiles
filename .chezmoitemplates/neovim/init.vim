@@ -27,6 +27,10 @@ let g:loaded_ruby_provider = 0
 let g:loaded_node_provider = 0
 let g:loaded_perl_provider = 0
 
+" Disable netrw.
+let g:loaded_netrw = 1
+let g:loaded_netrwPlugin = 1
+
 
 
 """""" Plugins """"""
@@ -43,6 +47,12 @@ endif
 
 " Installation directory for vim-plug plugins.
 call plug#begin(stdpath('data') . '/plugged')
+
+
+""" Dependency plugins """
+
+" Common lua functions.
+Plug 'nvim-lua/plenary.nvim'
 
 
 """ Useful keybingings """
@@ -98,10 +108,6 @@ Plug 'tpope/vim-rsi'
 " and Q to remove current selection. Start insert mode with i, a or c.
 Plug 'mg979/vim-visual-multi'
 
-" TODO: evaluate this better
-" Insert and delete brackets, parenthesis and quotes in pairs.
-Plug 'windwp/nvim-autopairs'
-
 " Align text by some character or regex adding spaces to the left and/or right.
 " 1. Type gl in visual mode, or gl followed by motion or text object in normal
 "    mode to enter interactive mode.
@@ -115,8 +121,16 @@ Plug 'windwp/nvim-autopairs'
 " Reference: https://github.com/junegunn/vim-easy-align
 Plug 'junegunn/vim-easy-align'
 
+" TODO: evaluate this better
+" Insert and delete brackets, parenthesis and quotes in pairs.
+Plug 'windwp/nvim-autopairs'
+
 " Reopen files at last edit position.
 Plug 'farmergreg/vim-lastplace'
+
+" TODO: add key mappings
+" Whitespace highlighting and removal.
+Plug 'ntpeters/vim-better-whitespace'
 
 
 """ Custom motions and text objects """
@@ -148,17 +162,9 @@ Plug 'michaeljsmith/vim-indent-object'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': 'TSUpdate'}
 
 " TODO: evaluate if sleuth is really necessary with treesitter
+" TODO: consider using expandtab, tabstop, softtabstop, shiftwidth explicitly
 " Automatic tab/indenting configuration.
 Plug 'tpope/vim-sleuth'
-
-" TODO: use LSP for more languages instead of syntastic
-" Syntax checking.
-if g:os !=# 'Windows'
-  Plug 'vim-syntastic/syntastic'
-endif
-
-" Code formatting.
-Plug 'sbdchd/neoformat'
 
 " LSP configuration.
 Plug 'neovim/nvim-lspconfig'
@@ -167,17 +173,22 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
 
 " TODO: evaluate null-ls plugin
+" Inject LSP diagnostics, code actions and more from non-LSP tools.
+Plug 'jose-elias-alvarez/null-ls.nvim'
 
 
-""" Terminal, shell and file management support """
+" Language plugins.
+" Reference: https://github.com/sheerun/vim-polyglot#language-packs
+
+" Julia. LaTeX to Unicode substitutions.
+Plug 'JuliaEditorSupport/julia-vim'
+
+
+""" Terminal and file management support """
 
 " Send code to REPL: send motion in normal mode (gr_) or visual mode (gr),
 " send line (grr) and send file (grR).
 Plug 'kassio/neoterm'
-
-" TODO: create key mappings
-" Shell commands :Delete, :Move, :Rename, :Mkdir, :Chmod, :Wall (save all).
-Plug 'tpope/vim-eunuch'
 
 " Vinegar-like path navigator. Use - to open, gq to quit and g? for help.
 " Go to parent directory (-), reload (R), open file at cursor (i) or selected
@@ -193,10 +204,11 @@ Plug 'roginfarrer/vim-dirvish-dovish'
 
 " TODO: evaluate neogit
 " Git support (:Git).
-Plug 'tpope/vim-fugitive'
+" Plug 'tpope/vim-fugitive'
+Plug 'TimUntersberger/neogit'
 
 " Show a git diff in the sign column.
-Plug 'airblade/vim-gitgutter'
+Plug 'lewis6991/gitsigns.nvim'
 
 
 """ Search commands """
@@ -225,15 +237,16 @@ Plug 'nvim-lualine/lualine.nvim'
 " Add icons.
 Plug 'kyazdani42/nvim-web-devicons'
 
+" List for showing diagnostics, references, search results, quickfix and
+" location lists.
+Plug 'folke/trouble.nvim'
+
 " Color highlighter.
 Plug 'norcalli/nvim-colorizer.lua'
 
 " TODO: evaluate this better and create key mappings
 " Auto focusing and resizing windows.
 Plug 'beauwilliams/focus.nvim'
-
-
-" Color themes.
 
 " Treesitter supported colorschemes:
 " - https://github.com/nvim-treesitter/nvim-treesitter/wiki/Colorschemes
@@ -354,10 +367,6 @@ autocmd vimrc TextYankPost * silent! lua vim.highlight.on_yank{timeout=500}
 
 """""" Plugin settings """"""
 
-" Disable netrw.
-let g:loaded_netrw = 1
-let g:loaded_netrwPlugin = 1
-
 " Disable quick-scope highlighting for certain buffers and file types.
 let g:qs_buftype_blacklist = ['terminal', 'nofile', 'help']
 let g:qs_filetype_blacklist = ['startify', 'fugitive']
@@ -376,17 +385,9 @@ let g:VM_maps = {}
 let g:VM_maps['Find Under']         = '<M-d>'
 let g:VM_maps['Find Subword Under'] = '<M-d>'
 
-" Syntastic settings.
-if exists('g:loaded_syntastic_plugin')
-  let g:syntastic_always_populate_loc_list = 1
-  let g:syntastic_auto_loc_list = 1
-  let g:syntastic_check_on_open = 1
-  let g:syntastic_check_on_wq = 0
-  let g:syntastic_shell = '/bin/sh'
-  " vimt reference: https://github.com/Vimjas/vint/wiki/Vint-linting-policy-summary
-  let g:syntastic_vim_checkers = ['vint']
-  " let g:syntastic_python_checkers = ['pylint']
-endif
+" vim-better-whitespace settings.
+execute 'highlight ExtraWhitespace' .
+  \' guibg=' . synIDattr(synIDtrans(hlID('Error')), 'fg', 'gui')
 
 " neoterm settings.
 let g:neoterm_default_mod = 'vertical'
