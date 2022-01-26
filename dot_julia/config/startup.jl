@@ -15,5 +15,8 @@ end
 
 # Set the nul device as the default GR (Plots.jl backend) output
 # (useful when you don't need the plot window, e.g. when plotting to files)
-ENV["GKSwstype"] = "nul"
+# References:
+# - https://discourse.julialang.org/t/deactivate-plot-display-to-avoid-need-for-x-server
+# - https://gr-framework.org/workstations.html
+# ENV["GKSwstype"] = "nul"
 
