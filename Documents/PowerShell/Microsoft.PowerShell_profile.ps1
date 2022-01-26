@@ -1,4 +1,4 @@
-## My TMP path
+# My TMP path
 $tmp = "$env:TMP\tmp"
 if (-Not (Test-Path $tmp)) { New-Item -ItemType Directory $tmp }
 
@@ -35,6 +35,7 @@ Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
 Set-PSReadLineKeyHandler -Key Ctrl+p -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key Ctrl+n -Function HistorySearchForward
 Set-PSReadLineKeyHandler -Key Ctrl+Spacebar -Function AcceptSuggestion
+Set-PSReadLineKeyHandler -Key Ctrl+f -Function AcceptNextSuggestionWord
 
 # Increase color contrast of inline predictions.
 # Escape code references:
@@ -124,12 +125,18 @@ Invoke-Expression (& { (zoxide init --hook pwd powershell) -join "`n" } )
 
 
 
-# Make Starship change terminal window title
-# Reference: https://github.com/starship/starship/pull/3115
 Function Invoke-Starship-PreCommand {
+  # Make Starship change terminal window title
+  # Reference: https://github.com/starship/starship/pull/3115
   $CurrentWorkingDirectory = Split-Path -Path (Get-Location) -Leaf
   $CurrentWorkingProcess = (Get-Process -Id $PID).ProcessName
   $Host.UI.RawUI.WindowTitle = "$CurrentWorkingProcess / $CurrentWorkingDirectory"
+
+  # Open new Windows Terminal tab/pane in the same directory
+  # References:
+  # - https://docs.microsoft.com/en-us/windows/terminal/tutorials/new-tab-same-directory
+  # - https://github.com/microsoft/terminal/issues/3158
+  $Host.UI.Write("`e]9;9;$pwd`a")
 }
 
 # Load Starship
