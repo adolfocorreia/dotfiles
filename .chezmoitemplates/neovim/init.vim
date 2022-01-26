@@ -54,6 +54,9 @@ call plug#begin(stdpath('data') . '/plugged')
 " Common lua functions.
 Plug 'nvim-lua/plenary.nvim'
 
+" Custom user text objects.
+Plug 'kana/vim-textobj-user'
+
 
 """ Useful keybingings """
 
@@ -137,9 +140,6 @@ Plug 'ntpeters/vim-better-whitespace'
 
 """ Custom motions and text objects """
 
-" CamelCase and snake_case motions.
-Plug 'bkad/CamelCaseMotion'
-
 " Several text objects with in (i), a (a), inside (I), around (A), next (_n)
 " and last (_l) semantics.
 " Pairs: () {} [] <> t (XML/HTML tags)
@@ -154,6 +154,9 @@ Plug 'wellle/targets.vim'
 " Indentation level object: ii (indentation level), ai (ii and line above),
 " aI (ii with lines above/below).
 Plug 'michaeljsmith/vim-indent-object'
+
+" Variable segments in camelCase or snake_case words (vi).
+Plug 'Julian/vim-textobj-variable-segment'
 
 " TODO: evaluate treesitter text objects plugin.
 
@@ -197,9 +200,6 @@ Plug 'kassio/neoterm'
 " (I), show file info (K), preview file at cursor (p), next (C-n), previous
 " (C-p) and go to home (~).
 Plug 'justinmk/vim-dirvish'
-" File manipulation commands for dirvish. Create file (a), directory (A),
-" delete (dd), rename (r), yank (yy), copy (pp) and move (PP).
-Plug 'roginfarrer/vim-dirvish-dovish'
 
 
 """ Git integration """
@@ -442,17 +442,6 @@ tnoremap <C-q> <Nop>
 
 " Clear last search highlighting (Esc is not mapped to anything in normal mode).
 nnoremap <silent> <Esc> :noh<CR><Esc>
-
-
-" Map DelimitMateSwitch.
-" TODO: remap to something else
-" nnoremap <Leader>d :DelimitMateSwitch<CR>
-
-
-" CamelCaseMotion maps.
-map <silent> <M-w> <Plug>CamelCaseMotion_w
-map <silent> <M-b> <Plug>CamelCaseMotion_b
-map <silent> <M-e> <Plug>CamelCaseMotion_e
 
 
 " Map vim-easy-align to gl (since ga is already used).
