@@ -71,6 +71,7 @@ wk.register({
     ['o']     = {'<Cmd>tabonly<CR>',     'Only tab'},
     ['n']     = {'<Cmd>tabnext<CR>',     'Next tab'},
     ['p']     = {'<Cmd>tabprevious<CR>', 'Previous tab'},
+    ['w']     = {'<C-w>T',               'Move window to new tab'},
     ['1']     = {'1gt',                  'Go to tab 1'},
     ['2']     = {'2gt',                  'Go to tab 2'},
     ['3']     = {'3gt',                  'Go to tab 3'},
@@ -127,12 +128,12 @@ wk.register({
 
   t = {
     name = 'trouble',
-    ['t'] = {'<Cmd>TroubleToggle<CR>', 'Toggle Trouble'},
+    ['t'] = {'<Cmd>TroubleToggle<CR>',                       'Toggle Trouble'},
     ['w'] = {'<Cmd>TroubleToggle workspace_diagnostics<CR>', 'Workspace diagnostics'},
-    ['d'] = {'<Cmd>TroubleToggle document_diagnostics<CR>', 'Document diagnostics'},
-    ['q'] = {'<Cmd>TroubleToggle quickfix<CR>', 'Quickfix'},
-    ['l'] = {'<Cmd>TroubleToggle loclist<CR>', 'Loclist'},
-    ['r'] = {'<Cmd>TroubleToggle lsp_references<CR>', 'LSP references'},
+    ['d'] = {'<Cmd>TroubleToggle document_diagnostics<CR>',  'Document diagnostics'},
+    ['q'] = {'<Cmd>TroubleToggle quickfix<CR>',              'Quickfix'},
+    ['l'] = {'<Cmd>TroubleToggle loclist<CR>',               'Loclist'},
+    ['r'] = {'<Cmd>TroubleToggle lsp_references<CR>',        'LSP references'},
   },
 
 }, { prefix = '<Leader>' })
@@ -194,10 +195,6 @@ require('null-ls').setup({
 -- gitsigns.nvim settings.
 -- TODO: set key bindings: https://github.com/lewis6991/gitsigns.nvim#keymaps
 require('gitsigns').setup()
-
-
--- neogit settings.
--- require('neogit').setup({})
 
 
 -- trouble.nvim settings.

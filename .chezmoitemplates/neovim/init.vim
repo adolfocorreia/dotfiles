@@ -140,6 +140,12 @@ Plug 'ntpeters/vim-better-whitespace'
 
 """ Custom motions and text objects """
 
+" CamelCase and snake_case motions (M-w, M-b, M-e).
+Plug 'chaoren/vim-wordmotion'
+
+" Variable segments in camelCase or snake_case words (iv).
+Plug 'Julian/vim-textobj-variable-segment'
+
 " Several text objects with in (i), a (a), inside (I), around (A), next (_n)
 " and last (_l) semantics.
 " Pairs: () {} [] <> t (XML/HTML tags)
@@ -154,9 +160,6 @@ Plug 'wellle/targets.vim'
 " Indentation level object: ii (indentation level), ai (ii and line above),
 " aI (ii with lines above/below).
 Plug 'michaeljsmith/vim-indent-object'
-
-" Variable segments in camelCase or snake_case words (vi).
-Plug 'Julian/vim-textobj-variable-segment'
 
 " TODO: evaluate treesitter text objects plugin.
 
@@ -392,6 +395,9 @@ let g:VM_maps['Find Subword Under'] = '<M-d>'
 execute 'highlight ExtraWhitespace' .
   \' guibg=' . synIDattr(synIDtrans(hlID('Error')), 'fg', 'gui')
 
+" vim-wordmotion settings.
+let g:wordmotion_nomap = 1
+
 " neoterm settings.
 let g:neoterm_default_mod = 'vertical'
 let g:neoterm_direct_open_repl = 1
@@ -430,8 +436,8 @@ nnoremap <expr> k (v:count >= 10 ? "m'" . v:count : "") . 'k'
 
 
 " Insert blank line above or below (in insert mode).
-inoremap <C-j> <C-o>o
-inoremap <C-k> <C-o>O
+" inoremap <C-j> <C-o>o
+" inoremap <C-k> <C-o>O
 
 
 " Disable C-q (tmux prefix).
@@ -459,6 +465,12 @@ nmap <silent> grR :TREPLSendFile<CR>
 " Map vim-better-whitespace commands.
 nnoremap <silent> ]w :NextTrailingWhitespace<CR>
 nnoremap <silent> [w :PrevTrailingWhitespace<CR>
+
+
+" Map vim-wordmotion commands.
+nmap <M-w> <Plug>WordMotion_w
+nmap <M-b> <Plug>WordMotion_b
+nmap <M-e> <Plug>WordMotion_e
 
 
 " Window navigation mappings.
