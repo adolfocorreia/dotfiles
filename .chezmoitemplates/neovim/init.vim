@@ -105,8 +105,9 @@ Plug 'tpope/vim-rsi'
 """ Editing helps """
 
 " Sublime Text-like multiple cursor editing.
-" To activate, select words with M-d, characters with S-Arrows or create cursors
-" vertically with C-Up/C-Down. Use n/N to get more occurrences and [/] to navigate
+" To activate, select words with M-d or create cursors vertically with C-j/C-k.
+" Use C-h/C-l to add characters to the selection and o to go to the other side
+" of the selection. Use n/N to get more occurrences and [/] to navigate
 " between selections. Press q to skip current occurrence and get the next one
 " and Q to remove current selection. Start insert mode with i, a or c.
 Plug 'mg979/vim-visual-multi'
@@ -143,7 +144,7 @@ Plug 'ntpeters/vim-better-whitespace'
 " CamelCase and snake_case motions (M-w, M-b, M-e).
 Plug 'chaoren/vim-wordmotion'
 
-" Variable segments in camelCase or snake_case words (iv).
+" Text object (iv) for variable segments in camelCase or snake_case words.
 Plug 'Julian/vim-textobj-variable-segment'
 
 " Several text objects with in (i), a (a), inside (I), around (A), next (_n)
@@ -157,11 +158,12 @@ Plug 'Julian/vim-textobj-variable-segment'
 " Reference: https://github.com/wellle/targets.vim/blob/master/cheatsheet.md
 Plug 'wellle/targets.vim'
 
-" Indentation level object: ii (indentation level), ai (ii and line above),
-" aI (ii with lines above/below).
+" Indentation level text object: ii (indentation level), ai (ii and line
+" above), aI (ii with lines above/below).
 Plug 'michaeljsmith/vim-indent-object'
 
-" TODO: evaluate treesitter text objects plugin.
+" Language syntax text objects: functions (af/if).
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 
 
 """ Language support """
@@ -390,6 +392,10 @@ execute 'highlight QuickScopeSecondary gui=underline' .
 let g:VM_maps = {}
 let g:VM_maps['Find Under']         = '<M-d>'
 let g:VM_maps['Find Subword Under'] = '<M-d>'
+let g:VM_maps["Select Cursor Down"] = '<C-j>'
+let g:VM_maps["Select Cursor Up"]   = '<C-k>'
+let g:VM_maps["Select l"]           = '<C-l>'
+let g:VM_maps["Select h"]           = '<C-h>'
 
 " vim-better-whitespace settings.
 execute 'highlight ExtraWhitespace' .

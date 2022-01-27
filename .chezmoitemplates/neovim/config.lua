@@ -147,11 +147,22 @@ require('colorizer').setup()
 require('nvim-treesitter.configs').setup({
   ensure_installed = "maintained",
   sync_install = false,
+  -- https://github.com/nvim-treesitter/nvim-treesitter#i-want-to-use-a-http-proxy-for-downloading-the-parsers
+  prefer_git = true,
+  -- Modules
   highlight = { enable = true },
   indent = { enable = true },
   rainbow = { enable = true },
-  -- https://github.com/nvim-treesitter/nvim-treesitter#i-want-to-use-a-http-proxy-for-downloading-the-parsers
-  prefer_git = true,
+  textobjects = {
+    select = {
+      enable = true,
+      lookahead = true,
+      keymaps = {
+        ["af"] = "@function.outer",
+        ["if"] = "@function.inner",
+      },
+    },
+  },
 })
 
 
