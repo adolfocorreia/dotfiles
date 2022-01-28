@@ -17,6 +17,7 @@ Partial type signature reference:
 
 import qualified Data.Map as M
 import Data.Maybe
+import System.Exit
 import System.IO
 import XMonad
 import XMonad.Actions.CycleWS
@@ -37,26 +38,6 @@ import qualified XMonad.StackSet as W
 import XMonad.Util.EZConfig
 import XMonad.Util.Run
 import XMonad.Util.SpawnOnce
-
--- Nord theme colors
--- myBlack, myBlue, myGreen, myOrange, myPink, myRed, myWhite, myYellow :: String
--- myBlack = "#2e3440"
--- myBlue = "#81a1c1"
--- myGreen = "#a3be8c"
--- myOrange = "#d08770"
--- myPink = "#b48ead"
--- myRed = "#bf616a"
--- myWhite = "#d8dee9"
--- myYellow = "#ebcb8b"
-
--- myCurrentColor, myVisibleColor, myHiddenColor, myHiddenNoWindowsColor :: String
--- myCurrentColor = myPink
--- myVisibleColor = "#8fbcbb"
--- myHiddenColor = myWhite
--- myHiddenNoWindowsColor = "#4c566a"
-
--- myBarBackgroundColor :: String
--- myBarBackgroundColor = "#3b4242"
 
 -- Tokyo Night theme colors
 myBlack, myBlue, myGreen, myOrange, myPink, myRed, myWhite, myYellow :: String
@@ -95,8 +76,13 @@ myAdditionalKeys =
     ("M-p", spawn "rofi -show"),
     ("M-\\", spawn "rofi -show"),
     -- Close the focused window
-    -- TODO: use M-Q to kill
-    ("M-S-x", kill),
+    ("M-q", kill),
+    -- Restart xmonad
+    ("M-S-q", spawn "xmonad --recompile && xmonad --restart"),
+    -- Quit xmonad (this key binding should be hard to use)
+    ("M-<Pause>", io exitSuccess),
+    -- Lock screen
+    ("M-<Escape>", spawn "xset s activate"),
     -- Toggle workspace layout
     ("M-S-<Space>", sendMessage NextLayout),
     -- Workspace 10/0 bindings
@@ -135,14 +121,12 @@ myAdditionalKeys =
     -- Volume controls
     ("<XF86AudioLowerVolume>", spawn "pamixer --decrease 5 --unmute"),
     ("<XF86AudioRaiseVolume>", spawn "pamixer --increase 5 --unmute"),
-    ("<XF86AudioMute>", spawn "pamixer --toggle-mute"),
-    -- Lock screen
-    ("M-<Pause>", spawn "xset s activate")
+    ("<XF86AudioMute>", spawn "pamixer --toggle-mute")
   ]
 
 myRemoveKeys :: [String]
 myRemoveKeys =
-  [ -- Win+Space is used to toggle keyboard layouts
+  [ -- Win+Space is used in X to toggle keyboard layouts
     "M-<Space>"
   ]
 
@@ -230,6 +214,7 @@ myManageHook =
   where
     myClassFloats =
       [ "copyq",
+        "gksqt",
         "Hdajackretask",
         "mpv",
         "Pavucontrol",
