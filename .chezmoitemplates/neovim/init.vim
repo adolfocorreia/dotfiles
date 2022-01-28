@@ -206,6 +206,10 @@ Plug 'kassio/neoterm'
 " (C-p) and go to home (~).
 Plug 'justinmk/vim-dirvish'
 
+" TODO: evaluate this better
+" Project management.
+Plug 'ahmedkhalf/project.nvim'
+
 
 """ Git integration """
 
@@ -224,9 +228,10 @@ Plug 'lewis6991/gitsigns.nvim'
 " Fuzzy find :Files, :GFiles (git files), :Buffers, :Colors, :Lines, :Marks,
 " :Windows, :History (old files), :History: (commands), :History/ (search),
 " :Commits, :Commands, :Maps.
-Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
-Plug 'airblade/vim-rooter'
+" Plug 'junegunn/fzf'
+" Plug 'junegunn/fzf.vim'
+" Plug 'airblade/vim-rooter'
+Plug 'nvim-telescope/telescope.nvim'
 
 
 """ Windows and themes """
@@ -246,6 +251,10 @@ Plug 'kyazdani42/nvim-web-devicons'
 
 " Delete buffers without losing window layout.
 Plug 'famiu/bufdelete.nvim'
+
+" TODO: evaluate this better
+" Indent guides.
+Plug 'lukas-reineke/indent-blankline.nvim'
 
 " List for showing diagnostics, references, search results, quickfix and
 " location lists.

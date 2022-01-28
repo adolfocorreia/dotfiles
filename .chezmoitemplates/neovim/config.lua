@@ -25,41 +25,42 @@ wk.register({
 
   w = {
     name     = 'window',
-    ['w']    = {'<C-w>p',  'Other window'},
-    ['h']    = {'<C-w>h',  'Go left'},
-    ['l']    = {'<C-w>l',  'Go right'},
-    ['j']    = {'<C-w>j',  'Go down'},
-    ['k']    = {'<C-w>k',  'Go up'},
-    ['H']    = {'<C-w>H',  'Move far left'},
-    ['L']    = {'<C-w>L',  'Move far right'},
-    ['J']    = {'<C-w>J',  'Move to bottom'},
-    ['K']    = {'<C-w>K',  'Move to top'},
-    ['c']    = {'<C-w>c',  'Close window'},
-    ['d']    = {'<C-w>c',  'Delete window'},
-    ['q']    = {'<C-w>q',  'Quit window'},
-    ['n']    = {'<C-w>n',  'New window'},
-    ['o']    = {'<C-w>o',  'Only window'},
-    ['s']    = {'<C-w>s',  'Split horizontally'},
-    ['v']    = {'<C-w>v',  'Split vertically'},
-    ['r']    = {'<C-w>r',  'Rotate downwards'},
-    ['R']    = {'<C-w>R',  'Rotate upwards'},
-    ['T']    = {'<C-w>T',  'Move to new tab'},
-    ['=']    = {'<C-w>=',  'Balance windows'},
-    ['+']    = {'<C-w>+',  'Increase height'},
-    ['-']    = {'<C-w>-',  'Decrease height'},
-    ['>']    = {'<C-w>2>', 'Increase width'},
-    ['<lt>'] = {'<C-w>2<', 'Decrease width'},
+    ['w']    = {'<C-w>p',   'Other window'},
+    ['h']    = {'<C-w>h',   'Go left'},
+    ['l']    = {'<C-w>l',   'Go right'},
+    ['j']    = {'<C-w>j',   'Go down'},
+    ['k']    = {'<C-w>k',   'Go up'},
+    ['H']    = {'<C-w>H',   'Move far left'},
+    ['L']    = {'<C-w>L',   'Move far right'},
+    ['J']    = {'<C-w>J',   'Move to bottom'},
+    ['K']    = {'<C-w>K',   'Move to top'},
+    ['c']    = {'<C-w>c',   'Close window'},
+    ['d']    = {'<C-w>c',   'Delete window'},
+    ['q']    = {'<C-w>q',   'Quit window'},
+    ['n']    = {'<C-w>n',   'New window'},
+    ['o']    = {'<C-w>o',   'Only window'},
+    ['s']    = {'<C-w>s',   'Split horizontally'},
+    ['v']    = {'<C-w>v',   'Split vertically'},
+    ['r']    = {'<C-w>r',   'Rotate downwards'},
+    ['R']    = {'<C-w>R',   'Rotate upwards'},
+    ['T']    = {'<C-w>T',   'Move to new tab'},
+    ['=']    = {'<C-w>=',   'Balance windows'},
+    ['+']    = {'<C-w>5+',  'Increase height'},
+    ['-']    = {'<C-w>5-',  'Decrease height'},
+    ['>']    = {'<C-w>10>', 'Increase width'},
+    ['<lt>'] = {'<C-w>10<', 'Decrease width'},
   },
 
   b = {
     name  = 'buffer',
-    ['b'] = {'<Cmd>Buffers<CR>',   'Find buffer'},
-    ['w'] = {'<Cmd>write<CR>',     'Write buffer'},
-    ['n'] = {'<Cmd>bnext<CR>',     'Next buffer'},
-    ['p'] = {'<Cmd>bprevious<CR>', 'Previous buffer'},
-    ['d'] = {'<Cmd>Bdelete<CR>',   'Delete buffer'},
-    ['e'] = {'<Cmd>enew<CR>',      'Edit new buffer'},
-    ['a'] = {'<Cmd>wall<CR>',      'Write all buffers'},
+    -- ['b'] = {'<Cmd>Buffers<CR>',   'Find buffer'},
+    ['b'] = {'<Cmd>Telescope buffers<CR>', 'Find buffer'},
+    ['w'] = {'<Cmd>write<CR>',             'Write buffer'},
+    ['n'] = {'<Cmd>bnext<CR>',             'Next buffer'},
+    ['p'] = {'<Cmd>bprevious<CR>',         'Previous buffer'},
+    ['d'] = {'<Cmd>Bdelete<CR>',           'Delete buffer'},
+    ['e'] = {'<Cmd>enew<CR>',              'Edit new buffer'},
+    ['a'] = {'<Cmd>wall<CR>',              'Write all buffers'},
   },
 
   ['<Tab>'] = {
@@ -81,20 +82,24 @@ wk.register({
 
   f = {
     name  = 'file',
-    ['f'] = {'<Cmd>Files<CR>',   'Find file'},
-    ['r'] = {'<Cmd>History<CR>', 'Recent files'},
-    ['g'] = {'<Cmd>GFiles<CR>',  'Find git file'},
+    ['f'] = {'<Cmd>Telescope find_files<CR>', 'Find file'},
+    ['r'] = {'<Cmd>Telescope oldfiles<CR>',   'Recent files'},
+    ['g'] = {'<Cmd>Telescope git_files<CR>',  'Find git files'},
+    -- ['f'] = {'<Cmd>Files<CR>',   'Find file'},
+    -- ['r'] = {'<Cmd>History<CR>', 'Recent files'},
+    -- ['g'] = {'<Cmd>GFiles<CR>',  'Find git file'},
   },
 
   v = {
     name = 'neovim',
-    ['v'] = {'<Cmd>Files '..vim.fn.stdpath('config')..'<CR>', 'Open neovim config'},
+    -- ['v'] = {'<Cmd>Files '..vim.fn.stdpath('config')..'<CR>', 'Open neovim config'},
     ['r'] = {'<Cmd>source $MYVIMRC<CR>',                      'Reload neovim config'},
     ['u'] = {'<Cmd>PlugUpdate<CR>',                           'Update plugins'},
     ['c'] = {'<Cmd>PlugClean<CR>',                            'Clean plugins'},
     ['i'] = {'<Cmd>PlugInstall<CR>',                          'Install plugins'},
     ['g'] = {'<Cmd>PlugUpgrade<CR>',                          'Upgrade plugin manager'},
     ['h'] = {'<Cmd>Startify<CR>',                             'Open home buffer'},
+    ['s'] = {'<Cmd>StartupTime<CR>',                          'View startup time'},
   },
 
   o = {
@@ -103,12 +108,13 @@ wk.register({
     ['t'] = {'<Cmd>terminal<CR>',  'Terminal'},
     ['q'] = {'<Cmd>copen<CR>',     'Quickfix list'},
     ['l'] = {'<Cmd>lopen<CR>',     'Location list'},
-    ['c'] = {'<Cmd>Colors<CR>',    'Colorscheme'},
+    -- ['c'] = {'<Cmd>Colors<CR>',    'Colorscheme'},
   },
 
   c = {
     name  = 'code',
     ['f'] = {'<Cmd>lua vim.lsp.buf.formatting()<CR>', 'Format buffer'},
+    ['w'] = {'<Cmd>StripWhitespace<CR>',              'Strip whitespace'},
   },
 
   g = {
@@ -118,12 +124,13 @@ wk.register({
 
   s = {
     name  = 'search',
-    ['p'] = {'<Cmd>Rg<CR>',       'Project'},
-    ['l'] = {'<Cmd>Lines<CR>',    'Lines'},
-    ['b'] = {'<Cmd>BLines<CR>',   'Buffer lines'},
-    ['/'] = {'<Cmd>History/<CR>', 'Search history'},
-    [':'] = {'<Cmd>History:<CR>', 'Command history'},
-    ['m'] = {'<Cmd>Maps<CR>',     'Maps'},
+    ['g'] = {'<Cmd>Telescope live_grep<CR>', 'Live grep'},
+    -- ['p'] = {'<Cmd>Rg<CR>',       'Project'},
+    -- ['l'] = {'<Cmd>Lines<CR>',    'Lines'},
+    -- ['b'] = {'<Cmd>BLines<CR>',   'Buffer lines'},
+    -- ['/'] = {'<Cmd>History/<CR>', 'Search history'},
+    -- [':'] = {'<Cmd>History:<CR>', 'Command history'},
+    -- ['m'] = {'<Cmd>Maps<CR>',     'Maps'},
   },
 
   t = {
@@ -131,8 +138,8 @@ wk.register({
     ['t'] = {'<Cmd>TroubleToggle<CR>',                       'Toggle Trouble'},
     ['w'] = {'<Cmd>TroubleToggle workspace_diagnostics<CR>', 'Workspace diagnostics'},
     ['d'] = {'<Cmd>TroubleToggle document_diagnostics<CR>',  'Document diagnostics'},
-    ['q'] = {'<Cmd>TroubleToggle quickfix<CR>',              'Quickfix'},
-    ['l'] = {'<Cmd>TroubleToggle loclist<CR>',               'Loclist'},
+    ['q'] = {'<Cmd>TroubleToggle quickfix<CR>',              'Quickfix items'},
+    ['l'] = {'<Cmd>TroubleToggle loclist<CR>',               'Loclist items'},
     ['r'] = {'<Cmd>TroubleToggle lsp_references<CR>',        'LSP references'},
   },
 
@@ -185,7 +192,8 @@ require('lualine').setup({
 
 -- nvim-autopairs settings.
 require('nvim-autopairs').setup({
-  map_bs = false,
+  map_bs = false,  -- conflicts with vim-visual-multi
+  map_c_h = true,
 })
 
 
@@ -206,6 +214,12 @@ require('null-ls').setup({
 -- gitsigns.nvim settings.
 -- TODO: set key bindings: https://github.com/lewis6991/gitsigns.nvim#keymaps
 require('gitsigns').setup()
+
+
+-- indent-blankline.nvim settings.
+require('indent_blankline').setup({
+  show_current_context = true,
+})
 
 
 -- trouble.nvim settings.
