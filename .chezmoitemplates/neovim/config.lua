@@ -196,7 +196,7 @@ require('null-ls').setup({
     -- Code actions
     require('null-ls').builtins.code_actions.gitsigns,
     -- Python
-    require('null-ls').builtins.diagnostics.pylint,
+    -- require('null-ls').builtins.diagnostics.pylint,
     require('null-ls').builtins.formatting.black,
     -- require('null-ls').builtins.formatting.isort,
   }

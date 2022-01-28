@@ -284,6 +284,8 @@ let g:tokyonight_lualine_bold = 1
 
 " Load default color scheme.
 colorscheme tokyonight
+execute 'highlight Folded guibg=' . synIDattr(synIDtrans(hlID('Normal')), 'bg', 'gui')
+
 
 
 """""" Misc settings """"""
