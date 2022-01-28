@@ -34,8 +34,9 @@ Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
 Set-PSReadLineKeyHandler -Key Ctrl+p -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key Ctrl+n -Function HistorySearchForward
-Set-PSReadLineKeyHandler -Key Ctrl+Spacebar -Function AcceptSuggestion
-Set-PSReadLineKeyHandler -Key Ctrl+f -Function AcceptNextSuggestionWord
+# Set-PSReadLineKeyHandler -Key Ctrl+Spacebar -Function AcceptSuggestion
+Set-PSReadLineKeyHandler -Key Ctrl+f -Function AcceptSuggestion
+Set-PSReadLineKeyHandler -Key Alt+f -Function AcceptNextSuggestionWord
 
 # Increase color contrast of inline predictions.
 # Escape code references:
