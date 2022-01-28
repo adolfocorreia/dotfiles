@@ -5,10 +5,10 @@ function fish_user_key_bindings
     fish_default_key_bindings -M insert
     fish_vi_key_bindings --no-erase
 
-    # Use Ctrl+Space to autocomplete fish suggestions
-    # References: https://fishshell.com/docs/current/cmds/bind.html
-    #             https://fishshell.com/docs/current/cmds/fish_key_reader.html
-    bind -M insert -k nul accept-autosuggestion
+    # Key binding references:
+    # - https://fishshell.com/docs/current/cmds/bind.html
+    # - https://fishshell.com/docs/current/cmds/fish_key_reader.html
+    # - https://fishshell.com/docs/current/interactive.html#autosuggestions
 end
 
 # Commands to run in interactive sessions can go here
