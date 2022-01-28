@@ -63,6 +63,7 @@ SC073::RCtrl
 #g::#!g
 #n::#!n
 #z::#!z
+#q::#!q
 
 
 ; Multimedia keys remapping.

@@ -75,17 +75,17 @@ class ColorFocusedMonitorWidget : FocusedMonitorWidget {
 
 Action<IConfigContext> doConfig = (context) => {
 
-    /* Nord theme */
-    Color backgroundColor = new Color(0x2e, 0x34, 0x40);
-    Color foregroundColor = new Color(0xd8, 0xde, 0xe9);
-    Color gray            = new Color(0x4c, 0x56, 0x6a);
-    Color red             = new Color(0xbf, 0x61, 0x6a);
-    Color yellow          = new Color(0xeb, 0xcb, 0x8b);
-    Color orange          = new Color(0xd0, 0x87, 0x70);
-    Color green           = new Color(0xa3, 0xbe, 0x8c);
-    Color blue            = new Color(0x81, 0xa1, 0xc1);
-    Color purple          = new Color(0xb4, 0x8e, 0xad);
-    Color teal            = new Color(0x8f, 0xbc, 0xbb);
+    /* Tokyo Night theme */
+    Color backgroundColor = new Color(0x1f, 0x23, 0x35);
+    Color foregroundColor = new Color(0xa9, 0xb1, 0xd6);
+    Color gray            = new Color(0x41, 0x48, 0x68);
+    Color red             = new Color(0xf7, 0x76, 0x8e);
+    Color yellow          = new Color(0xe0, 0xaf, 0x68);
+    Color orange          = new Color(0xff, 0x9e, 0x64);
+    Color green           = new Color(0x9e, 0xce, 0x6a);
+    Color blue            = new Color(0x7d, 0xa2, 0xf7);
+    Color purple          = new Color(0xbb, 0x9a, 0xf7);
+    Color teal            = new Color(0x73, 0xda, 0xca);
 
     int barHeight = 16;
     string fontName = "Hack NF";
@@ -128,8 +128,8 @@ Action<IConfigContext> doConfig = (context) => {
         k.Subscribe(modS, Keys.Enter,       () => System.Diagnostics.Process.Start("wt.exe"), "launch terminal");
         k.Subscribe(modS, Keys.C,           () => w.FocusedWorkspace.CloseFocusedWindow(),    "close focused window");
         k.Subscribe(modS, Keys.X,           () => w.FocusedWorkspace.CloseFocusedWindow(),    "close focused window");
-        k.Subscribe(modA, Keys.Q,           () => context.Restart(),                          "restart workspacer");
-        k.Subscribe(modS, Keys.Q,           () => context.Quit(),                             "quit workspacer");
+        k.Subscribe(modA, Keys.Q,           () => w.FocusedWorkspace.CloseFocusedWindow(),    "close focused window");
+        k.Subscribe(modS, Keys.Q,           () => context.Restart(),                          "quit workspacer");
         k.Subscribe(modA, Keys.Escape,      () => context.Enabled = !context.Enabled,         "enable/disable workspacer");
 
         /* Window keybindings */
@@ -263,6 +263,7 @@ Action<IConfigContext> doConfig = (context) => {
         },
         RightWidgets = () => new IBarWidget[] {
             new CpuMemWidget(1000 * 15, "  \uf109 [cpu]%  \uf978 [mem]%"),
+            /* TODO: Change icon according to battery level */
             new TextWidget(" \uf242"),
             new BatteryWidget() {
                 LowChargeColor = red,
