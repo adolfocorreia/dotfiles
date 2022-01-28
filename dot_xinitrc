@@ -64,4 +64,5 @@ xset s 300
 xss-lock -- betterlockscreen --lock --quiet --time-format "%H:%M" &
 
 # Execute Xmonad
-exec xmonad > ~/.var/xsession-errors 2>&1
+# X logs available at /var/log
+exec xmonad
