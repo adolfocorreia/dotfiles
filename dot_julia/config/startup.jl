@@ -20,3 +20,8 @@ end
 # - https://gr-framework.org/workstations.html
 # ENV["GKSwstype"] = "nul"
 
+# Always activate project in current directory
+using Pkg
+if isfile("Project.toml") && isfile("Manifest.toml")
+    Pkg.activate(".")
+end
