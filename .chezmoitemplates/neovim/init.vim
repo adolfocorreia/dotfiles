@@ -425,6 +425,11 @@ if g:os ==# 'Linux'
   let g:neoterm_shell = 'bash'
 endif
 
+" indent_blankline.nvim settings
+let g:indent_blankline_buftype_exclude = ['help', 'nofile', 'nowrite', 'terminal']
+let g:indent_blankline_filetype_exclude = ['', 'lspinfo', 'checkhealth', 'help', 'startify']
+let g:indent_blankline_use_treesitter = v:true
+
 " Load lua plugins' settings.
 execute 'luafile ' . stdpath('config') . '/config.lua'
 
@@ -450,11 +455,6 @@ let @p="a \<Esc>p"
 " Add big j/k jumps to jumplist.
 nnoremap <expr> j (v:count >= 10 ? "m'" . v:count : "") . 'j'
 nnoremap <expr> k (v:count >= 10 ? "m'" . v:count : "") . 'k'
-
-
-" Insert blank line above or below (in insert mode).
-" inoremap <C-j> <C-o>o
-" inoremap <C-k> <C-o>O
 
 
 " Disable C-q (tmux prefix).

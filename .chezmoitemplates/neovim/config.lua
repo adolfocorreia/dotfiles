@@ -19,9 +19,13 @@ require('lspconfig').julials.setup({})
 local wk = require('which-key')
 wk.setup()
 
+-- TODO: check whichkey warnings on :checkhealth
+-- TODO: create descriptions for keymaps defined elsewhere (builtin or plugins)
+-- e.g. gc, gl, gr, g_, z_, [_, ]_, c_, y_, d_, v_
 wk.register({
 
-  ['`'] = {'<C-^>', 'Edit alternate file'},
+  ['<Leader>'] = {'<Cmd>Telescope find_files<CR>', 'Find file'},
+  ['`']        = {'<C-^>',                         'Edit alternate file'},
 
   w = {
     name     = 'window',
@@ -53,7 +57,6 @@ wk.register({
 
   b = {
     name  = 'buffer',
-    -- ['b'] = {'<Cmd>Buffers<CR>',   'Find buffer'},
     ['b'] = {'<Cmd>Telescope buffers<CR>', 'Find buffer'},
     ['w'] = {'<Cmd>write<CR>',             'Write buffer'},
     ['n'] = {'<Cmd>bnext<CR>',             'Next buffer'},
@@ -65,10 +68,8 @@ wk.register({
 
   ['<Tab>'] = {
     name      = 'tab',
-    ['<Tab>'] = {'<Cmd>tabedit<CR>',     'Edit new tab'},
-    ['e']     = {'<Cmd>tabedit<CR>',     'Edit new tab'},
+    ['<Tab>'] = {'<Cmd>tabedit<CR>',     'New tab'},
     ['c']     = {'<Cmd>tabclose<CR>',    'Close tab'},
-    ['d']     = {'<Cmd>tabclose<CR>',    'Delete tab'},
     ['o']     = {'<Cmd>tabonly<CR>',     'Only tab'},
     ['n']     = {'<Cmd>tabnext<CR>',     'Next tab'},
     ['p']     = {'<Cmd>tabprevious<CR>', 'Previous tab'},
@@ -85,21 +86,21 @@ wk.register({
     ['f'] = {'<Cmd>Telescope find_files<CR>', 'Find file'},
     ['r'] = {'<Cmd>Telescope oldfiles<CR>',   'Recent files'},
     ['g'] = {'<Cmd>Telescope git_files<CR>',  'Find git files'},
-    -- ['f'] = {'<Cmd>Files<CR>',   'Find file'},
-    -- ['r'] = {'<Cmd>History<CR>', 'Recent files'},
-    -- ['g'] = {'<Cmd>GFiles<CR>',  'Find git file'},
   },
 
   v = {
     name = 'neovim',
-    -- ['v'] = {'<Cmd>Files '..vim.fn.stdpath('config')..'<CR>', 'Open neovim config'},
-    ['r'] = {'<Cmd>source $MYVIMRC<CR>',                      'Reload neovim config'},
-    ['u'] = {'<Cmd>PlugUpdate<CR>',                           'Update plugins'},
-    ['c'] = {'<Cmd>PlugClean<CR>',                            'Clean plugins'},
-    ['i'] = {'<Cmd>PlugInstall<CR>',                          'Install plugins'},
-    ['g'] = {'<Cmd>PlugUpgrade<CR>',                          'Upgrade plugin manager'},
-    ['h'] = {'<Cmd>Startify<CR>',                             'Open home buffer'},
-    ['s'] = {'<Cmd>StartupTime<CR>',                          'View startup time'},
+    ['v'] = {'<Cmd>edit $MYVIMRC<CR>',                                      'Open vim config'},
+    ['l'] = {'<Cmd>edit ' .. vim.fn.stdpath('config') .. '/config.lua<CR>', 'Open lua config'},
+    ['r'] = {'<Cmd>source $MYVIMRC<CR>',                                    'Reload neovim config'},
+    ['u'] = {'<Cmd>PlugUpdate<CR>',                                         'Update plugins'},
+    ['c'] = {'<Cmd>PlugClean<CR>',                                          'Clean plugins'},
+    ['i'] = {'<Cmd>PlugInstall<CR>',                                        'Install plugins'},
+    ['g'] = {'<Cmd>PlugUpgrade<CR>',                                        'Upgrade plugin manager'},
+    ['t'] = {'<Cmd>TSUpdate<CR>',                                           'Treesitter update'},
+    ['h'] = {'<Cmd>Startify<CR>',                                           'Open home buffer'},
+    ['s'] = {'<Cmd>StartupTime<CR>',                                        'View startup time'},
+    ['h'] = {'<Cmd>checkhealth<CR>',                                        'Check health'},
   },
 
   o = {
@@ -108,7 +109,6 @@ wk.register({
     ['t'] = {'<Cmd>terminal<CR>',  'Terminal'},
     ['q'] = {'<Cmd>copen<CR>',     'Quickfix list'},
     ['l'] = {'<Cmd>lopen<CR>',     'Location list'},
-    -- ['c'] = {'<Cmd>Colors<CR>',    'Colorscheme'},
   },
 
   c = {
@@ -119,18 +119,25 @@ wk.register({
 
   g = {
     name  = 'git',
-    ['g'] = {'<Cmd>Git<CR>', 'Git status' },
+    ['g'] = {'<Cmd>Git<CR>',      'Git status' },
+    ['p'] = {'<Cmd>Git push<CR>', 'Git push' },
   },
 
   s = {
     name  = 'search',
-    ['g'] = {'<Cmd>Telescope live_grep<CR>', 'Live grep'},
-    -- ['p'] = {'<Cmd>Rg<CR>',       'Project'},
-    -- ['l'] = {'<Cmd>Lines<CR>',    'Lines'},
-    -- ['b'] = {'<Cmd>BLines<CR>',   'Buffer lines'},
-    -- ['/'] = {'<Cmd>History/<CR>', 'Search history'},
-    -- [':'] = {'<Cmd>History:<CR>', 'Command history'},
-    -- ['m'] = {'<Cmd>Maps<CR>',     'Maps'},
+    ['s'] = {'<Cmd>Telescope live_grep<CR>',                 'Live grep search'},
+    ['b'] = {'<Cmd>Telescope current_buffer_fuzzy_find<CR>', 'Current buffer'},
+    ['c'] = {'<Cmd>Telescope commands<CR>',                  'Available commands'},
+    [':'] = {'<Cmd>Telescope command_history<CR>',           'Command history'},
+    ['/'] = {'<Cmd>Telescope search_history<CR>',            'Search history'},
+    ['h'] = {'<Cmd>Telescope help_tags<CR>',                 'Help tags'},
+    ['m'] = {'<Cmd>Telescope marks<CR>',                     'Marks'},
+    ['r'] = {'<Cmd>Telescope registers<CR>',                 'Registers'},
+    ['o'] = {'<Cmd>Telescope vim_options<CR>',               'Vim options'},
+    ['a'] = {'<Cmd>Telescope autocommands<CR>',              'Autocommands'},
+    ['k'] = {'<Cmd>Telescope keymaps<CR>',                   'Key maps'},
+    ['f'] = {'<Cmd>Telescope filetype<CR>',                  'Filetypes'},
+    ['l'] = {'<Cmd>Telescope highlights<CR>',                'Highlights'},
   },
 
   t = {
@@ -204,6 +211,7 @@ require('null-ls').setup({
     -- Code actions
     require('null-ls').builtins.code_actions.gitsigns,
     -- Python
+    -- TODO: make pylint and isort work on windows
     -- require('null-ls').builtins.diagnostics.pylint,
     require('null-ls').builtins.formatting.black,
     -- require('null-ls').builtins.formatting.isort,
@@ -224,4 +232,16 @@ require('indent_blankline').setup({
 
 -- trouble.nvim settings.
 require('trouble').setup({})
+
+
+-- telescope.nvim settings.
+require('telescope').setup({
+  defaults = {
+    mappings = {
+      i = {
+        ['<Esc>'] = require('telescope.actions').close,
+      },
+    },
+  },
+})
 
