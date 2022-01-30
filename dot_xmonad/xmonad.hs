@@ -17,6 +17,7 @@ Partial type signature reference:
 
 import qualified Data.Map as M
 import Data.Maybe
+import Data.Ratio
 import System.Exit
 import System.IO
 import XMonad
@@ -29,6 +30,7 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.DynamicProperty
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.WorkspaceHistory
 import XMonad.Layout.LayoutModifier
 import XMonad.Layout.Renamed
@@ -207,6 +209,7 @@ myManageHook =
   composeAll
     . concat
     $ [ [className =? c --> doFloat | c <- myClassFloats],
+        [className =? c --> doRectFloat (W.RationalRect (1 % 8) (1 % 8) (3 % 4) (3 % 4)) | c <- myClassResizeFloats],
         [title =? t --> doFloat | t <- myTitleFloats],
         [className =? c --> doShift ws | (ws, c) <- myClassShifts],
         [title =? t --> doShift ws | (ws, t) <- myTitleShifts]
@@ -214,12 +217,14 @@ myManageHook =
   where
     myClassFloats =
       [ "copyq",
-        "gksqt",
         "Hdajackretask",
-        "mpv",
         "Pavucontrol",
         "SpeedCrunch",
-        "Variety",
+        "Variety"
+      ]
+    myClassResizeFloats =
+      [ "gksqt",
+        "mpv",
         "vlc"
       ]
     myTitleFloats = []
