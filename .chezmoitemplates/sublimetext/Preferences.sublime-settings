@@ -11,11 +11,12 @@
 	// User interface settings
 	//
 
+	//"color_scheme": "Nord.sublime-color-scheme",
 	//"color_scheme": "Packages/Base16 Color Schemes/Themes/base16-material-darker.tmTheme",
 	//"color_scheme": "Packages/gruvbox/gruvbox (Dark) (Medium).sublime-color-scheme",
-	"color_scheme": "Nord.sublime-color-scheme",
-	//"theme": "Adaptive.sublime-theme",
-	"theme": "ayu-mirage.sublime-theme",
+	//"theme": "ayu-mirage.sublime-theme",
+	"color_scheme": "Packages/Enki Theme/scheme/Enki-Tokyo-Night.tmTheme",
+	"theme": "Adaptive.sublime-theme",
 
 	"highlight_line": true,
 	"show_encoding": true,      // Display file encoding in status bar
