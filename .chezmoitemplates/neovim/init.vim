@@ -45,6 +45,7 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
 endif
 
 
+" TODO: convert to packer
 " Installation directory for vim-plug plugins.
 call plug#begin(stdpath('data') . '/plugged')
 
@@ -101,6 +102,12 @@ Plug 'tpope/vim-abolish'
 " C-d, M-d: delete character/word
 Plug 'tpope/vim-rsi'
 
+" TODO: evaluate this and svermeulen/vim-subversive better
+" Replace text object (<M-s>), line (<M-s><M-s>) or to end of line (<M-S) with
+" contents of the unnamed register "" (e.g. <M-s>iw replaces the word under
+" the cursor with the current yank).
+Plug 'gbprod/substitute.nvim'
+
 
 """ Editing helps """
 
@@ -131,6 +138,7 @@ Plug 'windwp/nvim-autopairs'
 " Note: nvim-autopairs backspace map is incompatible with vim-visual-multi
 " Evaluate 'LunarWatcher/auto-pairs' since it might be compatible
 
+" TODO: evaluate https://github.com/ethanholz/nvim-lastplace
 " Reopen files at last edit position.
 Plug 'farmergreg/vim-lastplace'
 
@@ -169,7 +177,7 @@ Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 """ Language support """
 
 " Syntax highlighting, indentation, folding and more using ASTs.
-Plug 'nvim-treesitter/nvim-treesitter', {'do': 'TSUpdate'}
+Plug 'nvim-treesitter/nvim-treesitter'
 
 " TODO: evaluate if sleuth is really necessary with treesitter
 " TODO: consider using expandtab, tabstop, softtabstop, shiftwidth explicitly
@@ -180,7 +188,7 @@ Plug 'tpope/vim-sleuth'
 Plug 'neovim/nvim-lspconfig'
 
 " LSP completion.
-Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
+Plug 'ms-jpq/coq_nvim', { 'branch': 'coq' }
 
 " TODO: evaluate null-ls plugin
 " Inject LSP diagnostics, code actions and more from non-LSP tools.
@@ -224,14 +232,9 @@ Plug 'lewis6991/gitsigns.nvim'
 
 """ Search commands """
 
-" TODO: evaluate telescope
-" Fuzzy find :Files, :GFiles (git files), :Buffers, :Colors, :Lines, :Marks,
-" :Windows, :History (old files), :History: (commands), :History/ (search),
-" :Commits, :Commands, :Maps.
-" Plug 'junegunn/fzf'
-" Plug 'junegunn/fzf.vim'
-" Plug 'airblade/vim-rooter'
+" Extendable fuzzy finder.
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
 
 """ Windows and themes """
@@ -328,34 +331,20 @@ set scrolloff=5
 " Keep 5 columns to the left or to the right of the cursor.
 set sidescrolloff=5
 
-" TODO: organize commands below as functions (in lua?)
 " Highlight line and column under cursor. It helps with navigation.
-" set cursorline
-" set cursorcolumn
-let cul_cuc_blacklist = ['terminal']
-autocmd vimrc BufWinEnter * if index(cul_cuc_blacklist, &buftype) < 0 | setlocal cul   | setlocal cuc   | endif
-autocmd vimrc WinEnter    * if index(cul_cuc_blacklist, &buftype) < 0 | setlocal cul   | setlocal cuc   | endif
-autocmd vimrc WinLeave    * if index(cul_cuc_blacklist, &buftype) < 0 | setlocal nocul | setlocal nocuc | endif
+set cursorline
+set cursorcolumn
 
 " Highlight column 80. It helps identifying long lines.
-" set colorcolumn=80
-let cc_blacklist = ['help', 'nofile', 'nowrite', 'terminal']
-autocmd vimrc BufWinEnter * if index(cc_blacklist, &buftype) < 0 | setlocal colorcolumn+=80
-autocmd vimrc WinEnter    * if index(cc_blacklist, &buftype) < 0 | setlocal colorcolumn+=80
-autocmd vimrc WinLeave    * if index(cc_blacklist, &buftype) < 0 | setlocal colorcolumn-=80
+set colorcolumn=80
 
 " Show the line number relative to the cursor in front of each line and the
 " absolute line number for the one with the cursor.
-" set number
-" set relativenumber
-let nu_rnu_blacklist = ['help', 'nofile', 'nowrite', 'terminal']
-autocmd vimrc BufWinEnter * if index(nu_rnu_blacklist, &buftype) < 0 | setlocal nu   | setlocal rnu   | endif
-autocmd vimrc WinEnter    * if index(nu_rnu_blacklist, &buftype) < 0 | setlocal nu   | setlocal rnu   | endif
-autocmd vimrc WinLeave    * if index(nu_rnu_blacklist, &buftype) < 0 | setlocal nonu | setlocal nornu | endif
+set number
+set relativenumber
 
 " Disable numbering and cursor highlighting in terminal buffers.
 autocmd vimrc TermOpen * setlocal nonumber norelativenumber nocursorline nocursorcolumn
-
 
 " Open new split panes to right and bottom.
 set splitbelow
@@ -467,16 +456,27 @@ tnoremap <C-q> <Nop>
 nnoremap <silent> <Esc> :noh<CR><Esc>
 
 
+" Map substitute.nvim commands.
+nnoremap <M-s>      <Cmd>lua require('substitute').operator()<CR>
+nnoremap <M-s><M-s> <Cmd>lua require('substitute').line()<CR>
+nnoremap <M-S>      <Cmd>lua require('substitute').eol()<CR>
+xnoremap <M-s>      <Cmd>lua require('substitute').visual()<CR>
+
+
 " Map vim-easy-align to gl (since ga is already used).
 nmap gl <Plug>(EasyAlign)
 xmap gl <Plug>(EasyAlign)
 
 
 " Map neoterm commands.
-xmap gr <Plug>(neoterm-repl-send)
-nmap gr <Plug>(neoterm-repl-send)
+xmap gr  <Plug>(neoterm-repl-send)
+nmap gr  <Plug>(neoterm-repl-send)
 nmap grr <Plug>(neoterm-repl-send-line)
 nmap <silent> grR :TREPLSendFile<CR>
+
+
+" Map dirvish commands.
+nmap <Leader>o- <Plug>(dirvish_up)
 
 
 " Map vim-better-whitespace commands.
@@ -503,33 +503,4 @@ nnoremap <M-h> <C-w>h
 nnoremap <M-j> <C-w>j
 nnoremap <M-k> <C-w>k
 nnoremap <M-l> <C-w>l
-
-
-" Leader key mappings.
-" TODO: add mappings
-
-" o - open/options
-" o s:  open saved sessions? - Startify
-" o d:  toggle DelimitMateSwitch?
-" o g:  toggle GoldenRatioResize? (https://github.com/roman/golden-ratio)
-
-" v - vi
-" v s:     save session? - Startify
-
-" l - LSP
-" lsp info, stop, start etc.
-" go to definition, find references
-" toggle showing errors/warnings
-" TODO: trim lines when saving
-
-" h - help
-" options, keys, commands etc.
-" h t:  tips
-
-" q - quit
-" q q:  quit - :confirm qall
-" q s:  save session and quit
-
-" g - git
-" g p:   :Git push
 
