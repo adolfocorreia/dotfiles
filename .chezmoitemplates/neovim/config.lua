@@ -11,6 +11,10 @@ require('lspconfig').pyright.setup({
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#julials
 require('lspconfig').julials.setup({})
 
+-- R (r_language_server)
+-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#r_language_server
+require('lspconfig').r_language_server.setup({})
+
 
 
 --- Plugin settings.
@@ -105,8 +109,8 @@ wk.register({
   },
 
   o = {
-    name = 'open/options',
-    ['-'] = {                                                'Directory tree'},
+    name = 'open',
+    ['-'] = {'<Plug>(dirvish_up)',                           'Directory tree'},
     ['T'] = {'<Cmd>terminal<CR>',                            'Terminal'},
     ['t'] = {'<Cmd>TroubleToggle<CR>',                       'Toggle Trouble'},
     ['w'] = {'<Cmd>TroubleToggle workspace_diagnostics<CR>', 'Workspace diagnostics'},
@@ -154,6 +158,7 @@ wk.register({
   s = {
     name  = 'search',
     ['s'] = {'<Cmd>Telescope live_grep<CR>',                 'Live grep search'},
+    ['w'] = {'<Cmd>Telescope grep_string<CR>',               'Word under cursor'},
     ['b'] = {'<Cmd>Telescope current_buffer_fuzzy_find<CR>', 'Current buffer'},
     ['c'] = {'<Cmd>Telescope commands<CR>',                  'Available commands'},
     [':'] = {'<Cmd>Telescope command_history<CR>',           'Command history'},

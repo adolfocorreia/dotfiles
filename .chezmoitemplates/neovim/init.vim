@@ -323,7 +323,7 @@ set lazyredraw
 set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
 set foldnestmax=4
-set foldlevel=2
+set foldlevelstart=99
 
 " Keep 5 lines above or below the cursor when scrolling.
 set scrolloff=5
@@ -475,10 +475,6 @@ nmap grr <Plug>(neoterm-repl-send-line)
 nmap <silent> grR :TREPLSendFile<CR>
 
 
-" Map dirvish commands.
-nmap <Leader>o- <Plug>(dirvish_up)
-
-
 " Map vim-better-whitespace commands.
 nnoremap <silent> ]w :NextTrailingWhitespace<CR>
 nnoremap <silent> [w :PrevTrailingWhitespace<CR>
@@ -503,4 +499,17 @@ nnoremap <M-h> <C-w>h
 nnoremap <M-j> <C-w>j
 nnoremap <M-k> <C-w>k
 nnoremap <M-l> <C-w>l
+
+tnoremap <M-Left>  <C-\><C-n><C-w>h
+tnoremap <M-Down>  <C-\><C-n><C-w>j
+tnoremap <M-Up>    <C-\><C-n><C-w>k
+tnoremap <M-Right> <C-\><C-n><C-w>l
+inoremap <M-Left>  <C-\><C-n><C-w>h
+inoremap <M-Down>  <C-\><C-n><C-w>j
+inoremap <M-Up>    <C-\><C-n><C-w>k
+inoremap <M-Right> <C-\><C-n><C-w>l
+nnoremap <M-Left>  <C-w>h
+nnoremap <M-Down>  <C-w>j
+nnoremap <M-Up>    <C-w>k
+nnoremap <M-Right> <C-w>l
 
