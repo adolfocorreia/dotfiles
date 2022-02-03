@@ -38,12 +38,17 @@ Set-PSReadLineKeyHandler -Key Ctrl+n -Function HistorySearchForward
 Set-PSReadLineKeyHandler -Key Ctrl+f -Function AcceptSuggestion
 Set-PSReadLineKeyHandler -Key Alt+f -Function AcceptNextSuggestionWord
 
-# Increase color contrast of inline predictions.
+# Increase color contrast of shell elements
 # Escape code references:
 # - https://en.wikipedia.org/wiki/ANSI_escape_code
 # - https://docs.microsoft.com/en-us/windows/console/console-virtual-terminal-sequences
+# - https://docs.microsoft.com/en-us/powershell/module/psreadline/set-psreadlineoption
 # - https://upload.wikimedia.org/wikipedia/commons/1/15/Xterm_256color_chart.svg
-Set-PSReadLineOption -Colors @{ "InlinePrediction"="`e[38;5;244m" }
+Set-PSReadLineOption -Colors @{
+  "Operator"         = "`e[37m"
+  "Parameter"        = "`e[37m"
+  "InlinePrediction" = "`e[38;5;244m"
+}
 
 # Search paths
 Set-PsFzfOption -PSReadlineChordProvider Ctrl+t
