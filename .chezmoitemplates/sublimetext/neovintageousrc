@@ -3,4 +3,8 @@
 " Yank from cursor to end of line (by default Y is synonym to yy).
 nnoremap Y y$
 
+" Ignore case in patterns (unless upper case characters are used).
+set ignorecase
+set smartcase
+
 " vi: ft=vim
