@@ -63,11 +63,14 @@ wk.register({
     name  = 'buffer',
     ['b'] = {'<Cmd>Telescope buffers<CR>', 'Find buffer'},
     ['w'] = {'<Cmd>write<CR>',             'Write buffer'},
+    ['s'] = {'<Cmd>write<CR>',             'Save buffer'},
     ['n'] = {'<Cmd>bnext<CR>',             'Next buffer'},
     ['p'] = {'<Cmd>bprevious<CR>',         'Previous buffer'},
     ['d'] = {'<Cmd>Bdelete<CR>',           'Delete buffer'},
     ['e'] = {'<Cmd>enew<CR>',              'Edit new buffer'},
     ['a'] = {'<Cmd>wall<CR>',              'Write all buffers'},
+    ['r'] = {'<Cmd>edit %<CR>',            'Reload current buffer'},
+    ['R'] = {'<Cmd>checktime<CR>',         'Reload all buffers'},
   },
 
   ['<Tab>'] = {
@@ -87,10 +90,10 @@ wk.register({
 
   f = {
     name  = 'file',
-    ['f'] = {'<Cmd>Telescope find_files<CR>', 'Find file'},
-    ['r'] = {'<Cmd>Telescope oldfiles<CR>',   'Recent files'},
-    ['g'] = {'<Cmd>Telescope git_files<CR>',  'Find git files'},
-    ['p'] = {'<Cmd>Telescope projects<CR>',   'Find projects'},
+    ['f'] = {'<Cmd>Telescope find_files noignore=true<CR>', 'Find all files'},
+    ['r'] = {'<Cmd>Telescope oldfiles<CR>',                 'Recent files'},
+    ['g'] = {'<Cmd>Telescope git_files<CR>',                'Find git files'},
+    ['p'] = {'<Cmd>Telescope projects<CR>',                 'Find projects'},
   },
 
   v = {
@@ -175,6 +178,11 @@ wk.register({
     ['f'] = {'<Cmd>Telescope filetype<CR>',                  'Filetypes'},
     ['H'] = {'<Cmd>Telescope highlights<CR>',                'Highlights'},
     ['p'] = {'<Cmd>Telescope builtin<CR>',                   'Telescope pickers'},
+  },
+
+  t = {
+    name = 'toogle',
+    ['c'] = {'<Cmd>ColorizerToggle<CR>', 'Color strings highlighting'},
   },
 
 }, { prefix = '<Leader>' })

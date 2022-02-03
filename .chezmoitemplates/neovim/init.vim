@@ -252,6 +252,7 @@ Plug 'nvim-lualine/lualine.nvim'
 " Add icons.
 Plug 'kyazdani42/nvim-web-devicons'
 
+" TODO: evaluate https://github.com/ojroques/nvim-bufdel
 " Delete buffers without losing window layout.
 Plug 'famiu/bufdelete.nvim'
 
@@ -335,8 +336,8 @@ set sidescrolloff=5
 set cursorline
 set cursorcolumn
 
-" Highlight column 80. It helps identifying long lines.
-set colorcolumn=80
+" Highlight column 90. It helps identifying long lines.
+set colorcolumn=90
 
 " Show the line number relative to the cursor in front of each line and the
 " absolute line number for the one with the cursor.
