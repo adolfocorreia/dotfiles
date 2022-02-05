@@ -238,8 +238,9 @@ require('lualine').setup({
 
 -- nvim-autopairs settings.
 require('nvim-autopairs').setup({
-  map_bs = false,  -- conflicts with vim-visual-multi
+  map_bs = true,  -- conflicts with vim-visual-multi
   map_c_h = true,
+  map_c_w = false,
 })
 
 
@@ -260,7 +261,20 @@ require('null-ls').setup({
 
 -- gitsigns.nvim settings.
 -- TODO: set key bindings: https://github.com/lewis6991/gitsigns.nvim#keymaps
-require('gitsigns').setup({})
+require('gitsigns').setup({
+  on_attach = function(bufnr)
+    local function map(mode, lhs, rhs, opts)
+      opts = vim.tbl_extend('force', {noremap = true, silent = true}, opts or {})
+      vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts)
+    end
+    -- Navigation
+    map('n', ']c', "&diff ? ']c' : '<Cmd>Gitsigns next_hunk<CR>'", {expr = true})
+    map('n', '[c', "&diff ? ']c' : '<Cmd>Gitsigns prev_hunk<CR>'", {expr = true})
+    -- Text object
+    map('o', 'ih', ':<C-u>Gitsigns select_hunk<CR>')
+    map('x', 'ih', ':<C-u>Gitsigns select_hunk<CR>')
+  end
+})
 
 
 -- indent-blankline.nvim settings.

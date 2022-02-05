@@ -393,14 +393,43 @@ execute 'highlight QuickScopeSecondary gui=underline' .
 let g:VM_maps = {}
 let g:VM_maps['Find Under']         = '<M-d>'
 let g:VM_maps['Find Subword Under'] = '<M-d>'
-let g:VM_maps["Select Cursor Down"] = '<C-j>'
-let g:VM_maps["Select Cursor Up"]   = '<C-k>'
-let g:VM_maps["Select l"]           = '<C-l>'
-let g:VM_maps["Select h"]           = '<C-h>'
+let g:VM_maps['Select Cursor Down'] = '<C-j>'
+let g:VM_maps['Select Cursor Up']   = '<C-k>'
+let g:VM_maps['Select l']           = '<C-l>'
+let g:VM_maps['Select h']           = '<C-h>'
+
+" TODO: improve and convert this to lua
+" Disable nvim-autopairs when entering in Visual Multi mode.
+" References:
+" - *vm-functions*
+" - https://github.com/windwp/nvim-autopairs/blob/master/lua/nvim-autopairs.lua
+" - https://vi.stackexchange.com/questions/7734/how-to-save-and-restore-a-mapping
+let g:VM_bs_map = {}
+function! DisableAutopairsMappings() abort
+  if mapcheck('<BS>', 'i') !=# ''
+    let g:VM_bs_map = maparg('<BS>', 'i', 0 , 1)
+    if g:VM_bs_map.buffer == 0 || g:VM_bs_map.expr == 0
+      throw 'Unexpected mapping options!'
+    endif
+    lua require('nvim-autopairs').disable()
+    iunmap <buffer> <expr> <BS>
+  endif
+endfunction
+function! EnableAutopairsMappings() abort
+  if g:VM_bs_map != {}
+    execute 'inoremap <buffer> <expr> <BS> ' . g:VM_bs_map.rhs
+    lua require('nvim-autopairs').enable()
+    let g:VM_bs_map = {}
+  endif
+endfunction
+autocmd vimrc User visual_multi_start call DisableAutopairsMappings()
+autocmd vimrc User visual_multi_exit  call EnableAutopairsMappings()
 
 " vim-better-whitespace settings.
 execute 'highlight ExtraWhitespace' .
   \' guibg=' . synIDattr(synIDtrans(hlID('Error')), 'fg', 'gui')
+" Deactivate '<Leader>s' key mapping
+let g:better_whitespace_operator = ''
 
 " vim-wordmotion settings.
 let g:wordmotion_nomap = 1
