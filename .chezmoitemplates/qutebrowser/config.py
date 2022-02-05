@@ -42,6 +42,7 @@ config.bind("<Shift+PgUp>",   "command-history-prev",                 mode="comm
 config.bind("<Shift+PgDown>", "command-history-next",                 mode="command")
 
 # Insert mode key bindings (emacs/readline-like)
+# Reference: https://en.wikipedia.org/wiki/GNU_Readline#Editing_modes
 config.bind("<Ctrl+b>", "fake-key <Left>",                     mode="insert")
 config.bind("<Ctrl+f>", "fake-key <Right>",                    mode="insert")
 config.bind("<Alt+b>",  "fake-key <Ctrl+Left>",                mode="insert")
@@ -54,6 +55,7 @@ config.bind("<Ctrl+u>", "fake-key <Shift+Home><Delete>",       mode="insert")
 config.bind("<Ctrl+k>", "fake-key <Shift+End><Delete>",        mode="insert")
 config.bind("<Ctrl+d>", "fake-key <Delete>",                   mode="insert")
 config.bind("<Alt+d>",  "fake-key <Shift+Ctrl+Right><Delete>", mode="insert")
+config.bind("<Ctrl+h>", "fake-key <Backspace>",                mode="insert")
 config.bind("<Ctrl+w>", "fake-key <Shift+Ctrl+Left><Delete>",  mode="insert")
 config.bind("<Ctrl+y>", "insert-text {primary}",               mode="insert")
 
