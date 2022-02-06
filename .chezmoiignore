@@ -28,6 +28,8 @@ README.md
 .bash_profile
 .bashrc
 
+.gtkrc-2.0
+
 .lyx
 
 .imwheelrc
