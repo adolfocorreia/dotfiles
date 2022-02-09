@@ -2,6 +2,9 @@
 	name = Adolfo Correia
 	email = {{ .email }}
 
+[init]
+	defaultBranch = master
+
 {{ if eq .chezmoi.os "linux" -}}
 [credential]
 	helper = /usr/lib/git-core/git-credential-libsecret
