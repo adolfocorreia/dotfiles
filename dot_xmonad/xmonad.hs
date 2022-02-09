@@ -59,7 +59,7 @@ myHiddenColor = myWhite
 myHiddenNoWindowsColor = "#414868"
 
 myBarBackgroundColor :: String
-myBarBackgroundColor = "#1d202f"
+myBarBackgroundColor = "#292e42"
 
 -- Base settings
 myModMask :: KeyMask
@@ -124,6 +124,7 @@ myAdditionalKeys =
     ("<XF86AudioLowerVolume>", spawn "pamixer --decrease 5 --unmute"),
     ("<XF86AudioRaiseVolume>", spawn "pamixer --increase 5 --unmute"),
     ("<XF86AudioMute>", spawn "pamixer --toggle-mute")
+    -- TODO: add bindings to change desktop background
   ]
 
 myRemoveKeys :: [String]
@@ -155,6 +156,9 @@ mySystemTrayCommand = unwords ["stalonetray", arguments, "&"]
 -- Startup processes
 myStartupHook :: X ()
 myStartupHook = do
+  -- TODO: evaluate moving these processes to a lxsession (e.g. to handle autostart on crashes)
+  -- - https://wiki.lxde.org/en/index.php?title=LXSession
+  -- - https://github.com/lxde/lxsession/blob/master/data/desktop.conf.example
   -- Session manager / polkit authentication agent
   spawnOnce "lxsession --session XMonad &"
   -- Desktop compositor
@@ -209,6 +213,7 @@ myManageHook =
   composeAll
     . concat
     $ [ [className =? c --> doFloat | c <- myClassFloats],
+        [className =? c --> doCenterFloat | c <- myClassCenterFloats],
         [className =? c --> doRectFloat (W.RationalRect (1 % 8) (1 % 8) (3 % 4) (3 % 4)) | c <- myClassResizeFloats],
         [title =? t --> doFloat | t <- myTitleFloats],
         [className =? c --> doShift ws | (ws, c) <- myClassShifts],
@@ -217,10 +222,13 @@ myManageHook =
   where
     myClassFloats =
       [ "copyq",
-        "Hdajackretask",
-        "Pavucontrol",
         "SpeedCrunch",
         "Variety"
+      ]
+    myClassCenterFloats =
+      [ "Hdajackretask",
+        "Pavucontrol",
+        "Xdg-desktop-portal-gtk"
       ]
     myClassResizeFloats =
       [ "gksqt",

@@ -25,7 +25,7 @@ Config {
   -- Appearance
   -- TODO: create color variables
     font            = "xft:Roboto Mono:pixelsize=14:antialias=true:weight=semibold"
-  , additionalFonts = [ "xft:Font Awesome 5 Free Solid:pixelsize=14"
+  , additionalFonts = [ "xft:Font Awesome 6 Free Solid:pixelsize=14"
                       , "xft:Material Design Icons:pixelsize=18"]
   , bgColor         = "#292e42"
   , fgColor         = "#c0caf5"
@@ -42,13 +42,13 @@ Config {
      -- The refresh rate is given in tenths of seconds (10 = 1 second, 36000 = 1 hour)
   , commands =
     [ Run UnsafeStdinReader
-    , Run Cpu           [ "--template", "<fc=#7dcfff><fn=1>\xf108</fn></fc> <total>"
+    , Run Cpu           [ "--template", "<fc=#7dcfff><fn=1>\xf2db</fn></fc> <total>"
                         , "--low",    "#c0caf5", "--Low",  "50"
                         , "--normal", "#e0af68"
                         , "--high",   "#f7768e", "--High", "80"
                         , "--suffix", "True"
                         ] 50
-    , Run Memory        [ "--template", "<fc=#7dcfff><fn=1>\xf7c2</fn></fc> <usedratio>"
+    , Run Memory        [ "--template", "<fc=#7dcfff><fn=1>\xf538</fn></fc> <usedratio>"
                         , "--low",    "#c0caf5", "--Low",  "75"
                         , "--normal", "#e0af68"
                         , "--high",   "#f7768e", "--High", "90"
