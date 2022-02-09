@@ -61,16 +61,16 @@ wk.register({
 
   b = {
     name  = 'buffer',
-    ['b'] = {'<Cmd>Telescope buffers<CR>', 'Find buffer'},
-    ['w'] = {'<Cmd>write<CR>',             'Write buffer'},
-    ['s'] = {'<Cmd>write<CR>',             'Save buffer'},
-    ['n'] = {'<Cmd>bnext<CR>',             'Next buffer'},
-    ['p'] = {'<Cmd>bprevious<CR>',         'Previous buffer'},
-    ['d'] = {'<Cmd>Bdelete<CR>',           'Delete buffer'},
-    ['e'] = {'<Cmd>enew<CR>',              'Edit new buffer'},
-    ['a'] = {'<Cmd>wall<CR>',              'Write all buffers'},
-    ['r'] = {'<Cmd>edit %<CR>',            'Reload current buffer'},
-    ['R'] = {'<Cmd>checktime<CR>',         'Reload all buffers'},
+    ['b'] = {'<Cmd>Telescope buffers theme=ivy<CR>', 'Find buffer'},
+    ['w'] = {'<Cmd>write<CR>',                       'Write buffer'},
+    ['s'] = {'<Cmd>write<CR>',                       'Save buffer'},
+    ['n'] = {'<Cmd>bnext<CR>',                       'Next buffer'},
+    ['p'] = {'<Cmd>bprevious<CR>',                   'Previous buffer'},
+    ['d'] = {'<Cmd>Bdelete<CR>',                     'Delete buffer'},
+    ['e'] = {'<Cmd>enew<CR>',                        'Edit new buffer'},
+    ['a'] = {'<Cmd>wall<CR>',                        'Write all buffers'},
+    ['r'] = {'<Cmd>edit %<CR>',                      'Reload current buffer'},
+    ['R'] = {'<Cmd>checktime<CR>',                   'Reload all buffers'},
   },
 
   ['<Tab>'] = {
@@ -86,6 +86,11 @@ wk.register({
     ['3']     = {'3gt',                  'Go to tab 3'},
     ['4']     = {'4gt',                  'Go to tab 4'},
     ['5']     = {'5gt',                  'Go to tab 5'},
+    -- TODO: add mapping with user input
+    -- References:
+    -- - https://vim.fandom.com/wiki/User_input_from_a_script
+    -- - https://stackoverflow.com/questions/14388703/vim-mapping-with-user-input
+    -- ['r']     = {'<Cmd>LualineRenameTab tabname<CR>', 'Rename tab'},
   },
 
   f = {
@@ -231,7 +236,7 @@ require('lualine').setup({
   },
   tabline = {
     lualine_a = { { 'buffers', mode = 0 } },
-    lualine_z = { { 'tabs', mode = 0 } },
+    lualine_z = { { 'tabs', mode = 2 } },
   }
 })
 
