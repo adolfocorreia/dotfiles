@@ -22,6 +22,9 @@ config.load_autoconfig()
 # Show current bindings with :bind
 # Commands reference: qute://help/commands.html
 
+# Unbind quit
+config.unbind("<Ctrl+q>", mode="normal")
+
 # Bind Shift-Insert to clipboard selection.
 config.bind("<Shift-Ins>", "insert-text -- {clipboard}",  mode="insert")
 config.bind("<Shift-Ins>", "set-cmd-text -a {clipboard}", mode="command")
