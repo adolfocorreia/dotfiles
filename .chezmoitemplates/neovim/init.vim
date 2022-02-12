@@ -30,6 +30,8 @@ let g:loaded_perl_provider = 0
 " Disable netrw.
 let g:loaded_netrw = 1
 let g:loaded_netrwPlugin = 1
+let g:loaded_netrwSettings = 1
+let g:loaded_netrwFileHandlers = 1
 
 
 
@@ -46,6 +48,7 @@ endif
 
 
 " TODO: convert to packer
+" TODO: evaluate lewis6991/impatient.nvim
 " Installation directory for vim-plug plugins.
 call plug#begin(stdpath('data') . '/plugged')
 
@@ -187,8 +190,14 @@ Plug 'tpope/vim-sleuth'
 " LSP configuration.
 Plug 'neovim/nvim-lspconfig'
 
-" LSP completion.
-Plug 'ms-jpq/coq_nvim', { 'branch': 'coq' }
+" Completion.
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'onsails/lspkind-nvim'
 
 " TODO: evaluate null-ls plugin
 " Inject LSP diagnostics, code actions and more from non-LSP tools.
@@ -239,7 +248,7 @@ Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
 """ Windows and themes """
 
-" TODO: evaluate dashboard-nvim
+" TODO: evaluate goolord/alpha-nvim
 " Show start screen.
 Plug 'mhinz/vim-startify'
 
@@ -357,6 +366,10 @@ set smartcase
 
 " Disable line wrapping.
 set nowrap
+
+" Use popup menu for completion (one or more matches) and do not select any
+" match at first.
+set completeopt=menu,menuone,noselect
 
 " List all matches and complete till longest common string.
 set wildmode=list:longest

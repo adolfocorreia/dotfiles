@@ -1,10 +1,49 @@
+-- Completion engine configuration.
+local cmp = require('cmp')
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      vim.fn['vsnip#anonymous'](args.body)
+    end,
+  },
+  -- TODO: improve mappings / read :h ins-completion
+  mapping = {
+    ["<C-p>"] = cmp.mapping.select_prev_item(),
+    ["<C-n>"] = cmp.mapping.select_next_item(),
+    ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+    ["<C-u>"] = cmp.mapping.scroll_docs(4),
+    -- ["<C-f>"] = cmp.mapping.complete(),
+    -- ["<Esc>"] = cmp.mapping.close(),
+    -- ["<CR>"]  = cmp.mapping.confirm(),
+  },
+  sources = cmp.config.sources(
+    {
+      { name = 'nvim_lsp' },
+      { name = 'vsnip' },
+    }, {
+      { name = 'buffer', keyword_length = 4 },
+    }
+  ),
+  formatting = {
+    format = require('lspkind').cmp_format({
+      mode = 'symbol',
+      maxwidth = 50,
+    }),
+  },
+})
+
+local capabilities = require('cmp_nvim_lsp').update_capabilities(
+  vim.lsp.protocol.make_client_capabilities()
+)
+
+
 --- LSP configuration.
 -- Reference: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 
 -- Python (pyright)
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#pyright
 require('lspconfig').pyright.setup({
-  require('coq').lsp_ensure_capabilities()
+  capabilities = capabilities,
 })
 
 -- Julia (julials)
