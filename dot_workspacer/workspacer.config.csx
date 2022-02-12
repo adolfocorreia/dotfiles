@@ -416,6 +416,8 @@ Action<IConfigContext> doConfig = (context) => {
           w.Title.Equals("Changelog") || w.Title.Equals("Update")
         )
     ));
+    // VLC
+    context.WindowRouter.IgnoreProcessName("vlc");
     // XMind
     context.WindowRouter.AddFilter((w) => !(
         w.ProcessName.Equals("XMind") && w.Class.Equals("Static")
