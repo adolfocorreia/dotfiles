@@ -1,58 +1,88 @@
--- Completion engine configuration.
+--- Completion engine configuration.
+
 local cmp = require('cmp')
 cmp.setup({
   snippet = {
     expand = function(args)
-      vim.fn['vsnip#anonymous'](args.body)
+      require('luasnip').lsp_expand(args.body)
     end,
   },
   -- TODO: improve mappings / read :h ins-completion
+  -- Default mappings: https://github.com/hrsh7th/nvim-cmp/blob/main/lua/cmp/config/default.lua
   mapping = {
-    ["<C-p>"] = cmp.mapping.select_prev_item(),
-    ["<C-n>"] = cmp.mapping.select_next_item(),
     ["<C-d>"] = cmp.mapping.scroll_docs(-4),
     ["<C-u>"] = cmp.mapping.scroll_docs(4),
-    -- ["<C-f>"] = cmp.mapping.complete(),
-    -- ["<Esc>"] = cmp.mapping.close(),
-    -- ["<CR>"]  = cmp.mapping.confirm(),
   },
   sources = cmp.config.sources(
     {
       { name = 'nvim_lsp' },
-      { name = 'vsnip' },
+      { name = 'nvim_lua' },
+      { name = 'luasnip' },
     }, {
       { name = 'buffer', keyword_length = 4 },
     }
   ),
+  -- Reference: https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance
   formatting = {
     format = require('lspkind').cmp_format({
       mode = 'symbol',
       maxwidth = 50,
+      menu = ({
+        buffer   = '[buf]',
+        cmdline  = '[nvim]',
+        luasnip  = '[snip]',
+        nvim_lsp = '[lsp]',
+        nvim_lua = '[lua]',
+        path     = '[path]',
+      })
     }),
   },
 })
 
-local capabilities = require('cmp_nvim_lsp').update_capabilities(
-  vim.lsp.protocol.make_client_capabilities()
-)
+cmp.setup.cmdline('/', {
+  sources = {
+    { name = 'buffer', keyword_length = 4 },
+  },
+})
+
+cmp.setup.cmdline(':', {
+  sources = cmp.config.sources(
+    {
+      { name = 'cmdline' },
+    }, {
+      { name = 'path' },
+    }, {
+      { name = 'nvim_lua' },
+    }
+  ),
+})
+
+-- Snippets configuration.
+require('luasnip.loaders.from_vscode').lazy_load()
+
 
 
 --- LSP configuration.
 -- Reference: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 
+local lsp_opts = {
+  capabilities = require('cmp_nvim_lsp').update_capabilities(
+    vim.lsp.protocol.make_client_capabilities()
+  ),
+}
+
 -- Python (pyright)
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#pyright
-require('lspconfig').pyright.setup({
-  capabilities = capabilities,
-})
+require('lspconfig').pyright.setup(lsp_opts)
 
 -- Julia (julials)
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#julials
-require('lspconfig').julials.setup({})
+-- TODO: set virtual_text to false (check Neovim-from-Scratch LSP config)
+require('lspconfig').julials.setup(lsp_opts)
 
 -- R (r_language_server)
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#r_language_server
-require('lspconfig').r_language_server.setup({})
+require('lspconfig').r_language_server.setup(lsp_opts)
 
 
 
@@ -125,11 +155,8 @@ wk.register({
     ['3']     = {'3gt',                  'Go to tab 3'},
     ['4']     = {'4gt',                  'Go to tab 4'},
     ['5']     = {'5gt',                  'Go to tab 5'},
-    -- TODO: add mapping with user input
-    -- References:
-    -- - https://vim.fandom.com/wiki/User_input_from_a_script
-    -- - https://stackoverflow.com/questions/14388703/vim-mapping-with-user-input
-    -- ['r']     = {'<Cmd>LualineRenameTab tabname<CR>', 'Rename tab'},
+
+    ['r'] = {function() vim.cmd('LualineRenameTab '..vim.fn.input('Tab name: ')) end, 'Rename tab'},
   },
 
   f = {
@@ -187,6 +214,10 @@ wk.register({
     ['i'] = {'<Cmd>Telescope lsp_implementations<CR>',           'Goto implementation of word under cursor'},
     ['d'] = {'<Cmd>Telescope lsp_definitions<CR>',               'Goto definition of word under cursor'},
     ['t'] = {'<Cmd>Telescope lsp_type_definitions<CR>',          'Goto type definition of word under cursor'},
+    ['h'] = {'<Cmd>lua vim.lsp.buf.hover()<CR>',                 'Hover help'},
+    ['H'] = {'<Cmd>lua vim.lsp.buf.signature_help()<CR>',        'Signature help'},
+    ['R'] = {'<Cmd>lua vim.lsp.buf.rename()<CR>',                'Rename'},
+    ['i'] = {'<Cmd>LspInfo<CR>',                                 'LSP information'},
   },
 
   g = {
@@ -230,6 +261,10 @@ wk.register({
   },
 
 }, { prefix = '<Leader>' })
+
+
+-- Comment.nvim settings.
+require('Comment').setup({})
 
 
 -- substitute.nvim settings.

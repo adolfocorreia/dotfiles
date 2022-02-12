@@ -48,7 +48,6 @@ endif
 
 
 " TODO: convert to packer
-" TODO: evaluate lewis6991/impatient.nvim
 " Installation directory for vim-plug plugins.
 call plug#begin(stdpath('data') . '/plugged')
 
@@ -77,8 +76,10 @@ Plug 'unblevable/quick-scope'
 " Add (ys_), change (cs_), remove (ds_) surrounding delimiters (_ss for whole line).
 Plug 'tpope/vim-surround'
 
+" TODO: evaluate this better
 " Comment out lines (gcc) or comment out with motions (gc_) or selections (gc).
-Plug 'tpope/vim-commentary'
+" Use gb_ for block comments.
+Plug 'numToStr/Comment.nvim'
 
 " Useful [_, ]_ keybindings: b (change buffers), Space (add blank lines),
 " e (exchange line), navigate quickfix (q/Q) and location (l/L) lists;
@@ -187,17 +188,26 @@ Plug 'nvim-treesitter/nvim-treesitter'
 " Automatic tab/indenting configuration.
 Plug 'tpope/vim-sleuth'
 
+" TODO: read :h lsp
 " LSP configuration.
 Plug 'neovim/nvim-lspconfig'
 
 " Completion.
 Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/vim-vsnip'
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'hrsh7th/cmp-path'
-Plug 'hrsh7th/cmp-vsnip'
 Plug 'onsails/lspkind-nvim'
+
+" Completion sources.
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-nvim-lua'
+Plug 'hrsh7th/cmp-path'
+Plug 'saadparwaiz1/cmp_luasnip'
+
+" Snippets.
+" TODO: evaluate this better
+Plug 'L3MON4D3/LuaSnip'
+Plug 'rafamadriz/friendly-snippets'
 
 " TODO: evaluate null-ls plugin
 " Inject LSP diagnostics, code actions and more from non-LSP tools.
@@ -288,6 +298,9 @@ Plug 'folke/tokyonight.nvim'
 
 " Startup profiling.
 Plug 'dstein64/vim-startuptime'
+
+" Improve startup time for Neovim.
+Plug 'lewis6991/impatient.nvim'
 
 
 " Initialize plugin system.
@@ -385,6 +398,13 @@ set wildignore+=*.pyc,*.pyo,*.pyd
 " Highlight yanked region.
 autocmd vimrc TextYankPost * silent! lua vim.highlight.on_yank{timeout=500}
 
+" Autobalance windows in each tab on Neovim resize.
+autocmd vimrc VimResized * tabdo wincmd =
+
+" Use <Esc>/q to close some support windows.
+autocmd vimrc FileType help,qf nnoremap <silent> <buffer> <Esc> :close<CR>
+autocmd vimrc FileType help,qf nnoremap <silent> <buffer> q :close<CR>
+
 
 
 """""" Plugin settings """"""
@@ -462,6 +482,9 @@ let g:indent_blankline_buftype_exclude = ['help', 'nofile', 'nowrite', 'terminal
 let g:indent_blankline_filetype_exclude = ['', 'lspinfo', 'checkhealth', 'help', 'startify']
 let g:indent_blankline_use_treesitter = v:true
 
+" Load impatient.nvim.
+lua require('impatient').enable_profile()
+
 " Load lua plugins' settings.
 execute 'luafile ' . stdpath('config') . '/config.lua'
 
@@ -516,6 +539,11 @@ xmap gr  <Plug>(neoterm-repl-send)
 nmap gr  <Plug>(neoterm-repl-send)
 nmap grr <Plug>(neoterm-repl-send-line)
 nmap <silent> grR :TREPLSendFile<CR>
+
+
+" Map LSP commands.
+nnoremap <silent> ]d <Cmd>lua vim.diagnostic.goto_next()<CR>
+nnoremap <silent> [d <Cmd>lua vim.diagnostic.goto_prev()<CR>
 
 
 " Map vim-better-whitespace commands.
