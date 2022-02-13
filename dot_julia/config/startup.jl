@@ -1,6 +1,6 @@
 atreplinit() do repl
     try
-        @eval using OhMyREPL
+        @eval import OhMyREPL
 
         @async begin
             # Reinstall keybindings
@@ -21,7 +21,11 @@ end
 # ENV["GKSwstype"] = "nul"
 
 # Always activate project in current directory
-using Pkg
+import Pkg
 if isfile("Project.toml") && isfile("Manifest.toml")
     Pkg.activate(".")
 end
+
+# Autocomplete brackets breaks copying multiline statements to the REPL
+import OhMyREPL
+OhMyREPL.enable_autocomplete_brackets(false)
