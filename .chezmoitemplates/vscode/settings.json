@@ -2,9 +2,13 @@
     "editor.lineNumbers": "relative",
 
     "julia.enableTelemetry": false,
+    "julia.symbolCacheDownload": true,
 
     "python.languageServer": "Pylance",
 
+    "terminal.integrated.commandsToSkipShell": [
+        "language-julia.interrupt"
+    ],
     "terminal.integrated.copyOnSelection": true,
 
     "vim.camelCaseMotion.enable": true,
@@ -89,7 +93,7 @@
         }
     ],
 
-    "workbench.colorTheme": "{{ .colorTheme }}",
+    "workbench.colorTheme": "Tokyo Night Storm",
     "workbench.editorAssociations": {
         "*.ipynb": "jupyter.notebook.ipynb"
     },

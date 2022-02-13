@@ -243,7 +243,7 @@ myManageHook =
         ("www", "Firefox"),
         ("www", "firefox"),
         -- Visual Studio Code
-        ("dev", "code-oss"),
+        ("dev", "code"),
         -- Emacs
         ("dev", "Emacs"),
         -- LibreOffice
