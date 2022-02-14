@@ -274,9 +274,6 @@ Plug 'nvim-lualine/lualine.nvim'
 " Add icons.
 Plug 'kyazdani42/nvim-web-devicons'
 
-" Undo window quit with <C-w>u (or <C-w>U for tabs).
-Plug 'AndrewRadev/undoquit.vim'
-
 " TODO: evaluate https://github.com/ojroques/nvim-bufdel
 " Delete buffers without losing window layout.
 Plug 'famiu/bufdelete.nvim'
@@ -407,9 +404,11 @@ autocmd vimrc TextYankPost * silent! lua vim.highlight.on_yank{timeout=500}
 " Autobalance windows in each tab on Neovim resize.
 autocmd vimrc VimResized * tabdo wincmd =
 
-" Use <Esc>/q to close some support windows.
-autocmd vimrc FileType help,qf nnoremap <silent> <buffer> <Esc> :quit<CR>
-autocmd vimrc FileType help,qf nnoremap <silent> <buffer> q     :quit<CR>
+" Use q to close some support windows.
+autocmd vimrc FileType help,qf nnoremap <silent> <buffer> q :close<CR>
+
+" Send help windows to the right.
+autocmd vimrc FileType help setlocal bufhidden=unload | wincmd L
 
 
 
@@ -473,12 +472,22 @@ let g:better_whitespace_operator = ''
 " vim-wordmotion settings.
 let g:wordmotion_nomap = 1
 
+" startify settings.
+" TODO: evaluate this better
+let g:startify_bookmarks = [
+  \ stdpath('config') . '/init.vim',
+  \ stdpath('config') . '/config.lua',
+  \ ]
+let g:startify_fortune_use_unicode = 1
+let g:startify_session_persistence = 1
+
 " neoterm settings.
 let g:neoterm_default_mod = 'vertical'
 let g:neoterm_direct_open_repl = 1
 let g:neoterm_repl_python = ['ipython --profile=vi']
 let g:neoterm_repl_enable_ipython_paste_magic = 1
-" let g:neoterm_bracketed_paste = 1
+autocmd vimrc FileType python let g:neoterm_bracketed_paste = 0
+autocmd vimrc FileType julia  let g:neoterm_bracketed_paste = 1
 if g:os ==# 'Linux'
   let g:neoterm_shell = 'bash'
 endif
@@ -561,10 +570,6 @@ nnoremap <silent> [w :PrevTrailingWhitespace<CR>
 nmap <M-w> <Plug>WordMotion_w
 nmap <M-b> <Plug>WordMotion_b
 nmap <M-e> <Plug>WordMotion_e
-
-
-" Remap <C-w>c to save quit history.
-nnoremap <silent> <C-w>c :call undoquit#SaveWindowQuitHistory()<CR><C-w>c
 
 
 " Terminal escaping mapping.

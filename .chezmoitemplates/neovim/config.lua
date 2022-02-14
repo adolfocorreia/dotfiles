@@ -10,6 +10,7 @@ cmp.setup({
   -- TODO: improve mappings / read :h ins-completion
   -- Default mappings: https://github.com/hrsh7th/nvim-cmp/blob/main/lua/cmp/config/default.lua
   mapping = {
+    -- TODO: <C-e> conflicts with vim-rsi
     ["<C-d>"] = cmp.mapping.scroll_docs(4),
     ["<C-u>"] = cmp.mapping.scroll_docs(-4),
   },
@@ -99,7 +100,7 @@ local function rr(prompt, cmd)
   end)
 end
 
--- whick-key.nvim settings.
+-- which-key.nvim settings.
 local wk = require('which-key')
 wk.setup({})
 
@@ -113,11 +114,15 @@ wk.register({
 
   w = {
     name     = 'window',
-    ['w']    = {'<C-w>p',   'Other window'},
+    ['p']    = {'<C-w>p',   'Go to alternate window'},
+    ['w']    = {'<C-w>w',   'Go to next window'},
+    ['W']    = {'<C-w>W',   'Go to previous window'},
     ['h']    = {'<C-w>h',   'Go left'},
     ['l']    = {'<C-w>l',   'Go right'},
     ['j']    = {'<C-w>j',   'Go down'},
     ['k']    = {'<C-w>k',   'Go up'},
+    ['t']    = {'<C-w>t',   'Go to top-left window'},
+    ['b']    = {'<C-w>b',   'Go to bottom-right window'},
     ['H']    = {'<C-w>H',   'Move far left'},
     ['L']    = {'<C-w>L',   'Move far right'},
     ['J']    = {'<C-w>J',   'Move to bottom'},
@@ -128,7 +133,6 @@ wk.register({
     ['o']    = {'<C-w>o',   'Only window'},
     ['s']    = {'<C-w>s',   'Split horizontally'},
     ['v']    = {'<C-w>v',   'Split vertically'},
-    ['u']    = {'<C-w>u',   'Undo window close'},
     ['r']    = {'<C-w>r',   'Rotate downwards'},
     ['R']    = {'<C-w>R',   'Rotate upwards'},
     ['T']    = {'<C-w>T',   'Move to new tab'},
@@ -146,36 +150,39 @@ wk.register({
     ['s'] = {'<Cmd>write<CR>',                       'Save buffer'},
     ['n'] = {'<Cmd>bnext<CR>',                       'Next buffer'},
     ['p'] = {'<Cmd>bprevious<CR>',                   'Previous buffer'},
+    ['#'] = {'<Cmd>buffer #<CR>',                    'Alternate buffer'},
     ['d'] = {'<Cmd>Bdelete<CR>',                     'Delete buffer'},
     ['e'] = {'<Cmd>enew<CR>',                        'Edit new buffer'},
-    ['a'] = {'<Cmd>wall<CR>',                        'Write all buffers'},
+    ['W'] = {'<Cmd>wall<CR>',                        'Write all buffers'},
     ['r'] = {'<Cmd>edit %<CR>',                      'Reload current buffer'},
+    -- TODO: evaluate this
     ['R'] = {'<Cmd>checktime<CR>',                   'Reload all buffers'},
   },
 
   ['<Tab>'] = {
     name      = 'tab',
-    ['<Tab>'] = {'<Cmd>tabedit<CR>',          'New tab'},
-    ['c']     = {'<Cmd>UndoableTabclose<CR>', 'Close tab'},
-    ['o']     = {'<Cmd>tabonly<CR>',          'Only tab'},
-    ['n']     = {'<Cmd>tabnext<CR>',          'Next tab'},
-    ['p']     = {'<Cmd>tabprevious<CR>',      'Previous tab'},
-    ['w']     = {'<C-w>T',                    'Move window to new tab'},
-    ['U']     = {'<C-w>U',                    'Undo tab close'},
-    ['1']     = {'1gt',                       'Go to tab 1'},
-    ['2']     = {'2gt',                       'Go to tab 2'},
-    ['3']     = {'3gt',                       'Go to tab 3'},
-    ['4']     = {'4gt',                       'Go to tab 4'},
-    ['5']     = {'5gt',                       'Go to tab 5'},
+    ['<Tab>'] = {'<Cmd>tabedit<CR>',     'New tab'},
+    ['c']     = {'<Cmd>tabclose<CR>',    'Close tab'},
+    ['o']     = {'<Cmd>tabonly<CR>',     'Only tab'},
+    ['n']     = {'<Cmd>tabnext<CR>',     'Next tab'},
+    ['p']     = {'<Cmd>tabprevious<CR>', 'Previous tab'},
+    ['w']     = {'<C-w>T',               'Move window to new tab'},
+    ['1']     = {'1gt',                  'Go to tab 1'},
+    ['2']     = {'2gt',                  'Go to tab 2'},
+    ['3']     = {'3gt',                  'Go to tab 3'},
+    ['4']     = {'4gt',                  'Go to tab 4'},
+    ['5']     = {'5gt',                  'Go to tab 5'},
     ['r']     = {function() rr('Tab name: ', 'LualineRenameTab {}') end, 'Rename tab'},
   },
 
   f = {
     name  = 'file',
+    -- TODO: open files from other directories (e.g. ~, /)
     ['f'] = {'<Cmd>Telescope find_files noignore=true<CR>', 'Find all files'},
     ['r'] = {'<Cmd>Telescope oldfiles<CR>',                 'Recent files'},
     ['g'] = {'<Cmd>Telescope git_files<CR>',                'Find git files'},
     ['p'] = {'<Cmd>Telescope projects<CR>',                 'Find projects'},
+    ['n'] = {'<Cmd>new<CR>',                                'New file'},
     ['D'] = {'<Cmd>Delete<CR>',                             'Delete file'},
     ['R'] = {function() rr('New file name: ', 'Rename {}') end, 'Rename file'},
   },
@@ -193,6 +200,14 @@ wk.register({
     ['h'] = {'<Cmd>Startify<CR>',                                       'Open home buffer'},
     ['s'] = {'<Cmd>StartupTime<CR>',                                    'View startup time'},
     ['H'] = {'<Cmd>checkhealth<CR>',                                    'Check health'},
+  },
+
+  S = {
+    name = 'session',
+    ['l'] = {'<Cmd>SLoad<CR>',   'Load session'},
+    ['s'] = {'<Cmd>SSave<CR>',   'Save session'},
+    ['d'] = {'<Cmd>SDelete<CR>', 'Delete session'},
+    ['c'] = {'<Cmd>SClose<CR>',  'Close session'},
   },
 
   o = {
@@ -236,15 +251,15 @@ wk.register({
 
   g = {
     name  = 'git',
-    ['g'] = {'<Cmd>Git<CR>',                    'Git status' },
-    ['c'] = {'<Cmd>Git commit<CR>',             'Git commit' },
-    ['p'] = {'<Cmd>Git push<CR>',               'Git push' },
-    ['d'] = {'<Cmd>Git diff<CR>',               'Git diff' },
-    ['l'] = {'<Cmd>Git log<CR>',                'Git log' },
-    ['b'] = {'<Cmd>Git blame<CR>',              'Git blame' },
-    ['C'] = {'<Cmd>Telescope git_commits<CR>',  'List git commits'},
-    ['B'] = {'<Cmd>Telescope git_branches<CR>', 'List git branches'},
-    ['S'] = {'<Cmd>Telescope git_status<CR>',   'List changes per files'},
+    ['g'] = {'<Cmd>tab Git<Bar>LualineRenameTab git<CR>', 'Git status' },
+    ['c'] = {'<Cmd>Git commit<CR>',                       'Git commit' },
+    ['p'] = {'<Cmd>Git push<CR>',                         'Git push' },
+    ['d'] = {'<Cmd>Git diff<CR>',                         'Git diff' },
+    ['l'] = {'<Cmd>Git log<CR>',                          'Git log' },
+    ['b'] = {'<Cmd>Git blame<CR>',                        'Git blame' },
+    ['C'] = {'<Cmd>Telescope git_commits<CR>',            'List git commits'},
+    ['B'] = {'<Cmd>Telescope git_branches<CR>',           'List git branches'},
+    ['S'] = {'<Cmd>Telescope git_status<CR>',             'List changes per files'},
   },
 
   s = {
@@ -272,6 +287,11 @@ wk.register({
   t = {
     name = 'toogle',
     ['c'] = {'<Cmd>ColorizerToggle<CR>', 'Color strings highlighting'},
+  },
+
+  h = {
+    name = 'help',
+    ['h'] = {'<Cmd>Telescope help_tags<CR>', 'Help tags'},
   },
 
 }, { prefix = '<Leader>' })
