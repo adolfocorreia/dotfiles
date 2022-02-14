@@ -233,6 +233,9 @@ Plug 'kassio/neoterm'
 " (C-p) and go to home (~).
 Plug 'justinmk/vim-dirvish'
 
+" Shell commands :Delete, :Move, :Rename, :Mkdir, :Chmod, :Wall (save all).
+Plug 'tpope/vim-eunuch'
+
 " TODO: evaluate this better
 " Project management.
 Plug 'ahmedkhalf/project.nvim'
@@ -270,6 +273,9 @@ Plug 'nvim-lualine/lualine.nvim'
 
 " Add icons.
 Plug 'kyazdani42/nvim-web-devicons'
+
+" Undo window quit with <C-w>u (or <C-w>U for tabs).
+Plug 'AndrewRadev/undoquit.vim'
 
 " TODO: evaluate https://github.com/ojroques/nvim-bufdel
 " Delete buffers without losing window layout.
@@ -402,8 +408,8 @@ autocmd vimrc TextYankPost * silent! lua vim.highlight.on_yank{timeout=500}
 autocmd vimrc VimResized * tabdo wincmd =
 
 " Use <Esc>/q to close some support windows.
-autocmd vimrc FileType help,qf nnoremap <silent> <buffer> <Esc> :close<CR>
-autocmd vimrc FileType help,qf nnoremap <silent> <buffer> q :close<CR>
+autocmd vimrc FileType help,qf nnoremap <silent> <buffer> <Esc> :quit<CR>
+autocmd vimrc FileType help,qf nnoremap <silent> <buffer> q     :quit<CR>
 
 
 
@@ -555,6 +561,14 @@ nnoremap <silent> [w :PrevTrailingWhitespace<CR>
 nmap <M-w> <Plug>WordMotion_w
 nmap <M-b> <Plug>WordMotion_b
 nmap <M-e> <Plug>WordMotion_e
+
+
+" Remap <C-w>c to save quit history.
+nnoremap <silent> <C-w>c :call undoquit#SaveWindowQuitHistory()<CR><C-w>c
+
+
+" Terminal escaping mapping.
+tnoremap <C-s> <C-\><C-n>
 
 
 " Window navigation mappings.

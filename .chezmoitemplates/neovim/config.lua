@@ -10,8 +10,8 @@ cmp.setup({
   -- TODO: improve mappings / read :h ins-completion
   -- Default mappings: https://github.com/hrsh7th/nvim-cmp/blob/main/lua/cmp/config/default.lua
   mapping = {
-    ["<C-d>"] = cmp.mapping.scroll_docs(-4),
-    ["<C-u>"] = cmp.mapping.scroll_docs(4),
+    ["<C-d>"] = cmp.mapping.scroll_docs(4),
+    ["<C-u>"] = cmp.mapping.scroll_docs(-4),
   },
   sources = cmp.config.sources(
     {
@@ -88,6 +88,17 @@ require('lspconfig').r_language_server.setup(lsp_opts)
 
 --- Plugin settings.
 
+-- Read user input and run vim command
+local function rr(prompt, cmd)
+  vim.ui.input({prompt=prompt}, function(value)
+    if value == nil then
+      return
+    else
+      vim.cmd(string.gsub(cmd, "{}", value))
+    end
+  end)
+end
+
 -- whick-key.nvim settings.
 local wk = require('which-key')
 wk.setup({})
@@ -112,12 +123,12 @@ wk.register({
     ['J']    = {'<C-w>J',   'Move to bottom'},
     ['K']    = {'<C-w>K',   'Move to top'},
     ['c']    = {'<C-w>c',   'Close window'},
-    ['d']    = {'<C-w>c',   'Delete window'},
     ['q']    = {'<C-w>q',   'Quit window'},
     ['n']    = {'<C-w>n',   'New window'},
     ['o']    = {'<C-w>o',   'Only window'},
     ['s']    = {'<C-w>s',   'Split horizontally'},
     ['v']    = {'<C-w>v',   'Split vertically'},
+    ['u']    = {'<C-w>u',   'Undo window close'},
     ['r']    = {'<C-w>r',   'Rotate downwards'},
     ['R']    = {'<C-w>R',   'Rotate upwards'},
     ['T']    = {'<C-w>T',   'Move to new tab'},
@@ -144,19 +155,19 @@ wk.register({
 
   ['<Tab>'] = {
     name      = 'tab',
-    ['<Tab>'] = {'<Cmd>tabedit<CR>',     'New tab'},
-    ['c']     = {'<Cmd>tabclose<CR>',    'Close tab'},
-    ['o']     = {'<Cmd>tabonly<CR>',     'Only tab'},
-    ['n']     = {'<Cmd>tabnext<CR>',     'Next tab'},
-    ['p']     = {'<Cmd>tabprevious<CR>', 'Previous tab'},
-    ['w']     = {'<C-w>T',               'Move window to new tab'},
-    ['1']     = {'1gt',                  'Go to tab 1'},
-    ['2']     = {'2gt',                  'Go to tab 2'},
-    ['3']     = {'3gt',                  'Go to tab 3'},
-    ['4']     = {'4gt',                  'Go to tab 4'},
-    ['5']     = {'5gt',                  'Go to tab 5'},
-
-    ['r'] = {function() vim.cmd('LualineRenameTab '..vim.fn.input('Tab name: ')) end, 'Rename tab'},
+    ['<Tab>'] = {'<Cmd>tabedit<CR>',          'New tab'},
+    ['c']     = {'<Cmd>UndoableTabclose<CR>', 'Close tab'},
+    ['o']     = {'<Cmd>tabonly<CR>',          'Only tab'},
+    ['n']     = {'<Cmd>tabnext<CR>',          'Next tab'},
+    ['p']     = {'<Cmd>tabprevious<CR>',      'Previous tab'},
+    ['w']     = {'<C-w>T',                    'Move window to new tab'},
+    ['U']     = {'<C-w>U',                    'Undo tab close'},
+    ['1']     = {'1gt',                       'Go to tab 1'},
+    ['2']     = {'2gt',                       'Go to tab 2'},
+    ['3']     = {'3gt',                       'Go to tab 3'},
+    ['4']     = {'4gt',                       'Go to tab 4'},
+    ['5']     = {'5gt',                       'Go to tab 5'},
+    ['r']     = {function() rr('Tab name: ', 'LualineRenameTab {}') end, 'Rename tab'},
   },
 
   f = {
@@ -165,6 +176,8 @@ wk.register({
     ['r'] = {'<Cmd>Telescope oldfiles<CR>',                 'Recent files'},
     ['g'] = {'<Cmd>Telescope git_files<CR>',                'Find git files'},
     ['p'] = {'<Cmd>Telescope projects<CR>',                 'Find projects'},
+    ['D'] = {'<Cmd>Delete<CR>',                             'Delete file'},
+    ['R'] = {function() rr('New file name: ', 'Rename {}') end, 'Rename file'},
   },
 
   v = {
@@ -217,6 +230,7 @@ wk.register({
     ['h'] = {'<Cmd>lua vim.lsp.buf.hover()<CR>',                 'Hover help'},
     ['H'] = {'<Cmd>lua vim.lsp.buf.signature_help()<CR>',        'Signature help'},
     ['R'] = {'<Cmd>lua vim.lsp.buf.rename()<CR>',                'Rename'},
+    -- TODO: add Telescope-like border to LspInfo
     ['i'] = {'<Cmd>LspInfo<CR>',                                 'LSP information'},
   },
 
