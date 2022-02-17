@@ -34,7 +34,6 @@ Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
 Set-PSReadLineKeyHandler -Key Ctrl+p -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key Ctrl+n -Function HistorySearchForward
-# Set-PSReadLineKeyHandler -Key Ctrl+Spacebar -Function AcceptSuggestion
 Set-PSReadLineKeyHandler -Key Ctrl+f -Function AcceptSuggestion
 Set-PSReadLineKeyHandler -Key Alt+f -Function AcceptNextSuggestionWord
 
@@ -57,36 +56,138 @@ Set-PsFzfOption -PSReadlineChordReverseHistory Ctrl+r
 
 
 
+
 # Delete default Powershell aliases that conflict with shell commands
+# - https://docs.microsoft.com/en-us/powershell/scripting/learn/compatibility-aliases
+# - https://github.com/Pscx/Pscx
+
+# Useful PowerShell command:
+# - Get-Command: gets all commands installed on computer including cmdlets, aliases,
+#                functions, filters, scripts and applications
+#   - Use "(Get-Command <function>).Definition" to see the function's definition
+# - Get-Alias: gets the aliases in the current session
+# - pwsh -NoProfile: open PowerShell with default profile
+
 @(
 "cat",
 "cp",
-"curl",
 "diff",
-"e",
-"kill",
-"ln",
 "ls",
-"man",
-"mkdir",
 "mv",
-#"ps",
 "pwd",
 "r",
 "rm",
-"rmdir",
-#"sleep",
 "sort",
-"su",
-"tail",
-"touch",
-"tee",
-"wget"
+"tee"
 ) | ForEach-Object { if (Test-Path Alias:$_) { Remove-Alias -Force $_ } }
 
 
+# Create aliases for the coreutil commands
+# - https://uutils.github.io/coreutils-docs/user
 
-# Create shell aliases and functions
+@(
+# "[",
+"arch",
+"base32",
+"base64",
+"basename",
+"basenc",
+"cat",
+"cksum",
+"comm",
+"cp",
+"csplit",
+"cut",
+"date",
+# "dd",
+"df",
+# "dircolors",
+"dirname",
+# "du",
+# "echo",
+"env",
+# "expand",
+"expr",
+"factor",
+# "false",
+"fmt",
+"fold",
+"hashsum",
+"head",
+# "hostname",
+"join",
+# "link",
+# "ln",
+# "ls",
+"md5sum",
+# "mkdir",
+"mktemp",
+# "more",
+"mv",
+"nl",
+"nproc",
+"numfmt",
+"od",
+"paste",
+"pr",
+"printenv",
+"printf",
+"ptx",
+"pwd",
+# "readlink",
+"realpath",
+# "relpath",
+"rm",
+# "rmdir",
+"seq",
+"sha1sum",
+"sha224sum",
+"sha256sum",
+"sha3-224sum",
+"sha3-256sum",
+"sha3-384sum",
+"sha3-512sum",
+"sha384sum",
+"sha3sum",
+"sha512sum",
+"shake128sum",
+"shake256sum",
+# "shred",
+"shuf",
+# "sleep",
+# "sort",
+"split",
+"sum",
+# "sync",
+"tac",
+"tail",
+"tee",
+"test",
+"touch",
+"tr",
+# "true",
+"truncate",
+"tsort",
+"unexpand",
+"uniq",
+# "unlink",
+"wc",
+# "whoami",
+"yes"
+) | ForEach-Object {
+    # if (Get-Command $_ -ErrorAction SilentlyContinue) {
+    #     Write-Output "Command $_ already defined!"
+    # }
+    $Code = [ScriptBlock]::Create("& coreutils $_ `$args")
+    $null = New-Item -Path Function: -Name "script:$_" -Value $Code
+  }
+
+Function ls { & coreutils ls     --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* @args }
+Function ll { & coreutils ls -l  --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* @args }
+Function la { & coreutils ls -la --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* @args }
+
+
+# Create other shell aliases and functions
 
 Function Start-Explorer { & explorer . }
 Set-Alias -Name "e." -Value Start-Explorer
@@ -94,11 +195,6 @@ Set-Alias -Name e -Value explorer
 Set-Alias -Name vi -Value nvim
 Set-Alias -Name trash -Value recycle-bin
 
-Function ls { & ls.exe     --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* @args }
-Function ll { & ls.exe -l  --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* @args }
-Function la { & ls.exe -la --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* @args }
-
-Function mkdir { & mkdir.exe $args }
 
 # Change working dir in powershell to last dir in lf on exit
 # Reference: https://github.com/gokcehan/lf/blob/master/etc/lfcd.ps1
