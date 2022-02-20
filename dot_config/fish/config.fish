@@ -23,7 +23,7 @@ if status is-interactive
     # Set aliases
     alias ls=exa
     alias vi=nvim
-    alias open=xdg-open
+    alias open=handlr open
 
     # Load conda
     # Reference: https://stackoverflow.com/questions/34280113/add-conda-to-path-in-fish

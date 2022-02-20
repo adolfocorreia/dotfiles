@@ -1,10 +1,46 @@
-# Reference: https://wiki.archlinux.org/title/Xdg-utils
+# References:
+# - https://wiki.archlinux.org/title/Default_applications
+# - https://wiki.archlinux.org/title/Xdg-utils
+# - https://wiki.archlinux.org/title/XDG_MIME_Applications
+# - https://github.com/chmln/handlr
+
+# Desktop entries location: /usr/share/applications
+# Default type to applications association: /usr/share/applications/mimeinfo.cache
+
+# Useful commands (handlr):
+# - Open file/URL:
+#   handlr open FILE
+#   handlr open URL
+# - Set default handler:
+#   handlr set .EXT APP.desktop
+#   handlr set MIME APP.desktop
+# - List default apps:
+#   handlr list
+# - Get handler for MIME type/extension:
+#   handlr get .EXT
+#   handlr get MIME
+
+# Useful commands (xdg-utils/mimeopen):
+# - Query file's MIME type:
+#   mimetype FILE
+#   xdg-mime query filetype FILE
+# - Query default app for MIME type:
+#   xdg-mime query default MIME
+#   XDG_UTILS_DEBUG_LEVEL=10 xdg-mime query default MIME
+# - Change default application for a MIME type:
+#   xdg-mime default APP.desktop MIME
+
 
 [Default Applications]
 application/pdf=xreader.desktop
+image/gif=feh.desktop
+image/jpeg=feh.desktop
+image/jpg=feh.desktop
+image/png=feh.desktop
 text/html=brave-browser.desktop
-text/plain=sublime_text.desktop
+text/plain=l3afpad.desktop;sublime_text.desktop
 x-scheme-handler/about=brave-browser.desktop
 x-scheme-handler/http=brave-browser.desktop
 x-scheme-handler/https=brave-browser.desktop
 x-scheme-handler/unknown=brave-browser.desktop
+
