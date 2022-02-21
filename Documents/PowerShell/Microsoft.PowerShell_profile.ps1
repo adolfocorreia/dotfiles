@@ -2,16 +2,12 @@
 $tmp = "$env:TMP\tmp"
 if (-Not (Test-Path $tmp)) { New-Item -ItemType Directory $tmp }
 
-
-
 # Set default encoding as UTF-8
 # Reference: https://stackoverflow.com/questions/49476326/displaying-unicode-in-powershell/49481797
 $OutputEncoding = [Console]::InputEncoding = [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding
 
-
-
-# Load Pscx module (https://github.com/Pscx/Pscx)
-# Import-Module Pscx
+# Set proxy credentials
+[System.Net.WebRequest]::DefaultWebProxy.Credentials = [System.Net.CredentialCache]::DefaultNetworkCredentials
 
 # Load PSFzf module (https://github.com/kelleyma49/PSFzf)
 Import-Module PSFzf
@@ -59,7 +55,6 @@ Set-PsFzfOption -PSReadlineChordReverseHistory Ctrl+r
 
 # Delete default Powershell aliases that conflict with shell commands
 # - https://docs.microsoft.com/en-us/powershell/scripting/learn/compatibility-aliases
-# - https://github.com/Pscx/Pscx
 
 # Useful PowerShell command:
 # - Get-Command: gets all commands installed on computer including cmdlets, aliases,
@@ -185,6 +180,8 @@ Set-PsFzfOption -PSReadlineChordReverseHistory Ctrl+r
 Function ls { & coreutils ls     --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* @args }
 Function ll { & coreutils ls -l  --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* @args }
 Function la { & coreutils ls -la --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* @args }
+
+Function mkdir { & coreutils mkdir $args }
 
 
 # Create other shell aliases and functions
