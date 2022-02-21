@@ -1,3 +1,6 @@
+-- Neovim Lua tips:
+-- - Use :lua print(vim.diagnostic(<table>)) to display table contents.
+
 --- Completion engine configuration.
 
 local cmp = require('cmp')
@@ -10,17 +13,21 @@ cmp.setup({
   -- TODO: improve mappings / read :h ins-completion
   -- Default mappings: https://github.com/hrsh7th/nvim-cmp/blob/main/lua/cmp/config/default.lua
   mapping = {
-    -- TODO: <C-e> conflicts with vim-rsi
-    ["<C-d>"] = cmp.mapping.scroll_docs(4),
-    ["<C-u>"] = cmp.mapping.scroll_docs(-4),
+    ['<C-d>'] = cmp.mapping.scroll_docs(4),
+    ['<C-u>'] = cmp.mapping.scroll_docs(-4),
+    -- <C-e> conflicts with vim-rsi
+    ['<C-e>'] = cmp.config.disable,
+    ['<C-g>'] = cmp.mapping(cmp.mapping.abort(), { 'i' }),
   },
   sources = cmp.config.sources(
     {
       { name = 'nvim_lsp' },
       { name = 'nvim_lua' },
       { name = 'luasnip' },
+      { name = 'cmp_tabnine' },
     }, {
       { name = 'buffer', keyword_length = 4 },
+      { name = 'path' },
     }
   ),
   -- Reference: https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance
@@ -29,12 +36,13 @@ cmp.setup({
       mode = 'symbol',
       maxwidth = 50,
       menu = ({
-        buffer   = '[buf]',
-        cmdline  = '[nvim]',
-        luasnip  = '[snip]',
-        nvim_lsp = '[lsp]',
-        nvim_lua = '[lua]',
-        path     = '[path]',
+        buffer      = '[buf]',
+        cmdline     = '[nvim]',
+        cmp_tabnine = '[tab9]',
+        luasnip     = '[snip]',
+        nvim_lsp    = '[lsp]',
+        nvim_lua    = '[lua]',
+        path        = '[path]',
       })
     }),
   },
@@ -90,12 +98,13 @@ require('lspconfig').r_language_server.setup(lsp_opts)
 --- Plugin settings.
 
 -- Read user input and run vim command
-local function rr(prompt, cmd)
-  vim.ui.input({prompt=prompt}, function(value)
+local function rr(prompt, cmd, completion)
+  -- TODO: evaluate how to use Telescope UI for input (e.g. dressing.nvim)
+  vim.ui.input({prompt=prompt, completion=completion}, function(value)
     if value == nil then
       return
     else
-      vim.cmd(string.gsub(cmd, "{}", value))
+      vim.cmd(string.gsub(cmd, '{}', value))
     end
   end)
 end
@@ -226,9 +235,23 @@ wk.register({
 
   c = {
     name  = 'code',
-    ['f'] = {'<Cmd>lua vim.lsp.buf.formatting()<CR>', 'Format buffer'},
-    ['w'] = {'<Cmd>StripWhitespace<CR>',              'Strip whitespace'},
-    ['s'] = {'<Cmd>Telescope spell_suggest<CR>',      'Spell suggest'},
+    ['f']  = {'<Cmd>lua vim.lsp.buf.formatting()<CR>', 'Format buffer'},
+    ['w']  = {'<Cmd>StripWhitespace<CR>',              'Strip whitespace'},
+    ['s']  = {'<Cmd>Telescope spell_suggest<CR>',      'Spell suggest'},
+    ['pf'] = {'Peek function definition'},
+    ['pc'] = {'Peek class definition'},
+  },
+
+  d = {
+    name = 'diff',
+    ['s'] = {function() rr('Other file: ','diffsplit {}','file') end, 'Open split diff window'},
+    ['t'] = {'<Cmd>diffthis<CR>',     'Diff this window'},
+    ['o'] = {'<Cmd>diffoff<CR>',      'Switch off diff'},
+    ['u'] = {'<Cmd>diffupdate<CR>',   'Update diff'},
+    ['g'] = {'<Cmd>diffget<CR>',      'Get diff from other'},
+    ['p'] = {'<Cmd>diffput<CR>',      'Put diff to other'},
+    ['G'] = {"<Cmd>'<,'>diffget<CR>", 'Get selection from other'},
+    ['P'] = {"<Cmd>'<,'>diffput<CR>", 'Put selection to other'},
   },
 
   l = {
@@ -254,12 +277,13 @@ wk.register({
     ['g'] = {'<Cmd>tab Git<Bar>LualineRenameTab git<CR>', 'Git status' },
     ['c'] = {'<Cmd>Git commit<CR>',                       'Git commit' },
     ['p'] = {'<Cmd>Git push<CR>',                         'Git push' },
-    ['d'] = {'<Cmd>Git diff<CR>',                         'Git diff' },
     ['l'] = {'<Cmd>Git log<CR>',                          'Git log' },
     ['b'] = {'<Cmd>Git blame<CR>',                        'Git blame' },
     ['C'] = {'<Cmd>Telescope git_commits<CR>',            'List git commits'},
     ['B'] = {'<Cmd>Telescope git_branches<CR>',           'List git branches'},
     ['S'] = {'<Cmd>Telescope git_status<CR>',             'List changes per files'},
+    ['d'] = {'<Cmd>DiffviewOpen<CR>',                     'Diff view' },
+    ['h'] = {'<Cmd>DiffviewFileHistory<CR>',              'Diff view history' },
   },
 
   s = {
@@ -287,12 +311,20 @@ wk.register({
   t = {
     name = 'toogle',
     ['c'] = {'<Cmd>ColorizerToggle<CR>', 'Color strings highlighting'},
+    -- TODO: implement diagnostic toggle solution
+    ['d'] = {'<Cmd>lua vim.diagnostic.disable()<CR>', 'Turn off diagnostics'},
+    ['D'] = {'<Cmd>lua vim.diagnostic.enable()<CR>',  'Turn on diagnostics'},
   },
 
   h = {
     name = 'help',
     ['h'] = {'<Cmd>Telescope help_tags<CR>', 'Help tags'},
   },
+
+  q = {
+    name = 'quit',
+    ['q'] = {'<Cmd>quitall<CR>', 'Quit all windows'},
+  }
 
 }, { prefix = '<Leader>' })
 
@@ -311,7 +343,7 @@ require('colorizer').setup({})
 
 -- nvim-treesitter settings.
 require('nvim-treesitter.configs').setup({
-  ensure_installed = "maintained",
+  ensure_installed = 'maintained',
   sync_install = false,
   -- https://github.com/nvim-treesitter/nvim-treesitter#i-want-to-use-a-http-proxy-for-downloading-the-parsers
   prefer_git = true,
@@ -324,12 +356,52 @@ require('nvim-treesitter.configs').setup({
       enable = true,
       lookahead = true,
       keymaps = {
-        ["af"] = "@function.outer",
-        ["if"] = "@function.inner",
+        ['af'] = '@function.outer',
+        ['if'] = '@function.inner',
+        ['ac'] = '@class.outer',
+        ['ic'] = '@class.inner',
+        -- TODO: evaluate using ia/aa for arguments/parameters instead of targets.vim
+      },
+    },
+    move = {
+      enable = true,
+      set_jumps = true,
+      goto_next_start = {
+        [']m'] = '@function.outer',
+        [']]'] = '@class.outer',
+      },
+      goto_next_end = {
+        [']M'] = '@function.outer',
+        [']['] = '@class.outer',
+      },
+      goto_previous_start = {
+        ['[m'] = '@function.outer',
+        ['[['] = '@class.outer',
+      },
+      goto_previous_end = {
+        ['[M'] = '@function.outer',
+        ['[]'] = '@class.outer',
+      },
+    },
+    lsp_interop = {
+      enable = true,
+      border = 'none',
+      peek_definition_code = {
+        ['<Leader>cpf'] = '@function.outer',
+        ['<Leader>cpc'] = '@class.outer',
       },
     },
   },
 })
+
+
+-- nvim-treesitter-context settings.
+require('treesitter-context').setup({})
+
+
+-- nvim-gps settings.
+local gps = require('nvim-gps')
+gps.setup({})
 
 
 -- lualine.nvim settings.
@@ -337,7 +409,7 @@ require('lualine').setup({
   sections = {
     lualine_a = { 'mode' },
     lualine_b = { 'branch', 'diff', 'diagnostics' },
-    lualine_c = { 'filename' },
+    lualine_c = { 'filename', { gps.get_location, cond = gps.is_available } },
     lualine_x = { { 'filetype', colored = false } },
     lualine_y = { 'encoding', 'fileformat' },
     lualine_z = { 'progress', 'location' },
@@ -345,8 +417,11 @@ require('lualine').setup({
   tabline = {
     lualine_a = { { 'buffers', mode = 0 } },
     lualine_z = { { 'tabs', mode = 2 } },
-  }
+  },
+  extensions = { 'quickfix', 'fugitive' },
 })
+-- Set name for first tab.
+vim.cmd([[ autocmd vimrc VimEnter * let t:tabname = 'main' ]])
 
 
 -- nvim-autopairs settings.
@@ -408,4 +483,17 @@ require('project_nvim').setup({})
 require('telescope').setup({})
 require('telescope').load_extension('fzf')
 require('telescope').load_extension('projects')
+
+
+-- diffview.nvim settings.
+require('diffview').setup({})
+
+
+-- cmp-tabnine settings.
+require('cmp_tabnine.config'):setup({
+  max_lines = 1000;
+  max_num_results = 100;
+  sort = true;
+  run_on_every_keystroke = true;
+})
 

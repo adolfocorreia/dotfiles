@@ -112,6 +112,12 @@ Plug 'tpope/vim-rsi'
 " the cursor with the current yank).
 Plug 'gbprod/substitute.nvim'
 
+" TODO: evaluate monaqa/dial.nvim
+" Use C-a/C-x to increment/decrement dates, times, roman numerals and ordinals
+" (e.g. 1st, 2nd, 3rd). For letters of the alphabet, use linewise visual
+" selection on empty lines.
+Plug 'tpope/vim-speeddating'
+
 
 """ Editing helps """
 
@@ -183,6 +189,14 @@ Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 " Syntax highlighting, indentation, folding and more using ASTs.
 Plug 'nvim-treesitter/nvim-treesitter'
 
+" TODO: evaluate this better
+" Show context of currently visible buffer contents.
+Plug 'romgrk/nvim-treesitter-context'
+
+" TODO: evaluate this better
+" Show current scope in status line.
+Plug 'SmiteshP/nvim-gps'
+
 " TODO: evaluate if sleuth is really necessary with treesitter
 " TODO: consider using expandtab, tabstop, softtabstop, shiftwidth explicitly
 " Automatic tab/indenting configuration.
@@ -203,6 +217,11 @@ Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-nvim-lua'
 Plug 'hrsh7th/cmp-path'
 Plug 'saadparwaiz1/cmp_luasnip'
+if g:os ==# 'Windows'
+  Plug 'tzachar/cmp-tabnine', { 'do': 'powershell ./install.ps1' }
+else
+  Plug 'tzachar/cmp-tabnine', { 'do': './install.sh' }
+endif
 
 " Snippets.
 " TODO: evaluate this better
@@ -227,6 +246,7 @@ Plug 'JuliaEditorSupport/julia-vim'
 " send line (grr) and send file (grR).
 Plug 'kassio/neoterm'
 
+" TODO: evaluate elihunter173/dirbuf.nvim
 " Vinegar-like path navigator. Use - to open, gq to quit and g? for help.
 " Go to parent directory (-), reload (R), open file at cursor (i) or selected
 " (I), show file info (K), preview file at cursor (p), next (C-n), previous
@@ -250,6 +270,9 @@ Plug 'tpope/vim-fugitive'
 
 " Show a git diff in the sign column.
 Plug 'lewis6991/gitsigns.nvim'
+
+" Tab page interface for cycling through diffs
+Plug 'sindrets/diffview.nvim'
 
 
 """ Search commands """
@@ -387,6 +410,9 @@ set nowrap
 " match at first.
 set completeopt=menu,menuone,noselect
 
+" Always open diff windows vertically
+set diffopt+=vertical
+
 " List all matches and complete till longest common string.
 set wildmode=list:longest
 
@@ -405,10 +431,10 @@ autocmd vimrc TextYankPost * silent! lua vim.highlight.on_yank{timeout=500}
 autocmd vimrc VimResized * tabdo wincmd =
 
 " Use q to close some support windows.
-autocmd vimrc FileType help,qf nnoremap <silent> <buffer> q :close<CR>
+autocmd vimrc FileType help,juliadoc,qf nnoremap <silent> <buffer> q :close<CR>
 
 " Send help windows to the right.
-autocmd vimrc FileType help setlocal bufhidden=unload | wincmd L
+autocmd vimrc FileType help,juliadoc setlocal bufhidden=unload | wincmd L
 
 
 
@@ -508,7 +534,9 @@ execute 'luafile ' . stdpath('config') . '/config.lua'
 """""" Key mappings """"""
 
 " - Used keys reference: :help index
-" - Unused keys reference: https://vim.fandom.com/wiki/Unused_keys
+" - Unused keys reference:
+"   - https://vim.fandom.com/wiki/Unused_keys
+"   - https://skippi.medium.com/ideas-for-non-leader-vim-mappings-fd32a2769c87
 " - Prefer non recursive maps (_noremap)
 " - Plugin maps (<Plug>) must be recursive
 
