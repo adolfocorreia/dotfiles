@@ -236,6 +236,8 @@ Plug 'jose-elias-alvarez/null-ls.nvim'
 " Language plugins.
 " Reference: https://github.com/sheerun/vim-polyglot#language-packs
 
+" TODO: Evaluate zeavim.vim and vim-dasht
+
 " Julia. LaTeX to Unicode substitutions.
 Plug 'JuliaEditorSupport/julia-vim'
 
@@ -501,8 +503,8 @@ let g:wordmotion_nomap = 1
 " startify settings.
 " TODO: evaluate this better
 let g:startify_bookmarks = [
-  \ stdpath('config') . '/init.vim',
-  \ stdpath('config') . '/config.lua',
+  \ expand(stdpath('config') . '/init.vim'),
+  \ expand(stdpath('config') . '/config.lua'),
   \ ]
 let g:startify_fortune_use_unicode = 1
 let g:startify_session_persistence = 1
