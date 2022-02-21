@@ -12,9 +12,8 @@ CapsLock::Ctrl
 SC073::RCtrl
 
 
-; Keypirinha key bindings.
-; Reference: https://github.com/Keypirinha/Keypirinha/issues/477
-#if WinActive("ahk_class keypirinha_wndcls_run")
+; PowerLauncher key bindings.
+#if WinActive("ahk_exe PowerToys.PowerLauncher.exe")
   ^j::SendInput {Down}
   ^k::SendInput {Up}
   ^n::SendInput {Down}
@@ -79,5 +78,4 @@ SC073::RCtrl
 ; Launch_Mail
 ; Ctrl+Shift+Esc
 Launch_App2::Run speedcrunch.exe
-
 
