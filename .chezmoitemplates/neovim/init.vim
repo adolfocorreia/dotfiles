@@ -241,6 +241,9 @@ Plug 'jose-elias-alvarez/null-ls.nvim'
 " Julia. LaTeX to Unicode substitutions.
 Plug 'JuliaEditorSupport/julia-vim'
 
+" Markdown previewer. Start preview with :MarkdownPreview command.
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
+
 
 """ Terminal and file management support """
 
@@ -248,12 +251,10 @@ Plug 'JuliaEditorSupport/julia-vim'
 " send line (grr) and send file (grR).
 Plug 'kassio/neoterm'
 
-" TODO: evaluate elihunter173/dirbuf.nvim
-" Vinegar-like path navigator. Use - to open, gq to quit and g? for help.
-" Go to parent directory (-), reload (R), open file at cursor (i) or selected
-" (I), show file info (K), preview file at cursor (p), next (C-n), previous
-" (C-p) and go to home (~).
-Plug 'justinmk/vim-dirvish'
+" File manager for Neovim with a directory buffer that allows file manipulation
+" by editing text. Save buffer to modify filesystem. Use <CR> to open file or
+" directory, gh to toggle hidden files and - to open parent directory.
+Plug 'elihunter173/dirbuf.nvim'
 
 " Shell commands :Delete, :Move, :Rename, :Mkdir, :Chmod, :Wall (save all).
 Plug 'tpope/vim-eunuch'

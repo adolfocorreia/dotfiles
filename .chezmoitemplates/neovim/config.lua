@@ -25,7 +25,6 @@ cmp.setup({
       { name = 'nvim_lua' },
       { name = 'luasnip' },
       { name = 'cmp_tabnine' },
-    }, {
       { name = 'buffer', keyword_length = 4 },
       { name = 'path' },
     }
@@ -435,6 +434,7 @@ require('nvim-autopairs').setup({
 -- null-ls.nvim settings.
 -- Reference: https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
 require('null-ls').setup({
+  debug = true,
   sources = {
     -- Code actions
     require('null-ls').builtins.code_actions.gitsigns,
