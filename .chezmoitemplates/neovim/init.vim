@@ -216,6 +216,7 @@ Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-nvim-lua'
 Plug 'hrsh7th/cmp-path'
+Plug 'lukas-reineke/cmp-rg'
 Plug 'saadparwaiz1/cmp_luasnip'
 if g:os ==# 'Windows'
   Plug 'tzachar/cmp-tabnine', { 'do': 'powershell ./install.ps1' }

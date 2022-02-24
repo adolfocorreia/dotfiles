@@ -26,6 +26,7 @@ cmp.setup({
       { name = 'luasnip' },
       { name = 'cmp_tabnine' },
       { name = 'buffer', keyword_length = 4 },
+      { name = 'rg', keyword_length = 4 },
       { name = 'path' },
     }
   ),
@@ -42,6 +43,7 @@ cmp.setup({
         nvim_lsp    = '[lsp]',
         nvim_lua    = '[lua]',
         path        = '[path]',
+        rg          = '[rg]',
       })
     }),
   },
@@ -49,17 +51,16 @@ cmp.setup({
 
 cmp.setup.cmdline('/', {
   sources = {
-    { name = 'buffer', keyword_length = 4 },
+    { name = 'buffer', keyword_length = 2 },
   },
 })
 
 cmp.setup.cmdline(':', {
   sources = cmp.config.sources(
     {
-      { name = 'cmdline' },
-    }, {
+      -- Reference: https://github.com/hrsh7th/cmp-cmdline/issues/24
+      { name = 'cmdline', keyword_pattern = [=[[^[:blank:]\!]*]=] },
       { name = 'path' },
-    }, {
       { name = 'nvim_lua' },
     }
   ),
@@ -117,8 +118,8 @@ wk.setup({})
 -- e.g. gc, gl, gr, g_, z_, [_, ]_, c_, y_, d_, v_
 wk.register({
 
-  ['<Leader>'] = {'<Cmd>Telescope find_files theme=ivy<CR>', 'Find file'},
-  ['`']        = {'<C-^>',                                   'Alternate file'},
+  ['<Leader>'] = {'<Cmd>Telescope buffers theme=ivy<CR>', 'Find buffer'},
+  ['`']        = {'<C-^>',                                'Alternate file'},
 
   w = {
     name     = 'window',
@@ -404,6 +405,19 @@ gps.setup({})
 
 
 -- lualine.nvim settings.
+local neoterm = {
+  sections = {
+    lualine_a = { 'mode' },
+    lualine_b = { 'filetype' },
+    lualine_c = { 'filename' },
+    lualine_z = { 'progress', 'location' },
+  },
+  inactive_sections = {
+    lualine_c = { 'filetype' },
+    lualine_x = { 'location' },
+  },
+  filetypes = { 'neoterm' },
+}
 require('lualine').setup({
   sections = {
     lualine_a = { 'mode' },
@@ -417,7 +431,7 @@ require('lualine').setup({
     lualine_a = { { 'buffers', mode = 0 } },
     lualine_z = { { 'tabs', mode = 2 } },
   },
-  extensions = { 'quickfix', 'fugitive' },
+  extensions = { 'fugitive', 'quickfix', neoterm },
 })
 -- Set name for first tab.
 vim.cmd([[ autocmd vimrc VimEnter * let t:tabname = 'main' ]])
@@ -440,7 +454,7 @@ require('null-ls').setup({
     require('null-ls').builtins.code_actions.gitsigns,
     -- Python
     -- TODO: make pylint and isort work on windows
-    -- require('null-ls').builtins.diagnostics.pylint,
+    require('null-ls').builtins.diagnostics.pylint,
     require('null-ls').builtins.formatting.black,
     -- require('null-ls').builtins.formatting.isort,
   }
@@ -480,7 +494,17 @@ require('project_nvim').setup({})
 
 
 -- telescope.nvim settings.
-require('telescope').setup({})
+require('telescope').setup({
+  pickers = {
+    buffers = {
+      mappings = {
+        i = {
+          ['<C-d>'] = "delete_buffer",
+        },
+      },
+    },
+  },
+})
 require('telescope').load_extension('fzf')
 require('telescope').load_extension('projects')
 
