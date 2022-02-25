@@ -17,6 +17,17 @@ if status is-interactive
     # Disable fish greeting message
     set -U fish_greeting
 
+    # Set cursors for vi modes
+    # Reference: https://fishshell.com/docs/current/interactive.html#vi-mode-commands
+    set fish_cursor_default     block      blink
+    set fish_cursor_insert      line       blink
+    set fish_cursor_visual      block      blink
+    set fish_cursor_replace     underscore blink
+    set fish_cursor_replace_one underscore blink
+    if set -q TMUX
+        set fish_vi_force_cursor
+    end
+
     # Set environment variables
     set EDITOR nvim
 

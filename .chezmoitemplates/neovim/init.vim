@@ -359,7 +359,9 @@ execute 'highlight Folded guibg=' . synIDattr(synIDtrans(hlID('Normal')), 'bg', 
 " Use ':verbose set option?' to check where it was set.
 
 " Set blinking cursor in normal mode.
-set guicursor=n-v-c-sm:block-blinkwait500-blinkon200-blinkoff150,i-ci-ve:ver25,r-cr-o:hor20
+if g:os ==# 'Windows'
+  set guicursor=n-v-c-sm:block-blinkwait500-blinkon200-blinkoff150,i-ci-ve:ver25,r-cr-o:hor20
+endif
 
 " Raise dialog when quitting changed buffer.
 set confirm
