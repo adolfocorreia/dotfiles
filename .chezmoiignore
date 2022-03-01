@@ -12,6 +12,7 @@ README.md
 .config/fish
 .config/gtk-3.0
 .config/Kvantum
+.config/lf
 .config/mimeapps.list
 .config/mpv
 .config/nvim

@@ -15,6 +15,15 @@ if [[ -x /usr/bin/pyenv ]]; then
   eval "$(pyenv init --path)"
 fi
 
+# Set other environment variables.
+alias open="handlr open"
+export EDITOR=nvim
+export OPENER=mimeopen
+export PAGER=bat
+
+# Set LF_ICONS environment variable.
+[[ -f "$HOME/.config/lf/icons.sh" ]] && source "$HOME/.config/lf/icons.sh"
+
 
 [[ -r ~/.bashrc ]] && . ~/.bashrc
 
