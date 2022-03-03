@@ -1,0 +1,34 @@
+References:
+- https://wiki.archlinux.org/title/Fonts
+- https://wiki.archlinux.org/title/Metric-compatible_fonts
+
+Latin script families which provide ttf-font:
+- DejaVu (ttf-dejavu) - Verdana/Tohoma and Georgia-like - https://en.wikipedia.org/wiki/DejaVu_fonts
+- Croscore (ttf-croscore) - Arial, Times and Courier-like Chrome OS fonts - https://en.wikipedia.org/wiki/Croscore_fonts
+  - Crosextra (ttf-carlito / ttf-caladea) - Calibri and Cambria-like
+- Liberation (ttf-liberation) - Arial/Helvetica, Times and Courier-like - https://en.wikipedia.org/wiki/Liberation_fonts
+- GNU FreeFont (gnu-free-fonts) - https://en.wikipedia.org/wiki/GNU_FreeFont
+
+Other scripts:
+- Noto (noto-fonts / noto-fonts-emoji) - Full Unicode/scripts coverage - https://en.wikipedia.org/wiki/Noto_fonts
+
+Other latin script families (GUI fonts):
+- Roboto (ttf-roboto) - Default font in Android and recommended font for Material - https://en.wikipedia.org/wiki/Roboto
+  - Roboto Mono (ttf-roboto-mono) - Monospaced addition to Roboto - Used in xmobar
+- Ubuntu (ttf-ubuntu-font-family) - Default font in Ubuntu - https://en.wikipedia.org/wiki/Ubuntu_(typeface)
+
+Programming fonts (non-nerd):
+- Iosevka (ttc-iosevka) - Used in Emacs
+  - Iosevka Aile (ttc-iosevka-aile) - Used in Emacs
+
+Nerd fonts:
+- Hack (nerd-fonts-hack) - Used in Alacritty
+
+Icon fonts:
+- Font Awesome (ttf-font-awesome) - Used in xmobar
+- Material Design Icons (material-design-icons-git) - Used in xmobar
+
+Package dependency fonts (e.g. GTK/GNOME):
+- Adobe Source Code Pro (adobe-source-code-pro-fonts)
+- Cantarell (cantarell-fonts)
+- URW++ fonts (gsfonts) - PostScript fonts
