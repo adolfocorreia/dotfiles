@@ -11,8 +11,11 @@
 	None, Up,   Button4, 4
 	None, Down, Button5, 4
 "^firefox$"
-	None, Up,   Button4, 4
-	None, Down, Button5, 4
+	None, Up,   Button4, 2
+	None, Down, Button5, 2
+"^LibreWolf$"
+	None, Up,   Button4, 2
+	None, Down, Button5, 2
 "^lyx$"
 	None, Up,   Button4, 3
 	None, Down, Button5, 3
