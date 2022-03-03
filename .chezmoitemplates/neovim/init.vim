@@ -83,10 +83,11 @@ Plug 'numToStr/Comment.nvim'
 
 " Useful [_, ]_ keybindings: b (change buffers), Space (add blank lines),
 " e (exchange line), navigate quickfix (q/Q) and location (l/L) lists;
-" Paste after (]p) or before ([p) linewise, also increasing (>_) or
-" decreasing (<_) indentation or reindenting (=_), after (_p) or before (_P)
-" linewise (e.g. >p, <P, =P);
-" Toggle common options: _oh (hlsearch), _oi (ignorecase), _ow (wrap).
+" Paste after (]p) or before ([p) linewise.
+" Toggle common options: _oh (hlsearch), _oi (ignorecase), _ol (list tabs and
+" trailing spaces), _on (number), _or (relativenumber), _ov (virtualedit),
+" _ow (wrap), _ox (cursorline and cursorcolumn), _oz (spell).
+" Also _od for :diffthis and :diffoff.
 Plug 'tpope/vim-unimpaired'
 
 " Text exchange operator: cx_, cxx (current line), X (in visual mode),
@@ -96,6 +97,8 @@ Plug 'tommcdo/vim-exchange'
 " Coerce text cases with: crs (snake_case), crm (MixedCase), crc (camelCase),
 " cru (UPPER_CASE), cr- (dash-case), cr. (dot.case), cr<space> (space case),
 " crt (Title Case).
+" Search and replace words with with variants like plural and case. Use e.g.
+" :%S/facilit{y,ies}/building{,s}/gc
 Plug 'tpope/vim-abolish'
 
 " Emacs keybindings in insert and command modes:
@@ -237,7 +240,8 @@ Plug 'jose-elias-alvarez/null-ls.nvim'
 " Language plugins.
 " Reference: https://github.com/sheerun/vim-polyglot#language-packs
 
-" TODO: Evaluate zeavim.vim and vim-dasht
+" TODO: Evaluate zeavim.vim, vim-dasht and vim-devdocs
+Plug 'KabbAmine/zeavim.vim'
 
 " Julia. LaTeX to Unicode substitutions.
 Plug 'JuliaEditorSupport/julia-vim'
@@ -283,6 +287,7 @@ Plug 'sindrets/diffview.nvim'
 
 " Extendable fuzzy finder.
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-file-browser.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
 
@@ -301,7 +306,6 @@ Plug 'nvim-lualine/lualine.nvim'
 " Add icons.
 Plug 'kyazdani42/nvim-web-devicons'
 
-" TODO: evaluate https://github.com/ojroques/nvim-bufdel
 " Delete buffers without losing window layout.
 Plug 'famiu/bufdelete.nvim'
 
@@ -331,6 +335,14 @@ Plug 'dstein64/vim-startuptime'
 
 " Improve startup time for Neovim.
 Plug 'lewis6991/impatient.nvim'
+
+" TODO: evaluate this
+" REPL and debug console for nvim lua.
+" Plug 'bfredl/nvim-luadev'
+" Plug 'rafcamlet/nvim-luapad'
+
+" Lua development setup for init.lua and plugins.
+Plug 'folke/lua-dev.nvim'
 
 
 " Initialize plugin system.
@@ -449,9 +461,10 @@ autocmd vimrc FileType help,juliadoc setlocal bufhidden=unload | wincmd L
 
 """""" Plugin settings """"""
 
+" TODO: make global lists of special (non-code) buffer and file types
 " Disable quick-scope highlighting for certain buffers and file types.
 let g:qs_buftype_blacklist = ['terminal', 'nofile', 'help']
-let g:qs_filetype_blacklist = ['startify', 'fugitive']
+let g:qs_filetype_blacklist = ['startify', 'fugitive', 'dirbuf']
 
 " Add underline to quick-scope highlighted characters.
 " References:
@@ -507,6 +520,9 @@ let g:better_whitespace_operator = ''
 " vim-wordmotion settings.
 let g:wordmotion_nomap = 1
 
+" zeavim settings.
+let g:zv_disable_mapping = 1
+
 " startify settings.
 " TODO: evaluate this better
 let g:startify_bookmarks = [
@@ -527,6 +543,7 @@ if g:os ==# 'Linux'
   let g:neoterm_shell = 'bash'
 endif
 
+" TODO: make global lists of special (non-code) buffer and file types
 " indent_blankline.nvim settings
 let g:indent_blankline_buftype_exclude = ['help', 'nofile', 'nowrite', 'terminal']
 let g:indent_blankline_filetype_exclude = ['', 'lspinfo', 'checkhealth', 'help', 'startify']
@@ -570,6 +587,11 @@ lnoremap <C-q> <Nop>
 tnoremap <C-q> <Nop>
 
 
+" Save buffer with C-s.
+nnoremap <silent> <C-s> :update<CR>
+inoremap <silent> <C-s> <C-o>:update<CR>
+
+
 " Clear last search highlighting (Esc is not mapped to anything in normal mode).
 nnoremap <silent> <Esc> :noh<CR><Esc>
 
@@ -607,6 +629,10 @@ nnoremap <silent> [w :PrevTrailingWhitespace<CR>
 nmap <M-w> <Plug>WordMotion_w
 nmap <M-b> <Plug>WordMotion_b
 nmap <M-e> <Plug>WordMotion_e
+
+
+" Map <Tab> to = in fugitive.
+autocmd vimrc FileType fugitive nmap <buffer> <Tab> =
 
 
 " Terminal escaping mapping.

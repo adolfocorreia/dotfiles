@@ -1,10 +1,10 @@
 -- Neovim Lua tips:
--- - Use :lua print(vim.diagnostic(<table>)) to display table contents.
+-- - Use :lua print(vim.inspect(<table>)) to display table contents.
 
 --- Completion engine configuration.
 
 local cmp = require('cmp')
-cmp.setup({
+cmp.setup.global({
   snippet = {
     expand = function(args)
       require('luasnip').lsp_expand(args.body)
@@ -17,12 +17,13 @@ cmp.setup({
     ['<C-u>'] = cmp.mapping.scroll_docs(-4),
     -- <C-e> conflicts with vim-rsi
     ['<C-e>'] = cmp.config.disable,
-    ['<C-g>'] = cmp.mapping(cmp.mapping.abort(), { 'i' }),
+    ['<C-z>'] = cmp.mapping(cmp.mapping.abort(), { 'i' }),
   },
   sources = cmp.config.sources(
     {
       { name = 'nvim_lsp' },
-      { name = 'nvim_lua' },
+      -- TODO: evaluate removal
+      -- { name = 'nvim_lua' },
       { name = 'luasnip' },
       { name = 'cmp_tabnine' },
       { name = 'buffer', keyword_length = 4 },
@@ -70,7 +71,6 @@ cmp.setup.cmdline(':', {
 require('luasnip.loaders.from_vscode').lazy_load()
 
 
-
 --- LSP configuration.
 -- Reference: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 
@@ -93,6 +93,10 @@ require('lspconfig').julials.setup(lsp_opts)
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#r_language_server
 require('lspconfig').r_language_server.setup(lsp_opts)
 
+-- Lua (sumneko)
+-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#sumneko_lua
+local luadev = require('lua-dev').setup({})
+require('lspconfig').sumneko_lua.setup(luadev)
 
 
 --- Plugin settings.
@@ -109,11 +113,31 @@ local function rr(prompt, cmd, completion)
   end)
 end
 
+-- Go to next tab, creating a second one if only one exists
+local function new_or_next_tab()
+  if vim.fn.tabpagenr('#') == 0 then
+    vim.cmd('tabedit')
+  else
+    vim.cmd('tabnext')
+  end
+end
+
 -- which-key.nvim settings.
 local wk = require('which-key')
-wk.setup({})
+wk.setup({
+  plugins = {
+    presets = {
+      motions = false,
+    },
+  },
+  key_labels = {
+    -- Override label used to display some keys
+    ['<space>'] = 'SPC',
+    ['<CR>']    = 'RET',
+    ['<Tab>']   = 'TAB',
+  },
+})
 
--- TODO: check whichkey warnings on :checkhealth
 -- TODO: create descriptions for keymaps defined elsewhere (builtin or plugins)
 -- e.g. gc, gl, gr, g_, z_, [_, ]_, c_, y_, d_, v_
 wk.register({
@@ -170,7 +194,8 @@ wk.register({
 
   ['<Tab>'] = {
     name      = 'tab',
-    ['<Tab>'] = {'<Cmd>tabedit<CR>',     'New tab'},
+    ['<Tab>'] = {new_or_next_tab,        'New or next tab'},
+    ['e']     = {'<Cmd>tabedit<CR>',     'New tab'},
     ['c']     = {'<Cmd>tabclose<CR>',    'Close tab'},
     ['o']     = {'<Cmd>tabonly<CR>',     'Only tab'},
     ['n']     = {'<Cmd>tabnext<CR>',     'Next tab'},
@@ -186,12 +211,13 @@ wk.register({
 
   f = {
     name  = 'file',
-    -- TODO: open files from other directories (e.g. ~, /)
-    ['f'] = {'<Cmd>Telescope find_files noignore=true<CR>', 'Find all files'},
+    ['f'] = {'<Cmd>Telescope find_files noignore=true<CR>', 'Find project files'},
+    ['F'] = {'<Cmd>Telescope file_browser<CR>',             'File browser'},
+    ['h'] = {'<Cmd>Telescope find_files cwd=~<CR>',         'Find home folder files'},
     ['r'] = {'<Cmd>Telescope oldfiles<CR>',                 'Recent files'},
     ['g'] = {'<Cmd>Telescope git_files<CR>',                'Find git files'},
     ['p'] = {'<Cmd>Telescope projects<CR>',                 'Find projects'},
-    ['n'] = {'<Cmd>new<CR>',                                'New file'},
+    ['n'] = {'<Cmd>enew<CR>',                               'New file'},
     ['D'] = {'<Cmd>Delete<CR>',                             'Delete file'},
     ['R'] = {function() rr('New file name: ', 'Rename {}') end, 'Rename file'},
   },
@@ -269,7 +295,7 @@ wk.register({
     ['H'] = {'<Cmd>lua vim.lsp.buf.signature_help()<CR>',        'Signature help'},
     ['R'] = {'<Cmd>lua vim.lsp.buf.rename()<CR>',                'Rename'},
     -- TODO: add Telescope-like border to LspInfo
-    ['i'] = {'<Cmd>LspInfo<CR>',                                 'LSP information'},
+    ['I'] = {'<Cmd>LspInfo<CR>',                                 'LSP information'},
   },
 
   g = {
@@ -283,7 +309,20 @@ wk.register({
     ['B'] = {'<Cmd>Telescope git_branches<CR>',           'List git branches'},
     ['S'] = {'<Cmd>Telescope git_status<CR>',             'List changes per files'},
     ['d'] = {'<Cmd>DiffviewOpen<CR>',                     'Diff view' },
-    ['h'] = {'<Cmd>DiffviewFileHistory<CR>',              'Diff view history' },
+    ['f'] = {'<Cmd>DiffviewFileHistory<CR>',              'Diff view file history' },
+    h = {
+      name = 'hunk',
+      ['h'] = {'Preview hunk'},
+      ['s'] = {'Stage hunk'},
+      ['S'] = {'Stage buffer'},
+      ['u'] = {'Undo stage'},
+      ['r'] = {'Reset hunk'},
+      ['R'] = {'Reset buffer'},
+      ['b'] = {'Blame line'},
+      ['B'] = {'Toggle line blame'},
+      ['D'] = {'Toggle deleted'},
+      ['t'] = {'Open hunks in Trouble'},
+    }
   },
 
   s = {
@@ -306,14 +345,15 @@ wk.register({
     ['f'] = {'<Cmd>Telescope filetype<CR>',                  'Filetypes'},
     ['H'] = {'<Cmd>Telescope highlights<CR>',                'Highlights'},
     ['p'] = {'<Cmd>Telescope builtin<CR>',                   'Telescope pickers'},
+    ['z'] = {'<Cmd>Zeavim<CR>',                              'Zeal documentation'},
   },
 
   t = {
     name = 'toogle',
     ['c'] = {'<Cmd>ColorizerToggle<CR>', 'Color strings highlighting'},
     -- TODO: implement diagnostic toggle solution
-    ['d'] = {'<Cmd>lua vim.diagnostic.disable()<CR>', 'Turn off diagnostics'},
-    ['D'] = {'<Cmd>lua vim.diagnostic.enable()<CR>',  'Turn on diagnostics'},
+    ['d'] = {'<Cmd>lua vim.diagnostic.disable(0)<CR>', 'Turn off diagnostics'},
+    ['D'] = {'<Cmd>lua vim.diagnostic.enable(0)<CR>',  'Turn on diagnostics'},
   },
 
   h = {
@@ -471,10 +511,23 @@ require('gitsigns').setup({
     end
     -- Navigation
     map('n', ']c', "&diff ? ']c' : '<Cmd>Gitsigns next_hunk<CR>'", {expr = true})
-    map('n', '[c', "&diff ? ']c' : '<Cmd>Gitsigns prev_hunk<CR>'", {expr = true})
+    map('n', '[c', "&diff ? '[c' : '<Cmd>Gitsigns prev_hunk<CR>'", {expr = true})
     -- Text object
     map('o', 'ih', ':<C-u>Gitsigns select_hunk<CR>')
     map('x', 'ih', ':<C-u>Gitsigns select_hunk<CR>')
+    -- Actions
+    map('n', '<Leader>ghh', '<Cmd>Gitsigns preview_hunk<CR>')
+    map('n', '<Leader>ghs', ':Gitsigns stage_hunk<CR>')
+    map('v', '<Leader>ghs', ':Gitsigns stage_hunk<CR>')
+    map('n', '<Leader>ghr', ':Gitsigns reset_hunk<CR>')
+    map('v', '<Leader>ghr', ':Gitsigns reset_hunk<CR>')
+    map('n', '<Leader>ghS', '<Cmd>Gitsigns stage_buffer<CR>')
+    map('n', '<Leader>ghu', '<Cmd>Gitsigns undo_stage_hunk<CR>')
+    map('n', '<Leader>ghR', '<Cmd>Gitsigns reset_buffer<CR>')
+    map('n', '<Leader>ghb', '<Cmd>lua require("gitsigns").blame_line{full=true}<CR>')
+    map('n', '<Leader>ghB', '<Cmd>Gitsigns toggle_current_line_blame<CR>')
+    map('n', '<Leader>ghD', '<Cmd>Gitsigns toggle_deleted<CR>')
+    map('n', '<Leader>ght', '<Cmd>Gitsigns setloclist<CR>')
   end
 })
 
@@ -505,6 +558,7 @@ require('telescope').setup({
     },
   },
 })
+require('telescope').load_extension('file_browser')
 require('telescope').load_extension('fzf')
 require('telescope').load_extension('projects')
 
