@@ -9,6 +9,12 @@ $OutputEncoding = [Console]::InputEncoding = [Console]::OutputEncoding = New-Obj
 # Set proxy credentials
 [System.Net.WebRequest]::DefaultWebProxy.Credentials = [System.Net.CredentialCache]::DefaultNetworkCredentials
 
+# Update PATH environment variable
+function Refresh-Path {
+  $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+}
+Refresh-Path
+
 # Load PSFzf module (https://github.com/kelleyma49/PSFzf)
 Import-Module PSFzf
 
@@ -24,7 +30,7 @@ Remove-PSReadLineKeyHandler -Key Shift+Tab
 
 # Enable fish style prediction
 # Reference: https://devblogs.microsoft.com/powershell/announcing-psreadline-2-1-with-predictive-intellisense
-Set-PSReadLineOption -PredictionSource History
+Set-PSReadLineOption -PredictionSource HistoryAndPlugin
 Set-PSReadLineOption -HistorySearchCursorMovesToEnd
 Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
@@ -45,11 +51,31 @@ Set-PSReadLineOption -Colors @{
   "InlinePrediction" = "`e[38;5;244m"
 }
 
+# Use cursor shape to display vi mode changes
+# References:
+# - https://docs.microsoft.com/en-us/powershell/module/psreadline/set-psreadlineoption#example-6--use-vimodechangehandler-to-display-vi-mode-changes
+# - https://terminalguide.namepad.de/seq/csi_sq_t_space
+# - https://invisible-island.net/xterm/ctlseqs/ctlseqs.html
+# - https://github.com/microsoft/terminal/pull/7379
+function OnViModeChange {
+  if ($args[0] -eq 'Command') {
+    # Set the cursor to a blinking block
+    Write-Host -NoNewLine "`e[1 q"
+  } else {
+    # Set the cursor to a blinking underline
+    Write-Host -NoNewLine "`e[3 q"
+  }
+}
+Set-PSReadLineOption -ViModeIndicator Script -ViModeChangeHandler $Function:OnViModeChange
+
 # Search paths
 Set-PsFzfOption -PSReadlineChordProvider Ctrl+t
 # Search command history
 Set-PsFzfOption -PSReadlineChordReverseHistory Ctrl+r
-
+# Enable 'fkill' alias for Invoke-FuzzyKillProcess
+Set-PsFzfOption -EnableAliasFuzzyKillProcess
+# Uses the fd command instead of OS specific file and directory commands
+Set-PsFzfOption -EnableFd
 
 
 
@@ -72,6 +98,7 @@ Set-PsFzfOption -PSReadlineChordReverseHistory Ctrl+r
 "pwd",
 "r",
 "rm",
+"rmdir",
 "sort",
 "tee"
 ) | ForEach-Object { if (Test-Path Alias:$_) { Remove-Alias -Force $_ } }
@@ -133,7 +160,7 @@ Set-PsFzfOption -PSReadlineChordReverseHistory Ctrl+r
 "realpath",
 # "relpath",
 "rm",
-# "rmdir",
+"rmdir",
 "seq",
 "sha1sum",
 "sha224sum",

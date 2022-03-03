@@ -172,7 +172,7 @@
     {
         "defaults":
         {
-            "cursorShape": "vintage",
+            "cursorShape": "underscore",
             //"fontFace": "CaskaydiaCove NF",
             //"fontFace": "DejaVuSansMono NF",
             //"fontFace": "FantasqueSansMono NF",
