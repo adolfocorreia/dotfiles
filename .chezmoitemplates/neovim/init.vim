@@ -457,7 +457,40 @@ autocmd vimrc FileType help,juliadoc,qf nnoremap <silent> <buffer> q :close<CR>
 " Send help windows to the right.
 autocmd vimrc FileType help,juliadoc setlocal bufhidden=unload | wincmd L
 
+" Avoid cursor movement when using operators (e.g. gc_, gr_).
+" Save view when setting the operatorfunc option and restore it when cursor is moved.
+" Reference: https://vimways.org/2019/making-things-flow
+function! SaveViewBeforeOperator() abort
+  if match(v:option_new, 'Comment') >= 0 || match(v:option_new, 'neoterm') >= 0
+    let w:operatorfunc_view = winsaveview()
+    autocmd vimrc CursorMoved * ++once call RestoreViewAfterOperator()
+  endif
+endfunction
+function! RestoreViewAfterOperator() abort
+  call winrestview(w:operatorfunc_view)
+  unlet w:operatorfunc_view
+endfunction
+augroup OperatorFuncSteadyView
+  autocmd!
+  autocmd OptionSet operatorfunc call SaveViewBeforeOperator()
+augroup END
 
+" Avoid cursor movement when yanking text.
+" Save view on CursorMoved and restore after yank operation.
+" Reference: https://github.com/svban/YankAssassin.vim
+function! SaveViewOnCursorMove() abort
+  let w:pre_yank_view = winsaveview()
+endfunction
+function! RestoreViewAfterYank() abort
+  if v:event.operator=='y' && exists('w:pre_yank_view')
+    call winrestview(w:pre_yank_view)
+  endif
+endfunction
+augroup YankSteadyView
+  autocmd!
+  autocmd CursorMoved * call SaveViewOnCursorMove()
+  autocmd TextYankPost * call RestoreViewAfterYank()
+augroup END
 
 """""" Plugin settings """"""
 
