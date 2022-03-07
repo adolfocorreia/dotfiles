@@ -43,6 +43,11 @@ if status is-interactive
         pyenv init - | source
     end
 
+    # Load direnv
+    if type -q direnv
+        direnv hook fish | source
+    end
+
     # Load starship
     starship init fish | source
 end
