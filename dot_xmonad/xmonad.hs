@@ -232,6 +232,7 @@ myManageHook =
       ]
     myClassResizeFloats =
       [ "gksqt",
+        "Matplotlib",
         "mpv",
         "vlc"
       ]
