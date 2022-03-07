@@ -253,8 +253,8 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 """ Terminal and file management support """
 
 " Send code to REPL: send motion in normal mode (gr_) or visual mode (gr),
-" send line (grr) and send file (grR).
-Plug 'kassio/neoterm'
+" send line (grr) and send paragraph (grR).
+Plug 'jpalardy/vim-slime'
 
 " File manager for Neovim with a directory buffer that allows file manipulation
 " by editing text. Save buffer to modify filesystem. Use <CR> to open file or
@@ -413,9 +413,6 @@ set colorcolumn=90
 set number
 set relativenumber
 
-" Disable numbering and cursor highlighting in terminal buffers.
-autocmd vimrc TermOpen * setlocal nonumber norelativenumber nocursorline nocursorcolumn
-
 " Open new split panes to right and bottom.
 set splitbelow
 set splitright
@@ -457,23 +454,21 @@ autocmd vimrc FileType help,juliadoc,qf nnoremap <silent> <buffer> q :close<CR>
 " Send help windows to the right.
 autocmd vimrc FileType help,juliadoc setlocal bufhidden=unload | wincmd L
 
-" Avoid cursor movement when using operators (e.g. gc_, gr_).
-" Save view when setting the operatorfunc option and restore it when cursor is moved.
-" Reference: https://vimways.org/2019/making-things-flow
-function! SaveViewBeforeOperator() abort
-  if match(v:option_new, 'Comment') >= 0 || match(v:option_new, 'neoterm') >= 0
-    let w:operatorfunc_view = winsaveview()
-    autocmd vimrc CursorMoved * ++once call RestoreViewAfterOperator()
-  endif
-endfunction
-function! RestoreViewAfterOperator() abort
-  call winrestview(w:operatorfunc_view)
-  unlet w:operatorfunc_view
-endfunction
-augroup OperatorFuncSteadyView
-  autocmd!
-  autocmd OptionSet operatorfunc call SaveViewBeforeOperator()
-augroup END
+
+" Terminal autocmds.
+
+" Disable numbering and cursor highlighting in terminal buffers.
+autocmd vimrc TermOpen * setlocal nonumber norelativenumber nocursorline nocursorcolumn
+
+" Move terminal windows to the right.
+autocmd vimrc TermOpen * wincmd L
+
+" Set terminal filetype.
+autocmd vimrc TermOpen * set filetype=terminal
+
+" TODO: make this work
+" Reset vim-slime configuration in all buffers.
+" autocmd vimrc TermClose * bufdo if exists('b:slime_config') | let b:slime_config['jobid'] = '' | endif
 
 " Avoid cursor movement when yanking text.
 " Save view on CursorMoved and restore after yank operation.
@@ -491,6 +486,7 @@ augroup YankSteadyView
   autocmd CursorMoved * call SaveViewOnCursorMove()
   autocmd TextYankPost * call RestoreViewAfterYank()
 augroup END
+
 
 """""" Plugin settings """"""
 
@@ -565,16 +561,16 @@ let g:startify_bookmarks = [
 let g:startify_fortune_use_unicode = 1
 let g:startify_session_persistence = 1
 
-" neoterm settings.
-let g:neoterm_default_mod = 'vertical'
-let g:neoterm_direct_open_repl = 1
-let g:neoterm_repl_python = ['ipython --profile=vi']
-let g:neoterm_repl_enable_ipython_paste_magic = 1
-autocmd vimrc FileType python let g:neoterm_bracketed_paste = 0
-autocmd vimrc FileType julia  let g:neoterm_bracketed_paste = 1
-if g:os ==# 'Linux'
-  let g:neoterm_shell = 'bash'
-endif
+" vim-slime settings.
+let g:slime_target = 'neovim'
+let g:slime_no_mappings = 1
+let g:slime_python_ipython = 1
+
+" Use bracketed paste in Julia REPL.
+" Reference: https://github.com/jpalardy/vim-slime#advanced-configuration-overrides
+function SlimeOverride_EscapeText_julia(text)
+  return "\x1b[200~" . a:text . "\x1b[201~"
+endfunction
 
 " TODO: make global lists of special (non-code) buffer and file types
 " indent_blankline.nvim settings
@@ -641,11 +637,11 @@ nmap gl <Plug>(EasyAlign)
 xmap gl <Plug>(EasyAlign)
 
 
-" Map neoterm commands.
-xmap gr  <Plug>(neoterm-repl-send)
-nmap gr  <Plug>(neoterm-repl-send)
-nmap grr <Plug>(neoterm-repl-send-line)
-nmap <silent> grR :TREPLSendFile<CR>
+" Map vim-slime commands.
+xmap gr  <Plug>SlimeRegionSend
+nmap gr  <Plug>SlimeMotionSend
+nmap grr <Plug>SlimeLineSend
+nmap grR <Plug>SlimeParagraphSend
 
 
 " Map LSP commands.

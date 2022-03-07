@@ -248,7 +248,6 @@ wk.register({
   o = {
     name = 'open',
     ['-'] = {'<Plug>(dirvish_up)',                           'Directory tree'},
-    ['T'] = {'<Cmd>terminal<CR>',                            'Terminal'},
     ['t'] = {'<Cmd>TroubleToggle<CR>',                       'Toggle Trouble'},
     ['w'] = {'<Cmd>TroubleToggle workspace_diagnostics<CR>', 'Workspace diagnostics'},
     ['d'] = {'<Cmd>TroubleToggle document_diagnostics<CR>',  'Document diagnostics'},
@@ -257,6 +256,14 @@ wk.register({
     ['r'] = {'<Cmd>TroubleToggle lsp_references<CR>',        'LSP references'},
     ['Q'] = {'<Cmd>copen<CR>',                               'Quickfix list'},
     ['L'] = {'<Cmd>lopen<CR>',                               'Location list'},
+  },
+
+  r = {
+    name = 'repl',
+    ['c'] = {'<Cmd>SlimeConfig<CR>',                              'Configure REPL'},
+    ['s'] = {'<Cmd>vsplit<Bar>terminal<CR>',                      'Open system shell'},
+    ['j'] = {'<Cmd>vsplit<Bar>terminal julia<CR>',                'Open Julia REPL'},
+    ['p'] = {'<Cmd>vsplit<Bar>terminal ipython --profile=vi<CR>', 'Toggle Python REPL'},
   },
 
   c = {
@@ -445,18 +452,19 @@ gps.setup({})
 
 
 -- lualine.nvim settings.
-local neoterm = {
+local terminal = {
   sections = {
     lualine_a = { 'mode' },
-    lualine_b = { 'filetype' },
+    lualine_b = { 'vim.opt.filetype._value', "'&' .. vim.opt.channel._value" },
     lualine_c = { 'filename' },
+    lualine_x = { {'filetype', icon_only = true, colored = false} },
     lualine_z = { 'progress', 'location' },
   },
   inactive_sections = {
-    lualine_c = { 'filetype' },
+    lualine_c = { 'vim.opt.filetype._value', "'&' .. vim.opt.channel._value" },
     lualine_x = { 'location' },
   },
-  filetypes = { 'neoterm' },
+  filetypes = { 'terminal' },
 }
 require('lualine').setup({
   sections = {
@@ -471,7 +479,7 @@ require('lualine').setup({
     lualine_a = { { 'buffers', mode = 0 } },
     lualine_z = { { 'tabs', mode = 2 } },
   },
-  extensions = { 'fugitive', 'quickfix', neoterm },
+  extensions = { 'fugitive', 'quickfix', terminal },
 })
 -- Set name for first tab.
 vim.cmd([[ autocmd vimrc VimEnter * let t:tabname = 'main' ]])
