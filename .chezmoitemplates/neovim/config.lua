@@ -233,7 +233,7 @@ wk.register({
     ['g'] = {'<Cmd>PlugUpgrade<CR>',                                    'Upgrade plugin manager'},
     ['t'] = {'<Cmd>TSUpdate<CR>',                                       'Treesitter update'},
     ['h'] = {'<Cmd>Startify<CR>',                                       'Open home buffer'},
-    ['s'] = {'<Cmd>StartupTime<CR>',                                    'View startup time'},
+    ['s'] = {'<Cmd>tab StartupTime<CR>',                                'View startup time'},
     ['H'] = {'<Cmd>checkhealth<CR>',                                    'Check health'},
   },
 

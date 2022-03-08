@@ -183,6 +183,9 @@ Plug 'wellle/targets.vim'
 " above), aI (ii with lines above/below).
 Plug 'michaeljsmith/vim-indent-object'
 
+" Text object for the entire buffer (ae/ie).
+Plug 'kana/vim-textobj-entire'
+
 " Language syntax text objects: functions (af/if).
 Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 
@@ -564,10 +567,23 @@ let g:startify_session_persistence = 1
 " vim-slime settings.
 let g:slime_target = 'neovim'
 let g:slime_no_mappings = 1
-let g:slime_python_ipython = 1
+
+if g:os !=# 'Windows'
+  let g:slime_python_ipython = 1
+else
+  " TODO: improve this (check vim-slime issues #123/223/273/283/293)
+  function SlimeOverride_EscapeText_python(text)
+    " Using %paste (as done in neoterm), since %cpaste does not seem to work
+    " in neovim's terminal on Windows.
+    call setreg('+', a:text, 'l')
+    return ['%paste', g:slime_dispatch_ipython_pause, "\n"]
+  endfunction
+end
 
 " Use bracketed paste in Julia REPL.
-" Reference: https://github.com/jpalardy/vim-slime#advanced-configuration-overrides
+" References:
+" - https://cirw.in/blog/bracketed-paste
+" - https://github.com/jpalardy/vim-slime#advanced-configuration-overrides
 function SlimeOverride_EscapeText_julia(text)
   return "\x1b[200~" . a:text . "\x1b[201~"
 endfunction
