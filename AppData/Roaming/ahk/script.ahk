@@ -12,8 +12,9 @@ CapsLock::Ctrl
 SC073::RCtrl
 
 
-; PowerLauncher key bindings.
-#if WinActive("ahk_exe PowerToys.PowerLauncher.exe")
+; Keypirinha key bindings.
+; Reference: https://github.com/Keypirinha/Keypirinha/issues/477
+#if WinActive("ahk_class keypirinha_wndcls_run")
   ^j::SendInput {Down}
   ^k::SendInput {Up}
   ^n::SendInput {Down}
