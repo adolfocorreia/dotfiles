@@ -3,6 +3,7 @@
 -------------------
 
 -- Neovim Lua tips:
+-- - https://github.com/nanotee/nvim-lua-guide
 -- - Use :lua print(vim.inspect(<table>)) to display table contents.
 
 -- TODO: evaluate and replace all vim.cmd statements
@@ -19,9 +20,12 @@ vim.cmd([[
 -- Select Leader keys.
 vim.g.mapleader      = ' '
 vim.g.maplocalleader = '\\'
+vim.cmd([[
+  noremap <Space> <Nop>
+]])
 
 -- Set vim.g.os variable with current OS.
-if not vim.fn.exists('g:os') then
+if vim.fn.exists('g:os') == 0 then
   if vim.fn.has('win64') then
     vim.g.os = 'Windows'
   else
@@ -50,7 +54,8 @@ vim.g.loaded_netrwFileHandlers = 1
 
 -- TODO: evaluate this better
 -- Impatient must be setup before any other plugin is loaded.
-require('impatient').enable_profile()
+local ok, impatient = pcall(require, 'impatient')
+if ok then impatient.enable_profile() end
 
 -- Install packer if not present.
 -- Reference: https://github.com/wbthomason/packer.nvim#bootstrapping
@@ -58,6 +63,7 @@ local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.n
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   -- TODO: make this work smoother
   PACKER_BOOTSTRAP = vim.fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+  vim.cmd('packadd packer.nvim')
 end
 
 -- TODO: make this work
@@ -297,6 +303,9 @@ require('packer').startup({function(use)
   -- LSP configuration.
   use 'neovim/nvim-lspconfig'
 
+  -- Tree like view for code symbols.
+  use 'simrat39/symbols-outline.nvim'
+
   -- Completion.
   use 'hrsh7th/nvim-cmp'
   use 'onsails/lspkind-nvim'
@@ -311,7 +320,7 @@ require('packer').startup({function(use)
   use { 'saadparwaiz1/cmp_luasnip', requires = 'hrsh7th/nvim-cmp' }
 
   if vim.g.os == 'Windows' then
-    use { 'tzachar/cmp-tabnine', requires = 'hrsh7th/nvim-cmp', run = 'powershell ./install.ps1', after = 'nvim-cmp' }
+    use { 'tzachar/cmp-tabnine', requires = 'hrsh7th/nvim-cmp', run = 'pwsh ./install.ps1' }
   else
     use { 'tzachar/cmp-tabnine', requires = 'hrsh7th/nvim-cmp', run = './install.sh'}
   end
@@ -493,9 +502,6 @@ require('packer').startup({function(use)
 end,
 
 config = {
-  display = {
-    open_fn = require('packer.util').float,
-  },
   profile = {
     enable = true,
     threshold = 1,
@@ -1167,6 +1173,7 @@ wk.register({
     ['q'] = {'<Cmd>TroubleToggle quickfix<CR>',              'Quickfix items'},
     ['l'] = {'<Cmd>TroubleToggle loclist<CR>',               'Loclist items'},
     ['r'] = {'<Cmd>TroubleToggle lsp_references<CR>',        'LSP references'},
+    ['s'] = {'<Cmd>SymbolsOutline<CR>',                      'Symbols outline'},
     ['Q'] = {'<Cmd>copen<CR>',                               'Quickfix list'},
     ['L'] = {'<Cmd>lopen<CR>',                               'Location list'},
   },
