@@ -20,9 +20,7 @@ vim.cmd([[
 -- Select Leader keys.
 vim.g.mapleader      = ' '
 vim.g.maplocalleader = '\\'
-vim.cmd([[
-  noremap <Space> <Nop>
-]])
+vim.cmd([[noremap <Space> <Nop>]])
 
 -- Set vim.g.os variable with current OS.
 if vim.fn.exists('g:os') == 0 then
@@ -66,18 +64,10 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   vim.cmd('packadd packer.nvim')
 end
 
--- TODO: is this necessary?
--- Avoid errors on first use.
-local ok_packer, packer = pcall(require, 'packer')
-if not ok_packer then
-  error 'Requiring packer.nvim failed.'
-  vim.cmd('quitall')
-end
-
 -- When setting plugins, use 'setup' or 'config' keys to specify code that should be run
 -- either before or after the plugin is loaded, respectively. Usually Vimscript plugins
 -- require 'setup' and Lua plugins require 'config'.
-packer.startup({function(use)
+require('packer').startup({function(use)
 
   --- Neovim management ---
 
@@ -122,7 +112,7 @@ packer.startup({function(use)
   -- Make repeat command (.) plugin compatible.
   use {
     'tpope/vim-repeat',
-    event = 'VimEnter',
+    -- event = 'VimEnter',
   }
 
   -- Jump to any forward (s__) or backward (S__) location specified by two characters.
@@ -136,6 +126,7 @@ packer.startup({function(use)
   use {
     'unblevable/quick-scope',
     event = { 'BufRead', 'BufNewFile' },
+    -- event = 'VimEnter',
     setup = function()
       -- TODO: make global lists of special (non-code) buffer and file types
       -- Disable quick-scope highlighting for certain buffers and file types.
@@ -144,6 +135,7 @@ packer.startup({function(use)
     end,
   }
 
+  -- TODO: evaluate machakann/vim-sandwich
   -- Add (ys_), change (cs_), remove (ds_) surrounding delimiters (_ss for whole line).
   use {
     'tpope/vim-surround',
@@ -169,7 +161,8 @@ packer.startup({function(use)
   -- Also _od for :diffthis and :diffoff.
   use {
     'tpope/vim-unimpaired',
-    keys = { '[', ']', '>', '<' },
+    -- keys = { '[', ']', '>', '<' },
+    event = { 'BufRead', 'BufNewFile' },
   }
 
   -- Text exchange operator: cx_, cxx (current line), X (in visual mode),
@@ -198,7 +191,8 @@ packer.startup({function(use)
   -- C-d, M-d: delete character/word
   use {
     'tpope/vim-rsi',
-    event = { 'InsertEnter', 'CmdlineEnter' },
+    -- event = { 'InsertEnter', 'CmdlineEnter' },
+    event = { 'BufRead', 'BufNewFile' },
   }
 
   -- TODO: evaluate this and svermeulen/vim-subversive better
@@ -207,9 +201,18 @@ packer.startup({function(use)
   -- the cursor with the current yank).
   use {
     'gbprod/substitute.nvim',
-    config = function() require('substitute').setup({}) end,
     -- keys = '<M-s>',
     event = { 'BufRead', 'BufNewFile' },
+    config = function()
+      require('substitute').setup({})
+
+      vim.cmd([[
+        nnoremap <M-s>      <Cmd>lua require('substitute').operator()<CR>
+        nnoremap <M-s><M-s> <Cmd>lua require('substitute').line()<CR>
+        nnoremap <M-S>      <Cmd>lua require('substitute').eol()<CR>
+        xnoremap <M-s>      <Cmd>lua require('substitute').visual()<CR>
+      ]])
+    end,
   }
 
   -- TODO: evaluate monaqa/dial.nvim
@@ -262,6 +265,13 @@ packer.startup({function(use)
     -- keys = 'gl',
     -- cmd = 'EasyAlign',
     event = { 'BufRead', 'BufNewFile' },
+    config = function()
+      -- Map vim-easy-align to gl (since ga is already used).
+      vim.cmd([[
+        nmap gl <Plug>(EasyAlign)
+        xmap gl <Plug>(EasyAlign)
+      ]])
+    end,
   }
 
   -- TODO: evaluate this better
@@ -287,7 +297,18 @@ packer.startup({function(use)
     setup = function()
       -- Deactivate '<Leader>s' key mapping
       vim.g.better_whitespace_operator = ''
+
+      vim.cmd([[
+        nnoremap <silent> ]w :NextTrailingWhitespace<CR>
+        nnoremap <silent> [w :PrevTrailingWhitespace<CR>
+      ]])
     end,
+  }
+
+  -- Show how many times a search pattern occurs in current buffer.
+  use {
+    'google/vim-searchindex',
+    event = { 'BufRead', 'BufNewFile' },
   }
 
 
@@ -300,6 +321,12 @@ packer.startup({function(use)
     event = { 'BufRead', 'BufNewFile' },
     setup = function()
       vim.g.wordmotion_nomap = 1
+
+      vim.cmd([[
+        nmap <M-w> <Plug>WordMotion_w
+        nmap <M-b> <Plug>WordMotion_b
+        nmap <M-e> <Plug>WordMotion_e
+      ]])
     end,
   }
 
@@ -314,20 +341,22 @@ packer.startup({function(use)
   -- Reference: https://github.com/wellle/targets.vim/blob/master/cheatsheet.md
   use {
     'wellle/targets.vim',
-    keys = { 'a', 'i' },
+    event = { 'BufRead', 'BufNewFile' },
+    -- keys = { 'a', 'i' },
   }
 
   -- Indentation level text object: ii (indentation level), ai (ii and line
   -- above), aI (ii with lines above/below).
   use {
     'michaeljsmith/vim-indent-object',
-    keys = { 'a', 'i' },
+    event = { 'BufRead', 'BufNewFile' },
+    -- keys = { 'a', 'i' },
   }
 
   -- Dependency for text objects plugins.
   use {
     'kana/vim-textobj-user',
-    opt = true,
+    event = { 'BufRead', 'BufNewFile' },
     after = 'vim-textobj-user',
   }
 
@@ -335,7 +364,8 @@ packer.startup({function(use)
   --TODO: evaluate alternative plugins
   use {
     'kana/vim-textobj-entire',
-    keys = { 'a', 'i' },
+    -- keys = { 'a', 'i' },
+    event = { 'BufRead', 'BufNewFile' },
     after = 'vim-textobj-user',
     requires = 'kana/vim-textobj-user',
   }
@@ -343,7 +373,8 @@ packer.startup({function(use)
   -- Text object (iv) for variable segments in camelCase or snake_case words.
   use {
     'Julian/vim-textobj-variable-segment',
-    keys = { 'a', 'i' },
+    -- keys = { 'a', 'i' },
+    event = { 'BufRead', 'BufNewFile' },
     after = 'vim-textobj-user',
     requires = 'kana/vim-textobj-user',
   }
@@ -351,7 +382,8 @@ packer.startup({function(use)
   -- Language syntax text objects: functions (af/if).
   use {
     'nvim-treesitter/nvim-treesitter-textobjects',
-    keys = { 'a', 'i' },
+    -- keys = { 'a', 'i' },
+    event = { 'BufRead', 'BufNewFile' },
     after = 'nvim-treesitter',
     requires = 'nvim-treesitter/nvim-treesitter',
   }
@@ -362,7 +394,8 @@ packer.startup({function(use)
   -- Syntax highlighting, indentation, folding and more using ASTs.
   use {
     'nvim-treesitter/nvim-treesitter',
-    event = { 'BufRead', 'BufNewFile' },
+    -- load treesitter after VimEnter because of :TSUpdate
+    event = 'VimEnter',
     run = ':TSUpdate',
     config = function()
       require('nvim-treesitter.configs').setup({
@@ -432,10 +465,20 @@ packer.startup({function(use)
   -- Show current scope in status line.
   use {
     'SmiteshP/nvim-gps',
-    after = 'nvim-treesitter',
-    module = 'nvim-gps',
+    after = { 'nvim-treesitter', 'lualine.nvim' },
+    -- module = 'nvim-gps',
+    event = { 'BufRead', 'BufNewFile' },
     requires = 'nvim-treesitter/nvim-treesitter',
-    config = function() require('nvim-gps').setup({}) end,
+    config = function()
+      local gps = require('nvim-gps')
+      gps.setup({})
+      local lualine_config = require('lualine').get_config()
+      lualine_config['sections']['lualine_c'] = {
+        'filename',
+        { gps.get_location, cond = gps.is_available }
+      }
+      require('lualine').setup(lualine_config)
+    end,
   }
 
   -- TODO: evaluate if sleuth is really necessary with treesitter
@@ -520,7 +563,7 @@ packer.startup({function(use)
   -- Completion.
   use {
     'hrsh7th/nvim-cmp',
-    event = 'InsertEnter',
+    event = 'VimEnter',
     module = 'cmp_nvim_lsp',
     config = function()
       local cmp = require('cmp')
@@ -653,11 +696,16 @@ packer.startup({function(use)
     end,
   }
 
+  -- TODO: evaluate better way to lazy load this plugin
   -- Julia. LaTeX to Unicode substitutions.
   use {
     'JuliaEditorSupport/julia-vim',
     -- ft = 'julia',
     -- event = 'VimEnter'
+    opt = true,
+    setup = function()
+      vim.g.latex_to_unicode_tab = 'off'
+    end,
   }
 
   -- Markdown previewer. Start preview with :MarkdownPreview command.
@@ -674,10 +722,19 @@ packer.startup({function(use)
   -- send line (grr) and send paragraph (grR).
   use {
     'jpalardy/vim-slime',
-    keys = 'gr',
+    -- keys = 'gr',
+    -- ft = { 'python', 'julia' },
+    event = 'VimEnter',
     setup = function()
       vim.g.slime_target = 'neovim'
       vim.g.slime_no_mappings = 1
+
+      vim.cmd([[
+        xmap gr  <Plug>SlimeRegionSend
+        nmap gr  <Plug>SlimeMotionSend
+        nmap grr <Plug>SlimeLineSend
+        nmap grR <Plug>SlimeParagraphSend
+      ]])
 
       -- Slime overrides: https://github.com/jpalardy/vim-slime#advanced-configuration-overrides
 
@@ -733,12 +790,17 @@ packer.startup({function(use)
 
   -- TODO: evaluate neogit
   -- Git support (:Git).
-  -- TODO: make this opt?
   use {
     'tpope/vim-fugitive',
-    cmd = 'Git',
+    -- Lazy loading does not work for fugitive.
+    -- Reference: https://github.com/wbthomason/packer.nvim/issues/530
+    opt = false,
+    config = function()
+      vim.cmd([[
+        autocmd vimrc FileType fugitive nmap <buffer> <Tab> =
+      ]])
+    end,
   }
-  -- Plug 'TimUntersberger/neogit'
 
   -- Show a git diff in the sign column.
   use {
@@ -877,12 +939,13 @@ packer.startup({function(use)
         },
         filetypes = { 'terminal' },
       }
-      local gps = require('nvim-gps')
+      -- local gps = require('nvim-gps')
       require('lualine').setup({
         sections = {
           lualine_a = { 'mode' },
           lualine_b = { 'branch', 'diff', 'diagnostics' },
-          lualine_c = { 'filename', { gps.get_location, cond = gps.is_available } },
+          -- lualine_c = { 'filename', { gps.get_location, cond = gps.is_available } },
+          lualine_c = { 'filename' },
           lualine_x = { { 'filetype', colored = false } },
           lualine_y = { 'encoding', 'fileformat' },
           lualine_z = { 'progress', 'location' },
@@ -978,7 +1041,7 @@ end,
 config = {
   profile = {
     enable = true,
-    threshold = 1,
+    threshold = 0,
   },
 }})
 
@@ -1194,6 +1257,7 @@ vim.cmd([[
 ]])
 
 
+-- TODO: is this working?
 -- Keep selection when indenting in visual mode.
 vim.cmd([[
   vnoremap > >gv
@@ -1235,66 +1299,6 @@ vim.cmd([[
 ]])
 
 
--- TODO: move plugin maps to specification
--- Map substitute.nvim commands.
-vim.cmd([[
-  nnoremap <M-s>      <Cmd>lua require('substitute').operator()<CR>
-  nnoremap <M-s><M-s> <Cmd>lua require('substitute').line()<CR>
-  nnoremap <M-S>      <Cmd>lua require('substitute').eol()<CR>
-  xnoremap <M-s>      <Cmd>lua require('substitute').visual()<CR>
-]])
-
-
--- TODO: move plugin maps to specification
--- Map vim-easy-align to gl (since ga is already used).
-vim.cmd([[
-  nmap gl <Plug>(EasyAlign)
-  xmap gl <Plug>(EasyAlign)
-]])
-
-
--- TODO: move plugin maps to specification
--- Map vim-slime commands.
-vim.cmd([[
-  xmap gr  <Plug>SlimeRegionSend
-  nmap gr  <Plug>SlimeMotionSend
-  nmap grr <Plug>SlimeLineSend
-  nmap grR <Plug>SlimeParagraphSend
-]])
-
-
--- TODO: move lsp maps to specification
--- Map LSP commands.
-vim.cmd([[
-  nnoremap <silent> ]d <Cmd>lua vim.diagnostic.goto_next()<CR>
-  nnoremap <silent> [d <Cmd>lua vim.diagnostic.goto_prev()<CR>
-]])
-
-
--- TODO: move plugin maps to specification
--- Map vim-better-whitespace commands.
-vim.cmd([[
-  nnoremap <silent> ]w :NextTrailingWhitespace<CR>
-  nnoremap <silent> [w :PrevTrailingWhitespace<CR>
-]])
-
-
--- TODO: move plugin maps to specification
--- Map vim-wordmotion commands.
-vim.cmd([[
-  nmap <M-w> <Plug>WordMotion_w
-  nmap <M-b> <Plug>WordMotion_b
-  nmap <M-e> <Plug>WordMotion_e
-]])
-
-
--- TODO: move plugin maps to specification
--- Map <Tab> to = in fugitive.
-vim.cmd([[
-  autocmd vimrc FileType fugitive nmap <buffer> <Tab> =
-]])
-
-
 -- Terminal escaping mapping.
 vim.cmd([[
   tnoremap <C-s> <C-\><C-n>
@@ -1330,6 +1334,13 @@ vim.cmd([[
   nnoremap <M-Down>  <C-w>j
   nnoremap <M-Up>    <C-w>k
   nnoremap <M-Right> <C-w>l
+]])
+
+
+-- Goto next/previous diagnostic.
+vim.cmd([[
+  nnoremap <silent> ]d <Cmd>lua vim.diagnostic.goto_next()<CR>
+  nnoremap <silent> [d <Cmd>lua vim.diagnostic.goto_prev()<CR>
 ]])
 
 
@@ -1445,17 +1456,16 @@ LEADER_MAPPINGS = {
 
   v = {
     name = 'neovim',
-    ['v'] = {'<Cmd>edit $MYVIMRC<CR>',   'Open vim config'},
-    ['r'] = {'<Cmd>source $MYVIMRC<CR>', 'Reload neovim config'},
-    ['u'] = {'<Cmd>PackerSync<CR>',      'Update plugins'},
-    ['c'] = {'<Cmd>PackerCompile<CR>',   'Compile plugin specification'},
-    ['C'] = {'<Cmd>PackerClean<CR>',     'Clean plugins'},
-    ['i'] = {'<Cmd>PackerInstall<CR>',   'Install plugins'},
-    ['p'] = {'<Cmd>PackerStatus<CR>',    'Plugin status'},
-    ['t'] = {'<Cmd>TSUpdate<CR>',        'Treesitter update'},
-    ['h'] = {'<Cmd>Startify<CR>',        'Open home buffer'},
-    ['s'] = {'<Cmd>tab StartupTime<CR>', 'View startup time'},
-    ['H'] = {'<Cmd>checkhealth<CR>',     'Check health'},
+    ['v'] = {'<Cmd>edit $MYVIMRC<CR>',                     'Open vim config'},
+    ['r'] = {'<Cmd>source $MYVIMRC<CR>',                   'Reload neovim config'},
+    ['u'] = {'<Cmd>PackerUpdate<CR>',                      'Update plugins'},
+    ['c'] = {'<Cmd>PackerCompile<CR>',                     'Compile plugin specification'},
+    ['i'] = {'<Cmd>PackerInstall<CR>',                     'Install plugins'},
+    ['p'] = {'<Cmd>PackerStatus<CR>',                      'Plugin status'},
+    ['t'] = {'<Cmd>TSUpdate<CR>',                          'Treesitter update'},
+    ['h'] = {'<Cmd>Startify<CR>',                          'Open home buffer'},
+    ['s'] = {'<Cmd>tab StartupTime<Bar>PackerProfile<CR>', 'View startup time'},
+    ['H'] = {'<Cmd>checkhealth<CR>',                       'Check health'},
   },
 
   S = {
