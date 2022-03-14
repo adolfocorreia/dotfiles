@@ -20,7 +20,8 @@ vim.cmd([[
 -- Select Leader keys.
 vim.g.mapleader      = ' '
 vim.g.maplocalleader = '\\'
-vim.cmd([[noremap <Space> <Nop>]])
+-- noremap <Space> <Nop>
+-- vim.api.nvim_set_keymap('', ' ', '', {noremap = true})
 
 -- Set vim.g.os variable with current OS.
 if vim.fn.exists('g:os') == 0 then
@@ -69,9 +70,26 @@ end
 -- require 'setup' and Lua plugins require 'config'.
 require('packer').startup({function(use)
 
-  --- Neovim management ---
-
   -- TODO: try to lazy load each plugin (check NvChad and LunarVim)
+
+  --[[
+  General guidelines for lazy loading plugins (start/opt):
+  - Base plugins (e.g. packer, impatient, colorscheme, bar, which-key) should be loaded at startup
+  - Don't bother making light plugins optional (no significant benefit)
+  - Heavy or uncommonly used plugins are good candidates for lazy loading
+  - Editing help plugins can be loaded when first reading a buffer (BufRead/BufNewFile events)
+  - Lua dependency plugins can be loaded when required using 'module' key
+  -- TODO: is it really the case that loading at VimEnter makes vi more responsive at startup?
+  - Heavy and commonly used plugins can be loaded right after startup (VimEnter event)
+
+  Special cases:
+  - Treesitter: loaded at VimEnter to force :TSUpdate after startup
+  - LSP: loaded with filetypes of configured LSP servers
+  - Completion: loaded at InsertEnter and CmdlineEnter (because of ':' and '/' completions)
+  --]]
+
+
+  --- Neovim management and fixes ---
 
   -- Packer can manage itself.
   use 'wbthomason/packer.nvim'
@@ -81,6 +99,12 @@ require('packer').startup({function(use)
 
   -- Faster version of filetype.vim.
   use 'nathom/filetype.nvim'
+
+  -- Delete buffers without losing window layout.
+  use {
+    'famiu/bufdelete.nvim',
+    cmd = 'Bdelete',
+  }
 
   -- Fix CursorHold Performance.
   use {
@@ -100,6 +124,17 @@ require('packer').startup({function(use)
     cmd = 'StartupTime',
   }
 
+  -- TODO: evaluate this better
+  -- Project management.
+  use {
+    'ahmedkhalf/project.nvim',
+    config = function()
+      require('project_nvim').setup({
+        detection_methods = { "pattern", "lsp" },
+      })
+    end,
+  }
+
   -- TODO: evaluate this
   -- REPL and debug console for nvim lua.
   -- Plug 'bfredl/nvim-luadev'
@@ -110,10 +145,7 @@ require('packer').startup({function(use)
   --- Useful keybingings ---
 
   -- Make repeat command (.) plugin compatible.
-  use {
-    'tpope/vim-repeat',
-    -- event = 'VimEnter',
-  }
+  use 'tpope/vim-repeat'
 
   -- Jump to any forward (s__) or backward (S__) location specified by two characters.
   -- In case of multiple targets, a third character (label) can be used.
@@ -122,26 +154,9 @@ require('packer').startup({function(use)
     keys = { 's', 'S' },
   }
 
-  -- Highlight a unique character in every word when using f/F.
-  use {
-    'unblevable/quick-scope',
-    event = { 'BufRead', 'BufNewFile' },
-    -- event = 'VimEnter',
-    setup = function()
-      -- TODO: make global lists of special (non-code) buffer and file types
-      -- Disable quick-scope highlighting for certain buffers and file types.
-      vim.g.qs_buftype_blacklist = {'terminal', 'nofile', 'help'}
-      vim.g.qs_filetype_blacklist = {'startify', 'fugitive', 'dirbuf'}
-    end,
-  }
-
   -- TODO: evaluate machakann/vim-sandwich
   -- Add (ys_), change (cs_), remove (ds_) surrounding delimiters (_ss for whole line).
-  use {
-    'tpope/vim-surround',
-    -- keys = { 'y', 'c', 'd' },
-    event = { 'BufRead', 'BufNewFile' },
-  }
+  use 'tpope/vim-surround'
 
   -- TODO: evaluate this better
   -- Comment out lines (gcc) or comment out with motions (gc_) or selections (gc).
@@ -161,7 +176,6 @@ require('packer').startup({function(use)
   -- Also _od for :diffthis and :diffoff.
   use {
     'tpope/vim-unimpaired',
-    -- keys = { '[', ']', '>', '<' },
     event = { 'BufRead', 'BufNewFile' },
   }
 
@@ -189,29 +203,24 @@ require('packer').startup({function(use)
   -- C-a, C-e: beginning/end of line
   -- M-n, M-p: down/up line
   -- C-d, M-d: delete character/word
-  use {
-    'tpope/vim-rsi',
-    -- event = { 'InsertEnter', 'CmdlineEnter' },
-    event = { 'BufRead', 'BufNewFile' },
-  }
+  use 'tpope/vim-rsi'
 
   -- TODO: evaluate this and svermeulen/vim-subversive better
-  -- Replace text object (<M-s>), line (<M-s><M-s>) or to end of line (<M-S) with
+  -- Replace text object (<M-s>), line (<M-s><M-s>) or to end of line ({M-S) with
   -- contents of the unnamed register "" (e.g. <M-s>iw replaces the word under
   -- the cursor with the current yank).
   use {
     'gbprod/substitute.nvim',
-    -- keys = '<M-s>',
-    event = { 'BufRead', 'BufNewFile' },
+    -- Not working with lazy loading.
+    opt = false,
     config = function()
       require('substitute').setup({})
 
-      vim.cmd([[
-        nnoremap <M-s>      <Cmd>lua require('substitute').operator()<CR>
-        nnoremap <M-s><M-s> <Cmd>lua require('substitute').line()<CR>
-        nnoremap <M-S>      <Cmd>lua require('substitute').eol()<CR>
-        xnoremap <M-s>      <Cmd>lua require('substitute').visual()<CR>
-      ]])
+      local opts = { noremap = true }
+      vim.api.nvim_set_keymap('n', '<M-s>',      "<Cmd>lua require('substitute').operator()<CR>", opts)
+      vim.api.nvim_set_keymap('n', '<M-s><M-s>', "<Cmd>lua require('substitute').line()<CR>",     opts)
+      vim.api.nvim_set_keymap('n', '<M-S>',      "<Cmd>lua require('substitute').eol()<CR>",      opts)
+      vim.api.nvim_set_keymap('x', '<M-s>',      "<Cmd>lua require('substitute').visual()<CR>",   opts)
     end,
   }
 
@@ -222,6 +231,11 @@ require('packer').startup({function(use)
   use {
     'tpope/vim-speeddating',
     keys = { '<C-a>', '<C-x>' },
+    cmd = 'SpeedDatingFormat',
+    config = function()
+      -- Remove format for non-capital roman numerals.
+      vim.cmd([[SpeedDatingFormat! %v]])
+    end,
   }
 
 
@@ -262,15 +276,12 @@ require('packer').startup({function(use)
   -- Reference: https://github.com/junegunn/vim-easy-align
   use {
     'junegunn/vim-easy-align',
-    -- keys = 'gl',
-    -- cmd = 'EasyAlign',
-    event = { 'BufRead', 'BufNewFile' },
+    keys = 'gl',
+    cmd = 'EasyAlign',
     config = function()
       -- Map vim-easy-align to gl (since ga is already used).
-      vim.cmd([[
-        nmap gl <Plug>(EasyAlign)
-        xmap gl <Plug>(EasyAlign)
-      ]])
+      vim.api.nvim_set_keymap('n', 'gl', '<Plug>(EasyAlign)', {})
+      vim.api.nvim_set_keymap('x', 'gl', '<Plug>(EasyAlign)', {})
     end,
   }
 
@@ -289,26 +300,26 @@ require('packer').startup({function(use)
     end,
   }
 
-  -- TODO: add key mappings
-  -- Whitespace highlighting and removal.
-  use {
-    'ntpeters/vim-better-whitespace',
-    event = { 'BufRead', 'BufNewFile' },
-    setup = function()
-      -- Deactivate '<Leader>s' key mapping
-      vim.g.better_whitespace_operator = ''
-
-      vim.cmd([[
-        nnoremap <silent> ]w :NextTrailingWhitespace<CR>
-        nnoremap <silent> [w :PrevTrailingWhitespace<CR>
-      ]])
-    end,
-  }
-
   -- Show how many times a search pattern occurs in current buffer.
   use {
     'google/vim-searchindex',
     event = { 'BufRead', 'BufNewFile' },
+    config = function()
+      local opts = {silent=true}
+      vim.api.nvim_set_keymap('n', 'n', 'nzzzv<Plug>SearchIndex', opts)
+      vim.api.nvim_set_keymap('n', 'N', 'Nzzzv<Plug>SearchIndex', opts)
+    end,
+  }
+
+  --Harpoon
+  use {
+    'ThePrimeagen/harpoon',
+    requires = 'nvim-lua/plenary.nvim',
+    module = { 'harpoon', 'harpoon.mark', 'harpoon.ui', 'harpoon.term', 'harpoon.cmd-ui' },
+    wants = 'telescope.nvim',
+    config = function()
+      require('telescope').load_extension('harpoon')
+    end,
   }
 
 
@@ -317,16 +328,14 @@ require('packer').startup({function(use)
   -- CamelCase and snake_case motions (M-w, M-b, M-e).
   use {
     'chaoren/vim-wordmotion',
-    -- keys = { '<M-w>', '<M-b>', '<M-e>' },
-    event = { 'BufRead', 'BufNewFile' },
+    keys = { '<M-w>', '<M-b>', '<M-e>' },
     setup = function()
       vim.g.wordmotion_nomap = 1
-
-      vim.cmd([[
-        nmap <M-w> <Plug>WordMotion_w
-        nmap <M-b> <Plug>WordMotion_b
-        nmap <M-e> <Plug>WordMotion_e
-      ]])
+    end,
+    config = function()
+      vim.api.nvim_set_keymap('n', '<M-w>', '<Plug>WordMotion_w', {})
+      vim.api.nvim_set_keymap('n', '<M-b>', '<Plug>WordMotion_b', {})
+      vim.api.nvim_set_keymap('n', '<M-e>', '<Plug>WordMotion_e', {})
     end,
   }
 
@@ -341,8 +350,8 @@ require('packer').startup({function(use)
   -- Reference: https://github.com/wellle/targets.vim/blob/master/cheatsheet.md
   use {
     'wellle/targets.vim',
-    event = { 'BufRead', 'BufNewFile' },
-    -- keys = { 'a', 'i' },
+    -- Not working with lazy loading.
+    opt = false,
   }
 
   -- Indentation level text object: ii (indentation level), ai (ii and line
@@ -350,39 +359,34 @@ require('packer').startup({function(use)
   use {
     'michaeljsmith/vim-indent-object',
     event = { 'BufRead', 'BufNewFile' },
-    -- keys = { 'a', 'i' },
-  }
-
-  -- Dependency for text objects plugins.
-  use {
-    'kana/vim-textobj-user',
-    event = { 'BufRead', 'BufNewFile' },
-    after = 'vim-textobj-user',
   }
 
   -- Text object for the entire buffer (ae/ie).
   --TODO: evaluate alternative plugins
   use {
     'kana/vim-textobj-entire',
-    -- keys = { 'a', 'i' },
     event = { 'BufRead', 'BufNewFile' },
-    after = 'vim-textobj-user',
+    wants = 'vim-textobj-user',
     requires = 'kana/vim-textobj-user',
   }
 
   -- Text object (iv) for variable segments in camelCase or snake_case words.
   use {
     'Julian/vim-textobj-variable-segment',
-    -- keys = { 'a', 'i' },
     event = { 'BufRead', 'BufNewFile' },
-    after = 'vim-textobj-user',
+    wants = 'vim-textobj-user',
     requires = 'kana/vim-textobj-user',
+  }
+
+  -- Text object dependency plugin.
+  use {
+    'kana/vim-textobj-user',
+    opt = true,
   }
 
   -- Language syntax text objects: functions (af/if).
   use {
     'nvim-treesitter/nvim-treesitter-textobjects',
-    -- keys = { 'a', 'i' },
     event = { 'BufRead', 'BufNewFile' },
     after = 'nvim-treesitter',
     requires = 'nvim-treesitter/nvim-treesitter',
@@ -394,7 +398,6 @@ require('packer').startup({function(use)
   -- Syntax highlighting, indentation, folding and more using ASTs.
   use {
     'nvim-treesitter/nvim-treesitter',
-    -- load treesitter after VimEnter because of :TSUpdate
     event = 'VimEnter',
     run = ':TSUpdate',
     config = function()
@@ -466,16 +469,15 @@ require('packer').startup({function(use)
   use {
     'SmiteshP/nvim-gps',
     after = { 'nvim-treesitter', 'lualine.nvim' },
-    -- module = 'nvim-gps',
     event = { 'BufRead', 'BufNewFile' },
     requires = 'nvim-treesitter/nvim-treesitter',
     config = function()
       local gps = require('nvim-gps')
       gps.setup({})
+
       local lualine_config = require('lualine').get_config()
       lualine_config['sections']['lualine_c'] = {
-        'filename',
-        { gps.get_location, cond = gps.is_available }
+        'filename', { gps.get_location, cond = gps.is_available }
       }
       require('lualine').setup(lualine_config)
     end,
@@ -484,16 +486,13 @@ require('packer').startup({function(use)
   -- TODO: evaluate if sleuth is really necessary with treesitter
   -- TODO: consider using expandtab, tabstop, softtabstop, shiftwidth explicitly
   -- Automatic tab/indenting configuration.
-  use {
-    'tpope/vim-sleuth',
-    event = { 'BufRead', 'BufNewFile' },
-  }
+  use 'tpope/vim-sleuth'
 
   -- TODO: read :h lsp
   -- LSP configuration.
   use {
     'neovim/nvim-lspconfig',
-    event = { 'BufRead', 'BufNewFile' },
+    ft = { 'python', 'julia', 'lua' },
     config = function()
       -- Reference: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 
@@ -514,12 +513,14 @@ require('packer').startup({function(use)
 
       -- R (r_language_server)
       -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#r_language_server
-      require('lspconfig').r_language_server.setup(lsp_opts)
+      -- require('lspconfig').r_language_server.setup(lsp_opts)
 
       -- Lua (sumneko)
       -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#sumneko_lua
       local luadev = require('lua-dev').setup({})
       require('lspconfig').sumneko_lua.setup(luadev)
+      -- TODO: evaluate if lsp_opt must also be passed to sumneko
+      -- require('lspconfig').sumneko_lua.setup(vim.tbl_extend('error', {lsp_opts, luadev}))
     end,
   }
 
@@ -533,7 +534,7 @@ require('packer').startup({function(use)
       -- Reference: https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
       local null_ls = require('null-ls')
       null_ls.setup({
-        debug = true,
+        debug = false,
         sources = {
           -- Code actions
           -- TODO: evaluate this
@@ -542,14 +543,17 @@ require('packer').startup({function(use)
           -- TODO: make pylint and isort work on windows
           null_ls.builtins.diagnostics.pylint,
           null_ls.builtins.formatting.black,
-          -- require('null-ls').builtins.formatting.isort,
+          -- null_ls.builtins.formatting.isort,
         }
       })
     end,
   }
 
+  -- TODO: evaluate aerial & vista.vim
   -- Tree like view for code symbols.
   use {
+    -- 'stevearc/aerial.nvim',
+    -- module = "aerial",
     'simrat39/symbols-outline.nvim',
     after = 'nvim-lspconfig',
   }
@@ -560,10 +564,11 @@ require('packer').startup({function(use)
     module = 'lua-dev',
   }
 
+  -- TODO: set correct lazy dependencies for completion plugins
   -- Completion.
   use {
     'hrsh7th/nvim-cmp',
-    event = 'VimEnter',
+    event = { 'InsertEnter', 'CmdlineEnter' },
     module = 'cmp_nvim_lsp',
     config = function()
       local cmp = require('cmp')
@@ -577,22 +582,22 @@ require('packer').startup({function(use)
         -- TODO: improve mappings / read :h ins-completion
         -- Default mappings: https://github.com/hrsh7th/nvim-cmp/blob/main/lua/cmp/config/default.lua
         mapping = {
-          ['<C-d>'] = cmp.mapping.scroll_docs(4),
-          ['<C-u>'] = cmp.mapping.scroll_docs(-4),
+          ['<PageDown>'] = cmp.mapping.scroll_docs(4),
+          ['<PageUp>']   = cmp.mapping.scroll_docs(-4),
           -- <C-e> conflicts with vim-rsi
           ['<C-e>'] = cmp.config.disable,
           ['<C-z>'] = cmp.mapping(cmp.mapping.abort(), { 'i' }),
         },
         sources = cmp.config.sources(
-          {
-            { name = 'nvim_lsp' },
-            -- TODO: evaluate removal
-            -- { name = 'nvim_lua' },
-            { name = 'luasnip' },
-            { name = 'cmp_tabnine' },
-            { name = 'buffer', keyword_length = 4 },
-            { name = 'rg', keyword_length = 4 },
-            { name = 'path' },
+        {
+          { name = 'nvim_lsp' },
+          -- TODO: evaluate removal
+          { name = 'nvim_lua' },
+          { name = 'luasnip' },
+          { name = 'cmp_tabnine' },
+          { name = 'buffer', keyword_length = 4 },
+          { name = 'rg', keyword_length = 4 },
+          { name = 'path' },
           }
         ),
         -- Reference: https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance
@@ -616,17 +621,17 @@ require('packer').startup({function(use)
 
       cmp.setup.cmdline('/', {
         sources = {
-          { name = 'buffer', keyword_length = 2 },
+        { name = 'buffer', keyword_length = 2 },
         },
       })
 
       cmp.setup.cmdline(':', {
         sources = cmp.config.sources(
-          {
+        {
             -- Reference: https://github.com/hrsh7th/cmp-cmdline/issues/24
-            { name = 'cmdline', keyword_pattern = [=[[^[:blank:]\!]*]=] },
-            { name = 'path' },
-            { name = 'nvim_lua' },
+          { name = 'cmdline', keyword_pattern = [=[[^[:blank:]\!]*]=] },
+          { name = 'path' },
+          { name = 'nvim_lua' },
           }
         ),
       })
@@ -640,29 +645,32 @@ require('packer').startup({function(use)
   -- Completion sources.
   use { 'hrsh7th/cmp-buffer',   after = 'nvim-cmp', requires = 'hrsh7th/nvim-cmp' }
   use { 'hrsh7th/cmp-cmdline',  after = 'nvim-cmp', requires = 'hrsh7th/nvim-cmp' }
-  use { 'hrsh7th/cmp-nvim-lsp', after = 'nvim-cmp', requires = 'hrsh7th/nvim-cmp' }
-  use { 'hrsh7th/cmp-nvim-lua', after = 'nvim-cmp', requires = 'hrsh7th/nvim-cmp' }
   use { 'hrsh7th/cmp-path',     after = 'nvim-cmp', requires = 'hrsh7th/nvim-cmp' }
+  use { 'hrsh7th/cmp-nvim-lua', after = 'nvim-cmp', requires = 'hrsh7th/nvim-cmp' }
+
+  use { 'hrsh7th/cmp-nvim-lsp', after = 'nvim-cmp', requires = 'hrsh7th/nvim-cmp' }
   use { 'lukas-reineke/cmp-rg', after = 'nvim-cmp', requires = 'hrsh7th/nvim-cmp' }
 
+  -- TODO: evaluate loading this plugin at VimEnter to speedup its external engine
   local tabnine = {
-      'tzachar/cmp-tabnine',
-      after = 'nvim-cmp',
-      requires = 'hrsh7th/nvim-cmp',
-      config = function()
-        require('cmp_tabnine.config'):setup({
-          max_lines = 1000;
-          max_num_results = 100;
-          sort = true;
-          run_on_every_keystroke = true;
-        })
-      end,
+    'tzachar/cmp-tabnine',
+    -- event = 'VimEnter',
+    after = 'nvim-cmp',
+    requires = 'hrsh7th/nvim-cmp',
+    config = function()
+      require('cmp_tabnine.config'):setup({
+        max_lines = 1000;
+        max_num_results = 100;
+        sort = true;
+        run_on_every_keystroke = true;
+      })
+    end,
   }
   if vim.g.os == 'Windows' then
     tabnine['run'] = 'pwsh ./install.ps1'
     use(tabnine)
   else
-    tabnine['run'] = './install.sh'
+    tabnine['run'] = 'sh ./install.sh'
     use(tabnine)
   end
 
@@ -670,12 +678,13 @@ require('packer').startup({function(use)
   -- TODO: evaluate this better
   use {
     'saadparwaiz1/cmp_luasnip',
-    after = { 'nvim-cmp', 'LuaSnip' },
+    after = 'nvim-cmp',
+    wants = 'LuaSnip',
     requires = 'hrsh7th/nvim-cmp',
   }
   use {
     'L3MON4D3/LuaSnip',
-    after = 'friendly-snippets',
+    wants = 'friendly-snippets',
     module = 'luasnip',
     config = function() require('luasnip.loaders.from_vscode').lazy_load() end,
   }
@@ -722,19 +731,11 @@ require('packer').startup({function(use)
   -- send line (grr) and send paragraph (grR).
   use {
     'jpalardy/vim-slime',
-    -- keys = 'gr',
+    keys = 'gr',
     -- ft = { 'python', 'julia' },
-    event = 'VimEnter',
     setup = function()
       vim.g.slime_target = 'neovim'
       vim.g.slime_no_mappings = 1
-
-      vim.cmd([[
-        xmap gr  <Plug>SlimeRegionSend
-        nmap gr  <Plug>SlimeMotionSend
-        nmap grr <Plug>SlimeLineSend
-        nmap grR <Plug>SlimeParagraphSend
-      ]])
 
       -- Slime overrides: https://github.com/jpalardy/vim-slime#advanced-configuration-overrides
 
@@ -761,16 +762,18 @@ require('packer').startup({function(use)
         endfunction
       ]])
     end,
+    config = function()
+      vim.api.nvim_set_keymap('x', 'gr',  '<Plug>SlimeRegionSend',    {})
+      vim.api.nvim_set_keymap('n', 'gr',  '<Plug>SlimeMotionSend',    {})
+      vim.api.nvim_set_keymap('n', 'grr', '<Plug>SlimeLineSend',      {})
+      vim.api.nvim_set_keymap('n', 'grR', '<Plug>SlimeParagraphSend', {})
+    end,
   }
 
   -- File manager for Neovim with a directory buffer that allows file manipulation
   -- by editing text. Save buffer to modify filesystem. Use <CR> to open file or
   -- directory, gh to toggle hidden files and - to open parent directory.
-  -- TODO: make this opt
-  use {
-    'elihunter173/dirbuf.nvim',
-    keys = '-',
-  }
+  use 'elihunter173/dirbuf.nvim'
 
   -- Shell commands :Delete, :Move, :Rename, :Mkdir, :Chmod, :Wall (save all).
   use {
@@ -778,17 +781,11 @@ require('packer').startup({function(use)
     cmd = { 'Delete', 'Move', 'Rename', 'Mkdir', 'Chmod', 'Wall' },
   }
 
-  -- TODO: evaluate this better
-  -- Project management.
-  use {
-    'ahmedkhalf/project.nvim',
-    config = function() require('project_nvim').setup({}) end,
-  }
-
 
   --- Git integration ---
 
   -- TODO: evaluate neogit
+  -- TODO: make this opt
   -- Git support (:Git).
   use {
     'tpope/vim-fugitive',
@@ -796,9 +793,7 @@ require('packer').startup({function(use)
     -- Reference: https://github.com/wbthomason/packer.nvim/issues/530
     opt = false,
     config = function()
-      vim.cmd([[
-        autocmd vimrc FileType fugitive nmap <buffer> <Tab> =
-      ]])
+      vim.cmd([[autocmd vimrc FileType fugitive nmap <buffer> <Tab> =]])
     end,
   }
 
@@ -823,10 +818,10 @@ require('packer').startup({function(use)
           map('x', 'ih', ':<C-u>Gitsigns select_hunk<CR>')
           -- Actions
           map('n', '<Leader>ghh', '<Cmd>Gitsigns preview_hunk<CR>')
-          map('n', '<Leader>ghs', ':Gitsigns stage_hunk<CR>')
-          map('v', '<Leader>ghs', ':Gitsigns stage_hunk<CR>')
-          map('n', '<Leader>ghr', ':Gitsigns reset_hunk<CR>')
-          map('v', '<Leader>ghr', ':Gitsigns reset_hunk<CR>')
+          map('n', '<Leader>ghs', '<Cmd>Gitsigns stage_hunk<CR>')
+          map('v', '<Leader>ghs', '<Cmd>Gitsigns stage_hunk<CR>')
+          map('n', '<Leader>ghr', '<Cmd>Gitsigns reset_hunk<CR>')
+          map('v', '<Leader>ghr', '<Cmd>Gitsigns reset_hunk<CR>')
           map('n', '<Leader>ghS', '<Cmd>Gitsigns stage_buffer<CR>')
           map('n', '<Leader>ghu', '<Cmd>Gitsigns undo_stage_hunk<CR>')
           map('n', '<Leader>ghR', '<Cmd>Gitsigns reset_buffer<CR>')
@@ -843,7 +838,7 @@ require('packer').startup({function(use)
   use {
     'sindrets/diffview.nvim',
     requires = 'nvim-lua/plenary.nvim',
-    cmd = {'DiffviewOpen', 'DiffviewFileHistory'},
+    cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
     config = function() require('diffview').setup({}) end,
   }
 
@@ -886,7 +881,7 @@ require('packer').startup({function(use)
   }
 
 
-  --- Windows and themes ---
+  --- Windows, interface elements, visual editing helpers and themes ---
 
   -- TODO: evaluate goolord/alpha-nvim
   -- Show start screen.
@@ -898,6 +893,20 @@ require('packer').startup({function(use)
     end,
   }
 
+  -- List for showing diagnostics, references, search results, quickfix and
+  -- location lists.
+  use {
+    'folke/trouble.nvim',
+    cmd = { 'Trouble', 'TroubleToggle' },
+    requires = 'kyazdani42/nvim-web-devicons',
+    config = function()
+      require('trouble').setup({
+        mode = 'document_diagnostics',
+      })
+      vim.cmd([[autocmd vimrc FileType Trouble setlocal colorcolumn=]])
+    end,
+  }
+
   -- Display popup with key bindings.
   use {
     'folke/which-key.nvim',
@@ -906,7 +915,12 @@ require('packer').startup({function(use)
       wk.setup({
         plugins = {
           presets = {
+            operators = false,
             motions = false,
+            text_objects = false,
+            windows = true,
+            g = false,
+            z = true,
           },
         },
         key_labels = {
@@ -939,12 +953,10 @@ require('packer').startup({function(use)
         },
         filetypes = { 'terminal' },
       }
-      -- local gps = require('nvim-gps')
       require('lualine').setup({
         sections = {
           lualine_a = { 'mode' },
           lualine_b = { 'branch', 'diff', 'diagnostics' },
-          -- lualine_c = { 'filename', { gps.get_location, cond = gps.is_available } },
           lualine_c = { 'filename' },
           lualine_x = { { 'filetype', colored = false } },
           lualine_y = { 'encoding', 'fileformat' },
@@ -959,12 +971,6 @@ require('packer').startup({function(use)
     end,
   }
 
-  -- Delete buffers without losing window layout.
-  use {
-    'famiu/bufdelete.nvim',
-    cmd = 'Bdelete',
-  }
-
   -- TODO: evaluate this better
   -- Indent guides.
   use {
@@ -975,17 +981,56 @@ require('packer').startup({function(use)
       use_treesitter = true,
       -- TODO: make global lists of special (non-code) buffer and file types
       buftype_exclude = {'help', 'nofile', 'nowrite', 'terminal'},
-      filetype_exclude = {'', 'lspinfo', 'checkhealth', 'help', 'startify'},
+      filetype_exclude = {'', 'lspinfo', 'checkhealth', 'help', 'startify', 'harpoon'},
     }) end,
   }
 
-  -- List for showing diagnostics, references, search results, quickfix and
-  -- location lists.
+  -- Highlight a unique character in every word when using f/F.
   use {
-    'folke/trouble.nvim',
-    cmd = 'TroubleToggle',
-    requires = 'kyazdani42/nvim-web-devicons',
-    config = function() require('trouble').setup({}) end,
+    'unblevable/quick-scope',
+    event = { 'BufRead', 'BufNewFile' },
+    -- highlight commands for this plugin depend on colorscheme being loaded before.
+    wants = 'tokyonight.nvim',
+    setup = function()
+      -- TODO: make global lists of special (non-code) buffer and file types
+      -- Disable quick-scope highlighting for certain buffers and file types.
+      vim.g.qs_buftype_blacklist = {'terminal', 'nofile', 'help'}
+      vim.g.qs_filetype_blacklist = {'startify', 'fugitive', 'dirbuf', 'harpoon'}
+    end,
+    config = function()
+      -- Add underline to quick-scope highlighted characters.
+      -- Reference: https://stackoverflow.com/questions/18774910/how-to-partially-link-highlighting-groups
+      vim.cmd([[
+        execute 'highlight QuickScopePrimary gui=underline' .
+          \' guifg='   . synIDattr(synIDtrans(hlID('ErrorMsg')), 'fg', 'gui')
+        execute 'highlight QuickScopeSecondary gui=underline' .
+          \' guifg='   . synIDattr(synIDtrans(hlID('WarningMsg')), 'fg', 'gui')
+      ]])
+    end,
+  }
+
+  -- TODO: add key mappings
+  -- Whitespace highlighting and removal.
+  use {
+    'ntpeters/vim-better-whitespace',
+    event = { 'BufRead', 'BufNewFile' },
+    -- highlight commands for this plugin depend on colorscheme being loaded before.
+    wants = 'tokyonight.nvim',
+    setup = function()
+      -- Deactivate '<Leader>s' key mapping
+      vim.g.better_whitespace_operator = ''
+    end,
+    config = function()
+      local opts = {noremap = true, silent = true}
+      vim.api.nvim_set_keymap('n', ']w', '<Cmd>NextTrailingWhitespace<CR>', opts)
+      vim.api.nvim_set_keymap('n', '[w', '<Cmd>PrevTrailingWhitespace<CR>', opts)
+
+      -- vim-better-whitespace color settings.
+      vim.cmd([[
+        execute 'highlight ExtraWhitespace' .
+          \' guibg=' . synIDattr(synIDtrans(hlID('Error')), 'fg', 'gui')
+      ]])
+    end,
   }
 
   -- Color highlighter.
@@ -1013,21 +1058,6 @@ require('packer').startup({function(use)
         colorscheme tokyonight
         execute 'highlight Folded guibg=' . synIDattr(synIDtrans(hlID('Normal')), 'bg', 'gui')
       ]])
-
-      -- Add underline to quick-scope highlighted characters.
-      -- Reference: https://stackoverflow.com/questions/18774910/how-to-partially-link-highlighting-groups
-      vim.cmd([[
-        execute 'highlight QuickScopePrimary gui=underline' .
-          \' guifg='   . synIDattr(synIDtrans(hlID('ErrorMsg')), 'fg', 'gui')
-        execute 'highlight QuickScopeSecondary gui=underline' .
-          \' guifg='   . synIDattr(synIDtrans(hlID('WarningMsg')), 'fg', 'gui')
-      ]])
-
-      -- vim-better-whitespace color settings.
-      vim.cmd([[
-        execute 'highlight ExtraWhitespace' .
-          \' guibg=' . synIDattr(synIDtrans(hlID('Error')), 'fg', 'gui')
-      ]])
     end,
   }
 
@@ -1039,11 +1069,16 @@ require('packer').startup({function(use)
 end,
 
 config = {
+  display = {
+    open_cmd = '90vnew \\[packer\\]',
+  },
   profile = {
     enable = true,
     threshold = 0,
   },
 }})
+
+vim.cmd([[autocmd vimrc FileType packer setlocal colorcolumn=]])
 
 
 
@@ -1118,6 +1153,9 @@ vim.opt.completeopt = 'menu,menuone,noselect'
 -- Always open diff windows vertically
 vim.opt.diffopt:append { 'vertical' }
 
+-- Also consider letters in C-a and C-x commands.
+vim.opt.nrformats:append { 'alpha' }
+
 -- List all matches and complete till longest common string.
 vim.opt.wildmode = 'list:longest'
 
@@ -1138,47 +1176,31 @@ vim.opt.wildignore:append { '*.pyc,*.pyo,*.pyd' }
 --- General autocommands.
 
 -- Highlight yanked region.
-vim.cmd([[
-  autocmd vimrc TextYankPost * silent! lua vim.highlight.on_yank{timeout=500}
-]])
+vim.cmd([[autocmd vimrc TextYankPost * silent! lua vim.highlight.on_yank{timeout=500}]])
 
 -- Autobalance windows in each tab on Neovim resize.
-vim.cmd([[
-  autocmd vimrc VimResized * tabdo wincmd =
-]])
+vim.cmd([[autocmd vimrc VimResized * tabdo wincmd =]])
 
 -- Use q to close some support windows.
-vim.cmd([[
-  autocmd vimrc FileType help,juliadoc,qf nnoremap <silent> <buffer> q :close<CR>
-]])
+vim.cmd([[autocmd vimrc FileType help,juliadoc,qf nnoremap <silent> <buffer> q :close<CR>]])
 
 -- Send help windows to the right.
-vim.cmd([[
-  autocmd vimrc FileType help,juliadoc setlocal bufhidden=unload | wincmd L
-]])
+vim.cmd([[autocmd vimrc FileType help,juliadoc setlocal bufhidden=unload | wincmd L]])
 
 -- Set name for first tab.
-vim.cmd([[
-  autocmd vimrc VimEnter * let t:tabname = 'main'
-]])
+vim.cmd([[autocmd vimrc VimEnter * let t:tabname = 'main']])
 
 
 --- Terminal autocmds.
 
 -- Disable numbering and cursor highlighting in terminal buffers.
-vim.cmd([[
-  autocmd vimrc TermOpen * setlocal nonumber norelativenumber nocursorline nocursorcolumn
-]])
+vim.cmd([[autocmd vimrc TermOpen * setlocal nonumber norelativenumber nocursorline nocursorcolumn]])
 
 -- Move terminal windows to the right.
-vim.cmd([[
-  autocmd vimrc TermOpen * wincmd L
-]])
+vim.cmd([[autocmd vimrc TermOpen * wincmd L]])
 
 -- Set terminal filetype.
-vim.cmd([[
-  autocmd vimrc TermOpen * set filetype=terminal
-]])
+vim.cmd([[autocmd vimrc TermOpen * set filetype=terminal]])
 
 -- TODO: make this work
 -- Reset vim-slime configuration in all buffers.
@@ -1248,13 +1270,6 @@ vim.cmd([[
 --   - https://skippi.medium.com/ideas-for-non-leader-vim-mappings-fd32a2769c87
 -- - Prefer non recursive maps (_noremap)
 -- - Plugin maps (<Plug>) must be recursive
-
-
--- Auto center on matched string.
-vim.cmd([[
-  noremap n nzzzv
-  noremap N Nzzzv
-]])
 
 
 -- TODO: is this working?
@@ -1370,8 +1385,9 @@ local function new_or_next_tab()
   end
 end
 
--- TODO: create descriptions for keymaps defined elsewhere (builtin or plugins)
--- e.g. gc, gl, gr, g_, z_, [_, ]_, c_, y_, d_, v_
+local packer_loader = vim.fn.stdpath('config') .. '/plugin/packer_compiled.lua'
+local plugin_path = vim.fn.stdpath('data') .. '/site/pack/packer'
+
 LEADER_MAPPINGS = {
 
   ['<Leader>'] = {'<Cmd>Telescope buffers theme=ivy<CR>', 'Find buffer'},
@@ -1394,6 +1410,8 @@ LEADER_MAPPINGS = {
     ['K']    = {'<C-w>K',   'Move to top'},
     ['c']    = {'<C-w>c',   'Close window'},
     ['q']    = {'<C-w>q',   'Quit window'},
+    ['u']    = {'<C-w>u',   'Undo quit window'},
+    ['U']    = {'<C-w>U',   'Undo quit windows in tab'},
     ['n']    = {'<C-w>n',   'New window'},
     ['o']    = {'<C-w>o',   'Only window'},
     ['s']    = {'<C-w>s',   'Split horizontally'},
@@ -1451,21 +1469,31 @@ LEADER_MAPPINGS = {
     ['p'] = {'<Cmd>Telescope projects<CR>',                 'Find projects'},
     ['n'] = {'<Cmd>enew<CR>',                               'New file'},
     ['D'] = {'<Cmd>Delete<CR>',                             'Delete file'},
-    ['R'] = {function() rr('New file name: ', 'Rename {}') end, 'Rename file'},
+    ['-'] = {'<Cmd>Dirbuf<CR>',                             'Open directory'},
+    ['R'] = {function() rr('New name: ', 'Rename {}') end,  'Rename file'},
   },
 
   v = {
     name = 'neovim',
-    ['v'] = {'<Cmd>edit $MYVIMRC<CR>',                     'Open vim config'},
-    ['r'] = {'<Cmd>source $MYVIMRC<CR>',                   'Reload neovim config'},
-    ['u'] = {'<Cmd>PackerUpdate<CR>',                      'Update plugins'},
-    ['c'] = {'<Cmd>PackerCompile<CR>',                     'Compile plugin specification'},
-    ['i'] = {'<Cmd>PackerInstall<CR>',                     'Install plugins'},
-    ['p'] = {'<Cmd>PackerStatus<CR>',                      'Plugin status'},
-    ['t'] = {'<Cmd>TSUpdate<CR>',                          'Treesitter update'},
-    ['h'] = {'<Cmd>Startify<CR>',                          'Open home buffer'},
-    ['s'] = {'<Cmd>tab StartupTime<Bar>PackerProfile<CR>', 'View startup time'},
-    ['H'] = {'<Cmd>checkhealth<CR>',                       'Check health'},
+    ['v'] = {'<Cmd>edit $MYVIMRC<CR>',            'Open vim config'},
+    ['l'] = {'<Cmd>edit '..packer_loader..'<CR>', 'Open packer loader'},
+    ['r'] = {'<Cmd>source $MYVIMRC<CR>',          'Reload neovim config'},
+    ['t'] = {'<Cmd>TSUpdate<CR>',                 'Treesitter update'},
+    ['h'] = {'<Cmd>Startify<CR>',                 'Open home buffer'},
+    ['s'] = {'<Cmd>tab StartupTime<CR>',          'View startup time'},
+    ['H'] = {'<Cmd>checkhealth<CR>',              'Check health'},
+    ['P'] = {'<Cmd>Dirbuf '..plugin_path..'<CR>', 'Check health'},
+  },
+
+  p = {
+    name = 'packer',
+    ['u'] = {'<Cmd>PackerSync<CR>',    'Update plugins'},
+    ['c'] = {'<Cmd>PackerCompile<CR>', 'Compile loader'},
+    ['i'] = {'<Cmd>PackerInstall<CR>', 'Install plugins'},
+    ['s'] = {'<Cmd>PackerStatus<CR>',  'Plugin status'},
+    ['p'] = {'<Cmd>PackerProfile<CR>', 'Profile plugins'},
+    -- TODO: Use telescope-packer for plugin loading
+    -- ['l'] = {'<Cmd>PackerLoad<CR>', 'Load plugin'},
   },
 
   S = {
@@ -1476,9 +1504,8 @@ LEADER_MAPPINGS = {
     ['c'] = {'<Cmd>SClose<CR>',  'Close session'},
   },
 
-  o = {
-    name = 'open',
-    ['-'] = {'<Plug>(dirvish_up)',                           'Directory tree'},
+  t = {
+    name = 'trouble',
     ['t'] = {'<Cmd>TroubleToggle<CR>',                       'Toggle Trouble'},
     ['w'] = {'<Cmd>TroubleToggle workspace_diagnostics<CR>', 'Workspace diagnostics'},
     ['d'] = {'<Cmd>TroubleToggle document_diagnostics<CR>',  'Document diagnostics'},
@@ -1486,8 +1513,6 @@ LEADER_MAPPINGS = {
     ['l'] = {'<Cmd>TroubleToggle loclist<CR>',               'Loclist items'},
     ['r'] = {'<Cmd>TroubleToggle lsp_references<CR>',        'LSP references'},
     ['s'] = {'<Cmd>SymbolsOutline<CR>',                      'Symbols outline'},
-    ['Q'] = {'<Cmd>copen<CR>',                               'Quickfix list'},
-    ['L'] = {'<Cmd>lopen<CR>',                               'Location list'},
   },
 
   r = {
@@ -1520,7 +1545,7 @@ LEADER_MAPPINGS = {
   },
 
   l = {
-    name = 'LSP',
+    name = 'lsp',
     ['r'] = {'<Cmd>Telescope lsp_references<CR>',                'References for word under cursor'},
     ['s'] = {'<Cmd>Telescope lsp_document_symbols<CR>',          'Document symbols'},
     ['S'] = {'<Cmd>Telescope lsp_workspace_symbols<CR>',         'Workspace symbols'},
@@ -1573,6 +1598,7 @@ LEADER_MAPPINGS = {
     [':'] = {'<Cmd>Telescope command_history<CR>',           'Command history'},
     ['/'] = {'<Cmd>Telescope search_history<CR>',            'Search history'},
     ['h'] = {'<Cmd>Telescope help_tags<CR>',                 'Help tags'},
+    -- TODO: implement find current word in help (maybe yanking first and then pasting in help_tags)
     ['m'] = {'<Cmd>Telescope marks<CR>',                     'Marks'},
     ['r'] = {'<Cmd>Telescope registers<CR>',                 'Registers'},
     ['q'] = {'<Cmd>Telescope quickfix<CR>',                  'Quickfix list'},
@@ -1587,8 +1613,8 @@ LEADER_MAPPINGS = {
     ['z'] = {'<Cmd>Zeavim<CR>',                              'Zeal documentation'},
   },
 
-  t = {
-    name = 'toogle',
+  m = {
+    name = 'misc',
     ['c'] = {'<Cmd>ColorizerToggle<CR>', 'Color strings highlighting'},
     -- TODO: implement diagnostic toggle solution
     ['d'] = {'<Cmd>lua vim.diagnostic.disable(0)<CR>', 'Turn off diagnostics'},
@@ -1596,8 +1622,19 @@ LEADER_MAPPINGS = {
   },
 
   h = {
-    name = 'help',
-    ['h'] = {'<Cmd>Telescope help_tags<CR>', 'Help tags'},
+    name = 'harpoon',
+    ['h'] = {'<Cmd>lua require("harpoon.ui").toggle_quick_menu()<CR>', 'Toggle quick menu'},
+    ['a'] = {'<Cmd>lua require("harpoon.mark").add_file()<CR>',        'Add file'},
+    ['1'] = {'<Cmd>lua require("harpoon.ui").nav_file(1)<CR>',         'Go to file 1'},
+    ['2'] = {'<Cmd>lua require("harpoon.ui").nav_file(2)<CR>',         'Go to file 2'},
+    ['3'] = {'<Cmd>lua require("harpoon.ui").nav_file(3)<CR>',         'Go to file 3'},
+    ['4'] = {'<Cmd>lua require("harpoon.ui").nav_file(4)<CR>',         'Go to file 4'},
+    ['5'] = {'<Cmd>lua require("harpoon.ui").nav_file(5)<CR>',         'Go to file 5'},
+    ['n'] = {'<Cmd>lua require("harpoon.ui").nav_next()<CR>',          'Go to next mark'},
+    ['p'] = {'<Cmd>lua require("harpoon.ui").nav_prev()<CR>',          'Go to previous mark'},
+    ['m'] = {'<Cmd>Telescope harpoon marks<CR>',                       'Search marks'},
+    -- TODO: add terminal commands
+    ['j'] = {'<Cmd>lua require("harpoon.term").gotoTerminal({idx=9,create_with=":vsplit|terminal julia"})<CR>', 'Open Julia REPL'},
   },
 
   q = {
