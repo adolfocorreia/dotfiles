@@ -77,6 +77,8 @@ myAdditionalKeys =
   [ -- Spawn app launcher (rofi)
     ("M-p", spawn "rofi -show"),
     ("M-\\", spawn "rofi -show"),
+    -- Spawn file manager (PCManFM)
+    ("M-e", spawn "pcmanfm"),
     -- Close the focused window
     ("M-q", kill),
     -- Restart xmonad
