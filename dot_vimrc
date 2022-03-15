@@ -1,0 +1,187 @@
+""""" Light Vim config """""
+
+augroup vimrc
+  autocmd!
+augroup END
+
+let mapleader      = ' '
+let maplocalleader = '\\'
+
+let loaded_python_provider  = 0
+let loaded_python3_provider = 0
+let loaded_ruby_provider    = 0
+let loaded_node_provider    = 0
+let loaded_perl_provider    = 0
+
+let loaded_netrw = 1
+let loaded_netrwPlugin = 1
+let loaded_netrwSettings = 1
+let loaded_netrwFileHandlers = 1
+
+
+
+""""" Plugin declaration """""
+
+call plug#begin()
+
+Plug 'dstein64/vim-startuptime', { 'on': 'StartupTime' }
+Plug 'Julian/vim-textobj-variable-segment'
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/vim-easy-align',  { 'on': '<Plug>(EasyAlign)' }
+Plug 'justinmk/vim-dirvish',     { 'on': '<Plug>(dirvish_up)' }
+Plug 'justinmk/vim-sneak'
+Plug 'kana/vim-textobj-user'
+Plug 'mg979/vim-visual-multi',   { 'on': '<Plug>(VM-Find-Under)' }
+Plug 'michaeljsmith/vim-indent-object'
+Plug 'sheerun/vim-polyglot'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-eunuch',         { 'on': ['Delete','Move','Rename','Mkdir'] }
+Plug 'tpope/vim-fugitive',       { 'on': 'Git' }
+Plug 'tpope/vim-obsession',      { 'on': 'Obsess' }
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-rsi'
+Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
+Plug 'unblevable/quick-scope'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'vim-syntastic/syntastic'
+Plug 'wellle/targets.vim'
+
+Plug 'cocopon/iceberg.vim'
+Plug 'drewtempelmeyer/palenight.vim'
+
+call plug#end()
+
+
+""""" Theme configuration """""
+
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_theme = 'palenight'
+set termguicolors
+colorscheme palenight
+
+
+""""" Plugin configuration """""
+
+let g:fzf_preview_window = []
+
+nmap gl <Plug>(EasyAlign)
+xmap gl <Plug>(EasyAlign)
+
+nmap - <Plug>(dirvish_up)
+
+let g:sneak#label = 1
+
+let g:VM_maps = {}
+let g:VM_maps['Find Under']         = '<M-d>'
+let g:VM_maps['Find Subword Under'] = '<M-d>'
+let g:VM_maps['Select Cursor Down'] = '<C-j>'
+let g:VM_maps['Select Cursor Up']   = '<C-k>'
+let g:VM_maps['Select l']           = '<C-l>'
+let g:VM_maps['Select h']           = '<C-h>'
+nmap <M-d> <Plug>(VM-Find-Under)
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_wq = 0
+
+
+""""" Vim options """""
+
+set clipboard=unnamed
+set completeopt=menu,menuone,noselect
+set confirm
+set cursorline
+set diffopt+=vertical
+set foldmethod=indent
+set guifont=Iosevka_Extended:h11
+set guioptions-=L
+set guioptions-=r
+set guioptions-=t
+set guioptions-=T
+set hidden
+set ignorecase
+set mouse=a
+set noshowmode
+set nowrap
+set nrformats+=alpha
+set number
+set relativenumber
+set scrolloff=5
+set sidescrolloff=5
+set smartcase
+set splitbelow
+set splitright
+set wildignore+=*.doc,*.docx,*.xls,*.xslx,*.ppt,*.pptx
+set wildignore+=*.pdf
+set wildignore+=*.png,*.jpg,*.gif
+set wildignore+=*.pyc,*.pyo,*.pyd
+set wildignore+=*.swp
+set wildignore+=*.zip,*.7z,*.tar,*.gz
+set wildmode=list:longest
+
+let &t_ti.="\e[1 q"
+let &t_te.="\e[0 q"
+let &t_SI.="\e[5 q"
+let &t_EI.="\e[1 q"
+
+
+""""" Autocommands """""
+
+autocmd vimrc FileType help setlocal bufhidden=unload | wincmd L
+autocmd vimrc FileType help,qf nnoremap <silent> <buffer> q :close<CR>
+autocmd vimrc TerminalOpen * setlocal nonumber norelativenumber nocursorline nocursorcolumn
+autocmd vimrc VimResized * tabdo wincmd =
+
+
+""""" Key mappings """""
+
+nnoremap Y y$
+
+vnoremap > >gv
+vnoremap < <gv
+
+nnoremap & :&&<CR>
+xnoremap & :&&<CR>
+
+let @p="a \<Esc>p"
+
+nnoremap <expr> j (v:count >= 10 ? "m'" . v:count : "") . 'j'
+nnoremap <expr> k (v:count >= 10 ? "m'" . v:count : "") . 'k'
+
+nnoremap <silent> <C-s> :update<CR>
+inoremap <silent> <C-s> <C-o>:update<CR>
+
+tnoremap <C-s> <C-\><C-n>
+
+nnoremap <silent> <Esc> :noh<CR><Esc>
+
+tnoremap <M-h> <C-\><C-n><C-w>h
+tnoremap <M-j> <C-\><C-n><C-w>j
+tnoremap <M-k> <C-\><C-n><C-w>k
+tnoremap <M-l> <C-\><C-n><C-w>l
+inoremap <M-h> <C-\><C-n><C-w>h
+inoremap <M-j> <C-\><C-n><C-w>j
+inoremap <M-k> <C-\><C-n><C-w>k
+inoremap <M-l> <C-\><C-n><C-w>l
+nnoremap <M-h> <C-w>h
+nnoremap <M-j> <C-w>j
+nnoremap <M-k> <C-w>k
+nnoremap <M-l> <C-w>l
+
+tnoremap <M-Left>  <C-\><C-n><C-w>h
+tnoremap <M-Down>  <C-\><C-n><C-w>j
+tnoremap <M-Up>    <C-\><C-n><C-w>k
+tnoremap <M-Right> <C-\><C-n><C-w>l
+inoremap <M-Left>  <C-\><C-n><C-w>h
+inoremap <M-Down>  <C-\><C-n><C-w>j
+inoremap <M-Up>    <C-\><C-n><C-w>k
+inoremap <M-Right> <C-\><C-n><C-w>l
+nnoremap <M-Left>  <C-w>h
+nnoremap <M-Down>  <C-w>j
+nnoremap <M-Up>    <C-w>k
+nnoremap <M-Right> <C-w>l
+

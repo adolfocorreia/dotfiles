@@ -216,8 +216,8 @@ Function mkdir { & coreutils mkdir $args }
 Function Start-Explorer { & explorer . }
 Set-Alias -Name "e." -Value Start-Explorer
 Set-Alias -Name e -Value explorer
-Set-Alias -Name vi -Value nvim
 Set-Alias -Name trash -Value recycle-bin
+Function vi { & nvim --clean $args }
 
 
 # Change working dir in powershell to last dir in lf on exit
