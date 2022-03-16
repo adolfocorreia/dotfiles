@@ -45,6 +45,22 @@ vim.g.loaded_netrwPlugin = 1
 vim.g.loaded_netrwSettings = 1
 vim.g.loaded_netrwFileHandlers = 1
 
+-- Buffer and file types blacklists (disable visual effects).
+BUFTYPE_BL = {
+  'help',
+  'nofile',
+  'nowrite',
+  'terminal',
+}
+FILETYPE_BL = {
+  'checkhealth',
+  'dirbuf',
+  'fugitive',
+  'harpoon',
+  'help',
+  'lspinfo',
+  'startify',
+}
 
 
 ------------------------------
@@ -206,6 +222,8 @@ require('packer').startup({function(use)
   use 'tpope/vim-rsi'
 
   -- TODO: evaluate this and svermeulen/vim-subversive better
+  -- TODO: possibly superfluous since we can substitute a region with a previouly yanked text with v<text object>p (e.g. viwp)
+  --       https://vim.fandom.com/wiki/Replace_a_word_with_yanked_text
   -- Replace text object (<M-s>), line (<M-s><M-s>) or to end of line ({M-S) with
   -- contents of the unnamed register "" (e.g. <M-s>iw replaces the word under
   -- the cursor with the current yank).
@@ -362,7 +380,7 @@ require('packer').startup({function(use)
   }
 
   -- Text object for the entire buffer (ae/ie).
-  --TODO: evaluate alternative plugins
+  --TODO: evaluate alternative plugins / using a%/i% as keybindings
   use {
     'kana/vim-textobj-entire',
     event = { 'BufRead', 'BufNewFile' },
@@ -890,6 +908,15 @@ require('packer').startup({function(use)
     setup = function()
       vim.g.startify_fortune_use_unicode = 1
       vim.g.startify_session_persistence = 1
+      vim.g.ascii = {
+        [[   _______                    .__         ]],
+        [[   \      \   ____  _______  _|__| _____  ]],
+        [[   /   |   \_/ __ \/  _ \  \/ /  |/     \ ]],
+        [[  /    |    \  ___(  <_> )   /|  |  Y Y  \]],
+        [[  \____|__  /\___  >____/ \_/ |__|__|_|  /]],
+        [[          \/     \/                    \/ ]],
+      }
+      vim.g.startify_custom_header = [[startify#pad(g:ascii + [''] + startify#fortune#boxed())]]
     end,
   }
 
@@ -942,13 +969,13 @@ require('packer').startup({function(use)
       local terminal = {
         sections = {
           lualine_a = { 'mode' },
-          lualine_b = { 'vim.opt.filetype._value', "'&' .. vim.opt.channel._value" },
+          lualine_b = { 'vim.opt.filetype._value', "'jobid: ' .. vim.opt.channel._value" },
           lualine_c = { 'filename' },
           lualine_x = { {'filetype', icon_only = true, colored = false} },
           lualine_z = { 'progress', 'location' },
         },
         inactive_sections = {
-          lualine_c = { 'vim.opt.filetype._value', "'&' .. vim.opt.channel._value" },
+          lualine_c = { 'vim.opt.filetype._value', "'jobid: ' .. vim.opt.channel._value" },
           lualine_x = { 'location' },
         },
         filetypes = { 'terminal' },
@@ -979,9 +1006,8 @@ require('packer').startup({function(use)
     config = function() require('indent_blankline').setup({
       show_current_context = true,
       use_treesitter = true,
-      -- TODO: make global lists of special (non-code) buffer and file types
-      buftype_exclude = {'help', 'nofile', 'nowrite', 'terminal'},
-      filetype_exclude = {'', 'lspinfo', 'checkhealth', 'help', 'startify', 'harpoon'},
+      buftype_exclude = BUFTYPE_BL,
+      filetype_exclude = FILETYPE_BL,
     }) end,
   }
 
@@ -992,10 +1018,8 @@ require('packer').startup({function(use)
     -- highlight commands for this plugin depend on colorscheme being loaded before.
     wants = 'tokyonight.nvim',
     setup = function()
-      -- TODO: make global lists of special (non-code) buffer and file types
-      -- Disable quick-scope highlighting for certain buffers and file types.
-      vim.g.qs_buftype_blacklist = {'terminal', 'nofile', 'help'}
-      vim.g.qs_filetype_blacklist = {'startify', 'fugitive', 'dirbuf', 'harpoon'}
+      vim.g.qs_buftype_blacklist = BUFTYPE_BL
+      vim.g.qs_filetype_blacklist = FILETYPE_BL
     end,
     config = function()
       -- Add underline to quick-scope highlighted characters.
@@ -1019,6 +1043,9 @@ require('packer').startup({function(use)
     setup = function()
       -- Deactivate '<Leader>s' key mapping
       vim.g.better_whitespace_operator = ''
+      vim.g.better_whitespace_filetypes_blacklist = vim.fn.extend({
+        'diff', 'git', 'gitcommit', 'unite', 'qf', 'markdown'
+      }, FILETYPE_BL)
     end,
     config = function()
       local opts = {noremap = true, silent = true}
@@ -1378,7 +1405,7 @@ end
 
 -- Go to next tab, creating a second one if only one exists
 local function new_or_next_tab()
-  if vim.fn.tabpagenr('#') == 0 then
+  if vim.fn.tabpagenr('$') == 1 then
     vim.cmd('tabedit')
   else
     vim.cmd('tabnext')

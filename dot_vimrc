@@ -66,8 +66,6 @@ colorscheme palenight
 
 """"" Plugin configuration """""
 
-let g:fzf_preview_window = []
-
 nmap gl <Plug>(EasyAlign)
 xmap gl <Plug>(EasyAlign)
 
@@ -99,9 +97,10 @@ set diffopt+=vertical
 set foldmethod=indent
 set guifont=Iosevka_Extended:h11
 set guioptions-=L
+set guioptions-=m
 set guioptions-=r
-set guioptions-=t
 set guioptions-=T
+set guioptions-=t
 set hidden
 set ignorecase
 set mouse=a
@@ -154,7 +153,6 @@ nnoremap <expr> k (v:count >= 10 ? "m'" . v:count : "") . 'k'
 
 nnoremap <silent> <C-s> :update<CR>
 inoremap <silent> <C-s> <C-o>:update<CR>
-
 tnoremap <C-s> <C-\><C-n>
 
 nnoremap <silent> <Esc> :noh<CR><Esc>
