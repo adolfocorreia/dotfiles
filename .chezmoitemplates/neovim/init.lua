@@ -273,10 +273,6 @@ require('packer').startup({function(use)
       vim.g.VM_maps = {
         ['Find Under']         = '<M-d>',
         ['Find Subword Under'] = '<M-d>',
-        ['Select Cursor Down'] = '<C-j>',
-        ['Select Cursor Up']   = '<C-k>',
-        ['Select l']           = '<C-l>',
-        ['Select h']           = '<C-h>',
       }
     end,
   }
@@ -715,13 +711,6 @@ require('packer').startup({function(use)
   -- Reference: https://github.com/sheerun/vim-polyglot#language-packs
 
   -- TODO: Evaluate zeavim.vim, vim-dasht and vim-devdocs
-  use {
-    'KabbAmine/zeavim.vim',
-    cmd = 'Zeavim',
-    setup = function()
-      vim.g.zv_disable_mapping = 1
-    end,
-  }
 
   -- TODO: evaluate better way to lazy load this plugin
   -- Julia. LaTeX to Unicode substitutions.
@@ -1553,6 +1542,7 @@ LEADER_MAPPINGS = {
   c = {
     name  = 'code',
     ['f']  = {'<Cmd>lua vim.lsp.buf.formatting()<CR>', 'Format buffer'},
+    ['b']  = {'<Cmd>!black %<CR>',                     'Format with black'},
     ['w']  = {'<Cmd>StripWhitespace<CR>',              'Strip whitespace'},
     ['s']  = {'<Cmd>Telescope spell_suggest<CR>',      'Spell suggest'},
     ['pf'] = {'Peek function definition'},
@@ -1637,7 +1627,6 @@ LEADER_MAPPINGS = {
     ['f'] = {'<Cmd>Telescope filetype<CR>',                  'Filetypes'},
     ['H'] = {'<Cmd>Telescope highlights<CR>',                'Highlights'},
     ['p'] = {'<Cmd>Telescope builtin<CR>',                   'Telescope pickers'},
-    ['z'] = {'<Cmd>Zeavim<CR>',                              'Zeal documentation'},
   },
 
   m = {
