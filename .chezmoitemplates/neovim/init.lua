@@ -1108,6 +1108,9 @@ vim.cmd([[autocmd vimrc FileType packer setlocal colorcolumn=]])
 -- Enable 24-bit RGB colors in terminal mode.
 vim.opt.termguicolors = true
 
+-- Enable the window title.
+vim.opt.title = true
+
 -- Set blinking cursor in normal mode.
 if vim.g.os == 'Windows' then
   vim.opt.guicursor = 'n-v-c-sm:block-blinkwait500-blinkon200-blinkoff150,i-ci-ve:ver25,r-cr-o:hor20'
@@ -1543,6 +1546,7 @@ LEADER_MAPPINGS = {
     name  = 'code',
     ['f']  = {'<Cmd>lua vim.lsp.buf.formatting()<CR>', 'Format buffer'},
     ['b']  = {'<Cmd>!black %<CR>',                     'Format with black'},
+    ['i']  = {'<Cmd>!isort %<CR>',                     'Format with isort'},
     ['w']  = {'<Cmd>StripWhitespace<CR>',              'Strip whitespace'},
     ['s']  = {'<Cmd>Telescope spell_suggest<CR>',      'Spell suggest'},
     ['pf'] = {'Peek function definition'},
