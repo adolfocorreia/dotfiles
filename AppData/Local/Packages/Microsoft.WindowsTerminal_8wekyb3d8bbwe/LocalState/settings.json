@@ -5,6 +5,7 @@
     "focusFollowMouse": true,
     "launchMode": "focus",
     "snapToGridOnResize": false,
+    "useAcrylicInTabRow": true,
     // Add custom actions and keybindings to this array.
     // To unbind a key combination from your defaults.json, set the command to "unbound".
     // To learn more about actions and keybindings, visit https://aka.ms/terminal-keybindings
@@ -16,6 +17,11 @@
         {
             "command": "find",
             "keys": "ctrl+shift+f"
+        },
+        // Show or hide tab bar
+        {
+            "command": "toggleFocusMode",
+            "keys": "alt+shift+f",
         },
         // Press Alt+Shift+D to open a new pane.
         // - "split": "auto" makes this pane open in the direction that provides the most surface area.
@@ -173,16 +179,13 @@
         "defaults":
         {
             "cursorShape": "underscore",
-            //"fontFace": "CaskaydiaCove NF",
             //"fontFace": "DejaVuSansMono NF",
-            //"fontFace": "FantasqueSansMono NF",
             //"fontFace": "Hack NF",
             //"fontFace": "InconsolataGo NF",
-            //"fontFace": "mononoki NF",
+            "fontFace": "mononoki NF",
             //"fontFace": "SauceCodePro NF",
-            "fontFace": "UbuntuMono NF",
-            //"fontFace": "VictorMono NF",
-            "fontSize": 12,
+            //"fontFace": "UbuntuMono NF",
+            "fontSize": 11,
             "scrollbarState": "hidden",
             "useAcrylic": true,
             "acrylicOpacity": 0.9
