@@ -94,6 +94,7 @@ map - updir
 map a push :mkdir<space>
 map D trash
 map w $fish
+map x cut
 
 # Put lf in background.
 map <c-z> $kill -STOP $PPID

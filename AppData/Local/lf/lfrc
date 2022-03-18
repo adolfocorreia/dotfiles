@@ -61,6 +61,7 @@ map D trash
 map md mkdir
 map mf mkfile
 map w $pwsh -NoLogo
+map x cut
 
 
 ## Directory mappings ##
