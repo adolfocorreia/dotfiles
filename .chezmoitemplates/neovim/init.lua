@@ -119,7 +119,7 @@ require('packer').startup({function(use)
   -- Delete buffers without losing window layout.
   use {
     'famiu/bufdelete.nvim',
-    cmd = 'Bdelete',
+    cmd = 'Bwipeout',
   }
 
   -- Fix CursorHold Performance.
@@ -193,6 +193,16 @@ require('packer').startup({function(use)
   use {
     'tpope/vim-unimpaired',
     event = { 'BufRead', 'BufNewFile' },
+    -- keys = {
+    --   '<Plug>(unimpaired-bprevious)',
+    --   '<Plug>(unimpaired-bnext)',
+    --   '<Plug>(unimpaired-put-above)',
+    --   '<Plug>(unimpaired-put-below)',
+    --   '<Plug>(unimpaired-blank-up)',
+    --   '<Plug>(unimpaired-blank-down)',
+    --   '<Plug>(unimpaired-move-up)',
+    --   '<Plug>(unimpaired-move-down)',
+    -- },
   }
 
   -- Text exchange operator: cx_, cxx (current line), X (in visual mode),
@@ -739,6 +749,7 @@ require('packer').startup({function(use)
   use {
     'jpalardy/vim-slime',
     keys = 'gr',
+    cmd = 'SlimeConfig',
     -- ft = { 'python', 'julia' },
     setup = function()
       vim.g.slime_target = 'neovim'
@@ -1077,6 +1088,12 @@ require('packer').startup({function(use)
     end,
   }
 
+  -- Night Fox themes.
+  use {
+    'EdenEast/nightfox.nvim',
+    opt = true,
+  }
+
 
   -- Automatically set up configuration after cloning packer.nvim.
   if PACKER_BOOTSTRAP then
@@ -1110,6 +1127,9 @@ vim.opt.termguicolors = true
 
 -- Enable the window title.
 vim.opt.title = true
+
+-- Disable mode indication on last line.
+vim.opt.showmode = false
 
 -- Set blinking cursor in normal mode.
 if vim.g.os == 'Windows' then
@@ -1291,7 +1311,6 @@ vim.cmd([[
 -- - Plugin maps (<Plug>) must be recursive
 
 
--- TODO: is this working?
 -- Keep selection when indenting in visual mode.
 vim.cmd([[
   vnoremap > >gv
@@ -1453,7 +1472,7 @@ LEADER_MAPPINGS = {
     ['n'] = {'<Cmd>bnext<CR>',                       'Next buffer'},
     ['p'] = {'<Cmd>bprevious<CR>',                   'Previous buffer'},
     ['#'] = {'<Cmd>buffer #<CR>',                    'Alternate buffer'},
-    ['d'] = {'<Cmd>Bdelete<CR>',                     'Delete buffer'},
+    ['d'] = {'<Cmd>Bwipeout<CR>',                    'Delete buffer'},
     ['e'] = {'<Cmd>enew<CR>',                        'Edit new buffer'},
     ['W'] = {'<Cmd>wall<CR>',                        'Write all buffers'},
     ['r'] = {'<Cmd>edit %<CR>',                      'Reload current buffer'},
@@ -1588,7 +1607,7 @@ LEADER_MAPPINGS = {
     ['g'] = {'<Cmd>tab Git<Bar>LualineRenameTab git<CR>', 'Git status' },
     ['c'] = {'<Cmd>Git commit<CR>',                       'Git commit' },
     ['p'] = {'<Cmd>Git push<CR>',                         'Git push' },
-    ['l'] = {'<Cmd>Git log<CR>',                          'Git log' },
+    ['l'] = {'<Cmd>Git log<Bar>wincmd L<CR>',             'Git log' },
     ['b'] = {'<Cmd>Git blame<CR>',                        'Git blame' },
     ['C'] = {'<Cmd>Telescope git_commits<CR>',            'List git commits'},
     ['B'] = {'<Cmd>Telescope git_branches<CR>',           'List git branches'},
@@ -1637,8 +1656,8 @@ LEADER_MAPPINGS = {
     name = 'misc',
     ['c'] = {'<Cmd>ColorizerToggle<CR>', 'Color strings highlighting'},
     -- TODO: implement diagnostic toggle solution
-    ['d'] = {'<Cmd>lua vim.diagnostic.disable(0)<CR>', 'Turn off diagnostics'},
-    ['D'] = {'<Cmd>lua vim.diagnostic.enable(0)<CR>',  'Turn on diagnostics'},
+    ['d'] = {'<Cmd>lua vim.diagnostic.disable(0)<CR>', 'Turn off diagnostics in buffer'},
+    ['D'] = {'<Cmd>lua vim.diagnostic.enable(0)<CR>',  'Turn on diagnostics in buffer'},
   },
 
   h = {
