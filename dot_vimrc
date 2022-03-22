@@ -80,6 +80,8 @@ let g:VM_maps['Find Under']         = '<M-d>'
 let g:VM_maps['Find Subword Under'] = '<M-d>'
 nmap <M-d> <Plug>(VM-Find-Under)
 
+let g:qs_buftype_blacklist = ['help', 'nofile', 'nowrite', 'terminal']
+
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_wq = 0
