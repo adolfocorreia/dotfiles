@@ -180,12 +180,12 @@
         {
             "cursorShape": "underscore",
             //"fontFace": "DejaVuSansMono NF",
-            //"fontFace": "Hack NF",
+            "fontFace": "Hack NF",
             //"fontFace": "InconsolataGo NF",
-            "fontFace": "mononoki NF",
+            //"fontFace": "mononoki NF",
             //"fontFace": "SauceCodePro NF",
             //"fontFace": "UbuntuMono NF",
-            "fontSize": 11,
+            "fontSize": 10,
             "scrollbarState": "hidden",
             "useAcrylic": true,
             "acrylicOpacity": 0.9
