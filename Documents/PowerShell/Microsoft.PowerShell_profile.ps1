@@ -28,16 +28,36 @@ Set-PSReadLineOption -EditMode Vi
 Set-PSReadLineKeyHandler -Key Tab -Function Complete
 Remove-PSReadLineKeyHandler -Key Shift+Tab
 
+# Enable emacs/readline style mappings on insert mode
+# References:
+# - https://docs.microsoft.com/en-us/powershell/module/psreadline/about/about_psreadline
+# - https://en.wikipedia.org/wiki/GNU_Readline#Editing_modes
+Set-PSReadLineKeyHandler -Key Ctrl+b -Function BackwardChar
+Set-PSReadLineKeyHandler -Key Ctrl+f -Function ForwardChar
+Set-PSReadLineKeyHandler -Key Alt+b  -Function BackwardWord
+Set-PSReadLineKeyHandler -Key Alt+f  -Function ForwardWord
+Set-PSReadLineKeyHandler -Key Ctrl+a -Function BeginningOfLine
+Set-PSReadLineKeyHandler -Key Ctrl+e -Function EndOfLine
+Set-PSReadLineKeyHandler -Key Ctrl+h -Function BackwardDeleteChar
+Set-PSReadLineKeyHandler -Key Ctrl+d -Function DeleteCharOrExit
+Set-PSReadLineKeyHandler -Key Ctrl+w -Function BackwardDeleteWord
+Set-PSReadLineKeyHandler -Key Alt+d  -Function DeleteWord
+Set-PSReadLineKeyHandler -Key Ctrl+u -Function BackwardDeleteInput
+Set-PSReadLineKeyHandler -Key Ctrl+k -Function DeleteToEnd
+Set-PSReadLineKeyHandler -Key Ctrl+p -Function HistorySearchBackward
+Set-PSReadLineKeyHandler -Key Ctrl+n -Function HistorySearchForward
+Set-PSReadLineKeyHandler -Key Ctrl+m -Function ValidateAndAcceptLine
+Set-PSReadLineKeyHandler -Key Ctrl+y -Function Paste
+Set-PSReadLineKeyHandler -Key Ctrl+_ -Function Undo
+
 # Enable fish style prediction
 # Reference: https://devblogs.microsoft.com/powershell/announcing-psreadline-2-1-with-predictive-intellisense
 Set-PSReadLineOption -PredictionSource HistoryAndPlugin
 Set-PSReadLineOption -HistorySearchCursorMovesToEnd
 Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
-Set-PSReadLineKeyHandler -Key Ctrl+p -Function HistorySearchBackward
-Set-PSReadLineKeyHandler -Key Ctrl+n -Function HistorySearchForward
-Set-PSReadLineKeyHandler -Key Ctrl+f -Function AcceptSuggestion
-Set-PSReadLineKeyHandler -Key Alt+f -Function AcceptNextSuggestionWord
+# Set-PSReadLineKeyHandler -Key Ctrl+f -Function AcceptSuggestion
+# Set-PSReadLineKeyHandler -Key Alt+f -Function AcceptNextSuggestionWord
 
 # Increase color contrast of shell elements
 # Escape code references:
