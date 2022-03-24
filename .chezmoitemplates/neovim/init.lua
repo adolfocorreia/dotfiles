@@ -59,6 +59,7 @@ FILETYPE_BL = {
   'harpoon',
   'help',
   'lspinfo',
+  'packer',
   'startify',
 }
 
@@ -733,6 +734,9 @@ require('packer').startup({function(use)
       vim.g.latex_to_unicode_tab = 'off'
     end,
   }
+
+  -- TODO: evaluate 'nvim-neorg/neorg' and 'nvim-orgmode/orgmode'
+  -- Org-mode.
 
   -- Markdown previewer. Start preview with :MarkdownPreview command.
   use {
