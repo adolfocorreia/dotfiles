@@ -11,18 +11,76 @@
     // To learn more about actions and keybindings, visit https://aka.ms/terminal-keybindings
     "actions":
     [
-        // Copy and paste are bound to Ctrl+Shift+C and Ctrl+Shift+V in your defaults.json.
+        // Unbind keys (disable default keybindings)
+        { "command": null, "keys": "ctrl+shift+c" },    // Copy text
+        { "command": null, "keys": "ctrl+shift+d" },    // Duplicate tab
+        { "command": null, "keys": "ctrl+shift+f" },    // Find
+        { "command": null, "keys": "ctrl+shift+n" },    // New window
+        { "command": null, "keys": "ctrl+shift+p" },    // Toggle command palette
+        { "command": null, "keys": "ctrl+shift+t" },    // New tab
+        { "command": null, "keys": "ctrl+shift+v" },    // Paste
+        { "command": null, "keys": "ctrl+shift+w" },    // Close pane
+        { "command": null, "keys": "alt+enter" },       // Toggle full screen
+        { "command": null, "keys": "alt+down" },        // Move focus down
+        { "command": null, "keys": "alt+up" },          // Move focus up
+        { "command": null, "keys": "alt+left" },        // Move focus left
+        { "command": null, "keys": "alt+right" },       // Move focus right
+        { "command": null, "keys": "alt+shift+down" },  // Resize pane down
+        { "command": null, "keys": "alt+shift+up" },    // Resize pane up
+        { "command": null, "keys": "alt+shift+left" },  // Resize pane left
+        { "command": null, "keys": "alt+shift+right" }, // Resize pane right
+        { "command": null, "keys": "ctrl+shift+down" }, // Scroll down
+        { "command": null, "keys": "ctrl+shift+up" },   // Scroll up
+        { "command": null, "keys": "ctrl+shift+pgdn" }, // Scroll down one page
+        { "command": null, "keys": "ctrl+shift+pgup" }, // Scroll up one page
+        { "command": null, "keys": "ctrl+shift+home" }, // Scroll to the bottom of history
+        { "command": null, "keys": "ctrl+shift+end" },  // Scroll to the top of history
+        { "command": null, "keys": "ctrl+alt+left" },   // Move focus to the last used pane
+        { "command": null, "keys": "ctrl+shift+1" },    // New tab, profile index: 0
+        { "command": null, "keys": "ctrl+shift+2" },    // New tab, profile index: 1
+        { "command": null, "keys": "ctrl+shift+3" },    // New tab, profile index: 2
+        { "command": null, "keys": "ctrl+shift+4" },    // New tab, profile index: 3
+        { "command": null, "keys": "ctrl+shift+5" },    // New tab, profile index: 4
+        { "command": null, "keys": "ctrl+shift+6" },    // New tab, profile index: 5
+        { "command": null, "keys": "ctrl+shift+7" },    // New tab, profile index: 6
+        { "command": null, "keys": "ctrl+shift+8" },    // New tab, profile index: 7
+        { "command": null, "keys": "ctrl+shift+9" },    // New tab, profile index: 8
+        { "command": null, "keys": "ctrl+alt+1" },      // Switch to tab, index: 0
+        { "command": null, "keys": "ctrl+alt+2" },      // Switch to tab, index: 1
+        { "command": null, "keys": "ctrl+alt+3" },      // Switch to tab, index: 2
+        { "command": null, "keys": "ctrl+alt+4" },      // Switch to tab, index: 3
+        { "command": null, "keys": "ctrl+alt+5" },      // Switch to tab, index: 4
+        { "command": null, "keys": "ctrl+alt+6" },      // Switch to tab, index: 5
+        { "command": null, "keys": "ctrl+alt+7" },      // Switch to tab, index: 6
+        { "command": null, "keys": "ctrl+alt+8" },      // Switch to tab, index: 7
+        { "command": null, "keys": "ctrl+alt+9" },      // Switch to tab, index: 8
+        { "command": null, "keys": "win+sc(41)" },      // Summon Quake window
         // To learn more about selection, visit https://aka.ms/terminal-selection
-        // Press Ctrl+Shift+F to open the search box
+        // Press Alt+Shift+F to open the search box
         {
             "command": "find",
-            "keys": "ctrl+shift+f"
+            "keys": "alt+shift+f"
         },
         // Show or hide tab bar
         {
             "command": "toggleFocusMode",
-            "keys": "alt+shift+f",
+            "keys": "alt+shift+t"
         },
+        // Toggle command palette
+        {
+            "command": "commandPalette",
+            "keys": "alt+shift+space"
+        },
+        // Switch to tab
+        { "command": { "action": "switchToTab", "index": 0 }, "keys": "alt+shift+1" },
+        { "command": { "action": "switchToTab", "index": 1 }, "keys": "alt+shift+2" },
+        { "command": { "action": "switchToTab", "index": 2 }, "keys": "alt+shift+3" },
+        { "command": { "action": "switchToTab", "index": 3 }, "keys": "alt+shift+4" },
+        { "command": { "action": "switchToTab", "index": 4 }, "keys": "alt+shift+5" },
+        { "command": { "action": "switchToTab", "index": 5 }, "keys": "alt+shift+6" },
+        { "command": { "action": "switchToTab", "index": 6 }, "keys": "alt+shift+7" },
+        { "command": { "action": "switchToTab", "index": 7 }, "keys": "alt+shift+8" },
+        { "command": { "action": "switchToTab", "index": 8 }, "keys": "alt+shift+9" },
         // Press Alt+Shift+D to open a new pane.
         // - "split": "auto" makes this pane open in the direction that provides the most surface area.
         // - "splitMode": "duplicate" makes the new pane use the focused pane's profile.
