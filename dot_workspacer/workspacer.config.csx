@@ -406,6 +406,8 @@ Action<IConfigContext> doConfig = (context) => {
     context.WindowRouter.IgnoreProcessName("PortableAppsUpdater");
     // Python (matplotlib)
     context.WindowRouter.IgnoreWindowClass("TkTopLevel");
+    // R
+    context.WindowRouter.IgnoreWindowClass("Rterm");
     // SIGA
     context.WindowRouter.IgnoreProcessName("Siga");
     // SpeedCrunch
