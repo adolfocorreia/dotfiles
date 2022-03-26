@@ -517,7 +517,7 @@ require('packer').startup({function(use)
   -- LSP configuration.
   use {
     'neovim/nvim-lspconfig',
-    ft = { 'python', 'julia', 'lua' },
+    ft = { 'julia', 'lua', 'python', 'r', 'rmd' },
     config = function()
       -- Reference: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 
@@ -538,7 +538,7 @@ require('packer').startup({function(use)
 
       -- R (r_language_server)
       -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#r_language_server
-      -- require('lspconfig').r_language_server.setup(lsp_opts)
+      require('lspconfig').r_language_server.setup(lsp_opts)
 
       -- Lua (sumneko)
       -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#sumneko_lua
@@ -1430,6 +1430,17 @@ end
 local packer_loader = vim.fn.stdpath('config') .. '/plugin/packer_compiled.lua'
 local plugin_path = vim.fn.stdpath('data') .. '/site/pack/packer'
 
+-- Reference: https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_formatting
+function GetFormattingOptions()
+  return {
+    tabSize = vim.fn.shiftwidth(),
+    insertSpaces = vim.bo.expandtab,
+    trimTrailingWhitespace = true,
+    insertFinalNewline = true,
+    trimFinalNewlines= true,
+  }
+end
+
 LEADER_MAPPINGS = {
 
   ['<Leader>'] = {'<Cmd>Telescope buffers theme=ivy<CR>', 'Find buffer'},
@@ -1562,16 +1573,17 @@ LEADER_MAPPINGS = {
     ['c'] = {'<Cmd>SlimeConfig<CR>',                              'Configure REPL'},
     ['s'] = {'<Cmd>vsplit<Bar>terminal<CR>',                      'Open system shell'},
     ['j'] = {'<Cmd>vsplit<Bar>terminal julia<CR>',                'Open Julia REPL'},
-    ['p'] = {'<Cmd>vsplit<Bar>terminal ipython --profile=vi<CR>', 'Toggle Python REPL'},
+    ['r'] = {'<Cmd>vsplit<Bar>terminal R<CR>',                    'Open R REPL'},
+    ['p'] = {'<Cmd>vsplit<Bar>terminal ipython --profile=vi<CR>', 'Open Python REPL'},
   },
 
   c = {
     name  = 'code',
-    ['f']  = {'<Cmd>lua vim.lsp.buf.formatting()<CR>', 'Format buffer'},
-    ['b']  = {'<Cmd>!black %<CR>',                     'Format with black'},
-    ['i']  = {'<Cmd>!isort %<CR>',                     'Format with isort'},
-    ['w']  = {'<Cmd>StripWhitespace<CR>',              'Strip whitespace'},
-    ['s']  = {'<Cmd>Telescope spell_suggest<CR>',      'Spell suggest'},
+    ['f']  = {'<Cmd>lua vim.lsp.buf.formatting(GetFormattingOptions())<CR>', 'Format buffer'},
+    ['b']  = {'<Cmd>!black %<CR>',                'Format with black'},
+    ['i']  = {'<Cmd>!isort %<CR>',                'Format with isort'},
+    ['w']  = {'<Cmd>StripWhitespace<CR>',         'Strip whitespace'},
+    ['s']  = {'<Cmd>Telescope spell_suggest<CR>', 'Spell suggest'},
     ['pf'] = {'Peek function definition'},
     ['pc'] = {'Peek class definition'},
   },
