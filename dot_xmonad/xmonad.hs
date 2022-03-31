@@ -81,6 +81,8 @@ myAdditionalKeys =
     ("M-e", spawn "pcmanfm"),
     -- Close the focused window
     ("M-q", kill),
+    -- Force window kill with xkill
+    ("M-k", spawn "xkill"),
     -- Restart xmonad
     ("M-S-q", spawn "xmonad --recompile && xmonad --restart"),
     -- Quit xmonad (this key binding should be hard to use)
@@ -262,6 +264,8 @@ myManageHook =
         ("mail", "Chromium"),
         -- Whatsapp (nativefier)
         ("chat", "whatsapp-nativefier-d40211"),
+        -- Xreader
+        ("doc", "Xreader"),
         -- Zoom
         ("vid", "zoom")
       ]
