@@ -138,7 +138,7 @@ let &t_EI .= "\e[1 q"
 
 """"" Autocommands """""
 
-autocmd vimrc BufRead * let &foldlevel = max(map(range(1,line('$')), 'foldlevel(v:val)'))
+autocmd vimrc BufRead * normal zR
 autocmd vimrc FileType help setlocal bufhidden=unload | wincmd L
 autocmd vimrc FileType help,qf nnoremap <silent> <buffer> q :close<CR>
 autocmd vimrc TerminalOpen * setlocal nonumber norelativenumber nocursorline nocursorcolumn

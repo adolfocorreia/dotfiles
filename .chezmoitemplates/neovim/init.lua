@@ -1154,11 +1154,10 @@ vim.opt.clipboard = 'unnamedplus'
 -- Do not redraw screen while executing macros.
 vim.opt.lazyredraw = true
 
--- Lines with equal indent form a fold.
+-- Use treesitter to manage folds.
 vim.opt.foldmethod = 'expr'
 vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
-vim.opt.foldnestmax = 4
-vim.opt.foldlevelstart = 99
+vim.opt.foldlevelstart = 5
 
 -- Keep 5 lines above or below the cursor when scrolling.
 vim.opt.scrolloff = 5
