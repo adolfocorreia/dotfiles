@@ -910,6 +910,7 @@ require('packer').startup({function(use)
   use {
     'mhinz/vim-startify',
     setup = function()
+      vim.g.startify_files_number = 5
       vim.g.startify_fortune_use_unicode = 1
       vim.g.startify_session_persistence = 1
       vim.g.ascii = {
@@ -1087,7 +1088,7 @@ require('packer').startup({function(use)
       -- Load default color scheme.
       vim.cmd([[
         colorscheme tokyonight
-        execute 'highlight Folded guibg=' . synIDattr(synIDtrans(hlID('Normal')), 'bg', 'gui')
+        highlight Folded guibg=NONE
       ]])
     end,
   }
