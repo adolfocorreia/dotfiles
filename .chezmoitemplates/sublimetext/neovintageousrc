@@ -3,6 +3,10 @@
 " Yank from cursor to end of line (by default Y is synonym to yy).
 nnoremap Y y$
 
+" Save buffer with C-s.
+nnoremap <C-s> :write<CR>
+inoremap <C-s> <C-o>:write<CR>
+
 " Ignore case in patterns (unless upper case characters are used).
 set ignorecase
 set smartcase
