@@ -91,6 +91,19 @@ c.tabs.background = True
 c.tabs.mousewheel_switching = False
 c.tabs.position = "top"
 
+# Ad-blocking
+c.content.blocking.method = "both"
+c.content.blocking.adblock.lists = [
+    'https://easylist.to/easylist/easylist.txt',
+    'https://easylist.to/easylist/easyprivacy.txt',
+    'https://easylist.to/easylist/fanboy-social.txt',
+    'https://fanboy.co.nz/fanboy-annoyance.txt',
+    'https://fanboy.co.nz/fanboy-antifacebook.txt',
+    'https://www.i-dont-care-about-cookies.eu/abp',
+    'https://easylist-downloads.adblockplus.org/abp-filters-anti-cv.txt',
+    'https://ewpratten.github.io/youtube_ad_blocklist/adblockplus.txt',
+]
+
 # Search engines
 c.url.searchengines["DEFAULT"] = "https://search.brave.com/search?q={}"
 c.url.searchengines[",b"]      = "https://search.brave.com/search?q={}"
