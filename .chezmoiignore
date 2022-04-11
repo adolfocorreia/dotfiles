@@ -26,6 +26,8 @@ README.md
 .config/variety
 .config/xmobar
 
+.local
+
 .bash_profile
 .bashrc
 
