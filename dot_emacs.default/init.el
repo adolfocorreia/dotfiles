@@ -10,10 +10,15 @@
 (setq inhibit-startup-screen t
       initial-scratch-message nil
       visible-bell t)
-(scroll-bar-mode -1)
+(set-window-scroll-bars (minibuffer-window) nil nil)
+(if (eq system-type 'windows-nt)
+    (progn (tool-bar-mode -1)
+           (scroll-bar-mode -1)))
 
 ; TODO: add Iosevka Aile as non-fixed font
-(set-frame-font "Iosevka Term-13" nil t)
+(if (eq system-type 'windows-nt)
+    (set-frame-font "Iosevka Term-10" nil t)
+    (set-frame-font "Iosevka Term-13" nil t))
 
 
 ;; Split vertically by default
