@@ -10,20 +10,22 @@
 (setq inhibit-startup-screen t
       initial-scratch-message nil
       visible-bell t)
+(scroll-bar-mode -1)
 
-(set-frame-font "Iosevka-13" nil t)
+; TODO: add Iosevka Aile as non-fixed font
+(set-frame-font "Iosevka Term-13" nil t)
 
 
 ;; Split vertically by default
-(setq split-height-threshold nil
-      split-width-threshold 80)
+;(setq split-height-threshold nil
+;      split-width-threshold 80)
 
 
 ;; Editing settings
 (column-number-mode +1)
-(global-display-line-numbers-mode +1)
-; TODO: add this to a hook
-(setq display-line-numbers 'relative)
+(setq display-line-numbers-type 'relative)
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+(add-hook 'text-mode-hook 'display-line-numbers-mode)
 
 
 ;; Misc settings
@@ -47,12 +49,15 @@
 
 (use-package auto-package-update
   :ensure t
+  :defer 10
   :custom
   (auto-package-update-interval 1)
   (auto-package-update-prompt-before-update t)
   (auto-package-update-delete-old-versions t)
   :config
   (auto-package-update-maybe))
+
+;(use-package try)
 
 
 
@@ -67,7 +72,11 @@
 (use-package no-littering
   :ensure t)
 
-;; projectile
+(use-package minions
+  :ensure t
+  :config (minions-mode +1))
+
+; projectile
 
 
 ;;; Useful (evil) keybingings
@@ -75,9 +84,11 @@
 (use-package evil
   :ensure t
   :init
-  (setq evil-split-window-right t
+  (setq evil-search-module 'isearch
+        evil-split-window-right t
         evil-vsplit-window-below t
         evil-want-C-u-scroll t
+        evil-want-integration t
         evil-want-keybinding nil)
   :config
   (evil-mode +1))
@@ -87,35 +98,80 @@
   :after evil
   :config (evil-collection-init))
 
-;; evil-lion
-;; evil-commentary
-;; evil-exchange
-;; evil-replace-with-register
-;; evil-visualstar
-;; evil-expat
-;; evil-goggles
-;; evil-surround
-;; unimpaired
-;; sneak
-;; text-objects (targets, indent
+(use-package evil-surround
+  :ensure t
+  :commands
+  (evil-surround-edit
+   evil-Surround-edit
+   evil-surround-region
+   evil-Surround-region)
+  :init
+  (evil-define-key 'operator global-map "s"  'evil-surround-edit)
+  (evil-define-key 'operator global-map "S"  'evil-Surround-edit)
+  (evil-define-key 'visual global-map   "S"  'evil-surround-region)
+  (evil-define-key 'visual global-map   "gS" 'evil-Surround-region))
+
+(use-package evil-commentary
+  :ensure t
+  :bind (:map evil-normal-state-map
+        ("gc" . evil-commentary)))
+
+(use-package evil-snipe
+  :ensure t
+  :after evil
+  :init
+  (setq evil-snipe-scope 'whole-visible
+        evil-snipe-repeat-scope 'whole-visible)
+  :config
+  (evil-snipe-mode +1)
+  (evil-snipe-override-mode +1))
+
+(use-package evil-visualstar
+  :ensure t
+  :bind (:map evil-visual-state-map
+        ("*" . evil-visualstar/begin-search-forward)
+        ("#" . evil-visualstar/begin-search-backward)))
+
+(use-package evil-lion
+  :ensure t
+  :bind (:map evil-normal-state-map
+        ("g l " . evil-lion-left)
+        ("g L " . evil-lion-right)
+  :map evil-visual-state-map
+        ("g l " . evil-lion-left)
+        ("g L " . evil-lion-right)))
+
+(use-package evil-goggles
+  :ensure t
+  :after evil
+  :config
+  (evil-goggles-use-diff-faces)
+  (evil-goggles-mode +1))
+
+; evil-exchange (http://evgeni.io/posts/quick-start-evil-mode)
+; evil-replace-with-register
+; evil-ediff
+; evil-magit
+; text-objects (targets, indent, entire)
 
 
 ;;; Editing helps
 
-;; multicursor
-;; autopairs
-;; avy
-;; snippets
+; multicursor
+; autopairs
+; avy
+; snippets
 
 
 
 ;;; Language support (major-modes)
 
-;; lsp
-;; python
-;; lua
-;; haskell
-;; ess
+; lsp
+; tree sitter
+; python
+; lua
+; haskell
+; ess
 
 
 
@@ -129,17 +185,17 @@
 
 ;;; Fuzzy search & completion
 
-;; vertico
-;; tabnine?
+; vertico
+; tabnine?
 
 
 
 ;;; Terminal and file management support
 
-;; eshell
-;; vterm
-;; repl
-;; dired
+; eshell
+; vterm
+; repl
+; dired
 
 
 
@@ -156,14 +212,11 @@
   :load-path "themes"
   :config (load-theme 'nord t))
 
-;; modeline
+; modeline
 
 
 
 ;;;; Keybindings ;;;;
 
-;; C-z to enable Emacs bindings
-
 ;; Make ESC quit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-

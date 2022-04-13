@@ -324,7 +324,7 @@ main = do
             logHook =
               dynamicLogWithPP (myXmobarConfig xm0 xm1)
                 >> workspaceHistoryHook
-                >> updatePointer (0.25, 0.05) (0.0, 0.0)
+                >> updatePointer (0.25, 0.1) (0.0, 0.0)
           }
         `removeKeysP` myRemoveKeys
         `additionalKeysP` myAdditionalKeys
