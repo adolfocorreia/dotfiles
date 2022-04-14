@@ -10,7 +10,6 @@
 (setq inhibit-startup-screen t
       initial-scratch-message nil
       visible-bell t)
-(set-window-scroll-bars (minibuffer-window) nil nil)
 (if (eq system-type 'windows-nt)
     (progn (tool-bar-mode -1)
            (scroll-bar-mode -1)))
@@ -19,11 +18,6 @@
 (if (eq system-type 'windows-nt)
     (set-frame-font "Iosevka Term-10" nil t)
     (set-frame-font "Iosevka Term-13" nil t))
-
-
-;; Split vertically by default
-;(setq split-height-threshold nil
-;      split-width-threshold 80)
 
 
 ;; Editing settings
@@ -35,6 +29,7 @@
 
 ;; Misc settings
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(load custom-file)
 
 
 
@@ -225,3 +220,8 @@
 
 ;; Make ESC quit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
+;; Use ibuffer instead of list-buffers
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+
+; add readline bindings in evil insert mode
