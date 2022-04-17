@@ -7,6 +7,7 @@
 -- - Use :lua print(vim.inspect(<table>)) to display table contents.
 
 -- TODO: evaluate and replace all vim.cmd statements
+-- TODO: convert code to v0.7 APIs (e.g. autocmds, key maps, highlight)
 
 -- Define vimrc autocommand group removing all previously set vimrc autocommands
 -- when (re)sourcing this file.
@@ -20,8 +21,6 @@ vim.cmd([[
 -- Select Leader keys.
 vim.g.mapleader      = ' '
 vim.g.maplocalleader = '\\'
--- noremap <Space> <Nop>
--- vim.api.nvim_set_keymap('', ' ', '', {noremap = true})
 
 -- Set vim.g.os variable with current OS.
 if vim.fn.exists('g:os') == 0 then
@@ -44,6 +43,10 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.g.loaded_netrwSettings = 1
 vim.g.loaded_netrwFileHandlers = 1
+
+-- Enable filetype.lua and disable filetype.vim.
+vim.g.do_filetype_lua = 1
+vim.g.did_load_filetypes = 0
 
 -- Buffer and file types blacklists (disable visual effects).
 BUFTYPE_BL = {
@@ -113,9 +116,6 @@ require('packer').startup({function(use)
 
   -- Improve startup time for Neovim.
   use 'lewis6991/impatient.nvim'
-
-  -- Faster version of filetype.vim.
-  use 'nathom/filetype.nvim'
 
   -- Delete buffers without losing window layout.
   use {
@@ -194,16 +194,6 @@ require('packer').startup({function(use)
   use {
     'tpope/vim-unimpaired',
     event = { 'BufRead', 'BufNewFile' },
-    -- keys = {
-    --   '<Plug>(unimpaired-bprevious)',
-    --   '<Plug>(unimpaired-bnext)',
-    --   '<Plug>(unimpaired-put-above)',
-    --   '<Plug>(unimpaired-put-below)',
-    --   '<Plug>(unimpaired-blank-up)',
-    --   '<Plug>(unimpaired-blank-down)',
-    --   '<Plug>(unimpaired-move-up)',
-    --   '<Plug>(unimpaired-move-down)',
-    -- },
   }
 
   -- Text exchange operator: cx_, cxx (current line), X (in visual mode),
@@ -427,7 +417,20 @@ require('packer').startup({function(use)
     run = ':TSUpdate',
     config = function()
       require('nvim-treesitter.configs').setup({
-        ensure_installed = 'maintained',
+        ensure_installed = {
+          'bash',
+          'fish',
+          'haskell',
+          'help',
+          'json',
+          'julia',
+          'lua',
+          'python',
+          'r',
+          'toml',
+          'vim',
+          'yaml',
+        },
         sync_install = false,
         -- https://github.com/nvim-treesitter/nvim-treesitter#i-want-to-use-a-http-proxy-for-downloading-the-parsers
         prefer_git = true,
@@ -986,6 +989,9 @@ require('packer').startup({function(use)
         filetypes = { 'terminal' },
       }
       require('lualine').setup({
+        options = {
+          globalstatus = true,
+        },
         sections = {
           lualine_a = { 'mode' },
           lualine_b = { 'branch', 'diff', 'diagnostics' },
