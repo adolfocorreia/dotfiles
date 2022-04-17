@@ -87,6 +87,7 @@
   (setq evil-search-module 'isearch
         evil-split-window-right t
         evil-vsplit-window-below t
+        evil-undo-system 'undo-redo
         evil-want-C-u-scroll t
         evil-want-integration t
         evil-want-keybinding nil)
@@ -165,6 +166,19 @@
 
 
 ;;; Language support (major-modes)
+
+;; Julia
+(use-package julia-mode
+  :ensure t
+  :mode "\\.jl\\'"
+  :interpreter "julia")
+
+; Julia REPL usage: C-c C-z (raise REPL), C-c C-a (activate project),
+;   C-c C-b (send buffer), C-c C-c (send region or line), C-c C-d (invoke @doc)
+(use-package julia-repl
+  :ensure t
+  :after julia-mode
+  :hook (julia-mode . julia-repl-mode))
 
 ; lsp
 ; tree sitter
