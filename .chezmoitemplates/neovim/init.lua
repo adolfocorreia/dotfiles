@@ -792,6 +792,9 @@ require('packer').startup({function(use)
       vim.api.nvim_set_keymap('n', 'gr',  '<Plug>SlimeMotionSend',    {})
       vim.api.nvim_set_keymap('n', 'grr', '<Plug>SlimeLineSend',      {})
       vim.api.nvim_set_keymap('n', 'grR', '<Plug>SlimeParagraphSend', {})
+
+      -- Reset vim-slime configuration in all buffers.
+      vim.cmd([[autocmd vimrc TermClose * bufdo if exists('b:slime_config') | unlet b:slime_config | endif]])
     end,
   }
 
@@ -1250,10 +1253,6 @@ vim.cmd([[autocmd vimrc TermOpen * wincmd L]])
 
 -- Set terminal filetype.
 vim.cmd([[autocmd vimrc TermOpen * set filetype=terminal]])
-
--- TODO: make this work
--- Reset vim-slime configuration in all buffers.
--- autocmd vimrc TermClose * bufdo if exists('b:slime_config') | let b:slime_config['jobid'] = '' | endif
 
 
 -- Avoid cursor movement when yanking text.

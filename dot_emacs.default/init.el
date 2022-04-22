@@ -89,6 +89,7 @@
         evil-vsplit-window-below t
         evil-undo-system 'undo-redo
         evil-want-C-u-scroll t
+        evil-want-Y-yank-to-eol t
         evil-want-integration t
         evil-want-keybinding nil)
   :config
