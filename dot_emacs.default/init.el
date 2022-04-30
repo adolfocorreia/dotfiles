@@ -76,6 +76,14 @@
   :ensure t
   :config (minions-mode +1))
 
+(use-package recentf
+  :ensure t
+  :init
+  (setq recentf-max-saved-items 20)
+  :config
+  (recentf-mode +1)
+  (global-set-key (kbd "C-x C-r") 'recentf-open-files))
+
 ; projectile
 
 
