@@ -609,13 +609,13 @@ require('packer').startup({function(use)
         },
         -- TODO: improve mappings / read :h ins-completion
         -- Default mappings: https://github.com/hrsh7th/nvim-cmp/blob/main/lua/cmp/config/default.lua
-        mapping = {
+        mapping = cmp.mapping.preset.insert({
           ['<PageDown>'] = cmp.mapping.scroll_docs(4),
           ['<PageUp>']   = cmp.mapping.scroll_docs(-4),
           -- <C-e> conflicts with vim-rsi
           ['<C-e>'] = cmp.config.disable,
           ['<C-z>'] = cmp.mapping(cmp.mapping.abort(), { 'i' }),
-        },
+        }),
         sources = cmp.config.sources(
         {
           { name = 'nvim_lsp' },
@@ -648,12 +648,14 @@ require('packer').startup({function(use)
       })
 
       cmp.setup.cmdline('/', {
+        mapping = cmp.mapping.preset.cmdline(),
         sources = {
-        { name = 'buffer', keyword_length = 2 },
+          { name = 'buffer', keyword_length = 2 },
         },
       })
 
       cmp.setup.cmdline(':', {
+        mapping = cmp.mapping.preset.cmdline(),
         sources = cmp.config.sources(
         {
             -- Reference: https://github.com/hrsh7th/cmp-cmdline/issues/24
