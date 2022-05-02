@@ -995,13 +995,13 @@ require('packer').startup({function(use)
       }
       require('lualine').setup({
         options = {
-          globalstatus = true,
+          globalstatus = false,
         },
         sections = {
           lualine_a = { 'mode' },
-          lualine_b = { 'branch', 'diff', 'diagnostics' },
+          lualine_b = { 'branch', 'diagnostics' },
           lualine_c = { 'filename' },
-          lualine_x = { { 'filetype', colored = false } },
+          lualine_x = { { 'filetype', colored = false, icon_only = true } },
           lualine_y = { 'encoding', 'fileformat' },
           lualine_z = { 'progress', 'location' },
         },
