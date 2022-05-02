@@ -247,10 +247,12 @@ myManageHook =
         -- Firefox
         ("www", "Firefox"),
         ("www", "firefox"),
-        -- Visual Studio Code
-        ("dev", "code"),
         -- Emacs
         ("dev", "Emacs"),
+        -- RStudio
+        ("dev", "RStudio"),
+        -- Visual Studio Code
+        ("dev", "code"),
         -- LibreOffice
         ("doc", "Soffice"),
         ("doc", "libreoffice-calc"),
@@ -258,14 +260,14 @@ myManageHook =
         ("doc", "libreoffice-startcenter"),
         -- Lyx
         ("doc", "lyx"),
+        -- Xreader
+        ("doc", "Xreader"),
         -- PCManFM
         ("file", "Pcmanfm"),
         -- Chromium
         ("mail", "Chromium"),
         -- Whatsapp (nativefier)
         ("chat", "whatsapp-nativefier-d40211"),
-        -- Xreader
-        ("doc", "Xreader"),
         -- Zoom
         ("vid", "zoom")
       ]
