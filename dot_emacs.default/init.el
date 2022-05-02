@@ -84,7 +84,19 @@
   (recentf-mode +1)
   (global-set-key (kbd "C-x C-r") 'recentf-open-files))
 
-; projectile
+(use-package helpful
+  :ensure t
+  :config
+  (global-set-key (kbd "C-h f") 'helpful-callable)
+  (global-set-key (kbd "C-h v") 'helpful-variable)
+  (global-set-key (kbd "C-h k") 'helpful-key)
+  (global-set-key (kbd "C-h C") 'helpful-command))
+
+(use-package projectile
+  :ensure t
+  :config
+  (projectile-mode +1)
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
 
 
 ;;; Useful (evil) keybingings
@@ -189,8 +201,10 @@
   :after julia-mode
   :hook (julia-mode . julia-repl-mode))
 
-; lsp
+; lsp-mode
+; lsp-ui
 ; tree sitter
+; dap-mode
 ; python
 ; lua
 ; haskell
@@ -236,6 +250,7 @@
   :config (load-theme 'nord t))
 
 ; modeline
+; hydra
 
 
 
