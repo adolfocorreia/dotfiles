@@ -13,6 +13,7 @@
 (if (eq system-type 'windows-nt)
     (progn (tool-bar-mode -1)
            (scroll-bar-mode -1)))
+(setq frame-title-format '(multiple-frames "%b" ("" "%b - GNU Emacs")))
 
 ; TODO: add Iosevka Aile as non-fixed font
 (if (eq system-type 'windows-nt)
@@ -51,7 +52,7 @@
   :ensure t
   :defer 10
   :custom
-  (auto-package-update-interval 1)
+  (auto-package-update-interval 5)
   (auto-package-update-prompt-before-update t)
   (auto-package-update-delete-old-versions t)
   :config
@@ -260,6 +261,7 @@
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 ;; Use ibuffer instead of list-buffers
+; TODO: refresh ibuffer buffer after killing buffers
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
 ; add readline bindings in evil insert mode
