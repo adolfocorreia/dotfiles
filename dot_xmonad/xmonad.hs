@@ -154,8 +154,8 @@ mySystemTrayCommand = unwords ["stalonetray", arguments, "&"]
     y = (monitor1h - monitor2h) `div` 2 + 1
     monitor1w = 2560
     monitor1h = 1440
-    monitor2w = 1440
-    monitor2h = 900
+    monitor2w = 2560
+    monitor2h = 1440
 
 -- Startup processes
 myStartupHook :: X ()
