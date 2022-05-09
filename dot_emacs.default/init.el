@@ -18,7 +18,7 @@
 ; TODO: add Iosevka Aile as non-fixed font
 (if (eq system-type 'windows-nt)
     (set-frame-font "Iosevka Term-10" nil t)
-    (set-frame-font "Iosevka Term-13" nil t))
+    (set-frame-font "Iosevka Term-12" nil t))
 
 
 ;; Editing settings
@@ -137,7 +137,7 @@
 (use-package evil-commentary
   :ensure t
   :bind (:map evil-normal-state-map
-        ("gc" . evil-commentary)))
+              ("gc" . evil-commentary)))
 
 (use-package evil-snipe
   :ensure t
@@ -152,17 +152,17 @@
 (use-package evil-visualstar
   :ensure t
   :bind (:map evil-visual-state-map
-        ("*" . evil-visualstar/begin-search-forward)
-        ("#" . evil-visualstar/begin-search-backward)))
+              ("*" . evil-visualstar/begin-search-forward)
+              ("#" . evil-visualstar/begin-search-backward)))
 
 (use-package evil-lion
   :ensure t
   :bind (:map evil-normal-state-map
-        ("g l " . evil-lion-left)
-        ("g L " . evil-lion-right)
-  :map evil-visual-state-map
-        ("g l " . evil-lion-left)
-        ("g L " . evil-lion-right)))
+              ("g l " . evil-lion-left)
+              ("g L " . evil-lion-right)
+         :map evil-visual-state-map
+              ("g l " . evil-lion-left)
+              ("g L " . evil-lion-right)))
 
 (use-package evil-goggles
   :ensure t
@@ -174,7 +174,6 @@
 ; evil-exchange (http://evgeni.io/posts/quick-start-evil-mode)
 ; evil-replace-with-register
 ; evil-ediff
-; evil-magit
 ; text-objects (targets, indent, entire)
 
 
@@ -188,6 +187,12 @@
 
 
 ;;; Language support (major-modes)
+
+;; Emacs Lisp
+(use-package parinfer-rust-mode
+  :hook emacs-lisp-mode
+  :init (setq parinfer-rust-auto-download t))
+
 
 ;; Julia
 (use-package julia-mode
@@ -219,11 +224,32 @@
 
 ;;; Git
 
+;; Magit
+(use-package magit
+  :ensure t
+  :commands magit-status
+  :bind (("C-x g" . magit-status)))
+
+; git gutter
+
 
 
 ;;; Fuzzy search & completion
 
-; vertico
+;; Vertico
+(use-package vertico
+  :ensure t
+  :custom (vertico-cycle t)
+  :config (vertico-mode +1))
+
+(use-package savehist
+  :ensure t
+  :config (savehist-mode +1))
+
+(use-package marginalia
+  :ensure t
+  :config (marginalia-mode +1))
+
 ; tabnine?
 
 
