@@ -47,9 +47,9 @@
   (package-refresh-contents)
   (package-install 'use-package))
 (require 'use-package)
+(setq use-package-always-ensure t)
 
 (use-package auto-package-update
-  :ensure t
   :defer 10
   :custom
   (auto-package-update-interval 5)
@@ -66,35 +66,55 @@
 
 ; Tune garbage collector
 (use-package gcmh
-  :ensure t
   :config (gcmh-mode +1))
 
 ; Keep ~/.emacs.d clean
-(use-package no-littering
-  :ensure t)
+(use-package no-littering)
 
-(use-package minions
-  :ensure t
-  :config (minions-mode +1))
+
+;; Built-in packages
+
+(use-package autorevert
+  :init
+  (setq global-auto-revert-non-file-buffers t)
+  :config (global-auto-revert-mode +1))
+
+(use-package ibuffer
+  :init
+  (setq ibuffer-expert t)
+  :config
+  (add-hook 'ibuffer-mode-hook (lambda () (ibuffer-auto-mode +1)))
+  (global-set-key (kbd "C-x C-b") 'ibuffer))
 
 (use-package recentf
-  :ensure t
   :init
   (setq recentf-max-saved-items 20)
   :config
   (recentf-mode +1)
   (global-set-key (kbd "C-x C-r") 'recentf-open-files))
 
+(use-package savehist
+  :config (savehist-mode +1))
+
+(use-package saveplace
+  :config (save-place-mode +1))
+
+; TODO: winner-mode
+
+
+;; Community packages
+
 (use-package helpful
-  :ensure t
   :config
   (global-set-key (kbd "C-h f") 'helpful-callable)
   (global-set-key (kbd "C-h v") 'helpful-variable)
   (global-set-key (kbd "C-h k") 'helpful-key)
   (global-set-key (kbd "C-h C") 'helpful-command))
 
+(use-package minions
+  :config (minions-mode +1))
+
 (use-package projectile
-  :ensure t
   :config
   (projectile-mode +1)
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
@@ -103,7 +123,6 @@
 ;;; Useful (evil) keybingings
 
 (use-package evil
-  :ensure t
   :init
   (setq evil-search-module 'isearch
         evil-split-window-right t
@@ -117,12 +136,10 @@
   (evil-mode +1))
 
 (use-package evil-collection
-  :ensure t
   :after evil
   :config (evil-collection-init))
 
 (use-package evil-surround
-  :ensure t
   :commands
   (evil-surround-edit
    evil-Surround-edit
@@ -135,12 +152,10 @@
   (evil-define-key 'visual global-map   "gS" 'evil-Surround-region))
 
 (use-package evil-commentary
-  :ensure t
   :bind (:map evil-normal-state-map
               ("gc" . evil-commentary)))
 
 (use-package evil-snipe
-  :ensure t
   :after evil
   :init
   (setq evil-snipe-scope 'whole-visible
@@ -150,13 +165,11 @@
   (evil-snipe-override-mode +1))
 
 (use-package evil-visualstar
-  :ensure t
   :bind (:map evil-visual-state-map
               ("*" . evil-visualstar/begin-search-forward)
               ("#" . evil-visualstar/begin-search-backward)))
 
 (use-package evil-lion
-  :ensure t
   :bind (:map evil-normal-state-map
               ("g l " . evil-lion-left)
               ("g L " . evil-lion-right)
@@ -165,7 +178,6 @@
               ("g L " . evil-lion-right)))
 
 (use-package evil-goggles
-  :ensure t
   :after evil
   :config
   (evil-goggles-use-diff-faces)
@@ -196,14 +208,12 @@
 
 ;; Julia
 (use-package julia-mode
-  :ensure t
   :mode "\\.jl\\'"
   :interpreter "julia")
 
 ; Julia REPL usage: C-c C-z (raise REPL), C-c C-a (activate project),
 ;   C-c C-b (send buffer), C-c C-c (send region or line), C-c C-d (invoke @doc)
 (use-package julia-repl
-  :ensure t
   :after julia-mode
   :hook (julia-mode . julia-repl-mode))
 
@@ -226,7 +236,6 @@
 
 ;; Magit
 (use-package magit
-  :ensure t
   :commands magit-status
   :bind (("C-x g" . magit-status)))
 
@@ -238,16 +247,10 @@
 
 ;; Vertico
 (use-package vertico
-  :ensure t
   :custom (vertico-cycle t)
   :config (vertico-mode +1))
 
-(use-package savehist
-  :ensure t
-  :config (savehist-mode +1))
-
 (use-package marginalia
-  :ensure t
   :config (marginalia-mode +1))
 
 ; tabnine?
@@ -267,10 +270,11 @@
 
 ;; which-key
 (use-package which-key
-  :ensure t
   :config (which-key-mode +1))
 
 ;; Nord theme
+; TODO: remove ensure statement below
+; TODO: load theme earlier to avoid blank screen at startup
 (use-package nord-theme
   :ensure t
   :load-path "themes"
@@ -286,8 +290,4 @@
 ;; Make ESC quit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
-;; Use ibuffer instead of list-buffers
-; TODO: refresh ibuffer buffer after killing buffers
-(global-set-key (kbd "C-x C-b") 'ibuffer)
-
-; add readline bindings in evil insert mode
+; TODO: add readline bindings in evil insert mode
