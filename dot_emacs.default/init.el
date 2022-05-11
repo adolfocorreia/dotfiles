@@ -90,8 +90,7 @@
   :init
   (setq recentf-max-saved-items 20)
   :config
-  (recentf-mode +1)
-  (global-set-key (kbd "C-x C-r") 'recentf-open-files))
+  (recentf-mode +1))
 
 (use-package savehist
   :config (savehist-mode +1))
@@ -251,7 +250,27 @@
   :config (vertico-mode +1))
 
 (use-package marginalia
+  :after vertico
   :config (marginalia-mode +1))
+
+(use-package orderless
+  :custom
+  (completion-styles '(orderless basic)))
+
+(use-package consult
+  :bind (("C-x b"    . consult-buffer)
+         ("C-x p b"  . consult-project-buffer)
+         ("C-x C-r"  . consult-recent-file)
+         ("<help> a" . consult-apropos))
+  :hook (completion-list-mode . consult-preview-at-point-mode))
+
+(use-package embark
+  :bind
+  (("C-;" . embark-act)
+   ("C-x B" . embark-bindings)))
+
+(use-package embark-consult
+  :after (embark consult))
 
 ; tabnine?
 
