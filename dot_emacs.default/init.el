@@ -32,6 +32,8 @@
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file)
 
+(setq load-prefer-newer t)
+
 
 
 ;;;; Package management ;;;;
@@ -48,6 +50,10 @@
   (package-install 'use-package))
 (require 'use-package)
 (setq use-package-always-ensure t)
+
+(use-package auto-compile
+  :config
+  (auto-compile-on-load-mode +1))
 
 (use-package auto-package-update
   :defer 10
@@ -66,7 +72,8 @@
 
 ; Tune garbage collector
 (use-package gcmh
-  :config (gcmh-mode +1))
+  :config
+  (gcmh-mode +1))
 
 ; Keep ~/.emacs.d clean
 (use-package no-littering)
@@ -77,7 +84,8 @@
 (use-package autorevert
   :init
   (setq global-auto-revert-non-file-buffers t)
-  :config (global-auto-revert-mode +1))
+  :config
+  (global-auto-revert-mode +1))
 
 (use-package ibuffer
   :init
@@ -93,10 +101,12 @@
   (recentf-mode +1))
 
 (use-package savehist
-  :config (savehist-mode +1))
+  :config
+  (savehist-mode +1))
 
 (use-package saveplace
-  :config (save-place-mode +1))
+  :config
+  (save-place-mode +1))
 
 ; TODO: winner-mode
 
@@ -111,7 +121,8 @@
   (global-set-key (kbd "C-h C") 'helpful-command))
 
 (use-package minions
-  :config (minions-mode +1))
+  :config
+  (minions-mode +1))
 
 (use-package projectile
   :config
@@ -136,7 +147,8 @@
 
 (use-package evil-collection
   :after evil
-  :config (evil-collection-init))
+  :config
+  (evil-collection-init))
 
 (use-package evil-surround
   :commands
@@ -151,8 +163,9 @@
   (evil-define-key 'visual global-map   "gS" 'evil-Surround-region))
 
 (use-package evil-commentary
-  :bind (:map evil-normal-state-map
-              ("gc" . evil-commentary)))
+  :bind
+  (:map evil-normal-state-map
+        ("gc" . evil-commentary)))
 
 (use-package evil-snipe
   :after evil
@@ -164,17 +177,19 @@
   (evil-snipe-override-mode +1))
 
 (use-package evil-visualstar
-  :bind (:map evil-visual-state-map
-              ("*" . evil-visualstar/begin-search-forward)
-              ("#" . evil-visualstar/begin-search-backward)))
+  :bind
+  (:map evil-visual-state-map
+        ("*" . evil-visualstar/begin-search-forward)
+        ("#" . evil-visualstar/begin-search-backward)))
 
 (use-package evil-lion
-  :bind (:map evil-normal-state-map
-              ("g l " . evil-lion-left)
-              ("g L " . evil-lion-right)
-         :map evil-visual-state-map
-              ("g l " . evil-lion-left)
-              ("g L " . evil-lion-right)))
+  :bind
+  (:map evil-normal-state-map
+        ("g l " . evil-lion-left)
+        ("g L " . evil-lion-right)
+   :map evil-visual-state-map
+        ("g l " . evil-lion-left)
+        ("g L " . evil-lion-right)))
 
 (use-package evil-goggles
   :after evil
@@ -202,7 +217,8 @@
 ;; Emacs Lisp
 (use-package parinfer-rust-mode
   :hook emacs-lisp-mode
-  :init (setq parinfer-rust-auto-download t))
+  :init
+  (setq parinfer-rust-auto-download t))
 
 
 ;; Julia
@@ -215,6 +231,22 @@
 (use-package julia-repl
   :after julia-mode
   :hook (julia-mode . julia-repl-mode))
+
+
+;; ESS
+(use-package ess
+  :mode
+  (("\\.[rR]\\'" . R-mode)
+   ("\\.[rR]nw\\'" . Rnw-mode))
+  :init
+  (setq ess-use-flymake nil
+        ess-use-toolbar nil)
+  :config
+  (require 'ess-site))
+
+(use-package poly-R
+  :mode
+  ("\\.[rR]md\\'" . poly-markdown+R-mode))
 
 ; lsp-mode
 ; lsp-ui
@@ -236,7 +268,8 @@
 ;; Magit
 (use-package magit
   :commands magit-status
-  :bind (("C-x g" . magit-status)))
+  :bind
+  (("C-x g" . magit-status)))
 
 ; git gutter
 
@@ -246,22 +279,26 @@
 
 ;; Vertico
 (use-package vertico
-  :custom (vertico-cycle t)
-  :config (vertico-mode +1))
+  :custom
+  (vertico-cycle t)
+  :config
+  (vertico-mode +1))
 
 (use-package marginalia
   :after vertico
-  :config (marginalia-mode +1))
+  :config
+  (marginalia-mode +1))
 
 (use-package orderless
   :custom
   (completion-styles '(orderless basic)))
 
 (use-package consult
-  :bind (("C-x b"    . consult-buffer)
-         ("C-x p b"  . consult-project-buffer)
-         ("C-x C-r"  . consult-recent-file)
-         ("<help> a" . consult-apropos))
+  :bind
+  (("C-x b"    . consult-buffer)
+   ("C-x p b"  . consult-project-buffer)
+   ("C-x C-r"  . consult-recent-file)
+   ("<help> a" . consult-apropos))
   :hook (completion-list-mode . consult-preview-at-point-mode))
 
 (use-package embark
@@ -289,7 +326,8 @@
 
 ;; which-key
 (use-package which-key
-  :config (which-key-mode +1))
+  :config
+  (which-key-mode +1))
 
 ;; Nord theme
 ; TODO: remove ensure statement below
@@ -297,7 +335,8 @@
 (use-package nord-theme
   :ensure t
   :load-path "themes"
-  :config (load-theme 'nord t))
+  :config
+  (load-theme 'nord t))
 
 ; modeline
 ; hydra
