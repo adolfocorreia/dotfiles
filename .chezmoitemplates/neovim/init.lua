@@ -1171,10 +1171,10 @@ vim.opt.foldmethod = 'expr'
 vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
 vim.opt.foldlevelstart = 5
 
--- Keep 5 lines above or below the cursor when scrolling.
-vim.opt.scrolloff = 5
+-- Keep lines above or below the cursor when scrolling.
+vim.opt.scrolloff = 2
 
--- Keep 5 columns to the left or to the right of the cursor.
+-- Keep columns to the left or to the right of the cursor.
 vim.opt.sidescrolloff = 5
 
 -- Highlight line and column under cursor. It helps with navigation.
