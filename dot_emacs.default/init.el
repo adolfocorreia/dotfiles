@@ -15,15 +15,21 @@
            (scroll-bar-mode -1)))
 (setq frame-title-format '(multiple-frames "%b" ("" "%b - GNU Emacs")))
 
-; TODO: add Iosevka Aile as non-fixed font
-(if (eq system-type 'windows-nt)
-    (set-frame-font "Iosevka Term-10" nil t)
-    (set-frame-font "Iosevka Term-12" nil t))
+(let ((fs (if (eq system-type 'windows-nt) "10" "12")))
+  (set-face-font 'default
+     (concat "Iosevka Term-" fs))
+  (set-face-font 'fixed-pitch
+     (concat "Iosevka Term-" fs))
+  (set-face-font 'variable-pitch
+     (concat "Iosevka Aile-" fs)))
 
 
 ;; Editing settings
 (column-number-mode +1)
-(setq display-line-numbers-type 'relative)
+(setq display-line-numbers-type 'relative
+      scroll-margin 2)
+(setq-default indent-tabs-mode nil)
+(add-hook 'conf-mode-hook 'display-line-numbers-mode)
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 (add-hook 'text-mode-hook 'display-line-numbers-mode)
 
@@ -32,7 +38,8 @@
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file)
 
-(setq load-prefer-newer t)
+(setq load-prefer-newer t
+      use-short-answers t)
 
 
 
@@ -49,7 +56,8 @@
   (package-refresh-contents)
   (package-install 'use-package))
 (require 'use-package)
-(setq use-package-always-ensure t)
+(setq use-package-always-ensure t
+      native-comp-async-report-warnings-errors nil)
 
 (use-package auto-compile
   :config
@@ -58,9 +66,9 @@
 (use-package auto-package-update
   :defer 10
   :custom
-  (auto-package-update-interval 5)
-  (auto-package-update-prompt-before-update t)
+  (auto-package-update-interval 1)
   (auto-package-update-delete-old-versions t)
+  (auto-package-update-hide-results t)
   :config
   (auto-package-update-maybe))
 
@@ -108,26 +116,44 @@
   :config
   (save-place-mode +1))
 
-; TODO: winner-mode
+(use-package winner
+  :after evil
+  :init
+  (setq winner-dont-bind-my-keys t)
+  :config
+  (winner-mode +1)
+  (define-key evil-window-map "u" 'winner-undo)
+  (define-key evil-window-map "U" 'winner-redo))
 
 
 ;; Community packages
 
-(use-package helpful
+(use-package ace-window
+  :after evil
+  :custom
+  (aw-keys '(?h ?j ?k ?l ?a ?s ?d ?f ?g))
   :config
-  (global-set-key (kbd "C-h f") 'helpful-callable)
-  (global-set-key (kbd "C-h v") 'helpful-variable)
-  (global-set-key (kbd "C-h k") 'helpful-key)
-  (global-set-key (kbd "C-h C") 'helpful-command))
+  (ace-window-display-mode +1)
+  (define-key evil-window-map "a" 'ace-window))
+
+(use-package helpful
+  :bind
+  ([remap describe-function] . helpful-callable)
+  ([remap describe-command]  . helpful-command)
+  ([remap describe-variable] . helpful-variable)
+  ([remap describe-key]      . helpful-key))
 
 (use-package minions
   :config
   (minions-mode +1))
 
 (use-package projectile
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
+  :init
+  (setq projectile-switch-project-action 'projectile-dired)
   :config
-  (projectile-mode +1)
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+  (projectile-mode +1))
 
 
 ;;; Useful (evil) keybingings
@@ -143,7 +169,9 @@
         evil-want-integration t
         evil-want-keybinding nil)
   :config
-  (evil-mode +1))
+  (evil-mode +1)
+  ; TODO: add readline bindings in evil insert mode
+  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state))
 
 (use-package evil-collection
   :after evil
@@ -197,6 +225,14 @@
   (evil-goggles-use-diff-faces)
   (evil-goggles-mode +1))
 
+(use-package avy
+  :after evil
+  :custom
+  (avy-single-candidate-jump nil)
+  :bind
+  (:map evil-normal-state-map
+        ("g s s " . 'evil-avy-goto-char-timer)))
+
 ; evil-exchange (http://evgeni.io/posts/quick-start-evil-mode)
 ; evil-replace-with-register
 ; evil-ediff
@@ -207,12 +243,27 @@
 
 ; multicursor
 ; autopairs
-; avy
 ; snippets
 
 
 
 ;;; Language support (major-modes)
+
+;; LSP
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  :config
+  (lsp-enable-which-key-integration t))
+
+(use-package lsp-ui
+  :hook (lsp-mode . lsp-ui-mode)
+  :custom
+  (lsp-ui-doc-position 'bottom))
+
+(use-package lsp-treemacs
+  :after lsp)
 
 ;; Emacs Lisp
 (use-package parinfer-rust-mode
@@ -248,14 +299,11 @@
   :mode
   ("\\.[rR]md\\'" . poly-markdown+R-mode))
 
-; lsp-mode
-; lsp-ui
 ; tree sitter
 ; dap-mode
 ; python
 ; lua
 ; haskell
-; ess
 
 
 
@@ -303,12 +351,14 @@
 
 (use-package embark
   :bind
-  (("C-;" . embark-act)
+  (("C-;"   . embark-act)
    ("C-x B" . embark-bindings)))
 
 (use-package embark-consult
   :after (embark consult))
 
+; prescient?
+; company?
 ; tabnine?
 
 
@@ -329,17 +379,14 @@
   :config
   (which-key-mode +1))
 
-;; Nord theme
-; TODO: remove ensure statement below
 ; TODO: load theme earlier to avoid blank screen at startup
-(use-package nord-theme
-  :ensure t
-  :load-path "themes"
+(use-package doom-themes
   :config
-  (load-theme 'nord t))
+  (load-theme 'doom-tokyo-night t))
 
 ; modeline
 ; hydra
+; all-the-icons
 
 
 
@@ -348,4 +395,6 @@
 ;; Make ESC quit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
-; TODO: add readline bindings in evil insert mode
+;; Kill current buffer
+(global-set-key (kbd "C-x C-k") 'kill-this-buffer)
+
