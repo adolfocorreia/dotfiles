@@ -36,9 +36,12 @@
 
 ;; Misc settings
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(load custom-file)
+(if (file-exists-p custom-file)
+    (load custom-file))
 
-(setq load-prefer-newer t
+(setq apropos-do-all t
+      load-prefer-newer t
+      uniquify-buffer-name-style 'forward
       use-short-answers t)
 
 
@@ -130,10 +133,7 @@
 
 (use-package ace-window
   :after evil
-  :custom
-  (aw-keys '(?h ?j ?k ?l ?a ?s ?d ?f ?g))
   :config
-  (ace-window-display-mode +1)
   (define-key evil-window-map "a" 'ace-window))
 
 (use-package helpful
@@ -155,6 +155,26 @@
   :config
   (projectile-mode +1))
 
+; TODO: finish this
+(use-package popper
+  :bind
+  (("C-`" .   popper-toggle-latest)
+   ("M-`" .   popper-cycle)
+   ("C-M-`" . popper-toggle-type))
+  :init
+  (setq popper-reference-buffers
+        '("\\*Messages\\*"
+          "Output\\*"
+          help-mode
+          compilation-mode))
+  :config
+  (popper-mode +1)
+  (popper-echo-mode +1))
+
+; shackle - customize display-buffer-alist
+; popper - toggle/cycle popup buffers
+; popwin - shackle/popper hybrid
+
 
 ;;; Useful (evil) keybingings
 
@@ -175,6 +195,7 @@
 
 (use-package evil-collection
   :after evil
+  ; TODO: disable evil bindings in ibuffer
   :config
   (evil-collection-init))
 
