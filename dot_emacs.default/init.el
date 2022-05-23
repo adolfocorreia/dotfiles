@@ -11,8 +11,10 @@
       initial-scratch-message nil
       visible-bell t)
 (if (eq system-type 'windows-nt)
-    (progn (tool-bar-mode -1)
-           (scroll-bar-mode -1)))
+    (progn
+      (menu-bar-mode -1)
+      (scroll-bar-mode -1)
+      (tool-bar-mode -1)))
 (setq frame-title-format '(multiple-frames "%b" ("" "%b - GNU Emacs")))
 
 (let ((fs (if (eq system-type 'windows-nt) "10" "12")))
@@ -69,13 +71,14 @@
 (use-package auto-package-update
   :defer 10
   :custom
-  (auto-package-update-interval 1)
+  (auto-package-update-interval 5)
+  (auto-package-update-prompt-before-update t)
   (auto-package-update-delete-old-versions t)
   (auto-package-update-hide-results t)
   :config
   (auto-package-update-maybe))
 
-;(use-package try)
+; TODO: (use-package try)
 
 
 
@@ -119,22 +122,8 @@
   :config
   (save-place-mode +1))
 
-(use-package winner
-  :after evil
-  :init
-  (setq winner-dont-bind-my-keys t)
-  :config
-  (winner-mode +1)
-  (define-key evil-window-map "u" 'winner-undo)
-  (define-key evil-window-map "U" 'winner-redo))
-
 
 ;; Community packages
-
-(use-package ace-window
-  :after evil
-  :config
-  (define-key evil-window-map "a" 'ace-window))
 
 (use-package helpful
   :bind
@@ -195,7 +184,6 @@
 
 (use-package evil-collection
   :after evil
-  ; TODO: disable evil bindings in ibuffer
   :config
   (evil-collection-init))
 
@@ -252,7 +240,21 @@
   (avy-single-candidate-jump nil)
   :bind
   (:map evil-normal-state-map
-        ("g s s " . 'evil-avy-goto-char-timer)))
+        ("g s " . 'evil-avy-goto-char-timer)))
+
+(use-package ace-window
+  :after evil
+  :config
+  (define-key evil-window-map "a" 'ace-window))
+
+(use-package winner
+  :after evil
+  :init
+  (setq winner-dont-bind-my-keys t)
+  :config
+  (winner-mode +1)
+  (define-key evil-window-map "u" 'winner-undo)
+  (define-key evil-window-map "U" 'winner-redo))
 
 ; evil-exchange (http://evgeni.io/posts/quick-start-evil-mode)
 ; evil-replace-with-register
@@ -366,6 +368,7 @@
   :bind
   (("C-x b"    . consult-buffer)
    ("C-x p b"  . consult-project-buffer)
+   ; TODO: avoid loading major-modes when previewing recent files
    ("C-x C-r"  . consult-recent-file)
    ("<help> a" . consult-apropos))
   :hook (completion-list-mode . consult-preview-at-point-mode))
@@ -395,15 +398,13 @@
 
 ;;; Windows, interface elements, visual editing helpers and themes
 
-;; which-key
-(use-package which-key
-  :config
-  (which-key-mode +1))
-
-; TODO: load theme earlier to avoid blank screen at startup
 (use-package doom-themes
   :config
   (load-theme 'doom-tokyo-night t))
+
+(use-package which-key
+  :config
+  (which-key-mode +1))
 
 ; modeline
 ; hydra
