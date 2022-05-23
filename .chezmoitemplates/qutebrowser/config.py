@@ -141,6 +141,6 @@ config.source("base16-tokyonight.config.py")
 if platform.system() == "Linux":
     cmd = "mpv --profile=qutebrowser"
 elif platform.system() == "Windows":
-    cmd = "vlc.bat"
+    cmd = "vlc"
 config.bind(",M", "hint links spawn %s {hint-url}" % cmd)
 config.bind(",m", "spawn %s {url}" % cmd)
