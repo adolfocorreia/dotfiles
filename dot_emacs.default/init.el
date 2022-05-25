@@ -34,6 +34,7 @@
 (add-hook 'conf-mode-hook 'display-line-numbers-mode)
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 (add-hook 'text-mode-hook 'display-line-numbers-mode)
+(modify-syntax-entry ?_ "w")
 
 
 ;; Misc settings
@@ -167,6 +168,10 @@
 
 ;;; Useful (evil) keybingings
 
+; References:
+; - https://evil.readthedocs.io
+; - https://github.com/noctuid/evil-guide
+
 (use-package evil
   :init
   (setq evil-search-module 'isearch
@@ -174,18 +179,37 @@
         evil-vsplit-window-below t
         evil-undo-system 'undo-redo
         evil-want-C-u-scroll t
+        evil-want-C-w-in-emacs-state t
         evil-want-Y-yank-to-eol t
+        evil-want-fine-undo t
         evil-want-integration t
         evil-want-keybinding nil)
+  ; TODO: evaluate evil-undo-system alternatives
   :config
   (evil-mode +1)
-  ; TODO: add readline bindings in evil insert mode
-  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state))
+
+  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+
+  ; Use readline-like bindings in insert state
+  (define-key evil-insert-state-map (kbd "C-a") 'evil-move-beginning-of-line)
+  (define-key evil-insert-state-map (kbd "C-e") 'evil-move-end-of-line)
+  (define-key evil-insert-state-map (kbd "M-n") 'evil-next-line)
+  (define-key evil-insert-state-map (kbd "M-p") 'evil-previous-line)
+  (define-key evil-insert-state-map (kbd "C-d") 'evil-delete-char)
+  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char)
+  (define-key evil-insert-state-map (kbd "C-y") 'yank)
+
+  ; Center screen after n/N
+  (defun my-center-line (&rest _)
+      (evil-scroll-line-to-center nil))
+  (advice-add 'evil-search-next     :after #'my-center-line)
+  (advice-add 'evil-search-previous :after #'my-center-line))
 
 (use-package evil-collection
   :after evil
   :config
-  (evil-collection-init))
+  (evil-collection-init)
+  (evil-set-initial-state 'ibuffer-mode 'emacs))
 
 (use-package evil-surround
   :commands
@@ -259,7 +283,11 @@
 ; evil-exchange (http://evgeni.io/posts/quick-start-evil-mode)
 ; evil-replace-with-register
 ; evil-ediff
+; evil-vimish-fold
+; evil-multiedit
 ; text-objects (targets, indent, entire)
+; evil-textobj-tree-sitter
+; evil-owl
 
 
 ;;; Editing helps
