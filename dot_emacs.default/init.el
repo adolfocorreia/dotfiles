@@ -148,14 +148,13 @@
 ; TODO: finish this
 (use-package popper
   :bind
-  (("C-`" .   popper-toggle-latest)
-   ("M-`" .   popper-cycle)
-   ("C-M-`" . popper-toggle-type))
+  (("C-`" . popper-cycle))
   :init
   (setq popper-reference-buffers
         '("\\*Messages\\*"
           "Output\\*"
           help-mode
+          helpful-mode
           compilation-mode))
   :config
   (popper-mode +1)
@@ -448,3 +447,5 @@
 ;; Kill current buffer
 (global-set-key (kbd "C-x C-k") 'kill-this-buffer)
 
+;; Switch to last buffer (same as vim's C-^)
+(global-set-key (kbd "M-`") 'evil-switch-to-windows-last-buffer)
