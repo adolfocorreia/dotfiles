@@ -50,9 +50,9 @@ Plug 'vim-syntastic/syntastic'
 Plug 'wellle/targets.vim'
 
 Plug 'arcticicestudio/nord-vim'
-Plug 'cocopon/iceberg.vim'
-Plug 'drewtempelmeyer/palenight.vim'
-Plug 'ghifarit53/tokyonight-vim'
+" Plug 'cocopon/iceberg.vim'
+" Plug 'drewtempelmeyer/palenight.vim'
+" Plug 'ghifarit53/tokyonight-vim'
 
 call plug#end()
 

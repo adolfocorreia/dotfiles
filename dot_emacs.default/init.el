@@ -17,7 +17,7 @@
       (tool-bar-mode -1)))
 (setq frame-title-format '(multiple-frames "%b" ("" "%b - GNU Emacs")))
 
-(let ((fs (if (eq system-type 'windows-nt) "10" "12")))
+(let ((fs (if (eq system-type 'windows-nt) "9" "12")))
   (set-face-font 'default
      (concat "Iosevka Term-" fs))
   (set-face-font 'fixed-pitch
@@ -123,6 +123,12 @@
   :config
   (save-place-mode +1))
 
+(use-package tab-bar
+  :custom
+  (tab-bar-show 1)
+  :config
+  (tab-bar-mode +1))
+
 
 ;; Community packages
 
@@ -165,7 +171,7 @@
 ; popwin - shackle/popper hybrid
 
 
-;;; Useful (evil) keybingings
+;;; Evil-mode
 
 ; References:
 ; - https://evil.readthedocs.io
@@ -315,11 +321,21 @@
 (use-package lsp-treemacs
   :after lsp)
 
+
 ;; Emacs Lisp
 (use-package parinfer-rust-mode
   :hook emacs-lisp-mode
   :init
   (setq parinfer-rust-auto-download t))
+
+
+;; Python
+; TODO: use hook to auto activate venv on project switch (auto-virtualenv?)
+(use-package pyvenv
+  :hook (python-mode . pyvenv-mode))
+; TODO: add poetry
+; TODO: use ipython as REPL
+
 
 
 ;; Julia
@@ -420,6 +436,7 @@
 ; vterm
 ; repl
 ; dired
+; quickrun
 
 
 
