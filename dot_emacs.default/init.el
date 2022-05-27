@@ -442,6 +442,12 @@
 
 ;;; Windows, interface elements, visual editing helpers and themes
 
+(use-package doom-modeline
+  :custom
+  (doom-modeline-height 30)
+  :config
+  (doom-modeline-mode +1))
+
 (use-package doom-themes
   :config
   (load-theme 'doom-tokyo-night t))
