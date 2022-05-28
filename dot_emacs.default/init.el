@@ -151,11 +151,10 @@
   :config
   (projectile-mode +1))
 
-; TODO: finish this
 (use-package popper
-  :bind
-  (("C-`" . popper-cycle))
   :init
+  ;; (setq popper-group-function #'popper-group-by-projectile)
+  (setq popper-mode-line (propertize " POP " 'face 'mode-line-emphasis))
   (setq popper-reference-buffers
         '("\\*Messages\\*"
           "Output\\*"
@@ -164,11 +163,11 @@
           compilation-mode))
   :config
   (popper-mode +1)
-  (popper-echo-mode +1))
-
-; shackle - customize display-buffer-alist
-; popper - toggle/cycle popup buffers
-; popwin - shackle/popper hybrid
+  (popper-echo-mode +1)
+  (global-set-key (kbd "M-`") 'popper-cycle)
+  (global-set-key (kbd "C-`") 'popper-toggle-type))
+; TODO: disable popper-display-control use shackle to create custom rules for popup placement
+; TODO: evaluate popwin
 
 
 ;;; Evil-mode
@@ -195,13 +194,15 @@
 
   (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
 
+  (define-key evil-window-map "`" 'evil-switch-to-windows-last-buffer)
+
   ; Use readline-like bindings in insert state
-  (define-key evil-insert-state-map (kbd "C-a") 'evil-move-beginning-of-line)
-  (define-key evil-insert-state-map (kbd "C-e") 'evil-move-end-of-line)
-  (define-key evil-insert-state-map (kbd "M-n") 'evil-next-line)
-  (define-key evil-insert-state-map (kbd "M-p") 'evil-previous-line)
-  (define-key evil-insert-state-map (kbd "C-d") 'evil-delete-char)
-  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char)
+  (define-key evil-insert-state-map (kbd "C-a") 'move-beginning-of-line)
+  (define-key evil-insert-state-map (kbd "C-e") 'move-end-of-line)
+  (define-key evil-insert-state-map (kbd "M-n") 'next-line)
+  (define-key evil-insert-state-map (kbd "M-p") 'previous-line)
+  (define-key evil-insert-state-map (kbd "C-d") 'delete-char)
+  (define-key evil-insert-state-map (kbd "C-h") 'delete-backward-char)
   (define-key evil-insert-state-map (kbd "C-y") 'yank)
 
   ; Center screen after n/N
@@ -213,8 +214,7 @@
 (use-package evil-collection
   :after evil
   :config
-  (evil-collection-init)
-  (evil-set-initial-state 'ibuffer-mode 'emacs))
+  (evil-collection-init))
 
 (use-package evil-surround
   :commands
@@ -470,5 +470,3 @@
 ;; Kill current buffer
 (global-set-key (kbd "C-x C-k") 'kill-this-buffer)
 
-;; Switch to last buffer (same as vim's C-^)
-(global-set-key (kbd "M-`") 'evil-switch-to-windows-last-buffer)
