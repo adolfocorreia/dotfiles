@@ -30,8 +30,7 @@
 (setq display-buffer-base-action
       '((display-buffer-reuse-window
          display-buffer-reuse-mode-window
-         display-buffer-in-previous-window
-         display-buffer-same-window)))
+         display-buffer-in-previous-window)))
 
 
 ;; Editing settings
@@ -50,10 +49,15 @@
 (if (file-exists-p custom-file)
     (load custom-file))
 
+(context-menu-mode +1)
+
 (setq apropos-do-all t
+      delete-by-moving-to-trash t
       load-prefer-newer t
       uniquify-buffer-name-style 'forward
       use-short-answers t)
+(setq dired-auto-revert-buffer t
+      dired-kill-when-opening-new-dired-buffer t)
 
 
 
@@ -73,20 +77,6 @@
 (setq use-package-always-ensure t
       native-comp-async-report-warnings-errors nil)
 
-(use-package auto-compile
-  :config
-  (auto-compile-on-load-mode +1))
-
-(use-package auto-package-update
-  :defer 10
-  :custom
-  (auto-package-update-interval 5)
-  (auto-package-update-prompt-before-update t)
-  (auto-package-update-delete-old-versions t)
-  (auto-package-update-hide-results t)
-  :config
-  (auto-package-update-maybe))
-
 ; TODO: (use-package try)
 
 
@@ -100,6 +90,27 @@
 
 ; Keep ~/.emacs.d clean
 (use-package no-littering)
+
+; Asynchronous tasks
+(use-package async
+  :config
+  (async-bytecomp-package-mode +1))
+
+; Auto compile
+(use-package auto-compile
+  :config
+  (auto-compile-on-load-mode +1))
+
+; Auto update packages
+(use-package auto-package-update
+  :defer 10
+  :custom
+  (auto-package-update-interval 5)
+  (auto-package-update-prompt-before-update t)
+  (auto-package-update-delete-old-versions t)
+  (auto-package-update-hide-results t)
+  :config
+  (auto-package-update-maybe))
 
 
 ;; Built-in packages
@@ -473,7 +484,7 @@
 ; eshell
 ; vterm
 ; repl
-; dired
+; dired/ranger
 ; quickrun
 
 
