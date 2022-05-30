@@ -269,7 +269,8 @@ myManageHook =
         -- Whatsapp (nativefier)
         ("chat", "whatsapp-nativefier-d40211"),
         -- Zoom
-        ("vid", "zoom")
+        ("vid", "zoom"),
+        ("vid", "zoom ")
       ]
     myTitleShifts = []
 
