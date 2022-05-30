@@ -26,6 +26,14 @@
      (concat "Iosevka Aile-" fs)))
 
 
+;; Override default buffer placement actions
+(setq display-buffer-base-action
+      '((display-buffer-reuse-window
+         display-buffer-reuse-mode-window
+         display-buffer-in-previous-window
+         display-buffer-same-window)))
+
+
 ;; Editing settings
 (column-number-mode +1)
 (setq display-line-numbers-type 'relative
@@ -125,7 +133,13 @@
 
 (use-package tab-bar
   :custom
+  (tab-bar-close-button-show nil)
+  (tab-bar-new-button-show nil)
+  (tab-bar-separator "  ")
   (tab-bar-show 1)
+  (tab-bar-tab-hints t)
+  :custom-face
+  (tab-bar-tab ((t (:foreground nil :inherit 'link))))
   :config
   (tab-bar-mode +1))
 
@@ -143,23 +157,16 @@
   :config
   (minions-mode +1))
 
-(use-package projectile
-  :bind-keymap
-  ("C-c p" . projectile-command-map)
-  :init
-  (setq projectile-switch-project-action 'projectile-dired)
-  :config
-  (projectile-mode +1))
-
 (use-package popper
   :init
-  ;; (setq popper-group-function #'popper-group-by-projectile)
+  (setq popper-group-function #'popper-group-by-directory)
   (setq popper-mode-line (propertize " POP " 'face 'mode-line-emphasis))
   (setq popper-reference-buffers
         '("\\*Messages\\*"
           "Output\\*"
           help-mode
           helpful-mode
+          apropos-mode
           compilation-mode))
   :config
   (popper-mode +1)
@@ -168,6 +175,16 @@
   (global-set-key (kbd "C-`") 'popper-toggle-type))
 ; TODO: disable popper-display-control use shackle to create custom rules for popup placement
 ; TODO: evaluate popwin
+
+; Default prefix: C-c C-w
+(use-package tabspaces
+  :config
+  (tabspaces-mode +1))
+
+; Default prefix: C-x w
+(use-package winum
+  :config
+  (winum-mode +1))
 
 
 ;;; Evil-mode
@@ -188,13 +205,10 @@
         evil-want-fine-undo t
         evil-want-integration t
         evil-want-keybinding nil)
-  ; TODO: evaluate evil-undo-system alternatives
   :config
   (evil-mode +1)
 
   (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-
-  (define-key evil-window-map "`" 'evil-switch-to-windows-last-buffer)
 
   ; Use readline-like bindings in insert state
   (define-key evil-insert-state-map (kbd "C-a") 'move-beginning-of-line)
@@ -205,18 +219,70 @@
   (define-key evil-insert-state-map (kbd "C-h") 'delete-backward-char)
   (define-key evil-insert-state-map (kbd "C-y") 'yank)
 
+  ; C-w extra bindings
+  (define-key evil-window-map "`" 'evil-switch-to-windows-last-buffer)
+  (define-key evil-window-map "1" 'winum-select-window-1)
+  (define-key evil-window-map "2" 'winum-select-window-2)
+  (define-key evil-window-map "3" 'winum-select-window-3)
+  (define-key evil-window-map "4" 'winum-select-window-4)
+  (define-key evil-window-map "5" 'winum-select-window-5)
+
   ; Center screen after n/N
-  (defun my-center-line (&rest _)
-      (evil-scroll-line-to-center nil))
-  (advice-add 'evil-search-next     :after #'my-center-line)
-  (advice-add 'evil-search-previous :after #'my-center-line))
+  (defun my/center-line (&rest _)
+    (evil-scroll-line-to-center nil))
+  (advice-add 'evil-search-next     :after #'my/center-line)
+  (advice-add 'evil-search-previous :after #'my/center-line)
+
+  ; Select new window after evil split)
+  (defun my/other-window (&rest _)
+    (other-window 1))
+  (advice-add 'evil-window-split  :after #'my/other-window)
+  (advice-add 'evil-window-vsplit :after #'my/other-window))
 
 (use-package evil-collection
   :after evil
   :config
   (evil-collection-init))
 
+(use-package evil-commentary
+  :after evil
+  :bind
+  (:map evil-normal-state-map
+        ("gc" . evil-commentary)))
+
+(use-package evil-goggles
+  :after evil
+  :config
+  (evil-goggles-use-diff-faces)
+  (evil-goggles-mode +1))
+
+(use-package evil-numbers
+  :after evil
+  :config
+  (evil-define-key '(normal visual) 'global (kbd "C-c C-a") 'evil-numbers/inc-at-pt)
+  (evil-define-key '(normal visual) 'global (kbd "C-c C-x") 'evil-numbers/dec-at-pt))
+
+(use-package evil-lion
+  :after evil
+  :bind
+  (:map evil-normal-state-map
+        ("g l " . evil-lion-left)
+        ("g L " . evil-lion-right)
+   :map evil-visual-state-map
+        ("g l " . evil-lion-left)
+        ("g L " . evil-lion-right)))
+
+(use-package evil-snipe
+  :after evil
+  :init
+  (setq evil-snipe-scope 'whole-visible
+        evil-snipe-repeat-scope 'whole-visible)
+  :config
+  (evil-snipe-mode +1)
+  (evil-snipe-override-mode +1))
+
 (use-package evil-surround
+  :after evil
   :commands
   (evil-surround-edit
    evil-Surround-edit
@@ -228,40 +294,17 @@
   (evil-define-key 'visual global-map   "S"  'evil-surround-region)
   (evil-define-key 'visual global-map   "gS" 'evil-Surround-region))
 
-(use-package evil-commentary
-  :bind
-  (:map evil-normal-state-map
-        ("gc" . evil-commentary)))
-
-(use-package evil-snipe
-  :after evil
-  :init
-  (setq evil-snipe-scope 'whole-visible
-        evil-snipe-repeat-scope 'whole-visible)
-  :config
-  (evil-snipe-mode +1)
-  (evil-snipe-override-mode +1))
-
 (use-package evil-visualstar
+  :after evil
   :bind
   (:map evil-visual-state-map
         ("*" . evil-visualstar/begin-search-forward)
         ("#" . evil-visualstar/begin-search-backward)))
 
-(use-package evil-lion
-  :bind
-  (:map evil-normal-state-map
-        ("g l " . evil-lion-left)
-        ("g L " . evil-lion-right)
-   :map evil-visual-state-map
-        ("g l " . evil-lion-left)
-        ("g L " . evil-lion-right)))
-
-(use-package evil-goggles
+(use-package ace-window
   :after evil
   :config
-  (evil-goggles-use-diff-faces)
-  (evil-goggles-mode +1))
+  (define-key evil-window-map "a" 'ace-window))
 
 (use-package avy
   :after evil
@@ -270,11 +313,6 @@
   :bind
   (:map evil-normal-state-map
         ("g s " . 'evil-avy-goto-char-timer)))
-
-(use-package ace-window
-  :after evil
-  :config
-  (define-key evil-window-map "a" 'ace-window))
 
 (use-package winner
   :after evil
@@ -442,9 +480,13 @@
 
 ;;; Windows, interface elements, visual editing helpers and themes
 
+(use-package all-the-icons
+  :if (display-graphic-p))
+
 (use-package doom-modeline
   :custom
   (doom-modeline-height 30)
+  (doom-modeline-minor-modes t)
   :config
   (doom-modeline-mode +1))
 
@@ -456,9 +498,7 @@
   :config
   (which-key-mode +1))
 
-; modeline
 ; hydra
-; all-the-icons
 
 
 
