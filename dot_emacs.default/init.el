@@ -1,4 +1,4 @@
-;;; init.el -*- lexical-binding: t; -*-
+;; init.el -*- lexical-binding: t; -*-
 
 ;;;; General Emacs configuration ;;;;
 
@@ -63,7 +63,6 @@
 
 ;;;; Package management ;;;;
 
-;; Initialize package manager
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
                          ("org"   . "https://orgmode.org/elpa/")
@@ -81,27 +80,24 @@
 
 
 
-;;; Emacs management and fixes
+;;;; Emacs management and fixes ;;;;
 
-; Tune garbage collector
+;; Early setup ;;
+
 (use-package gcmh
   :config
   (gcmh-mode +1))
 
-; Keep ~/.emacs.d clean
 (use-package no-littering)
 
-; Asynchronous tasks
 (use-package async
   :config
   (async-bytecomp-package-mode +1))
 
-; Auto compile
 (use-package auto-compile
   :config
   (auto-compile-on-load-mode +1))
 
-; Auto update packages
 (use-package auto-package-update
   :defer 10
   :custom
@@ -113,7 +109,7 @@
   (auto-package-update-maybe))
 
 
-;; Built-in packages
+;; Built-in packages ;;
 
 (use-package autorevert
   :init
@@ -127,6 +123,7 @@
   :config
   (add-hook 'ibuffer-mode-hook (lambda () (ibuffer-auto-mode +1)))
   (global-set-key (kbd "C-x C-b") 'ibuffer))
+; ibuffer-project
 
 (use-package recentf
   :init
@@ -155,7 +152,7 @@
   (tab-bar-mode +1))
 
 
-;; Community packages
+;; Community packages ;;
 
 (use-package helpful
   :bind
@@ -187,18 +184,18 @@
 ; TODO: disable popper-display-control use shackle to create custom rules for popup placement
 ; TODO: evaluate popwin
 
-; Default prefix: C-c C-w
+;; Default prefix: C-c C-w
 (use-package tabspaces
   :config
   (tabspaces-mode +1))
 
-; Default prefix: C-x w
+;; Default prefix: C-x w
 (use-package winum
   :config
   (winum-mode +1))
 
 
-;;; Evil-mode
+;;;; Evil-mode ;;;;
 
 ; References:
 ; - https://evil.readthedocs.io
@@ -344,7 +341,7 @@
 ; evil-owl
 
 
-;;; Editing helps
+;;;; Editing helps ;;;;
 
 ; multicursor
 ; autopairs
@@ -352,7 +349,7 @@
 
 
 
-;;; Language support (major-modes)
+;;;; Language support (major-modes) ;;;;
 
 ;; LSP
 (use-package lsp-mode
@@ -392,8 +389,8 @@
   :mode "\\.jl\\'"
   :interpreter "julia")
 
-; Julia REPL usage: C-c C-z (raise REPL), C-c C-a (activate project),
-;   C-c C-b (send buffer), C-c C-c (send region or line), C-c C-d (invoke @doc)
+;; Julia REPL usage: C-c C-z (raise REPL), C-c C-a (activate project),
+;; C-c C-b (send buffer), C-c C-c (send region or line), C-c C-d (invoke @doc))
 (use-package julia-repl
   :after julia-mode
   :hook (julia-mode . julia-repl-mode))
@@ -422,11 +419,11 @@
 
 
 
-;;; Org-mode
+;;;; Org-mode ;;;;
 
 
 
-;;; Git
+;;;; Git ;;;;
 
 ;; Magit
 (use-package magit
@@ -438,7 +435,7 @@
 
 
 
-;;; Fuzzy search & completion
+;;;; Fuzzy search & completion ;;;;
 
 ;; Vertico
 (use-package vertico
@@ -479,7 +476,7 @@
 
 
 
-;;; Terminal and file management support
+;;;; Terminal and file management support ;;;;
 
 ; eshell
 ; vterm
@@ -489,7 +486,7 @@
 
 
 
-;;; Windows, interface elements, visual editing helpers and themes
+;;;; Windows, interface elements, visual editing helpers and themes ;;;;
 
 (use-package all-the-icons
   :if (display-graphic-p))
