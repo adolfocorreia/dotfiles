@@ -53,11 +53,10 @@
 
 (setq apropos-do-all t
       delete-by-moving-to-trash t
+      dired-auto-revert-buffer t
       load-prefer-newer t
       uniquify-buffer-name-style 'forward
       use-short-answers t)
-(setq dired-auto-revert-buffer t
-      dired-kill-when-opening-new-dired-buffer t)
 
 
 
@@ -123,7 +122,6 @@
   :config
   (add-hook 'ibuffer-mode-hook (lambda () (ibuffer-auto-mode +1)))
   (global-set-key (kbd "C-x C-b") 'ibuffer))
-; ibuffer-project
 
 (use-package recentf
   :init
@@ -150,6 +148,7 @@
   (tab-bar-tab ((t (:foreground nil :inherit 'link))))
   :config
   (tab-bar-mode +1))
+; TODO: add ibuffer tab/project filters
 
 
 ;; Community packages ;;
@@ -251,6 +250,14 @@
   :after evil
   :config
   (evil-collection-init))
+; TODO: add evil-dired hydra/transient
+; TODO: add evil-ibuffer hydra/transient
+
+(use-package evil-args
+  :after evil
+  :config
+  (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
+  (define-key evil-outer-text-objects-map "a" 'evil-outer-arg))
 
 (use-package evil-commentary
   :after evil
@@ -274,11 +281,18 @@
   :after evil
   :bind
   (:map evil-normal-state-map
-        ("g l " . evil-lion-left)
-        ("g L " . evil-lion-right)
+        ("gl" . evil-lion-left)
+        ("gL" . evil-lion-right)
    :map evil-visual-state-map
-        ("g l " . evil-lion-left)
-        ("g L " . evil-lion-right)))
+        ("gl" . evil-lion-left)
+        ("gL" . evil-lion-right)))
+
+(use-package evil-quickscope
+  :after evil
+  :config
+  (add-hook 'conf-mode-hook #'turn-on-evil-quickscope-always-mode)
+  (add-hook 'prog-mode-hook #'turn-on-evil-quickscope-always-mode)
+  (add-hook 'text-mode-hook #'turn-on-evil-quickscope-always-mode))
 
 (use-package evil-snipe
   :after evil
@@ -286,8 +300,8 @@
   (setq evil-snipe-scope 'whole-visible
         evil-snipe-repeat-scope 'whole-visible)
   :config
-  (evil-snipe-mode +1)
-  (evil-snipe-override-mode +1))
+  ; Only using evil-snipe for f/F/t/T motions
+  (evil-snipe-override-mode +1)) 
 
 (use-package evil-surround
   :after evil
@@ -317,10 +331,19 @@
 (use-package avy
   :after evil
   :custom
-  (avy-single-candidate-jump nil)
+  (avy-all-windows nil)
+  (avy-keys '(?a ?s ?d ?h ?j ?k ?l))
+  (avy-single-candidate-jump t)
   :bind
   (:map evil-normal-state-map
-        ("g s " . 'evil-avy-goto-char-timer)))
+        ("s"      . 'evil-avy-goto-char-2)
+        ("S"      . 'evil-avy-goto-char-2)
+        ("gsl"    . 'evil-avy-goto-line)
+        ("gsw"    . 'evil-avy-goto-word-1)
+        ; Calling avy functions with an argument negates the current setting of 'avy-all-windows'
+        ; TODO: set custom which-key text for following bindings
+        ("gss"    . (lambda () (interactive) (avy-goto-char-timer t)))
+        ("gs SPC" . (lambda () (interactive) (avy-goto-char-timer t)))))
 
 (use-package winner
   :after evil
@@ -332,19 +355,22 @@
   (define-key evil-window-map "U" 'winner-redo))
 
 ; evil-exchange (http://evgeni.io/posts/quick-start-evil-mode)
-; evil-replace-with-register
-; evil-ediff
-; evil-vimish-fold
+; evil-leader
+; evil-mc/evil-mc-extras
 ; evil-multiedit
-; text-objects (targets, indent, entire)
-; evil-textobj-tree-sitter
 ; evil-owl
+; evil-replace-with-register
+; evil-string-inflection
+; evil-textobj-tree-sitter
+; evil-vimish-fold
+; text-objects (targets, indent, entire)
 
 
 ;;;; Editing helps ;;;;
 
 ; multicursor
 ; autopairs
+; smartparens/evil-smartparens
 ; snippets
 
 
@@ -420,6 +446,8 @@
 
 
 ;;;; Org-mode ;;;;
+
+; evil-org-mode
 
 
 
