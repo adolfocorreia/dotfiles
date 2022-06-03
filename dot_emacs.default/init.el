@@ -38,9 +38,11 @@
 (setq display-line-numbers-type 'relative
       scroll-margin 2)
 (setq-default indent-tabs-mode nil)
-(add-hook 'conf-mode-hook 'display-line-numbers-mode)
-(add-hook 'prog-mode-hook 'display-line-numbers-mode)
-(add-hook 'text-mode-hook 'display-line-numbers-mode)
+(dolist (mode-hook
+         '(conf-mode-hook
+           prog-mode-hook
+           text-mode-hook))
+  (add-hook mode-hook 'display-line-numbers-mode))
 (modify-syntax-entry ?_ "w")
 
 
@@ -73,6 +75,7 @@
   (package-install 'use-package))
 (require 'use-package)
 (setq use-package-always-ensure t
+      use-package-compute-statistics t
       native-comp-async-report-warnings-errors nil)
 
 ; TODO: (use-package try)
@@ -88,10 +91,6 @@
   (gcmh-mode +1))
 
 (use-package no-littering)
-
-(use-package async
-  :config
-  (async-bytecomp-package-mode +1))
 
 (use-package auto-compile
   :config
@@ -149,6 +148,7 @@
   :config
   (tab-bar-mode +1))
 ; TODO: add ibuffer tab/project filters
+; TODO: add easier bindings
 
 
 ;; Community packages ;;
@@ -334,16 +334,19 @@
   (avy-all-windows nil)
   (avy-keys '(?a ?s ?d ?h ?j ?k ?l))
   (avy-single-candidate-jump t)
+  :init
+  (defun my/goto-char-timer ()
+    (interactive)
+    ; Calling avy functions with an argument negates the current setting of 'avy-all-windows'
+    (avy-goto-char-timer t))
   :bind
   (:map evil-normal-state-map
         ("s"      . 'evil-avy-goto-char-2)
         ("S"      . 'evil-avy-goto-char-2)
         ("gsl"    . 'evil-avy-goto-line)
         ("gsw"    . 'evil-avy-goto-word-1)
-        ; Calling avy functions with an argument negates the current setting of 'avy-all-windows'
-        ; TODO: set custom which-key text for following bindings
-        ("gss"    . (lambda () (interactive) (avy-goto-char-timer t)))
-        ("gs SPC" . (lambda () (interactive) (avy-goto-char-timer t)))))
+        ("gss"    . 'my/goto-char-timer)
+        ("gs SPC" . 'my/goto-char-timer))) 
 
 (use-package winner
   :after evil
@@ -353,6 +356,7 @@
   (winner-mode +1)
   (define-key evil-window-map "u" 'winner-undo)
   (define-key evil-window-map "U" 'winner-redo))
+; TODO: evaluate tab-bar-history-mode
 
 ; evil-exchange (http://evgeni.io/posts/quick-start-evil-mode)
 ; evil-leader
@@ -368,10 +372,20 @@
 
 ;;;; Editing helps ;;;;
 
-; multicursor
+(use-package company) 
+
+(use-package flymake
+  :config
+  (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
+; TODO: evaluate flycheck
+
 ; autopairs
+; hl-todo
+; multicursor
 ; smartparens/evil-smartparens
 ; snippets
+; which-func
+; whitespace-mode
 
 
 
@@ -380,8 +394,9 @@
 ;; LSP
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
-  :init
-  (setq lsp-keymap-prefix "C-c l")
+  :custom
+  (lsp-enable-snippet nil)
+  (lsp-keymap-prefix "C-c l")
   :config
   (lsp-enable-which-key-integration t))
 
@@ -405,6 +420,8 @@
 ; TODO: use hook to auto activate venv on project switch (auto-virtualenv?)
 (use-package pyvenv
   :hook (python-mode . pyvenv-mode))
+(use-package lsp-pyright
+  :after python)
 ; TODO: add poetry
 ; TODO: use ipython as REPL
 
@@ -444,7 +461,6 @@
 ; haskell
 
 
-
 ;;;; Org-mode ;;;;
 
 ; evil-org-mode
@@ -459,6 +475,7 @@
   :bind
   (("C-x g" . magit-status)))
 
+; diff-hl
 ; git gutter
 
 
@@ -518,6 +535,20 @@
 
 (use-package all-the-icons
   :if (display-graphic-p))
+
+(use-package dashboard
+  :custom
+  (dashboard-center-content t)
+  (dashboard-projects-backend 'project-el)
+  (dashboard-startup-banner 'logo)
+  (dashboard-items '((recents . 10)
+                     (projects . 5)
+                     (bookmarks . 5)
+                     (registers . 5)))
+  :init
+  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+  :config
+  (dashboard-setup-startup-hook))
 
 (use-package doom-modeline
   :custom
