@@ -17,13 +17,12 @@
       (tool-bar-mode -1)))
 (setq frame-title-format '(multiple-frames "%b" ("" "%b - GNU Emacs")))
 
-(let ((fs (if (eq system-type 'windows-nt) "9" "12")))
-  (set-face-font 'default
-     (concat "Iosevka Term-" fs))
-  (set-face-font 'fixed-pitch
-     (concat "Iosevka Term-" fs))
-  (set-face-font 'variable-pitch
-     (concat "Iosevka Aile-" fs)))
+(if (eq system-type 'windows-nt)
+    (progn (set-face-font 'default "Source Code Pro-11")
+           (set-face-font 'fixed-pitch "Source Code Pro-11"))
+    (progn (set-face-font 'default "Iosevka Term-12")
+           (set-face-font 'fixed-pitch "Iosevka Term-12")
+           (set-face-font 'variable-pitch "Iosevka Aile-12")))
 
 
 ;; Override default buffer placement actions
