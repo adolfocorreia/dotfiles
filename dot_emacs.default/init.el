@@ -89,9 +89,11 @@
   :ensure nil
   :if (eq system-type 'windows-nt)
   :custom-face
-  (default     ((t :family "Source Code Pro" :height 110)))
-  (fixed-pitch ((t :family "Source Code Pro" :height 110)))
+  (default     ((t :family "Source Code Pro" :height 90)))
+  (fixed-pitch ((t :family "Source Code Pro" :height 90)))
   :config
+  (menu-bar-mode -1)
+  (scroll-bar-mode -1)
   (tool-bar-mode -1))
  
 
@@ -144,12 +146,14 @@
 
 (use-package ibuffer
   :ensure nil
+  :commands ibuffer
+  :bind
+  (("C-x C-b" . ibuffer))
   :init
   (setq ibuffer-expert t)
   :config
   (add-hook 'ibuffer-mode-hook #'ibuffer-auto-mode)
-  (add-hook 'ibuffer-mode-hook #'hl-line-mode)
-  (global-set-key (kbd "C-x C-b") 'ibuffer))
+  (add-hook 'ibuffer-mode-hook #'hl-line-mode))
 
 (use-package recentf
   :ensure nil
@@ -232,6 +236,7 @@
 
 ;; Default prefix: C-c C-w
 (use-package tabspaces
+  :defer 1
   :config
   (tabspaces-mode +1))
 
@@ -248,6 +253,7 @@
 ; - https://github.com/noctuid/evil-guide
 
 (use-package evil
+  :defer 1
   :init
   (setq evil-search-module 'isearch
         evil-split-window-right t
@@ -438,6 +444,7 @@
   ("C-=" . er/expand-region))
 
 (use-package flymake
+  :defer t
   :config
   (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
 ; TODO: evaluate flycheck
