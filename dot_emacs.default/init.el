@@ -5,6 +5,8 @@
 (if (file-exists-p custom-file)
     (load custom-file))
 
+; TODO: evaluate (setq debug-on-error t)
+
 ; TODO: replace :init with :custom in use-package declarations
 
 
@@ -49,7 +51,8 @@
   :init
   (setq-default indent-tabs-mode nil)
   (setq display-line-numbers-type 'relative
-        scroll-margin 2)
+        scroll-margin 2
+        show-trailing-whitespace t)
   :config
   (column-number-mode +1)
   (modify-syntax-entry ?_ "w")
@@ -89,6 +92,7 @@
   :ensure nil
   :if (eq system-type 'windows-nt)
   :custom-face
+  ; TODO: bind better font on Windows (compatible with doom-modeline)
   (default     ((t :family "Source Code Pro" :height 90)))
   (fixed-pitch ((t :family "Source Code Pro" :height 90)))
   :config
@@ -207,6 +211,10 @@
   :config
   (minions-mode +1))
 
+(use-package page-break-lines
+  :config
+  (global-page-break-lines-mode +1))
+
 (use-package popper
   :init
   (setq popper-group-function #'popper-group-by-directory)
@@ -286,6 +294,9 @@
   (define-key evil-window-map "3" 'winum-select-window-3)
   (define-key evil-window-map "4" 'winum-select-window-4)
   (define-key evil-window-map "5" 'winum-select-window-5)
+
+  ; Open Dired buffer
+  (define-key evil-normal-state-map (kbd "-") 'dired-jump)
 
   ; Center screen after n/N
   (defun my/center-line (&rest _)
@@ -620,6 +631,7 @@
 ;;;; Terminal and file management support ;;;;
 
 (use-package isend-mode
+  :disabled (eq system-type 'windows-nt)
   :commands isend
   :config
   (defun my/send-region-ipython-paste (begin end)
@@ -633,7 +645,7 @@
                '(python-mode my/send-region-ipython-paste)))
 
 (use-package vterm
-  :unless (eq system-type 'windows-nt)
+  :disabled (eq system-type 'windows-nt)
   :commands vterm)
 
 ; eshell
