@@ -92,9 +92,8 @@
   :ensure nil
   :if (eq system-type 'windows-nt)
   :custom-face
-  ; TODO: bind better font on Windows (compatible with doom-modeline)
-  (default     ((t :family "Source Code Pro" :height 90)))
-  (fixed-pitch ((t :family "Source Code Pro" :height 90)))
+  (default     ((t :family "Hack" :height 90)))
+  (fixed-pitch ((t :family "Hack" :height 90)))
   :config
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
@@ -261,7 +260,6 @@
 ; - https://github.com/noctuid/evil-guide
 
 (use-package evil
-  :defer 1
   :init
   (setq evil-search-module 'isearch
         evil-split-window-right t
