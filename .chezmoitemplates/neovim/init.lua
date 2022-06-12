@@ -743,13 +743,6 @@ require('packer').startup({function(use)
   -- TODO: evaluate 'nvim-neorg/neorg' and 'nvim-orgmode/orgmode'
   -- Org-mode.
 
-  -- Markdown previewer. Start preview with :MarkdownPreview command.
-  use {
-    'iamcco/markdown-preview.nvim',
-    cmd = 'MarkdownPreview',
-    run = 'cd app && yarn install',
-  }
-
 
   --- Terminal and file management support ---
 
@@ -939,11 +932,13 @@ require('packer').startup({function(use)
     'folke/trouble.nvim',
     cmd = { 'Trouble', 'TroubleToggle' },
     requires = 'kyazdani42/nvim-web-devicons',
+    setup = function()
+      vim.cmd([[autocmd vimrc FileType Trouble setlocal colorcolumn=]])
+    end,
     config = function()
       require('trouble').setup({
         mode = 'document_diagnostics',
       })
-      vim.cmd([[autocmd vimrc FileType Trouble setlocal colorcolumn=]])
     end,
   }
 
@@ -1350,16 +1345,16 @@ vim.cmd([[
 ]])
 
 
+-- Clear last search highlighting (Esc is not mapped to anything in normal mode).
+vim.cmd([[
+  nnoremap <silent> <Esc> :noh<CR><Esc>
+]])
+
+
 -- Save buffer with C-s.
 vim.cmd([[
   nnoremap <silent> <C-s> :update<CR>
   inoremap <silent> <C-s> <C-o>:update<CR>
-]])
-
-
--- Clear last search highlighting (Esc is not mapped to anything in normal mode).
-vim.cmd([[
-  nnoremap <silent> <Esc> :noh<CR><Esc>
 ]])
 
 
