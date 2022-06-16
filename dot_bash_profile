@@ -16,12 +16,17 @@ if [[ -x /usr/bin/pyenv ]]; then
 fi
 
 # Set other environment variables.
-alias open="handlr open"
+export LC_TIME=en_DK.UTF-8
+export TIME_STYLE=long-iso
+
 export EDITOR=nvim
 export OPENER=mimeopen
 
 # Set LF_ICONS environment variable.
 [[ -f "$HOME/.config/lf/icons.sh" ]] && source "$HOME/.config/lf/icons.sh"
+
+# Set aliases.
+alias open="handlr open"
 
 
 [[ -r ~/.bashrc ]] && . ~/.bashrc

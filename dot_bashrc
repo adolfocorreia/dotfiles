@@ -25,7 +25,7 @@ alias rm='rm -i'
 
 alias lynx='lynx -vikeys'
 
-alias vi=nvim
+alias vi='nvim --clean'
 
 
 # Find packages that provide unavailable commands.
