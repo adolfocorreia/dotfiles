@@ -507,9 +507,7 @@
 (use-package python
   :ensure nil
   :mode
-  ("\\.py\\'" . python-mode)
-  :config
-  (add-hook 'isend-mode-hook #'isend-default-ipython-setup))
+  ("\\.py\\'" . python-mode))
 
 (use-package anaconda-mode
   :hook
@@ -529,6 +527,7 @@
 ; TODO: evaluate ein (emacs-ipython-notebook) and emacs-jupyter
 ; TODO: evaluate lpy
 ; TODO: evaluate python-x
+; TODO: evaluate python-mls
 
 
 ;; Julia
@@ -628,27 +627,14 @@
 
 ;;;; Terminal and file management support ;;;;
 
-(use-package isend-mode
-  :disabled (eq system-type 'windows-nt)
-  :commands isend
-  :config
-  (defun my/send-region-ipython-paste (begin end)
-    (interactive (list (region-beginning) (region-end)))
-    (isend--check)
-    (clipboard-kill-ring-save begin end)
-    (isend--send-dest "%paste" isend--command-buffer)
-    (deactivate-mark))
-
-  (add-to-list 'evil-extra-operator-eval-modes-alist
-               '(python-mode my/send-region-ipython-paste)))
-
 (use-package vterm
   :disabled (eq system-type 'windows-nt)
   :commands vterm)
 
-; eshell
 ; dired/diredfl/ranger/dirvish
+; eshell
 ; eval-in-repl
+; isend-mode
 ; quickrun
 
 
