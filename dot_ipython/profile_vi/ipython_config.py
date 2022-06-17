@@ -8,6 +8,12 @@ c = c  # noqa: F821 pylint: disable=E0602,C0103,W0127
 #  Default: True
 c.InteractiveShell.autoindent = False
 
+# A list of dotted module names of IPython extensions to load.
+c.InteractiveShellApp.extensions = ['autoreload']
+
+# Lines of code to run at IPython startup.
+c.InteractiveShellApp.exec_lines = ['%autoreload 2']
+
 ## Shortcut style to use at the prompt. 'vi' or 'emacs'.
 #  Default: 'emacs'
 c.TerminalInteractiveShell.editing_mode = 'vi'
