@@ -976,13 +976,14 @@ require('packer').startup({function(use)
     config = function()
       local terminal = {
         sections = {
-          lualine_a = { 'mode' },
+          lualine_a = { 'winnr', 'mode' },
           lualine_b = { 'vim.opt.filetype._value', "'jobid: ' .. vim.opt.channel._value" },
           lualine_c = { 'filename' },
           lualine_x = { {'filetype', icon_only = true, colored = false} },
           lualine_z = { 'progress', 'location' },
         },
         inactive_sections = {
+          lualine_a = { 'winnr' },
           lualine_c = { 'vim.opt.filetype._value', "'jobid: ' .. vim.opt.channel._value" },
           lualine_x = { 'location' },
         },
@@ -993,12 +994,15 @@ require('packer').startup({function(use)
           globalstatus = false,
         },
         sections = {
-          lualine_a = { 'mode' },
+          lualine_a = { 'winnr', 'mode' },
           lualine_b = { 'branch', 'diagnostics' },
           lualine_c = { 'filename' },
           lualine_x = { { 'filetype', colored = false, icon_only = true } },
           lualine_y = { 'encoding', 'fileformat' },
           lualine_z = { 'progress', 'location' },
+        },
+        inactive_sections = {
+          lualine_a = { 'winnr' },
         },
         tabline = {
           lualine_a = { { 'buffers', mode = 0 } },
@@ -1231,7 +1235,7 @@ vim.cmd([[autocmd vimrc TextYankPost * silent! lua vim.highlight.on_yank{timeout
 vim.cmd([[autocmd vimrc VimResized * tabdo wincmd =]])
 
 -- Use q to close some support windows.
-vim.cmd([[autocmd vimrc FileType help,juliadoc,qf nnoremap <silent> <buffer> q :close<CR>]])
+vim.cmd([[autocmd vimrc FileType git,help,juliadoc,qf nnoremap <silent> <buffer> q :close<CR>]])
 
 -- Send help windows to the right.
 vim.cmd([[autocmd vimrc FileType help,juliadoc setlocal bufhidden=unload | wincmd L]])
@@ -1395,6 +1399,14 @@ vim.cmd([[
   nnoremap <M-Right> <C-w>l
 ]])
 
+vim.cmd([[
+  nnoremap <C-w>1 1<C-w>w
+  nnoremap <C-w>2 2<C-w>w
+  nnoremap <C-w>3 3<C-w>w
+  nnoremap <C-w>4 4<C-w>w
+  nnoremap <C-w>5 5<C-w>w
+]])
+
 
 -- Goto next/previous diagnostic.
 vim.cmd([[
@@ -1450,35 +1462,40 @@ LEADER_MAPPINGS = {
 
   w = {
     name     = 'window',
-    ['p']    = {'<C-w>p',   'Go to alternate window'},
-    ['w']    = {'<C-w>w',   'Go to next window'},
-    ['W']    = {'<C-w>W',   'Go to previous window'},
-    ['h']    = {'<C-w>h',   'Go left'},
-    ['l']    = {'<C-w>l',   'Go right'},
-    ['j']    = {'<C-w>j',   'Go down'},
-    ['k']    = {'<C-w>k',   'Go up'},
-    ['t']    = {'<C-w>t',   'Go to top-left window'},
-    ['b']    = {'<C-w>b',   'Go to bottom-right window'},
-    ['H']    = {'<C-w>H',   'Move far left'},
-    ['L']    = {'<C-w>L',   'Move far right'},
-    ['J']    = {'<C-w>J',   'Move to bottom'},
-    ['K']    = {'<C-w>K',   'Move to top'},
-    ['c']    = {'<C-w>c',   'Close window'},
-    ['q']    = {'<C-w>q',   'Quit window'},
-    ['u']    = {'<C-w>u',   'Undo quit window'},
-    ['U']    = {'<C-w>U',   'Undo quit windows in tab'},
-    ['n']    = {'<C-w>n',   'New window'},
-    ['o']    = {'<C-w>o',   'Only window'},
-    ['s']    = {'<C-w>s',   'Split horizontally'},
-    ['v']    = {'<C-w>v',   'Split vertically'},
-    ['r']    = {'<C-w>r',   'Rotate downwards'},
-    ['R']    = {'<C-w>R',   'Rotate upwards'},
-    ['T']    = {'<C-w>T',   'Move to new tab'},
-    ['=']    = {'<C-w>=',   'Balance windows'},
-    ['+']    = {'<C-w>5+',  'Increase height'},
-    ['-']    = {'<C-w>5-',  'Decrease height'},
-    ['>']    = {'<C-w>10>', 'Increase width'},
-    ['<lt>'] = {'<C-w>10<', 'Decrease width'},
+    ['p']    = {'<C-w>p',             'Go to alternate window'},
+    ['w']    = {'<C-w>w',             'Go to next window'},
+    ['W']    = {'<C-w>W',             'Go to previous window'},
+    ['h']    = {'<C-w>h',             'Go left'},
+    ['l']    = {'<C-w>l',             'Go right'},
+    ['j']    = {'<C-w>j',             'Go down'},
+    ['k']    = {'<C-w>k',             'Go up'},
+    ['t']    = {'<C-w>t',             'Go to top-left window'},
+    ['b']    = {'<C-w>b',             'Go to bottom-right window'},
+    ['H']    = {'<C-w>H',             'Move far left'},
+    ['L']    = {'<C-w>L',             'Move far right'},
+    ['J']    = {'<C-w>J',             'Move to bottom'},
+    ['K']    = {'<C-w>K',             'Move to top'},
+    ['c']    = {'<C-w>c',             'Close window'},
+    ['q']    = {'<C-w>q',             'Quit window'},
+    ['u']    = {'<C-w>u',             'Undo quit window'},
+    ['U']    = {'<C-w>U',             'Undo quit windows in tab'},
+    ['n']    = {'<C-w>n',             'New window'},
+    ['o']    = {'<C-w>o',             'Only window'},
+    ['s']    = {'<C-w>s',             'Split horizontally'},
+    ['v']    = {'<C-w>v',             'Split vertically'},
+    ['r']    = {'<C-w>r',             'Rotate downwards'},
+    ['R']    = {'<C-w>R',             'Rotate upwards'},
+    ['T']    = {'<C-w>T',             'Move to new tab'},
+    ['=']    = {'<C-w>=',             'Balance windows'},
+    ['+']    = {'<C-w>5+',            'Increase height'},
+    ['-']    = {'<C-w>5-',            'Decrease height'},
+    ['>']    = {'<C-w>10>',           'Increase width'},
+    ['<lt>'] = {'<C-w>10<',           'Decrease width'},
+    ['1']    = {'<Cmd>1wincmd w<CR>', 'Go to window 1'},
+    ['2']    = {'<Cmd>2wincmd w<CR>', 'Go to window 2'},
+    ['3']    = {'<Cmd>3wincmd w<CR>', 'Go to window 3'},
+    ['4']    = {'<Cmd>4wincmd w<CR>', 'Go to window 4'},
+    ['5']    = {'<Cmd>5wincmd w<CR>', 'Go to window 5'},
   },
 
   b = {
