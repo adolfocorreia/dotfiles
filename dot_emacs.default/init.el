@@ -50,9 +50,11 @@
   :ensure nil
   :init
   (setq-default indent-tabs-mode nil)
-  (setq display-line-numbers-type 'relative
+  (setq completion-cycle-threshold 3
+        display-line-numbers-type 'relative
         scroll-margin 2
-        show-trailing-whitespace t)
+        show-trailing-whitespace t
+        tab-always-indent 'complete)
   :config
   (column-number-mode +1)
   (modify-syntax-entry ?_ "w")
@@ -98,6 +100,12 @@
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
   (tool-bar-mode -1))
+
+; Terminal
+(use-package emacs
+  :unless (display-graphic-p)
+  :config
+  (menu-bar-mode -1))
  
 
 
@@ -240,12 +248,21 @@
          display-buffer-reuse-mode-window
          display-buffer-in-previous-window)))
 ; TODO: evaluate popwin
+; TODO: evaluate golden-ration
 
 ;; Default prefix: C-c C-w
 (use-package tabspaces
   :defer 1
   :config
   (tabspaces-mode +1))
+
+(use-package unkillable-scratch
+  :config
+  (unkillable-scratch t))
+
+(use-package vlf
+  :config
+  (require 'vlf-setup))
 
 ;; Default prefix: C-x w
 (use-package winum
@@ -445,9 +462,6 @@
 
 ;;;; Editing helps ;;;;
 
-(use-package company) 
-; company-prescient
-
 (use-package expand-region
   :bind
   ("C-=" . er/expand-region))
@@ -474,8 +488,15 @@
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :custom
+  (lsp-completion-provider :none)  ; avoid using company
   (lsp-enable-snippet nil)
   (lsp-keymap-prefix "C-c l")
+  :init
+  (defun my/lsp-mode-setup-completion ()
+    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+          '(orderless)))
+  :hook
+  (lsp-completion-mode . my/lsp-mode-setup-completion)
   :config
   (lsp-enable-which-key-integration t))
 
@@ -599,8 +620,9 @@
   (marginalia-mode +1))
 
 (use-package orderless
+  :after vertico
   :custom
-  (completion-styles '(orderless basic)))
+  (completion-styles '(orderless partial-completion basic)))
 
 (use-package consult
   :bind
@@ -619,8 +641,13 @@
 (use-package embark-consult
   :after (embark consult))
 
-; prescient?
-; company?
+; TODO: evaluate corfu vs company
+; TODO: evaluate how to use corfu (or vertico) in evil-ex minibuffer
+(use-package corfu
+  :after vertico
+  :config
+  (global-corfu-mode +1))
+
 ; tabnine?
 
 
@@ -654,7 +681,7 @@
                      (bookmarks .  5)
                      (registers .  5)))
   :init
-  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+  (setq initial-buffer-choice (lambda () (if (buffer-file-name) (current-buffer) (get-buffer "*dashboard*"))))
   :config
   (dashboard-setup-startup-hook))
 

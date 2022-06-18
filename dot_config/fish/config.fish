@@ -29,6 +29,7 @@ if status is-interactive
     end
 
     # Set aliases
+    alias emacs="emacs -nw"
     alias ls=exa
     alias vi="nvim --clean"
 
