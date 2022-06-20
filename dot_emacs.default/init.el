@@ -7,6 +7,7 @@
 
 ; TODO: evaluate (setq debug-on-error t)
 ; TODO: replace :init with :custom in use-package declarations
+; TODO: open emacs as server
 
 
 
@@ -85,16 +86,14 @@
   :ensure nil
   :if (eq system-type 'gnu/linux)
   :custom-face
-  (default        ((t :family "Source Code Pro" :height 110)))
-  (fixed-pitch    ((t :family "Source Code Pro" :height 110))))
+  (default ((t :family "Source Code Pro" :height 110))))
 
 ; Windows
 (use-package emacs
   :ensure nil
   :if (eq system-type 'windows-nt)
   :custom-face
-  (default     ((t :family "Hack" :height 90)))
-  (fixed-pitch ((t :family "Hack" :height 90)))
+  (default ((t :family "Hack" :height 90)))
   :config
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
@@ -246,10 +245,12 @@
   (minions-mode +1))
 
 (use-package page-break-lines
+  :defer 1
   :config
   (global-page-break-lines-mode +1))
 
 (use-package popper
+  :defer 1
   :init
   (setq popper-group-function #'popper-group-by-directory)
   (setq popper-mode-line (propertize " POP " 'face 'mode-line-emphasis))
@@ -283,7 +284,12 @@
   :config
   (tabspaces-mode +1))
 
+; TODO: add C-w key bindings
+(use-package transpose-frame
+  :commands (transpose-frame flip-frame flop-frame rotate-frame))
+
 (use-package unkillable-scratch
+  :defer 1
   :config
   (unkillable-scratch t))
 
@@ -294,6 +300,7 @@
 
 ;; Default prefix: C-x w
 (use-package winum
+  :defer 1
   :config
   (winum-mode +1))
 
@@ -468,11 +475,13 @@
 
 (use-package ace-window
   :after evil
+  :defer 1
   :config
   (define-key evil-window-map "a" 'ace-window))
 
 (use-package avy
   :after evil
+  :defer 1
   :custom
   (avy-all-windows nil)
   (avy-keys '(?a ?s ?d ?h ?j ?k ?l))
@@ -491,6 +500,7 @@
 
 (use-package winner
   :after evil
+  :defer 1
   :init
   (setq winner-dont-bind-my-keys t)
   :config
@@ -528,7 +538,9 @@
   (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
 ; TODO: evaluate flycheck
 
-(use-package format-all)
+(use-package format-all
+  :hook
+  (prog-mode . format-all-mode))
 
 
 ;; LSP
