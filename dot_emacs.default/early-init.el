@@ -1,3 +1,5 @@
+;;; early-init.el -*- lexical-binding: t; no-byte-compile: t; -*-
+
 ;; Increase garbage collector threshold during startup
 (setq gc-cons-threshold most-positive-fixnum)
 

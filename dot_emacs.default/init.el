@@ -1,4 +1,4 @@
-;; init.el -*- lexical-binding: t; -*-
+;;; init.el -*- lexical-binding: t; -*-
 
 ;; Custom settings
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
@@ -6,8 +6,8 @@
     (load custom-file))
 
 ; TODO: evaluate (setq debug-on-error t)
-
 ; TODO: replace :init with :custom in use-package declarations
+
 
 
 ;;;; Package management ;;;;
@@ -57,7 +57,6 @@
         tab-always-indent 'complete)
   :config
   (column-number-mode +1)
-  (modify-syntax-entry ?_ "w")
   (dolist
       (mode-hook
        '(conf-mode-hook
@@ -75,6 +74,7 @@
   :init
   (setq delete-by-moving-to-trash t
         load-prefer-newer t
+        read-extended-command-predicate #'command-completion-default-include-p
         use-short-answers t))
 
 
@@ -85,9 +85,8 @@
   :ensure nil
   :if (eq system-type 'gnu/linux)
   :custom-face
-  (default        ((t :family "Iosevka Term" :height 120)))
-  (fixed-pitch    ((t :family "Iosevka Term" :height 120)))
-  (variable-pitch ((t :family "Iosevka Aile" :height 120))))
+  (default        ((t :family "Source Code Pro" :height 110)))
+  (fixed-pitch    ((t :family "Source Code Pro" :height 110))))
 
 ; Windows
 (use-package emacs
@@ -106,7 +105,7 @@
   :unless (display-graphic-p)
   :config
   (menu-bar-mode -1))
- 
+
 
 
 ;;;; Emacs management and fixes ;;;;
@@ -138,15 +137,32 @@
 
 (use-package apropos
   :ensure nil
+  :defer t
   :init
   (setq apropos-do-all t))
 
 (use-package autorevert
   :ensure nil
+  :defer t
   :init
   (setq global-auto-revert-non-file-buffers t)
   :config
   (global-auto-revert-mode +1))
+
+(use-package comint
+  :ensure nil
+  :defer t
+  :init
+  (setq comint-scroll-to-bottom-on-input t))
+
+(use-package dabbrev
+  :custom
+  (dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'"
+                                    "\\`\\*"
+                                    "\\*\\'"))
+  :bind
+  (("M-/" . dabbrev-completion)
+   ("C-M-/" . dabbrev-expand)))
 
 (use-package dired
   :ensure nil
@@ -154,6 +170,12 @@
   (dired-mode . hl-line-mode)
   :init
   (setq dired-auto-revert-buffer t))
+
+(use-package eshell
+  :ensure nil
+  :defer t
+  :init
+  (setq eshell-scroll-to-bottom-on-input t))
 
 (use-package ibuffer
   :ensure nil
@@ -168,6 +190,7 @@
 
 (use-package recentf
   :ensure nil
+  :defer 1
   :init
   (setq recentf-max-saved-items 20)
   :config
@@ -175,11 +198,13 @@
 
 (use-package savehist
   :ensure nil
+  :defer 1
   :config
   (savehist-mode +1))
 
 (use-package saveplace
   :ensure nil
+  :defer 1
   :config
   (save-place-mode +1))
 
@@ -212,7 +237,9 @@
   ([remap describe-function] . helpful-callable)
   ([remap describe-command]  . helpful-command)
   ([remap describe-variable] . helpful-variable)
-  ([remap describe-key]      . helpful-key))
+  ([remap describe-key]      . helpful-key)
+  :config
+  (add-hook 'helpful-mode-hook #'display-line-numbers-mode))
 
 (use-package minions
   :config
@@ -261,6 +288,7 @@
   (unkillable-scratch t))
 
 (use-package vlf
+  :commands vlf
   :config
   (require 'vlf-setup))
 
@@ -268,6 +296,7 @@
 (use-package winum
   :config
   (winum-mode +1))
+
 
 
 ;;;; Evil-mode ;;;;
@@ -278,9 +307,10 @@
 
 (use-package evil
   :init
-  (setq evil-search-module 'isearch
-        evil-split-window-right t
-        evil-vsplit-window-below t
+  (setq evil-respect-visual-line-mode t
+        evil-search-module 'isearch
+        evil-split-window-right t evil-vsplit-window-below t
+        evil-symbol-word-search t
         evil-undo-system 'undo-redo
         evil-want-C-u-scroll t
         evil-want-C-w-in-emacs-state t
@@ -288,7 +318,10 @@
         evil-want-fine-undo t
         evil-want-integration t
         evil-want-keybinding nil)
+        ;; evil-want-o/O-to-continue-comments t) ; TODO: check this in Doom Emacs
   :config
+  (modify-syntax-entry ?_ "w")
+
   (evil-mode +1)
 
   (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
@@ -313,12 +346,6 @@
   ; Open Dired buffer
   (define-key evil-normal-state-map (kbd "-") 'dired-jump)
 
-  ; Center screen after n/N
-  (defun my/center-line (&rest _)
-    (evil-scroll-line-to-center nil))
-  (advice-add 'evil-search-next     :after #'my/center-line)
-  (advice-add 'evil-search-previous :after #'my/center-line)
-
   ; Select new window after evil split)
   (defun my/other-window (&rest _)
     (other-window 1))
@@ -334,6 +361,7 @@
   (evil-collection-init))
 ; TODO: add evil-dired hydra/transient
 ; TODO: add evil-ibuffer hydra/transient
+; TODO: 'gt' binding for magit conflicts with evil binding for tabs
 
 (use-package evil-anzu
   :after evil
@@ -346,6 +374,7 @@
   (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
   (define-key evil-outer-text-objects-map "a" 'evil-outer-arg))
 
+; TODO: evaluate evil-nerd-commenter
 (use-package evil-commentary
   :after evil
   :bind
@@ -360,10 +389,22 @@
 
 (use-package evil-goggles
   :after evil
+  :defer 1
   :config
   (evil-goggles-use-diff-faces)
   (evil-goggles-mode +1))
 
+(use-package evil-indent-plus
+  :after evil
+  :config
+  (define-key evil-inner-text-objects-map "i" 'evil-indent-plus-i-indent)
+  (define-key evil-outer-text-objects-map "i" 'evil-indent-plus-a-indent)
+  (define-key evil-inner-text-objects-map "I" 'evil-indent-plus-i-indent-up)
+  (define-key evil-outer-text-objects-map "I" 'evil-indent-plus-i-indent-up)
+  (define-key evil-inner-text-objects-map "J" 'evil-indent-plus-a-indent-up-down)
+  (define-key evil-outer-text-objects-map "J" 'evil-indent-plus-a-indent-up-down))
+
+; TODO: bind to g-/g=/g+ (same as Doom Emacs)
 (use-package evil-numbers
   :after evil)
 
@@ -390,8 +431,8 @@
   (setq evil-snipe-scope 'whole-visible
         evil-snipe-repeat-scope 'whole-visible)
   :config
-  ; Only using evil-snipe for f/F/t/T motions
-  (evil-snipe-override-mode +1)) 
+  (evil-snipe-mode +1)
+  (evil-snipe-override-mode +1))
 
 (use-package evil-surround
   :after evil
@@ -405,6 +446,18 @@
   (evil-define-key 'operator global-map "S"  'evil-Surround-edit)
   (evil-define-key 'visual global-map   "S"  'evil-surround-region)
   (evil-define-key 'visual global-map   "gS" 'evil-Surround-region))
+
+(use-package evil-textobj-anyblock
+  :after evil
+  :config
+  (define-key evil-inner-text-objects-map "b" 'evil-textobj-anyblock-inner-block)
+  (define-key evil-outer-text-objects-map "b" 'evil-textobj-anyblock-a-block))
+
+(use-package evil-textobj-entire
+  :after evil
+  :config
+  (define-key evil-inner-text-objects-map "e" 'evil-entire-entire-buffer)
+  (define-key evil-outer-text-objects-map "e" 'evil-entire-entire-buffer))
 
 (use-package evil-visualstar
   :after evil
@@ -431,12 +484,10 @@
     (avy-goto-char-timer t))
   :bind
   (:map evil-normal-state-map
-        ("s"      . 'evil-avy-goto-char-2)
-        ("S"      . 'evil-avy-goto-char-2)
         ("gsl"    . 'evil-avy-goto-line)
         ("gsw"    . 'evil-avy-goto-word-1)
-        ("gss"    . 'my/goto-char-timer)
-        ("gs SPC" . 'my/goto-char-timer))) 
+        ("gss"    . 'evil-avy-goto-char-2)
+        ("gs SPC" . 'my/goto-char-timer)))
 
 (use-package winner
   :after evil
@@ -448,16 +499,21 @@
   (define-key evil-window-map "U" 'winner-redo))
 ; TODO: evaluate tab-bar-history-mode
 
+; evil-cleverparens
+; evil-embrace
 ; evil-exchange (http://evgeni.io/posts/quick-start-evil-mode)
 ; evil-leader
 ; evil-mc/evil-mc-extras
 ; evil-multiedit
 ; evil-owl
+; evil-quick-diff
 ; evil-replace-with-register
 ; evil-string-inflection
 ; evil-textobj-tree-sitter
 ; evil-vimish-fold
-; text-objects (targets, indent, entire)
+; exato
+; text-objects (targets/things)
+
 
 
 ;;;; Editing helps ;;;;
@@ -472,17 +528,8 @@
   (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
 ; TODO: evaluate flycheck
 
-; autopairs
-; hl-todo
-; multicursor
-; smartparens/evil-smartparens
-; snippets
-; which-func
-; whitespace-mode
+(use-package format-all)
 
-
-
-;;;; Language support (major-modes) ;;;;
 
 ;; LSP
 (use-package lsp-mode
@@ -508,6 +555,17 @@
 (use-package lsp-treemacs
   :after lsp)
 
+; autopairs
+; hl-todo
+; multicursor
+; smartparens/evil-smartparens
+; snippets
+; which-func
+; whitespace-mode
+
+
+
+;;;; Language support ;;;;
 
 ;; Emacs Lisp
 (use-package parinfer-rust-mode
@@ -527,6 +585,9 @@
 
 (use-package python
   :ensure nil
+  :custom
+  (python-indent-offset 4)
+  (python-shell-font-lock-enable nil)
   :mode
   ("\\.py\\'" . python-mode))
 
@@ -544,7 +605,6 @@
   (advice-add 'lsp :before (lambda () (require 'lsp-pyright))))
 
 ; TODO: add poetry
-; TODO: add format-all/black
 ; TODO: evaluate ein (emacs-ipython-notebook) and emacs-jupyter
 ; TODO: evaluate lpy
 ; TODO: evaluate python-x
@@ -578,12 +638,17 @@
   :mode
   ("\\.[rR]md\\'" . poly-markdown+R-mode))
 
+
+; LaTeX
+;; (use-package tex
+;;   :ensure auctex)
+
+
 ; tree sitter
 ; dap-mode
-; python
 ; lua
 ; haskell
-; latex
+
 
 
 ;;;; Org-mode ;;;;
@@ -599,6 +664,7 @@
   :commands magit-status
   :bind
   (("C-x g" . magit-status)))
+; TODO: open magit buffers in new tab (evaluate magit-display-buffer-function and display-buffer-in-new-tab)
 
 ; diff-hl
 ; git gutter
@@ -622,7 +688,8 @@
 (use-package orderless
   :after vertico
   :custom
-  (completion-styles '(orderless partial-completion basic)))
+  (completion-category-overrides '((file (styles . (partial-completion)))))
+  (completion-styles '(orderless basic partial-completion)))
 
 (use-package consult
   :bind
@@ -645,8 +712,20 @@
 ; TODO: evaluate how to use corfu (or vertico) in evil-ex minibuffer
 (use-package corfu
   :after vertico
+  :custom
+  (corfu-auto nil)
+  (corfu-cycle t)
+  (corfu-quit-no-match 'separator)
   :config
   (global-corfu-mode +1))
+
+(use-package kind-icon
+  :after corfu
+  :defer 1
+  :custom
+  (kind-icon-default-face 'corfu-default)
+  :config
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
 ; tabnine?
 
@@ -655,7 +734,7 @@
 ;;;; Terminal and file management support ;;;;
 
 (use-package vterm
-  :disabled (eq system-type 'windows-nt)
+  :unless (eq system-type 'windows-nt)
   :commands vterm)
 
 ; dired/diredfl/ranger/dirvish
