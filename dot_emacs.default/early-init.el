@@ -13,6 +13,11 @@
 (add-to-list 'default-frame-alist '(background-color . "#1a1b26"))
 (add-to-list 'default-frame-alist '(foreground-color . "#a9b1d6"))
 
+; Remove UI elements during startup
+(add-to-list 'default-frame-alist '(menu-bar-lines . 0))
+(add-to-list 'default-frame-alist '(tool-bar-lines . 0))
+(add-to-list 'default-frame-alist '(vertical-scroll-bars . nil))
+
 ; Disable scroll-bar on minibuffer window
 ; Reference: https://www.gnu.org/software/emacs/manual/html_node/elisp/Scroll-Bars.html
 (add-hook 'after-make-frame-functions

@@ -1,5 +1,10 @@
 ;;; init.el -*- lexical-binding: t; -*-
 
+;; Check the system used
+(defconst ON-LINUX   (eq system-type 'gnu/linux))
+(defconst ON-MAC     (eq system-type 'darwin))
+(defconst ON-WINDOWS (memq system-type '(cygwin windows-nt ms-dos)))
+
 ;; Custom settings
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (if (file-exists-p custom-file)
@@ -50,11 +55,11 @@
 (use-package emacs
   :ensure nil
   :init
-  (setq-default indent-tabs-mode nil)
+  (setq-default indent-tabs-mode nil
+                show-trailing-whitespace t)
   (setq completion-cycle-threshold 3
         display-line-numbers-type 'relative
         scroll-margin 2
-        show-trailing-whitespace t
         tab-always-indent 'complete)
   :config
   (column-number-mode +1)
@@ -75,6 +80,7 @@
   :init
   (setq delete-by-moving-to-trash t
         load-prefer-newer t
+        native-comp-deferred-compilation t
         read-extended-command-predicate #'command-completion-default-include-p
         use-short-answers t))
 
@@ -84,14 +90,18 @@
 ; Linux
 (use-package emacs
   :ensure nil
-  :if (eq system-type 'gnu/linux)
+  :if ON-LINUX
   :custom-face
-  (default ((t :family "Source Code Pro" :height 110))))
+  (default ((t :family "Source Code Pro" :height 110)))
+  :config
+  (menu-bar-mode +1)
+  (scroll-bar-mode +1)
+  (tool-bar-mode +1))
 
 ; Windows
 (use-package emacs
   :ensure nil
-  :if (eq system-type 'windows-nt)
+  :if ON-WINDOWS
   :custom-face
   (default ((t :family "Hack" :height 90)))
   :config
@@ -103,7 +113,9 @@
 (use-package emacs
   :unless (display-graphic-p)
   :config
-  (menu-bar-mode -1))
+  (menu-bar-mode -1)
+  (scroll-bar-mode -1)
+  (tool-bar-mode -1))
 
 
 
@@ -411,10 +423,6 @@
   (define-key evil-inner-text-objects-map "J" 'evil-indent-plus-a-indent-up-down)
   (define-key evil-outer-text-objects-map "J" 'evil-indent-plus-a-indent-up-down))
 
-; TODO: bind to g-/g=/g+ (same as Doom Emacs)
-(use-package evil-numbers
-  :after evil)
-
 (use-package evil-lion
   :after evil
   :bind
@@ -424,6 +432,21 @@
    :map evil-visual-state-map
         ("gl" . evil-lion-left)
         ("gL" . evil-lion-right)))
+
+; TODO: bind to g-/g=/g+ (same as Doom Emacs)
+(use-package evil-numbers
+  :after evil)
+
+(use-package evil-org
+  :after (evil org)
+  :custom
+  (evil-org-key-theme '(navigation insert textobjects additional return))
+  (evil-org-retain-visual-state-on-shift t)
+  (evil-org-use-additional-insert t)
+  :hook
+  (org-mode . evil-org-mode)
+  :config
+  (evil-org-set-key-theme))
 
 (use-package evil-quickscope
   :after evil
@@ -513,6 +536,7 @@
 ; evil-embrace
 ; evil-exchange (http://evgeni.io/posts/quick-start-evil-mode)
 ; evil-leader
+; evil-markdown
 ; evil-mc/evil-mc-extras
 ; evil-multiedit
 ; evil-owl
@@ -665,8 +689,6 @@
 
 ;;;; Org-mode ;;;;
 
-; evil-org-mode
-
 
 
 ;;;; Git ;;;;
@@ -707,7 +729,7 @@
   :bind
   (("C-x b"    . consult-buffer)
    ("C-x p b"  . consult-project-buffer)
-   ; TODO: avoid loading major-modes when previewing recent files
+   ; TODO: avoid loading major-modes when previewing recent files (e.g. force fundamental-mode)
    ("C-x C-r"  . consult-recent-file)
    ("<help> a" . consult-apropos))
   :hook (completion-list-mode . consult-preview-at-point-mode))
@@ -746,7 +768,7 @@
 ;;;; Terminal and file management support ;;;;
 
 (use-package vterm
-  :unless (eq system-type 'windows-nt)
+  :unless ON-WINDOWS
   :commands vterm)
 
 ; dired/diredfl/ranger/dirvish
