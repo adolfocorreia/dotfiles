@@ -55,13 +55,14 @@
 (use-package emacs
   :ensure nil
   :init
-  (setq-default indent-tabs-mode nil
-                show-trailing-whitespace t)
+  (setq-default indent-tabs-mode nil)
   (setq completion-cycle-threshold 3
         display-line-numbers-type 'relative
         scroll-margin 2
         tab-always-indent 'complete)
   :config
+  (defun my/enable-show-trailing-whitespace ()
+    (setq show-trailing-whitespace t))
   (column-number-mode +1)
   (dolist
       (mode-hook
@@ -69,8 +70,9 @@
          prog-mode-hook
          text-mode-hook))
     (progn
-      (add-hook mode-hook 'display-line-numbers-mode)
-      (add-hook mode-hook 'hl-line-mode))))
+      (add-hook mode-hook #'display-line-numbers-mode)
+      (add-hook mode-hook #'hl-line-mode)
+      (add-hook mode-hook #'my/enable-show-trailing-whitespace))))
 
 
 ;; Misc settings ;;
@@ -92,7 +94,7 @@
   :ensure nil
   :if ON-LINUX
   :custom-face
-  (default ((t :family "Source Code Pro" :height 110)))
+  (default ((t :family "Hack" :height 105)))
   :config
   (menu-bar-mode +1)
   (scroll-bar-mode +1)
@@ -187,6 +189,12 @@
   :defer t
   :init
   (setq eshell-scroll-to-bottom-on-input t))
+
+(use-package eww
+  :ensure nil
+  :defer t
+  :custom
+  (browse-url-browser-function 'eww-browse-url))
 
 (use-package ibuffer
   :ensure nil
@@ -410,6 +418,9 @@
   :after evil
   :defer 1
   :config
+  ; Also pulse on evil-operator-eval
+  (add-to-list 'evil-goggles--commands
+               '(evil-operator-eval :face evil-goggles-default-face :switch t :advice evil-goggles--generic-async-advice))
   (evil-goggles-use-diff-faces)
   (evil-goggles-mode +1))
 
@@ -595,7 +606,8 @@
 ; hl-todo
 ; multicursor
 ; smartparens/evil-smartparens
-; snippets
+; yasnippets
+; tempel
 ; which-func
 ; whitespace-mode
 
@@ -623,6 +635,7 @@
   :ensure nil
   :custom
   (python-indent-offset 4)
+  (python-indent-guess-indent-offset nil)
   (python-shell-font-lock-enable nil)
   :mode
   ("\\.py\\'" . python-mode))
