@@ -1,7 +1,10 @@
 ;;; early-init.el -*- lexical-binding: t; no-byte-compile: t; -*-
 
-;; Increase garbage collector threshold during startup
+; Increase garbage collector threshold during startup
 (setq gc-cons-threshold most-positive-fixnum)
+
+; Prefer newest version when loading elisp files
+(setq load-prefer-newer t)
 
 ; Set title template for visible frames
 (setq-default frame-title-format '(multiple-frames "%b" ("" "%b - GNU Emacs")))

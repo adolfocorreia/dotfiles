@@ -18,6 +18,8 @@
 
 ;;;; Package management ;;;;
 
+;; package and use-package ;;
+
 (require 'package)
 (setq package-archives '(("melpa"  . "https://melpa.org/packages/")
                          ("org"    . "https://orgmode.org/elpa/")
@@ -33,7 +35,14 @@
 (setq use-package-always-ensure t
       use-package-compute-statistics t)
 
-; TODO: (use-package try)
+
+;; Early setup packages ;;
+
+(use-package auto-compile
+  :config
+  (auto-compile-on-load-mode +1))
+
+(use-package no-littering)
 
 
 
@@ -43,9 +52,9 @@
 
 (use-package emacs
   :ensure nil
-  :init
-  (setq initial-scratch-message nil
-        visible-bell t)
+  :custom
+  (initial-scratch-message nil)
+  (visible-bell t)
   :config
   (context-menu-mode +1))
 
@@ -56,14 +65,15 @@
   :ensure nil
   :init
   (setq-default indent-tabs-mode nil)
-  (setq completion-cycle-threshold 3
-        display-line-numbers-type 'relative
-        scroll-margin 2
-        tab-always-indent 'complete)
+  :custom
+  (completion-cycle-threshold 3)
+  (display-line-numbers-type 'relative)
+  (scroll-margin 2)
+  (tab-always-indent 'complete)
   :config
+  (column-number-mode +1)
   (defun my/enable-show-trailing-whitespace ()
     (setq show-trailing-whitespace t))
-  (column-number-mode +1)
   (dolist
       (mode-hook
        '(conf-mode-hook
@@ -79,12 +89,11 @@
 
 (use-package emacs
   :ensure nil
-  :init
-  (setq delete-by-moving-to-trash t
-        load-prefer-newer t
-        native-comp-deferred-compilation t
-        read-extended-command-predicate #'command-completion-default-include-p
-        use-short-answers t))
+  :custom
+  (delete-by-moving-to-trash t)
+  (native-comp-deferred-compilation t)
+  (read-extended-command-predicate #'command-completion-default-include-p)
+  (use-short-answers t))
 
 
 ;; System dependent settings ;;
@@ -120,53 +129,80 @@
   (tool-bar-mode -1))
 
 
+;; Window placement rules ;;
+; References:
+; - https://www.gnu.org/software/emacs/manual/html_node/elisp/Displaying-Buffers.html
+; - https://www.gnu.org/software/emacs/manual/html_node/elisp/Side-Windows.html
+
+(use-package window
+  :ensure nil
+  :custom
+  (display-buffer-alist
+    '(;; no window
+      ("\\`\\*Async Shell Command\\*\\'"
+       (display-buffer-no-window))
+      ;; top side window
+      ("\\*\\(Messages\\|package update results\\)\\*"
+       (display-buffer-in-side-window) (side . top) (slot . -1) (window-height . 0.2))
+      ("\\*\\(Warnings\\|Compile-Log\\)\\*"
+       (display-buffer-in-side-window) (side . top) (slot . +1) (window-height . 0.2))
+      ;; right side window
+      ("\\*\\(Help\\|helpful\\|Apropos\\|info\\)"
+       (display-buffer-in-side-window) (side . right) (slot . 0) (window-width . 0.3))))
+  (display-buffer-base-action
+   '((display-buffer-reuse-window
+      display-buffer-reuse-mode-window
+      display-buffer-in-previous-window))))
+
+; TODO: evaluate removing popper (e.g. window-toggle-side-windows)
+(use-package popper
+  :defer 1
+  :custom
+  (popper-display-control nil)
+  (popper-group-function #'popper-group-by-directory)
+  (popper-mode-line (propertize " POP " 'face 'mode-line-emphasis))
+  (popper-reference-buffers
+        '("\\*Messages\\*"
+          "\\*Warnings\\*"
+          "Output\\*"
+          "\\*package update results\\*"
+          help-mode
+          helpful-mode
+          apropos-mode
+          compilation-mode))
+  :config
+  (popper-mode +1)
+  (popper-echo-mode +1)
+  (global-set-key (kbd "M-`")   'popper-cycle)
+  (global-set-key (kbd "C-`")   'popper-toggle-latest)
+  (global-set-key (kbd "C-M-`") 'popper-toggle-type))
+
+; TODO: evaluate golden-ration
+
 
 ;;;; Emacs management and fixes ;;;;
-
-;; Early setup ;;
-
-(use-package gcmh
-  :config
-  (gcmh-mode +1))
-
-(use-package no-littering)
-
-(use-package auto-compile
-  :config
-  (auto-compile-on-load-mode +1))
-
-(use-package auto-package-update
-  :defer 10
-  :custom
-  (auto-package-update-delete-old-versions t)
-  (auto-package-update-hide-results t)
-  (auto-package-update-interval 5)
-  (auto-package-update-prompt-before-update t)
-  :config
-  (auto-package-update-maybe))
-
 
 ;; Built-in packages (:ensure nil) ;;
 
 (use-package apropos
   :ensure nil
   :defer t
-  :init
-  (setq apropos-do-all t))
+  :custom
+  (apropos-do-all t))
 
 (use-package autorevert
   :ensure nil
   :defer t
-  :init
-  (setq global-auto-revert-non-file-buffers t)
+  :custom
+  (global-auto-revert-non-file-buffers t)
   :config
   (global-auto-revert-mode +1))
 
 (use-package comint
   :ensure nil
   :defer t
-  :init
-  (setq comint-scroll-to-bottom-on-input t))
+  :custom
+  (comint-scroll-to-bottom-on-input t))
 
 (use-package dabbrev
   :custom
@@ -181,14 +217,14 @@
   :ensure nil
   :hook
   (dired-mode . hl-line-mode)
-  :init
-  (setq dired-auto-revert-buffer t))
+  :custom
+  (dired-auto-revert-buffer t))
 
 (use-package eshell
   :ensure nil
   :defer t
-  :init
-  (setq eshell-scroll-to-bottom-on-input t))
+  :custom
+  (eshell-scroll-to-bottom-on-input t))
 
 (use-package eww
   :ensure nil
@@ -201,8 +237,8 @@
   :commands ibuffer
   :bind
   (("C-x C-b" . ibuffer))
-  :init
-  (setq ibuffer-expert t)
+  :custom
+  (ibuffer-expert t)
   :config
   (add-hook 'ibuffer-mode-hook #'ibuffer-auto-mode)
   (add-hook 'ibuffer-mode-hook #'hl-line-mode))
@@ -210,8 +246,8 @@
 (use-package recentf
   :ensure nil
   :defer 1
-  :init
-  (setq recentf-max-saved-items 20)
+  :custom
+  (recentf-max-saved-items 20)
   :config
   (recentf-mode +1))
 
@@ -230,10 +266,12 @@
 (use-package tab-bar
   :ensure nil
   :custom
+  (tab-bar-format '(tab-bar-format-align-right tab-bar-format-history tab-bar-format-tabs tab-bar-separator tab-bar-format-add-tab))
   (tab-bar-close-button-show nil)
   (tab-bar-new-button-show nil)
+  (tab-bar-new-tab-choice "*dashboard*")
   (tab-bar-separator "  ")
-  (tab-bar-show 1)
+  (tab-bar-show nil)
   (tab-bar-tab-hints t)
   :custom-face
   (tab-bar-tab ((t :foreground nil :inherit 'link)))
@@ -245,11 +283,26 @@
 
 (use-package uniquify
   :ensure nil
-  :init
-  (setq uniquify-buffer-name-style 'forward))
+  :custom
+  (uniquify-buffer-name-style 'forward))
 
 
 ;; Community packages ;;
+
+(use-package auto-package-update
+  :defer 5
+  :custom
+  (auto-package-update-delete-old-versions t)
+  (auto-package-update-hide-results nil)
+  (auto-package-update-interval 5)
+  (auto-package-update-prompt-before-update t)
+  :config
+  (auto-package-update-maybe))
+
+(use-package gcmh
+  :defer 2
+  :config
+  (gcmh-mode +1))
 
 (use-package helpful
   :bind
@@ -269,44 +322,12 @@
   :config
   (global-page-break-lines-mode +1))
 
-(use-package popper
-  :defer 1
-  :init
-  (setq popper-group-function #'popper-group-by-directory)
-  (setq popper-mode-line (propertize " POP " 'face 'mode-line-emphasis))
-  (setq popper-reference-buffers
-        '("\\*Messages\\*"
-          "\\*Warnings\\*"
-          "Output\\*"
-          help-mode
-          helpful-mode
-          apropos-mode
-          compilation-mode))
-  :config
-  (popper-mode +1)
-  (popper-echo-mode +1)
-  (global-set-key (kbd "M-`") 'popper-cycle)
-  (global-set-key (kbd "C-`") 'popper-toggle-type))
-
-; TODO: disable popper-display-control and use shackle to create custom rules for popup placement
-; TODO: add this to shackle
-;; Override default buffer placement actions
-(setq display-buffer-base-action
-      '((display-buffer-reuse-window
-         display-buffer-reuse-mode-window
-         display-buffer-in-previous-window)))
-; TODO: evaluate popwin
-; TODO: evaluate golden-ration
-
-;; Default prefix: C-c C-w
-(use-package tabspaces
-  :defer 1
-  :config
-  (tabspaces-mode +1))
-
 ; TODO: add C-w key bindings
 (use-package transpose-frame
   :commands (transpose-frame flip-frame flop-frame rotate-frame))
+
+(use-package try
+  :commands try)
 
 (use-package unkillable-scratch
   :defer 1
@@ -333,19 +354,19 @@
 ; - https://github.com/noctuid/evil-guide
 
 (use-package evil
-  :init
-  (setq evil-respect-visual-line-mode t
-        evil-search-module 'isearch
-        evil-split-window-right t evil-vsplit-window-below t
-        evil-symbol-word-search t
-        evil-undo-system 'undo-redo
-        evil-want-C-u-scroll t
-        evil-want-C-w-in-emacs-state t
-        evil-want-Y-yank-to-eol t
-        evil-want-fine-undo t
-        evil-want-integration t
-        evil-want-keybinding nil)
-        ;; evil-want-o/O-to-continue-comments t) ; TODO: check this in Doom Emacs
+  :custom
+  (evil-respect-visual-line-mode t)
+  (evil-search-module 'isearch)
+  (evil-split-window-right t) (evil-vsplit-window-below t)
+  (evil-symbol-word-search t)
+  (evil-undo-system 'undo-redo)
+  (evil-want-C-u-scroll t)
+  (evil-want-C-w-in-emacs-state t)
+  (evil-want-Y-yank-to-eol t)
+  (evil-want-fine-undo t)
+  (evil-want-integration t)
+  (evil-want-keybinding nil)
+  ;; evil-want-o/O-to-continue-comments t ; TODO: check this in Doom Emacs
   :config
   (modify-syntax-entry ?_ "w")
 
@@ -385,7 +406,12 @@
   ; TODO: evaluate this variable
   (evil-collection-want-find-usages-bindings nil)  ; Conflicts with 'gr' binding from evil-extra-operator
   :config
-  (evil-collection-init))
+  (evil-collection-init)
+
+  ; comint mode
+  (evil-collection-define-key 'insert 'comint-mode-map
+      (kbd "C-p") #'comint-previous-input
+      (kbd "C-n") #'comint-next-input))
 ; TODO: add evil-dired hydra/transient
 ; TODO: add evil-ibuffer hydra/transient
 ; TODO: 'gt' binding for magit conflicts with evil binding for tabs
@@ -459,6 +485,18 @@
   :config
   (evil-org-set-key-theme))
 
+; Use C-f and C-b to scroll the evil-owl buffer
+(use-package evil-owl
+  :after evil
+  :custom
+  (evil-owl-display-method 'window)
+  (evil-owl-idle-delay 0.25)
+  :config
+  (add-to-list 'display-buffer-alist
+               '("*evil-owl*"
+                 (display-buffer-in-side-window) (side . bottom) (slot . 0) (window-height . 0.3)))
+  (evil-owl-mode +1))
+
 (use-package evil-quickscope
   :after evil
   :hook
@@ -468,9 +506,9 @@
 
 (use-package evil-snipe
   :after evil
-  :init
-  (setq evil-snipe-scope 'whole-visible
-        evil-snipe-repeat-scope 'whole-visible)
+  :custom
+  (evil-snipe-scope 'whole-visible)
+  (evil-snipe-repeat-scope 'whole-visible)
   :config
   (evil-snipe-mode +1)
   (evil-snipe-override-mode +1))
@@ -535,8 +573,8 @@
 (use-package winner
   :after evil
   :defer 1
-  :init
-  (setq winner-dont-bind-my-keys t)
+  :custom
+  (winner-dont-bind-my-keys t)
   :config
   (winner-mode +1)
   (define-key evil-window-map "u" 'winner-undo)
@@ -618,8 +656,8 @@
 ;; Emacs Lisp
 (use-package parinfer-rust-mode
   :hook emacs-lisp-mode
-  :init
-  (setq parinfer-rust-auto-download t))
+  :custom
+  (parinfer-rust-auto-download t))
 
 
 ;; Python
@@ -677,9 +715,9 @@
   :mode
   (("\\.[rR]\\'" . R-mode)
    ("\\.[rR]nw\\'" . Rnw-mode))
-  :init
-  (setq ess-use-flymake nil
-        ess-use-toolbar nil)
+  :custom
+  (ess-use-flymake nil)
+  (ess-use-toolbar nil)
   :config
   (require 'ess-site))
 
