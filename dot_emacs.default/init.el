@@ -64,7 +64,8 @@
 (use-package emacs
   :ensure nil
   :init
-  (setq-default indent-tabs-mode nil)
+  (setq-default indent-tabs-mode nil
+                truncate-lines t)
   :custom
   (completion-cycle-threshold 3)
   (display-line-numbers-type 'relative)
@@ -173,8 +174,8 @@
   :config
   (popper-mode +1)
   (popper-echo-mode +1)
-  (global-set-key (kbd "M-`")   'popper-cycle)
-  (global-set-key (kbd "C-`")   'popper-toggle-latest)
+  (global-set-key (kbd "C-`")   'popper-cycle)
+  (global-set-key (kbd "M-`")   'popper-toggle-latest)
   (global-set-key (kbd "C-M-`") 'popper-toggle-type))
 
 ; TODO: evaluate golden-ration
@@ -236,7 +237,7 @@
   :ensure nil
   :commands ibuffer
   :bind
-  (("C-x C-b" . ibuffer))
+  ("C-x C-b" . ibuffer)
   :custom
   (ibuffer-expert t)
   :config
@@ -266,19 +267,19 @@
 (use-package tab-bar
   :ensure nil
   :custom
-  (tab-bar-format '(tab-bar-format-align-right tab-bar-format-history tab-bar-format-tabs tab-bar-separator tab-bar-format-add-tab))
+  (tab-bar-format '(tab-bar-format-align-right tab-bar-format-tabs tab-bar-separator))
   (tab-bar-close-button-show nil)
-  (tab-bar-new-button-show nil)
-  (tab-bar-new-tab-choice "*dashboard*")
-  (tab-bar-separator "  ")
-  (tab-bar-show nil)
+  (tab-bar-new-tab-choice t)
+  (tab-bar-separator "   ")
+  (tab-bar-show +1)
   (tab-bar-tab-hints t)
   :custom-face
   (tab-bar-tab ((t :foreground nil :inherit 'link)))
   :config
-  (tab-bar-mode +1))
+  (tab-bar-mode +1)
+  (tab-bar-rename-tab "main" 1))
 ; TODO: add ibuffer tab/project filters
-; TODO: add easier bindings
+; TODO: add easier bindings (e.g. general)
 ; TODO; evaluate desktop-save-mode
 
 (use-package uniquify
@@ -298,6 +299,10 @@
   (auto-package-update-prompt-before-update t)
   :config
   (auto-package-update-maybe))
+
+; TODO: make evil bindings work with bufler
+(use-package bufler
+  :commands bufler)
 
 (use-package gcmh
   :defer 2
@@ -411,7 +416,13 @@
   ; comint mode
   (evil-collection-define-key 'insert 'comint-mode-map
       (kbd "C-p") #'comint-previous-input
-      (kbd "C-n") #'comint-next-input))
+      (kbd "C-n") #'comint-next-input)
+
+  ; dashboard mode
+  (evil-collection-define-key 'normal 'dashboard-mode-map
+      (kbd "C-p") #'dashboard-previous-line
+      (kbd "C-n") #'dashboard-next-line))
+
 ; TODO: add evil-dired hydra/transient
 ; TODO: add evil-ibuffer hydra/transient
 ; TODO: 'gt' binding for magit conflicts with evil binding for tabs
@@ -748,8 +759,11 @@
 (use-package magit
   :commands magit-status
   :bind
-  (("C-x g" . magit-status)))
-; TODO: open magit buffers in new tab (evaluate magit-display-buffer-function and display-buffer-in-new-tab)
+  ("C-x g" . magit-status)
+  :config
+  (add-to-list 'display-buffer-alist
+               '("magit:"
+                 (display-buffer-in-tab) (tab-name . "magit"))))
 
 ; diff-hl
 ; git gutter
