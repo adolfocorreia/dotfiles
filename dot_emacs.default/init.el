@@ -55,6 +55,8 @@
   :custom
   (initial-scratch-message nil)
   (visible-bell t)
+  :init
+  (setq-default cursor-in-non-selected-windows nil)
   :config
   (context-menu-mode +1))
 
@@ -174,9 +176,9 @@
   :config
   (popper-mode +1)
   (popper-echo-mode +1)
-  (global-set-key (kbd "C-`")   'popper-cycle)
-  (global-set-key (kbd "M-`")   'popper-toggle-latest)
-  (global-set-key (kbd "C-M-`") 'popper-toggle-type))
+  (bind-key "C-`"   #'popper-cycle)
+  (bind-key "M-`"   #'popper-toggle-latest)
+  (bind-key "C-M-`" #'popper-toggle-type))
 
 ; TODO: evaluate golden-ration
 
@@ -211,12 +213,13 @@
                                     "\\`\\*"
                                     "\\*\\'"))
   :bind
-  (("M-/" . dabbrev-completion)
-   ("C-M-/" . dabbrev-expand)))
+  ("M-/" . dabbrev-completion)
+  ("C-M-/" . dabbrev-expand))
 
 (use-package dired
   :ensure nil
   :hook
+  (dired-mode . display-line-numbers-mode)
   (dired-mode . hl-line-mode)
   :custom
   (dired-auto-revert-buffer t))
@@ -267,14 +270,12 @@
 (use-package tab-bar
   :ensure nil
   :custom
-  (tab-bar-format '(tab-bar-format-align-right tab-bar-format-tabs tab-bar-separator))
+  (tab-bar-format '(tab-bar-format-align-right tab-bar-format-tabs-groups tab-bar-separator))
   (tab-bar-close-button-show nil)
-  (tab-bar-new-tab-choice t)
+  (tab-bar-new-tab-choice "*dashboard*")
   (tab-bar-separator "   ")
   (tab-bar-show +1)
   (tab-bar-tab-hints t)
-  :custom-face
-  (tab-bar-tab ((t :foreground nil :inherit 'link)))
   :config
   (tab-bar-mode +1)
   (tab-bar-rename-tab "main" 1))
@@ -327,6 +328,14 @@
   :config
   (global-page-break-lines-mode +1))
 
+(use-package project-tab-groups
+  :config
+  (project-tab-groups-mode +1))
+
+(use-package tab-bar-echo-area
+  :config
+  (tab-bar-echo-area-mode +1))
+
 ; TODO: add C-w key bindings
 (use-package transpose-frame
   :commands (transpose-frame flip-frame flop-frame rotate-frame))
@@ -377,27 +386,29 @@
 
   (evil-mode +1)
 
-  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+  (evil-define-key nil evil-insert-state-map (kbd "C-g") #'evil-normal-state)
 
   ; Use readline-like bindings in insert state
-  (define-key evil-insert-state-map (kbd "C-a") 'move-beginning-of-line)
-  (define-key evil-insert-state-map (kbd "C-e") 'move-end-of-line)
-  (define-key evil-insert-state-map (kbd "M-n") 'next-line)
-  (define-key evil-insert-state-map (kbd "M-p") 'previous-line)
-  (define-key evil-insert-state-map (kbd "C-d") 'delete-char)
-  (define-key evil-insert-state-map (kbd "C-h") 'delete-backward-char)
-  (define-key evil-insert-state-map (kbd "C-y") 'yank)
+  (evil-define-key nil evil-insert-state-map
+    (kbd "C-a") #'move-beginning-of-line
+    (kbd "C-e") #'move-end-of-line
+    (kbd "M-n") #'next-line
+    (kbd "M-p") #'previous-line
+    (kbd "C-d") #'delete-char
+    (kbd "C-h") #'delete-backward-char
+    (kbd "C-y") #'yank)
 
   ; C-w extra bindings
-  (define-key evil-window-map "`" 'evil-switch-to-windows-last-buffer)
-  (define-key evil-window-map "1" 'winum-select-window-1)
-  (define-key evil-window-map "2" 'winum-select-window-2)
-  (define-key evil-window-map "3" 'winum-select-window-3)
-  (define-key evil-window-map "4" 'winum-select-window-4)
-  (define-key evil-window-map "5" 'winum-select-window-5)
+  (evil-define-key nil evil-window-map
+    "`" #'evil-switch-to-windows-last-buffer
+    "1" #'winum-select-window-1
+    "2" #'winum-select-window-2
+    "3" #'winum-select-window-3
+    "4" #'winum-select-window-4
+    "5" #'winum-select-window-5)
 
   ; Open Dired buffer
-  (define-key evil-normal-state-map (kbd "-") 'dired-jump)
+  (evil-define-key nil evil-normal-state-map "-" #'dired-jump)
 
   ; Select new window after evil split)
   (defun my/other-window (&rest _)
@@ -423,8 +434,8 @@
       (kbd "C-p") #'dashboard-previous-line
       (kbd "C-n") #'dashboard-next-line))
 
-; TODO: add evil-dired hydra/transient
-; TODO: add evil-ibuffer hydra/transient
+; TODO: add evil-dired transient
+; TODO: add evil-ibuffer transient
 ; TODO: 'gt' binding for magit conflicts with evil binding for tabs
 
 (use-package evil-anzu
@@ -435,21 +446,19 @@
 (use-package evil-args
   :after evil
   :config
-  (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
-  (define-key evil-outer-text-objects-map "a" 'evil-outer-arg))
+  (evil-define-key nil evil-inner-text-objects-map "a" #'evil-inner-arg)
+  (evil-define-key nil evil-outer-text-objects-map "a" #'evil-outer-arg))
 
 ; TODO: evaluate evil-nerd-commenter
 (use-package evil-commentary
   :after evil
-  :bind
-  (:map evil-normal-state-map
-        ("gc" . evil-commentary)))
+  :config
+  (evil-define-key nil evil-normal-state-map "gc" #'evil-commentary))
 
 (use-package evil-extra-operator
   :after evil
-  :bind
-  (:map evil-motion-state-map
-        ("gr" . evil-operator-eval)))
+  :config
+  (evil-define-key nil evil-motion-state-map "gr" #'evil-operator-eval))
 
 (use-package evil-goggles
   :after evil
@@ -464,22 +473,25 @@
 (use-package evil-indent-plus
   :after evil
   :config
-  (define-key evil-inner-text-objects-map "i" 'evil-indent-plus-i-indent)
-  (define-key evil-outer-text-objects-map "i" 'evil-indent-plus-a-indent)
-  (define-key evil-inner-text-objects-map "I" 'evil-indent-plus-i-indent-up)
-  (define-key evil-outer-text-objects-map "I" 'evil-indent-plus-i-indent-up)
-  (define-key evil-inner-text-objects-map "J" 'evil-indent-plus-a-indent-up-down)
-  (define-key evil-outer-text-objects-map "J" 'evil-indent-plus-a-indent-up-down))
+  (evil-define-key nil evil-inner-text-objects-map
+    "i" #'evil-indent-plus-i-indent
+    "I" #'evil-indent-plus-i-indent-up
+    "J" #'evil-indent-plus-a-indent-up-down)
+  (evil-define-key nil evil-outer-text-objects-map
+    "i" #'evil-indent-plus-a-indent
+    "I" #'evil-indent-plus-i-indent-up
+    "J" #'evil-indent-plus-a-indent-up-down))
 
+; Usage: gl MOTION CHAR or gl MOTION / REGEX
 (use-package evil-lion
   :after evil
-  :bind
-  (:map evil-normal-state-map
-        ("gl" . evil-lion-left)
-        ("gL" . evil-lion-right)
-   :map evil-visual-state-map
-        ("gl" . evil-lion-left)
-        ("gL" . evil-lion-right)))
+  :config
+  (evil-define-key nil evil-normal-state-map
+    "gl" #'evil-lion-left
+    "gL" #'evil-lion-right)
+  (evil-define-key nil evil-visual-state-map
+    "gl" #'evil-lion-left
+    "gL" #'evil-lion-right))
 
 ; TODO: bind to g-/g=/g+ (same as Doom Emacs)
 (use-package evil-numbers
@@ -532,35 +544,37 @@
    evil-surround-region
    evil-Surround-region)
   :init
-  (evil-define-key 'operator global-map "s"  'evil-surround-edit)
-  (evil-define-key 'operator global-map "S"  'evil-Surround-edit)
-  (evil-define-key 'visual global-map   "S"  'evil-surround-region)
-  (evil-define-key 'visual global-map   "gS" 'evil-Surround-region))
+  (evil-define-key 'operator global-map
+    "s" #'evil-surround-edit
+    "S" #'evil-Surround-edit)
+  (evil-define-key 'visual global-map
+    "S"  #'evil-surround-region
+    "gS" #'evil-Surround-region))
 
 (use-package evil-textobj-anyblock
   :after evil
   :config
-  (define-key evil-inner-text-objects-map "b" 'evil-textobj-anyblock-inner-block)
-  (define-key evil-outer-text-objects-map "b" 'evil-textobj-anyblock-a-block))
+  (evil-define-key nil evil-inner-text-objects-map "b" #'evil-textobj-anyblock-inner-block)
+  (evil-define-key nil evil-outer-text-objects-map "b" #'evil-textobj-anyblock-a-block))
 
 (use-package evil-textobj-entire
   :after evil
   :config
-  (define-key evil-inner-text-objects-map "e" 'evil-entire-entire-buffer)
-  (define-key evil-outer-text-objects-map "e" 'evil-entire-entire-buffer))
+  (evil-define-key nil evil-inner-text-objects-map "e" #'evil-entire-entire-buffer)
+  (evil-define-key nil evil-outer-text-objects-map "e" #'evil-entire-entire-buffer))
 
 (use-package evil-visualstar
   :after evil
-  :bind
-  (:map evil-visual-state-map
-        ("*" . evil-visualstar/begin-search-forward)
-        ("#" . evil-visualstar/begin-search-backward)))
+  :config
+  (evil-define-key nil evil-visual-state-map
+    "*" #'evil-visualstar/begin-search-forward
+    "#" #'evil-visualstar/begin-search-backward))
 
 (use-package ace-window
   :after evil
   :defer 1
   :config
-  (define-key evil-window-map "a" 'ace-window))
+  (evil-define-key nil evil-window-map "a" #'ace-window))
 
 (use-package avy
   :after evil
@@ -574,12 +588,12 @@
     (interactive)
     ; Calling avy functions with an argument negates the current setting of 'avy-all-windows'
     (avy-goto-char-timer t))
-  :bind
-  (:map evil-normal-state-map
-        ("gsl"    . 'evil-avy-goto-line)
-        ("gsw"    . 'evil-avy-goto-word-1)
-        ("gss"    . 'evil-avy-goto-char-2)
-        ("gs SPC" . 'my/goto-char-timer)))
+  :config
+  (evil-define-key nil evil-normal-state-map
+    "gsl"    #'evil-avy-goto-line
+    "gsw"    #'evil-avy-goto-word-1
+    "gss"    #'evil-avy-goto-char-2
+    "gs SPC" #'my/goto-char-timer))
 
 (use-package winner
   :after evil
@@ -588,18 +602,17 @@
   (winner-dont-bind-my-keys t)
   :config
   (winner-mode +1)
-  (define-key evil-window-map "u" 'winner-undo)
-  (define-key evil-window-map "U" 'winner-redo))
+  (evil-define-key nil evil-window-map
+    "u" #'winner-undo
+    "U" #'winner-redo))
 ; TODO: evaluate tab-bar-history-mode
 
 ; evil-cleverparens
 ; evil-embrace
 ; evil-exchange (http://evgeni.io/posts/quick-start-evil-mode)
-; evil-leader
 ; evil-markdown
 ; evil-mc/evil-mc-extras
 ; evil-multiedit
-; evil-owl
 ; evil-quick-diff
 ; evil-replace-with-register
 ; evil-string-inflection
@@ -612,6 +625,10 @@
 
 ;;;; Editing helps ;;;;
 
+(use-package apheleia
+  :hook
+  (prog-mode . apheleia-mode))
+
 (use-package expand-region
   :bind
   ("C-=" . er/expand-region))
@@ -621,10 +638,6 @@
   :config
   (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
 ; TODO: evaluate flycheck
-
-(use-package format-all
-  :hook
-  (prog-mode . format-all-mode))
 
 
 ;; LSP
@@ -724,8 +737,8 @@
 ;; ESS
 (use-package ess
   :mode
-  (("\\.[rR]\\'" . R-mode)
-   ("\\.[rR]nw\\'" . Rnw-mode))
+  ("\\.[rR]\\'" . R-mode)
+  ("\\.[rR]nw\\'" . Rnw-mode)
   :custom
   (ess-use-flymake nil)
   (ess-use-toolbar nil)
@@ -792,17 +805,17 @@
 
 (use-package consult
   :bind
-  (("C-x b"    . consult-buffer)
-   ("C-x p b"  . consult-project-buffer)
-   ; TODO: avoid loading major-modes when previewing recent files (e.g. force fundamental-mode)
-   ("C-x C-r"  . consult-recent-file)
-   ("<help> a" . consult-apropos))
+  ("C-x b"    . consult-buffer)
+  ("C-x p b"  . consult-project-buffer)
+  ; TODO: avoid loading major-modes when previewing recent files (e.g. force fundamental-mode)
+  ("C-x C-r"  . consult-recent-file)
+  ("<help> a" . consult-apropos)
   :hook (completion-list-mode . consult-preview-at-point-mode))
 
 (use-package embark
   :bind
-  (("C-;"   . embark-act)
-   ("C-x B" . embark-bindings)))
+  ("C-;"   . embark-act)
+  ("C-x B" . embark-bindings))
 
 (use-package embark-consult
   :after (embark consult))
@@ -878,15 +891,21 @@
   :config
   (which-key-mode +1))
 
-; hydra
-
 
 
 ;;;; Keybindings ;;;;
 
+; References:
+; - https://www.masteringemacs.org/article/mastering-key-bindings-emacs
+
+; - M-x describe-bindings
+; - M-x describe-mode
+; - M-x describe-personal-keybidings
+; - PREFIX C-h / F1
+
 ;; Make ESC quit prompts
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+(bind-key "<escape>" #'keyboard-escape-quit)
 
 ;; Kill current buffer
-(global-set-key (kbd "C-x C-k") 'kill-this-buffer)
+(bind-key "C-x C-k" #'kill-this-buffer)
 
