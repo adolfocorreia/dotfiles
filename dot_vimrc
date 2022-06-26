@@ -109,6 +109,7 @@ set noshowmode
 set nowrap
 set nrformats+=alpha
 set number
+set omnifunc=syntaxcomplete#Complete
 set relativenumber
 set scrolloff=2
 set sidescrolloff=5

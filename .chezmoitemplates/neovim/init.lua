@@ -79,7 +79,7 @@ if ok_impatient then impatient.enable_profile() end
 -- Install packer if not present.
 -- Reference: https://github.com/wbthomason/packer.nvim#bootstrapping
 local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
-if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
+if vim.fn.empty(vim.fn.glob(install_path, nil, nil)) > 0 then
   local url = 'https://github.com/wbthomason/packer.nvim'
   PACKER_BOOTSTRAP = vim.fn.system({'git', 'clone', '--depth', '1', url, install_path})
   vim.cmd('packadd packer.nvim')
@@ -608,13 +608,10 @@ require('packer').startup({function(use)
           end,
         },
         -- TODO: improve mappings / read :h ins-completion
-        -- Default mappings: https://github.com/hrsh7th/nvim-cmp/blob/main/lua/cmp/config/default.lua
+        -- Default mappings: https://github.com/hrsh7th/nvim-cmp/blob/main/lua/cmp/config/mapping.lua
         mapping = cmp.mapping.preset.insert({
           ['<PageDown>'] = cmp.mapping.scroll_docs(4),
           ['<PageUp>']   = cmp.mapping.scroll_docs(-4),
-          -- <C-e> conflicts with vim-rsi
-          ['<C-e>'] = cmp.config.disable,
-          ['<C-z>'] = cmp.mapping(cmp.mapping.abort(), { 'i' }),
         }),
         sources = cmp.config.sources(
         {
