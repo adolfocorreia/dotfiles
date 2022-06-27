@@ -1361,26 +1361,11 @@ vim.cmd([[
 
 -- Terminal escaping mapping.
 vim.cmd([[
-  tnoremap <C-s> <C-\><C-n>
+  tnoremap <C-g> <C-\><C-n>
 ]])
 
 
 -- Window navigation mappings.
-vim.cmd([[
-  tnoremap <M-h> <C-\><C-n><C-w>h
-  tnoremap <M-j> <C-\><C-n><C-w>j
-  tnoremap <M-k> <C-\><C-n><C-w>k
-  tnoremap <M-l> <C-\><C-n><C-w>l
-  inoremap <M-h> <C-\><C-n><C-w>h
-  inoremap <M-j> <C-\><C-n><C-w>j
-  inoremap <M-k> <C-\><C-n><C-w>k
-  inoremap <M-l> <C-\><C-n><C-w>l
-  nnoremap <M-h> <C-w>h
-  nnoremap <M-j> <C-w>j
-  nnoremap <M-k> <C-w>k
-  nnoremap <M-l> <C-w>l
-]])
-
 vim.cmd([[
   tnoremap <M-Left>  <C-\><C-n><C-w>h
   tnoremap <M-Down>  <C-\><C-n><C-w>j
