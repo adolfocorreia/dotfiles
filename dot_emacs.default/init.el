@@ -132,7 +132,100 @@
   (tool-bar-mode -1))
 
 
-;; Window placement rules ;;
+
+;;;; Keybindings ;;;;
+
+; References:
+; - https://www.gnu.org/software/emacs/manual/html_node/emacs/Key-Bindings.html
+; - https://www.masteringemacs.org/article/mastering-key-bindings-emacs
+; - https://github.com/noctuid/evil-guide#keybindings-and-states
+
+; - M-x describe-bindings
+; - M-x describe-mode
+; - M-x describe-personal-keybindings
+; - M-x general-describe-keybindings
+; - PREFIX C-h / F1
+
+; TODO: evaluate replacing bind-key for general
+(use-package bind-key
+  :config
+  ;; Make ESC quit prompts
+  (bind-key "<escape>" #'keyboard-escape-quit)
+
+  ;; Kill current buffer
+  (bind-key "C-x C-k" #'kill-this-buffer))
+
+
+(use-package general
+  :config
+
+  (general-def
+    :prefix "C-c"
+
+    "C-u" #'universal-argument
+    "R"   #'restart-emacs
+
+    ; TODO: consult/search
+    "SPC" #'consult-buffer
+
+    ; TODO: lsp
+
+    ; TODO: improve project bindings
+    "p" '(:keymap project-prefix-map :which-key "project"))
+
+  (general-def
+    :prefix "C-w"
+    :prefix-map 'evil-window-map
+
+    "TAB"     '(:ignore t :which-key "tabs")
+    "TAB RET" #'tab-switch
+    "TAB `"   #'tab-bar-switch-to-last-tab
+    "TAB n"   #'tab-next
+    "TAB p"   #'tab-previous
+    "TAB r"   #'tab-rename
+    "TAB u"   #'tab-undo
+    "TAB c"   #'tab-close
+    "TAB D"   #'tab-duplicate
+    "TAB N"   #'tab-new
+    "TAB b"   #'switch-to-buffer-other-tab
+    "TAB d"   #'dired-other-tab
+    "TAB f"   #'find-file-other-tab
+    "TAB P"   #'project-other-tab-command
+    "TAB 1"   '((lambda () (interactive) (tab-bar-select-tab 1)) :which-key "goto-tab-1")
+    "TAB 2"   '((lambda () (interactive) (tab-bar-select-tab 2)) :which-key "goto-tab-2")
+    "TAB 3"   '((lambda () (interactive) (tab-bar-select-tab 3)) :which-key "goto-tab-3")
+    "TAB 4"   '((lambda () (interactive) (tab-bar-select-tab 4)) :which-key "goto-tab-4")
+    "TAB 5"   '((lambda () (interactive) (tab-bar-select-tab 5)) :which-key "goto-tab-5"))
+
+  ; Prefix renaming
+  (general-def
+    :prefix "C-x"
+    "RET" '(:ignore t :which-key "coding-system")
+    "4"   '(:ignore t :which-key "other-window")
+    "5"   '(:ignore t :which-key "other-frame")
+    "6"   '(:ignore t :which-key "two-column")
+    "8"   '(:ignore t :which-key "unicode")
+    "X"   '(:ignore t :which-key "edebug")
+    "a"   '(:ignore t :which-key "abbrev")
+    "ai"  '(:ignore t :which-key "inverse")
+    "n"   '(:ignore t :which-key "narrow")
+    "p"   '(:ignore t :which-key "project")
+    "r"   '(:ignore t :which-key "register/rectangle")
+    "t"   '(:ignore t :which-key "tab")
+    "v"   '(:ignore t :which-key "vc")
+    "w"   '(:ignore t :which-key "winum")
+    "x"   '(:ignore t :which-key "buffer")
+    "C-a" '(:ignore t :which-key "edebug"))
+
+  (dolist (prefix '("C-h" "<f1>"))
+    (general-def
+      :prefix prefix
+      "4" '(:ignore t :which-key "other-window"))))
+
+
+
+;;;; Window placement rules ;;;;
+
 ; References:
 ; - https://www.gnu.org/software/emacs/manual/html_node/elisp/Displaying-Buffers.html
 ; - https://www.gnu.org/software/emacs/manual/html_node/elisp/Side-Windows.html
@@ -346,10 +439,6 @@
   :config
   (tab-bar-echo-area-mode +1))
 
-; TODO: add C-w key bindings
-(use-package transpose-frame
-  :commands (transpose-frame flip-frame flop-frame rotate-frame))
-
 (use-package try
   :commands try)
 
@@ -444,7 +533,6 @@
 
 ; TODO: add evil-dired transient
 ; TODO: add evil-ibuffer transient
-; TODO: 'gt' binding for magit conflicts with evil binding for tabs
 
 (use-package evil-anzu
   :after evil
@@ -457,7 +545,6 @@
   (define-key evil-inner-text-objects-map "a" #'evil-inner-arg)
   (define-key evil-outer-text-objects-map "a" #'evil-outer-arg))
 
-; TODO: evaluate evil-nerd-commenter
 (use-package evil-commentary
   :after evil
   :config
@@ -497,9 +584,11 @@
   (define-key evil-visual-state-map "gl" #'evil-lion-left)
   (define-key evil-visual-state-map "gL" #'evil-lion-right))
 
-; TODO: bind to g-/g=/g+ (same as Doom Emacs)
 (use-package evil-numbers
-  :after evil)
+  :after evil
+  :config
+  (define-key evil-normal-state-map "g-" #'evil-numbers/dec-at-pt)
+  (define-key evil-normal-state-map "g=" #'evil-numbers/inc-at-pt))
 
 (use-package evil-org
   :after (evil org)
@@ -515,6 +604,7 @@
 ; Use C-f and C-b to scroll the evil-owl buffer
 (use-package evil-owl
   :after evil
+  :defer 1
   :custom
   (evil-owl-display-method 'window)
   (evil-owl-idle-delay 0.25)
@@ -617,6 +707,12 @@
   (define-key evil-normal-state-map "gss"    #'evil-avy-goto-char-2)
   (define-key evil-normal-state-map "gs SPC" #'my/goto-char-timer))
 
+(use-package transpose-frame
+  :after evil
+  :defer 1
+  :config
+  (define-key evil-window-map "T" #'transpose-frame))
+
 (use-package winner
   :after evil
   :defer 1
@@ -702,7 +798,9 @@
 (use-package parinfer-rust-mode
   :hook emacs-lisp-mode
   :custom
-  (parinfer-rust-auto-download t))
+  (parinfer-rust-auto-download t)
+  :config
+  (general-def :prefix "C-c" "C-p" '(:ignore t :which-key "parinfer")))
 
 
 ;; Python
@@ -721,7 +819,9 @@
   (python-indent-guess-indent-offset nil)
   (python-shell-font-lock-enable nil)
   :mode
-  ("\\.py\\'" . python-mode))
+  ("\\.py\\'" . python-mode)
+  :config
+  (general-def :prefix "C-c" "C-t" '(:ignore t :which-key "python-skeleton")))
 
 (use-package anaconda-mode
   :hook
@@ -793,6 +893,9 @@
 
 ;; Magit
 (use-package magit
+  :bind
+  ("C-x g" . magit-status)
+  ("C-c g" . magit-file-dispatch)
   :commands magit-status
   :custom
   (magit-define-global-key-bindings nil)
@@ -828,7 +931,6 @@
 
 (use-package consult
   :bind
-  ; TODO: avoid loading major-modes when previewing recent files (e.g. force fundamental-mode)
   ("C-x C-r"  . consult-recent-file)
   ([remap apropos-command] . consult-apropos)
   :hook (completion-list-mode . consult-preview-at-point-mode))
@@ -911,68 +1013,3 @@
 (use-package which-key
   :config
   (which-key-mode +1))
-
-
-
-;;;; Keybindings ;;;;
-
-; References:
-; - https://www.gnu.org/software/emacs/manual/html_node/emacs/Key-Bindings.html
-; - https://www.masteringemacs.org/article/mastering-key-bindings-emacs
-; - https://github.com/noctuid/evil-guide#keybindings-and-states
-
-; - M-x describe-bindings
-; - M-x describe-mode
-; - M-x describe-personal-keybindings
-; - M-x general-describe-keybindings
-; - PREFIX C-h / F1
-
-;; Make ESC quit prompts
-(bind-key "<escape>" #'keyboard-escape-quit)
-
-;; Kill current buffer
-(bind-key "C-x C-k" #'kill-this-buffer)
-
-; TODO: evaluate alternatives (e.g. emacs-magus/familiar)
-(use-package general
-  :config
-  (general-evil-setup t)
-
-  (general-def
-    :prefix "C-c"
-
-    "C-u" #'universal-argument
-    "R"   #'restart-emacs
-
-    ; TODO: consult/search
-    "SPC" #'consult-buffer
-
-    ; TODO: add switch to tab by number (e.g. using tab-bar-select-tab)
-    "TAB"     '(:ignore t :which-key "tab")
-    "TAB TAB" #'tab-bar-select-tab
-    "TAB RET" #'tab-switch
-    "TAB `"   #'tab-bar-switch-to-last-tab
-    "TAB n"   #'tab-next
-    "TAB p"   #'tab-previous
-    "TAB r"   #'tab-rename
-    "TAB u"   #'tab-undo
-    "TAB c"   #'tab-close
-    "TAB D"   #'tab-duplicate
-    "TAB N"   #'tab-new
-    "TAB b"   #'switch-to-buffer-other-tab
-    "TAB d"   #'dired-other-tab
-    "TAB f"   #'find-file-other-tab
-    "TAB P"   #'project-other-tab-command
-
-    "g"  '(:ignore t :which-key "git")
-    "gg" #'magit-status
-    "gs" #'magit-status
-    "gd" #'magit-diff
-    "gl" #'magit-log-buffer-file
-    "gL" #'magit-log
-    "gb" #'magit-blame
-
-    ; TODO: lsp
-
-    ; TODO: improve this
-    "p" '(:keymap project-prefix-map :which-key "project")))
