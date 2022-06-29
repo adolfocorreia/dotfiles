@@ -419,14 +419,18 @@ require('packer').startup({function(use)
       require('nvim-treesitter.configs').setup({
         ensure_installed = {
           'bash',
+          'comment',
           'fish',
           'haskell',
           'help',
           'json',
           'julia',
           'lua',
+          'markdown',
+          'org',
           'python',
           'r',
+          'rst',
           'toml',
           'vim',
           'yaml',
