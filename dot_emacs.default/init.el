@@ -173,31 +173,7 @@
     ; TODO: improve project bindings
     "p" '(:keymap project-prefix-map :which-key "project"))
 
-  (general-def
-    :prefix "C-w"
-    :prefix-map 'evil-window-map
-
-    "TAB"     '(:ignore t :which-key "tabs")
-    "TAB RET" #'tab-switch
-    "TAB `"   #'tab-bar-switch-to-last-tab
-    "TAB n"   #'tab-next
-    "TAB p"   #'tab-previous
-    "TAB r"   #'tab-rename
-    "TAB u"   #'tab-undo
-    "TAB c"   #'tab-close
-    "TAB D"   #'tab-duplicate
-    "TAB N"   #'tab-new
-    "TAB b"   #'switch-to-buffer-other-tab
-    "TAB d"   #'dired-other-tab
-    "TAB f"   #'find-file-other-tab
-    "TAB P"   #'project-other-tab-command
-    "TAB 1"   '((lambda () (interactive) (tab-bar-select-tab 1)) :which-key "goto-tab-1")
-    "TAB 2"   '((lambda () (interactive) (tab-bar-select-tab 2)) :which-key "goto-tab-2")
-    "TAB 3"   '((lambda () (interactive) (tab-bar-select-tab 3)) :which-key "goto-tab-3")
-    "TAB 4"   '((lambda () (interactive) (tab-bar-select-tab 4)) :which-key "goto-tab-4")
-    "TAB 5"   '((lambda () (interactive) (tab-bar-select-tab 5)) :which-key "goto-tab-5"))
-
-  ; Prefix renaming
+  ; Prefix renaming (which-key)
   (general-def
     :prefix "C-x"
     "RET" '(:ignore t :which-key "coding-system")
@@ -503,6 +479,29 @@
   (define-key evil-window-map "3" #'winum-select-window-3)
   (define-key evil-window-map "4" #'winum-select-window-4)
   (define-key evil-window-map "5" #'winum-select-window-5)
+
+  (general-def
+    :prefix "C-w"
+    :prefix-map 'evil-window-map
+    "TAB"     '(:ignore t :which-key "tabs")
+    "TAB RET" #'tab-switch
+    "TAB `"   #'tab-bar-switch-to-last-tab
+    "TAB n"   #'tab-next
+    "TAB p"   #'tab-previous
+    "TAB r"   #'tab-rename
+    "TAB u"   #'tab-undo
+    "TAB c"   #'tab-close
+    "TAB D"   #'tab-duplicate
+    "TAB N"   #'tab-new
+    "TAB b"   #'switch-to-buffer-other-tab
+    "TAB d"   #'dired-other-tab
+    "TAB f"   #'find-file-other-tab
+    "TAB P"   #'project-other-tab-command
+    "TAB 1"   '((lambda () (interactive) (tab-bar-select-tab 1)) :which-key "goto-tab-1")
+    "TAB 2"   '((lambda () (interactive) (tab-bar-select-tab 2)) :which-key "goto-tab-2")
+    "TAB 3"   '((lambda () (interactive) (tab-bar-select-tab 3)) :which-key "goto-tab-3")
+    "TAB 4"   '((lambda () (interactive) (tab-bar-select-tab 4)) :which-key "goto-tab-4")
+    "TAB 5"   '((lambda () (interactive) (tab-bar-select-tab 5)) :which-key "goto-tab-5"))
 
   ; Open Dired buffer
   (define-key evil-normal-state-map "-" #'dired-jump)
@@ -992,8 +991,7 @@
   (dashboard-startup-banner 'logo)
   (dashboard-items '((recents   . 10)
                      (projects  .  5)
-                     (bookmarks .  5)
-                     (registers .  5)))
+                     (bookmarks .  5)))
   :init
   (setq initial-buffer-choice (lambda () (if (buffer-file-name) (current-buffer) (get-buffer "*dashboard*"))))
   :config
