@@ -164,9 +164,7 @@
 
     "C-u" #'universal-argument
     "R"   #'restart-emacs
-
-    ; TODO: consult/search
-    "SPC" #'consult-buffer
+    "h"   #'major-mode-hydra
 
     ; TODO: lsp
 
@@ -186,7 +184,7 @@
     "ai"  '(:ignore t :which-key "inverse")
     "n"   '(:ignore t :which-key "narrow")
     "p"   '(:ignore t :which-key "project")
-    "r"   '(:ignore t :which-key "register/rectangle")
+    "r"   '(:ignore t :which-key "register/bookmark")
     "t"   '(:ignore t :which-key "tab")
     "v"   '(:ignore t :which-key "vc")
     "w"   '(:ignore t :which-key "winum")
@@ -200,31 +198,34 @@
 
 
 
-;;;; Window placement rules ;;;;
+;;;; Windows, interface elements, visual editing helpers and themes ;;;;
 
-; References:
-; - https://www.gnu.org/software/emacs/manual/html_node/elisp/Displaying-Buffers.html
-; - https://www.gnu.org/software/emacs/manual/html_node/elisp/Side-Windows.html
+(use-package all-the-icons
+  :if (display-graphic-p))
 
-(use-package window
-  :ensure nil
+(use-package dashboard
   :custom
-  (display-buffer-alist
-    '(;; no window
-      ("\\`\\*Async Shell Command\\*\\'"
-       (display-buffer-no-window))
-      ;; top side window
-      ("\\*\\(Messages\\|package update results\\)\\*"
-       (display-buffer-in-side-window) (side . top) (slot . -1) (window-height . 0.3))
-      ("\\*\\(Warnings\\|Compile-Log\\)\\*"
-       (display-buffer-in-side-window) (side . top) (slot . +1) (window-height . 0.3))
-      ;; right side window
-      ("\\*\\(Help\\|helpful\\|Apropos\\|info\\)"
-       (display-buffer-in-side-window) (side . right) (slot . 0) (window-width . 0.3))))
-  (display-buffer-base-action
-   '((display-buffer-reuse-window
-      display-buffer-reuse-mode-window
-      display-buffer-in-previous-window))))
+  (dashboard-center-content t)
+  (dashboard-projects-backend 'project-el)
+  (dashboard-startup-banner 'logo)
+  (dashboard-items '((recents   . 10)
+                     (projects  .  5)
+                     (bookmarks .  5)))
+  :init
+  (setq initial-buffer-choice (lambda () (if (buffer-file-name) (current-buffer) (get-buffer "*dashboard*"))))
+  :config
+  (dashboard-setup-startup-hook))
+
+(use-package doom-modeline
+  :custom
+  (doom-modeline-height 30)
+  (doom-modeline-minor-modes t)
+  :config
+  (doom-modeline-mode +1))
+
+(use-package doom-themes
+  :config
+  (load-theme 'doom-tokyo-night t))
 
 ; TODO: evaluate removing popper (e.g. window-toggle-side-windows)
 (use-package popper
@@ -249,7 +250,41 @@
   (bind-key "M-`"   #'popper-toggle-latest)
   (bind-key "C-M-`" #'popper-toggle-type))
 
+(use-package major-mode-hydra
+  :custom
+  (major-mode-hydra-invisible-quit-key "q")
+  (major-mode-hydra-separator "-"))
+
+(use-package which-key
+  :config
+  (which-key-mode +1))
+
+; Window placement rules
+; References:
+; - https://www.gnu.org/software/emacs/manual/html_node/elisp/Displaying-Buffers.html
+; - https://www.gnu.org/software/emacs/manual/html_node/elisp/Side-Windows.html
+(use-package window
+  :ensure nil
+  :custom
+  (display-buffer-alist
+    '(;; no window
+      ("\\`\\*Async Shell Command\\*\\'"
+       (display-buffer-no-window))
+      ;; top side window
+      ("\\*\\(Messages\\|package update results\\)\\*"
+       (display-buffer-in-side-window) (side . top) (slot . -1) (window-height . 0.3))
+      ("\\*\\(Warnings\\|Compile-Log\\)\\*"
+       (display-buffer-in-side-window) (side . top) (slot . +1) (window-height . 0.3))
+      ;; right side window
+      ("\\*\\(Help\\|helpful\\|Apropos\\|info\\)"
+       (display-buffer-in-side-window) (side . right) (slot . 0) (window-width . 0.3))))
+  (display-buffer-base-action
+   '((display-buffer-reuse-window
+      display-buffer-reuse-mode-window
+      display-buffer-in-previous-window))))
+
 ; TODO: evaluate golden-ration
+
 
 
 ;;;; Emacs management and fixes ;;;;
@@ -291,7 +326,24 @@
   (dired-mode . display-line-numbers-mode)
   (dired-mode . hl-line-mode)
   :custom
-  (dired-auto-revert-buffer t))
+  (dired-auto-revert-buffer t)
+  (dired-dwim-target t)
+  :mode-hydra
+  (dired-mode (:title "Dired")
+              ("Mark"
+               (("m" dired-mark             :exit nil)
+                ("u" dired-unmark           :exit nil)
+                ("U" dired-unmark-all-marks :exit nil)
+                ("t" dired-toggle-marks     :exit nil))
+               "Operations"
+               (("C" dired-do-copy)
+                ("D" dired-delete)
+                ("R" dired-rename)
+                ("Z" dired-do-compress)
+                ("+" dired-create-directory))
+               "Shell"
+               (("!" dired-do-shell-command)
+                ("&" dired-do-async-shell-command)))))
 
 (use-package eshell
   :ensure nil
@@ -322,6 +374,34 @@
   :config
   (add-hook 'ibuffer-mode-hook #'ibuffer-auto-mode)
   (add-hook 'ibuffer-mode-hook #'hl-line-mode))
+
+(use-package info
+  :ensure nil
+  :mode-hydra
+  (Info-mode (:title "Info")
+             ("Navigation"
+              (("u"   Info-up            :exit nil)
+               ("gj"  Info-next          :exit nil)
+               ("gk"  Info-prev          :exit nil)
+               ("C-j" Info-forward-node  :exit nil)
+               ("C-k" Info-backward-node :exit nil))
+              "History"
+              (("C-o" Info-history-back    :exit nil)
+               ("C-i" Info-history-forward :exit nil)
+               ("gL"  Info-history))
+              "Goto"
+              (("d"  Info-directory)
+               ("gt" Info-top-node)
+               ("gm" Info-menu)
+               ("gG" Info-goto-node)
+               ("gT" Info-toc))
+              "Search"
+              (("s"  Info-search)
+               ("S"  Info-search-case-insensitive)
+               ("i"  Info-index)
+               ("g," Info-index-next)
+               ("I"  Info-virtual-index)
+               ("a"  Info-apropos)))))
 
 (use-package recentf
   :ensure nil
@@ -522,16 +602,13 @@
 
   ; comint mode
   (evil-collection-define-key 'insert 'comint-mode-map
-      (kbd "C-p") #'comint-previous-input
-      (kbd "C-n") #'comint-next-input)
+    (kbd "C-p") #'comint-previous-input
+    (kbd "C-n") #'comint-next-input)
 
   ; dashboard mode
   (evil-collection-define-key 'normal 'dashboard-mode-map
-      (kbd "C-p") #'dashboard-previous-line
-      (kbd "C-n") #'dashboard-next-line))
-
-; TODO: add evil-dired transient
-; TODO: add evil-ibuffer transient
+    (kbd "C-p") #'dashboard-previous-line
+    (kbd "C-n") #'dashboard-next-line))
 
 (use-package evil-anzu
   :after evil
@@ -701,10 +778,10 @@
     ; Calling avy functions with an argument negates the current setting of 'avy-all-windows'
     (avy-goto-char-timer t))
   :config
-  (define-key evil-normal-state-map "gsl"    #'evil-avy-goto-line)
-  (define-key evil-normal-state-map "gsw"    #'evil-avy-goto-word-1)
-  (define-key evil-normal-state-map "gss"    #'evil-avy-goto-char-2)
-  (define-key evil-normal-state-map "gs SPC" #'my/goto-char-timer))
+  (define-key evil-normal-state-map "gsl" #'evil-avy-goto-line)
+  (define-key evil-normal-state-map "gsw" #'evil-avy-goto-word-1)
+  (define-key evil-normal-state-map "gss" #'evil-avy-goto-char-2)
+  (define-key evil-normal-state-map (kbd "g s SPC") #'my/goto-char-timer))
 
 (use-package transpose-frame
   :after evil
@@ -754,6 +831,12 @@
   :config
   (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
 ; TODO: evaluate flycheck
+
+(use-package ws-butler
+  :hook
+  (conf-mode . ws-butler-mode)
+  (prog-mode . ws-butler-mode)
+  (text-mode . ws-butler-mode))
 
 
 ;; LSP
@@ -876,6 +959,8 @@
 ;; (use-package tex
 ;;   :ensure auctex)
 
+; pdf-tools
+
 
 ; tree sitter
 ; dap-mode
@@ -929,15 +1014,30 @@
   (completion-styles '(orderless basic partial-completion)))
 
 (use-package consult
+  :defer 1
   :bind
   ("C-x C-r"  . consult-recent-file)
   ([remap apropos-command] . consult-apropos)
-  :hook (completion-list-mode . consult-preview-at-point-mode))
+  ([remap project-switch-to-buffer] . consult-project-buffer)
+  :hook (completion-list-mode . consult-preview-at-point-mode)
+  :config
+  (general-def
+    :prefix "C-c SPC"
+    "SPC" #'consult-buffer
+    "b"   #'consult-buffer
+    "o"   #'consult-outline
+    "i"   #'consult-imenu
+    "l"   #'consult-line
+    "r"   #'consult-ripgrep
+    "g"   #'consult-git-grep
+    "f"   #'consult-find
+    "y"   #'consult-flymake))
 
 (use-package embark
+  :defer 1
   :bind
-  ("C-;"   . embark-act)
-  ("C-x B" . embark-bindings))
+  ("C-;"      . embark-act)
+  ("<help> B" . embark-bindings))
 
 (use-package embark-consult
   :after (embark consult))
@@ -979,35 +1079,3 @@
 
 
 
-;;;; Windows, interface elements, visual editing helpers and themes ;;;;
-
-(use-package all-the-icons
-  :if (display-graphic-p))
-
-(use-package dashboard
-  :custom
-  (dashboard-center-content t)
-  (dashboard-projects-backend 'project-el)
-  (dashboard-startup-banner 'logo)
-  (dashboard-items '((recents   . 10)
-                     (projects  .  5)
-                     (bookmarks .  5)))
-  :init
-  (setq initial-buffer-choice (lambda () (if (buffer-file-name) (current-buffer) (get-buffer "*dashboard*"))))
-  :config
-  (dashboard-setup-startup-hook))
-
-(use-package doom-modeline
-  :custom
-  (doom-modeline-height 30)
-  (doom-modeline-minor-modes t)
-  :config
-  (doom-modeline-mode +1))
-
-(use-package doom-themes
-  :config
-  (load-theme 'doom-tokyo-night t))
-
-(use-package which-key
-  :config
-  (which-key-mode +1))
