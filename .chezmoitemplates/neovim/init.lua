@@ -496,25 +496,6 @@ require('packer').startup({function(use)
     config = function() require('treesitter-context').setup({}) end,
   }
 
-  -- TODO: evaluate this better
-  -- Show current scope in status line.
-  use {
-    'SmiteshP/nvim-gps',
-    after = { 'nvim-treesitter', 'lualine.nvim' },
-    event = { 'BufRead', 'BufNewFile' },
-    requires = 'nvim-treesitter/nvim-treesitter',
-    config = function()
-      local gps = require('nvim-gps')
-      gps.setup({})
-
-      local lualine_config = require('lualine').get_config()
-      lualine_config['sections']['lualine_c'] = {
-        'filename', { gps.get_location, cond = gps.is_available }
-      }
-      require('lualine').setup(lualine_config)
-    end,
-  }
-
   -- TODO: evaluate if sleuth is really necessary with treesitter
   -- TODO: consider using expandtab, tabstop, softtabstop, shiftwidth explicitly
   -- Automatic tab/indenting configuration.
