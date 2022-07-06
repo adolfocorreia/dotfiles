@@ -71,6 +71,7 @@
   :custom
   (completion-cycle-threshold 3)
   (display-line-numbers-type 'relative)
+  (scroll-conservatively 2)
   (scroll-margin 2)
   (tab-always-indent 'complete)
   :config
@@ -277,7 +278,7 @@
        (display-buffer-in-side-window) (side . top) (slot . +1) (window-height . 0.3))
       ;; right side window
       ("\\*\\(Help\\|helpful\\|Apropos\\|info\\)"
-       (display-buffer-in-side-window) (side . right) (slot . 0) (window-width . 0.3))))
+       (display-buffer-in-side-window) (side . right) (slot . 0) (window-width . 0.35))))
   (display-buffer-base-action
    '((display-buffer-reuse-window
       display-buffer-reuse-mode-window
@@ -317,6 +318,7 @@
                                     "\\`\\*"
                                     "\\*\\'"))
   :bind
+  ; TODO: evaluate HippieExpand
   ("M-/" . dabbrev-completion)
   ("C-M-/" . dabbrev-expand))
 
@@ -460,6 +462,12 @@
 (use-package bufler
   :commands bufler)
 
+; TODO: evaluate crux and better-defaults
+(use-package crux
+  :bind
+  ("C-c I" . crux-find-user-init-file)
+  ([remap move-beginning-of-line] . crux-move-beginning-of-line))
+
 (use-package gcmh
   :defer 2
   :config
@@ -544,13 +552,13 @@
   (define-key evil-insert-state-map (kbd "C-g") #'evil-normal-state)
 
   ; Use readline-like bindings in insert state
-  (define-key evil-insert-state-map (kbd "C-a") #'move-beginning-of-line)
-  (define-key evil-insert-state-map (kbd "C-e") #'move-end-of-line)
   (define-key evil-insert-state-map (kbd "M-n") #'next-line)
   (define-key evil-insert-state-map (kbd "M-p") #'previous-line)
-  (define-key evil-insert-state-map (kbd "C-d") #'delete-char)
-  (define-key evil-insert-state-map (kbd "C-h") #'delete-backward-char)
-  (define-key evil-insert-state-map (kbd "C-y") #'yank)
+  (define-key evil-insert-state-map (kbd "C-a") #'move-beginning-of-line)  ; original: evil-paste-last-insertion
+  (define-key evil-insert-state-map (kbd "C-e") #'move-end-of-line)        ; original: evil-copy-from-below
+  ;; (define-key evil-insert-state-map (kbd "C-d") #'delete-char)             ; original: evil-shift-left
+  ;; (define-key evil-insert-state-map (kbd "C-h") #'delete-backward-char)    ; original: help prefix
+  ;; (define-key evil-insert-state-map (kbd "C-y") #'yank)                    ; original: evil-copy-from-above
 
   ; C-w extra bindings
   (define-key evil-window-map "`" #'evil-switch-to-windows-last-buffer)
