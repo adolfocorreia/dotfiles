@@ -167,6 +167,8 @@
     "R"   #'restart-emacs
     "h"   #'major-mode-hydra
 
+    ; TODO: set "C-c I" to open init file (e.g. crux-find-user-init-file)
+
     ; TODO: lsp
 
     ; TODO: improve project bindings
@@ -347,6 +349,13 @@
                (("!" dired-do-shell-command)
                 ("&" dired-do-async-shell-command)))))
 
+(use-package ediff
+  :ensure nil
+  :defer t
+  :custom
+  (ediff-split-window-function 'split-window-horizontally)
+  (ediff-window-setup-function 'ediff-setup-windows-plain))
+
 (use-package eshell
   :ensure nil
   :defer t
@@ -465,7 +474,6 @@
 ; TODO: evaluate crux and better-defaults
 (use-package crux
   :bind
-  ("C-c I" . crux-find-user-init-file)
   ([remap move-beginning-of-line] . crux-move-beginning-of-line))
 
 (use-package gcmh
