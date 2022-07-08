@@ -705,6 +705,14 @@ require('packer').startup({function(use)
     opt = true,
   }
 
+  -- Run test suites (e.g. pytest).
+  -- TODO: evaluate nvim-neotest/neotest
+  use {
+    'vim-test/vim-test',
+    cmd = { 'TestNearest', 'TestFile', 'TestSuite'},
+  }
+
+
   --- Language plugins.
   -- Reference: https://github.com/sheerun/vim-polyglot#language-packs
 
