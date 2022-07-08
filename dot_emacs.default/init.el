@@ -927,12 +927,37 @@
   (python-mode . anaconda-eldoc-mode))
 
 (use-package pyvenv
-  :hook (python-mode . pyvenv-mode))
+  :hook (python-mode . pyvenv-mode)
+  :bind
+  (:map python-mode-map
+        ("C-c a" . pyvenv-activate)
+        ("C-c d" . pyvenv-deactivate)
+        ("C-c r" . pyvenv-restart-python)))
+
+; TODO: evaluate python-pytest (beware of projectile dependency)
+; TODO: add --color argument
+(use-package pytest
+  :after python
+  :custom
+  (pytest-cmd-flags "--exitfirst --capture=no")
+  (pytest-project-root-files '(".venv" "setup.py" ".git"))
+  :commands (pytest-one pytest-all)
+  :bind
+  (:map python-mode-map
+        ("C-c t" . pytest-one)
+        ("C-c T" . pytest-all))
+  :config
+  (add-to-list 'display-buffer-alist
+               '("*pytest*"
+                 (display-buffer-in-side-window) (side . right) (slot . 1) (window-width . 0.35))))
+
 
 (use-package lsp-pyright
   :after (python-mode lsp-mode)
   :init
   (advice-add 'lsp :before (lambda () (require 'lsp-pyright))))
+
+; TODO: create python-mode hydra and/or major-mode specific bindings
 
 ; TODO: add poetry
 ; TODO: evaluate ein (emacs-ipython-notebook) and emacs-jupyter
