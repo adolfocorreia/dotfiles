@@ -164,7 +164,6 @@
     :prefix "C-c"
 
     "C-u" #'universal-argument
-    "R"   #'restart-emacs
     "h"   #'major-mode-hydra
 
     ; TODO: set "C-c I" to open init file (e.g. crux-find-user-init-file)
@@ -676,6 +675,14 @@
   (define-key evil-visual-state-map "gl" #'evil-lion-left)
   (define-key evil-visual-state-map "gL" #'evil-lion-right))
 
+; TODO: evaluate evil-mc (https://github.com/doomemacs/doomemacs/blob/master/modules/editor/multiple-cursors/config.el)
+(use-package evil-multiedit
+  :after evil
+  :custom
+  (evil-multiedit-follow-matches t)
+  :config
+  (evil-multiedit-default-keybinds))
+
 (use-package evil-numbers
   :after evil
   :config
@@ -794,6 +801,9 @@
     ; Calling avy functions with an argument negates the current setting of 'avy-all-windows'
     (avy-goto-char-timer t))
   :config
+  (general-def
+    :prefix "g"
+    "s" '(:ignore t :which-key "goto"))
   (define-key evil-normal-state-map "gsl" #'evil-avy-goto-line)
   (define-key evil-normal-state-map "gsw" #'evil-avy-goto-word-1)
   (define-key evil-normal-state-map "gss" #'evil-avy-goto-char-2)
@@ -820,8 +830,6 @@
 ; evil-embrace
 ; evil-exchange (http://evgeni.io/posts/quick-start-evil-mode)
 ; evil-markdown
-; evil-mc/evil-mc-extras
-; evil-multiedit
 ; evil-quick-diff
 ; evil-replace-with-register
 ; evil-string-inflection
@@ -881,7 +889,6 @@
 
 ; autopairs
 ; hl-todo
-; multicursor
 ; smartparens/evil-smartparens
 ; yasnippets
 ; tempel
@@ -1062,6 +1069,9 @@
   ([remap project-switch-to-buffer] . consult-project-buffer)
   :hook (completion-list-mode . consult-preview-at-point-mode)
   :config
+  (general-def
+    :prefix "C-c"
+    "SPC" '(:ignore t :which-key "consult"))
   (general-def
     :prefix "C-c SPC"
     "SPC" #'consult-buffer
