@@ -24,7 +24,6 @@ let loaded_netrwFileHandlers = 1
 
 call plug#begin()
 
-Plug 'dstein64/vim-startuptime', { 'on': 'StartupTime' }
 Plug 'Julian/vim-textobj-variable-segment'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
@@ -38,7 +37,6 @@ Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-eunuch',         { 'on': ['Delete','Move','Rename','Mkdir'] }
 Plug 'tpope/vim-fugitive',       { 'on': 'Git' }
-Plug 'tpope/vim-obsession',      { 'on': 'Obsess' }
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-rsi'
 Plug 'tpope/vim-sensible'
@@ -46,7 +44,6 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'unblevable/quick-scope'
 Plug 'vim-airline/vim-airline'
-Plug 'vim-syntastic/syntastic'
 Plug 'wellle/targets.vim'
 
 Plug 'arcticicestudio/nord-vim'
@@ -81,10 +78,6 @@ let g:VM_maps['Find Subword Under'] = '<M-d>'
 nmap <M-d> <Plug>(VM-Find-Under)
 
 let g:qs_buftype_blacklist = ['help', 'nofile', 'nowrite', 'terminal']
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_wq = 0
 
 
 """"" Vim options """""
@@ -145,6 +138,10 @@ autocmd vimrc FileType help,qf nnoremap <silent> <buffer> q :close<CR>
 autocmd vimrc TerminalOpen * setlocal nonumber norelativenumber nocursorline nocursorcolumn
 autocmd vimrc VimResized * tabdo wincmd =
 
+" Set compilers/linters (run with :make %)
+autocmd FileType python compiler pylint
+autocmd FileType sh     compiler shellcheck
+
 
 """"" Key mappings """""
 
@@ -163,20 +160,7 @@ nnoremap <expr> k (v:count >= 10 ? "m'" . v:count : "") . 'k'
 
 nnoremap <silent> <C-s> :update<CR>
 inoremap <silent> <C-s> <C-o>:update<CR>
-tnoremap <C-s> <C-\><C-n>
-
-tnoremap <M-h> <C-\><C-n><C-w>h
-tnoremap <M-j> <C-\><C-n><C-w>j
-tnoremap <M-k> <C-\><C-n><C-w>k
-tnoremap <M-l> <C-\><C-n><C-w>l
-inoremap <M-h> <C-\><C-n><C-w>h
-inoremap <M-j> <C-\><C-n><C-w>j
-inoremap <M-k> <C-\><C-n><C-w>k
-inoremap <M-l> <C-\><C-n><C-w>l
-nnoremap <M-h> <C-w>h
-nnoremap <M-j> <C-w>j
-nnoremap <M-k> <C-w>k
-nnoremap <M-l> <C-w>l
+tnoremap <C-g> <C-\><C-n>
 
 tnoremap <M-Left>  <C-\><C-n><C-w>h
 tnoremap <M-Down>  <C-\><C-n><C-w>j
