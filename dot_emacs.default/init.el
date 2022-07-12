@@ -73,6 +73,7 @@
   (display-line-numbers-type 'relative)
   (scroll-conservatively 2)
   (scroll-margin 2)
+  (scroll-preserve-screen-position t)
   (tab-always-indent 'complete)
   :config
   (column-number-mode +1)
@@ -189,6 +190,7 @@
     "r"   '(:ignore t :which-key "register/bookmark")
     "t"   '(:ignore t :which-key "tab")
     "v"   '(:ignore t :which-key "vc")
+    "vM"  '(:ignore t :which-key "merge")
     "w"   '(:ignore t :which-key "winum")
     "x"   '(:ignore t :which-key "buffer")
     "C-a" '(:ignore t :which-key "edebug"))
@@ -354,6 +356,13 @@
   :custom
   (ediff-split-window-function 'split-window-horizontally)
   (ediff-window-setup-function 'ediff-setup-windows-plain))
+
+; TODO: evaluate this better
+(use-package elec-pair
+  :ensure nil
+  :hook
+  (conf-mode . electric-pair-mode)
+  (text-mode . electric-pair-mode))
 
 (use-package eshell
   :ensure nil
@@ -538,6 +547,8 @@
 ; - https://github.com/noctuid/evil-guide
 
 (use-package evil
+  :hook
+  (after-init . evil-mode)
   :custom
   (evil-respect-visual-line-mode t)
   (evil-search-module 'isearch)
@@ -1019,6 +1030,9 @@
 
 ;;;; Org-mode ;;;;
 
+(use-package org
+  :defer 5)
+
 
 
 ;;;; Git ;;;;
@@ -1036,8 +1050,16 @@
                '("magit:"
                  (display-buffer-in-tab) (tab-name . "magit"))))
 
-; diff-hl
-; git gutter
+; TODO: evaluate git-gutter-fringe
+(use-package diff-hl
+  :after magit
+  :hook
+  (conf-mode . diff-hl-mode)
+  (prog-mode . diff-hl-mode)
+  (dired-mode . diff-hl-dired-mode)
+  :config
+  (add-hook 'magit-pre-refresh-hook #'diff-hl-magit-pre-refresh)
+  (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
 
 
 
