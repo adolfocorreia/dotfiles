@@ -854,8 +854,7 @@
 ;;;; Editing helps ;;;;
 
 (use-package apheleia
-  :hook
-  (prog-mode . apheleia-mode))
+  :commands (apheleia-mode apheleia-format-buffer))
 
 (use-package expand-region
   :bind
@@ -971,9 +970,7 @@
 
 
 (use-package lsp-pyright
-  :after (python-mode lsp-mode)
-  :init
-  (advice-add 'lsp :before (lambda () (require 'lsp-pyright))))
+  :after (python-mode lsp-mode))
 
 ; TODO: create python-mode hydra and/or major-mode specific bindings
 
@@ -1020,6 +1017,15 @@
 
 ; pdf-tools
 
+
+(use-package haskell-mode
+  :unless ON-WINDOWS
+  :custom
+  (haskell-process-suggest-remove-import-lines t)
+  :mode "\\.hs\\'")
+
+(use-package lsp-haskell
+  :after (haskell-mode lsp-mode))
 
 ; tree sitter
 ; dap-mode
