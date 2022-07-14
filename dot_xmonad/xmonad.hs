@@ -16,30 +16,102 @@ Partial type signature reference:
 -- Imports
 
 import qualified Data.Map as M
-import Data.Maybe
-import Data.Ratio
-import System.Exit
-import System.IO
+import Data.Maybe (fromJust)
+import Data.Ratio ((%))
+import System.Exit (exitSuccess)
+import System.IO ()
 import XMonad
+  ( ChangeLayout (NextLayout),
+    Default (def),
+    Full (Full),
+    KeyMask,
+    Query,
+    Resize (Expand, Shrink),
+    WindowSet,
+    WorkspaceId,
+    X,
+    XConfig
+      ( borderWidth,
+        focusedBorderColor,
+        layoutHook,
+        logHook,
+        manageHook,
+        modMask,
+        normalBorderColor,
+        startupHook,
+        terminal,
+        workspaces
+      ),
+    className,
+    composeAll,
+    doFloat,
+    doShift,
+    io,
+    kill,
+    mod4Mask,
+    sendMessage,
+    spawn,
+    title,
+    windows,
+    xmonad,
+    (-->),
+    (<+>),
+    (=?),
+    (|||),
+  )
 import XMonad.Actions.CycleWS
-import XMonad.Actions.DwmPromote
+  ( Direction1D (Next, Prev),
+    WSType (Not),
+    emptyWS,
+    moveTo,
+    nextScreen,
+    prevScreen,
+    shiftNextScreen,
+    shiftPrevScreen,
+    toggleWS,
+  )
+import XMonad.Actions.DwmPromote (dwmpromote)
 import XMonad.Actions.GroupNavigation
-import XMonad.Actions.UpdatePointer
-import XMonad.Config.Desktop
-import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.DynamicProperty
-import XMonad.Hooks.EwmhDesktops
+  ( Direction (Backward, Forward),
+    isOnAnyVisibleWS,
+    nextMatch,
+  )
+import XMonad.Actions.UpdatePointer (updatePointer)
+import XMonad.Config.Desktop (desktopConfig)
+import XMonad.Hooks.EwmhDesktops (ewmh)
 import XMonad.Hooks.ManageDocks
-import XMonad.Hooks.ManageHelpers
-import XMonad.Hooks.WorkspaceHistory
-import XMonad.Layout.LayoutModifier
-import XMonad.Layout.Renamed
-import XMonad.Layout.ResizableTile
-import XMonad.Layout.Spacing
+  ( Direction1D (Next, Prev),
+    avoidStruts,
+    docks,
+    manageDocks,
+  )
+import XMonad.Hooks.ManageHelpers (doCenterFloat, doRectFloat)
+import XMonad.Hooks.StatusBar (StatusBarConfig, statusBarPropTo, withSB)
+import XMonad.Hooks.StatusBar.PP
+  ( PP,
+    def,
+    ppCurrent,
+    ppHidden,
+    ppHiddenNoWindows,
+    ppLayout,
+    ppSep,
+    ppTitle,
+    ppUrgent,
+    ppVisible,
+    shorten,
+    wrap,
+    xmobarColor,
+    xmobarPP,
+    xmobarStrip,
+  )
+import XMonad.Hooks.WorkspaceHistory (workspaceHistoryHook)
+import XMonad.Layout.LayoutModifier (ModifiedLayout)
+import XMonad.Layout.Renamed (Rename (Replace), renamed)
+import XMonad.Layout.ResizableTile (ResizableTall (ResizableTall))
+import XMonad.Layout.Spacing (Border (Border), spacingRaw)
 import qualified XMonad.StackSet as W
-import XMonad.Util.EZConfig
-import XMonad.Util.Run
-import XMonad.Util.SpawnOnce
+import XMonad.Util.EZConfig (additionalKeysP, removeKeysP)
+import XMonad.Util.SpawnOnce (spawnOnce)
 
 -- Tokyo Night theme colors
 myBlack, myBlue, myGreen, myOrange, myPink, myRed, myWhite, myYellow :: String
@@ -122,8 +194,8 @@ myAdditionalKeys =
     ("M1-<Tab>", nextMatch Forward isOnAnyVisibleWS),
     ("M1-S-<Tab>", nextMatch Backward isOnAnyVisibleWS),
     -- Cycle through non-empty workspaces
-    ("M-<Tab>", moveTo Next NonEmptyWS),
-    ("M-S-<Tab>", moveTo Prev NonEmptyWS),
+    ("M-<Tab>", moveTo Next (Not emptyWS)),
+    ("M-S-<Tab>", moveTo Prev (Not emptyWS)),
     -- Volume controls
     ("<XF86AudioLowerVolume>", spawn "pamixer --decrease 5 --unmute"),
     ("<XF86AudioRaiseVolume>", spawn "pamixer --increase 5 --unmute"),
@@ -275,7 +347,10 @@ myManageHook =
     myTitleShifts = []
 
 -- Xmobar configuration
--- Reference:  https://hackage.haskell.org/package/xmonad-contrib/docs/XMonad-Hooks-DynamicLog.html
+-- References:
+-- - https://hackage.haskell.org/package/xmonad-contrib/docs/XMonad-Hooks-StatusBar.html
+-- - https://hackage.haskell.org/package/xmonad-contrib/docs/XMonad-Hooks-StatusBar-PP.html
+-- - https://codeberg.org/jao/xmobar/src/branch/master/doc/window-managers.org
 clickableWS :: WorkspaceId -> String
 clickableWS ws = "<action=`xdotool key super+" ++ show index ++ "`>" ++ icon ++ "</action>"
   where
@@ -283,11 +358,10 @@ clickableWS ws = "<action=`xdotool key super+" ++ show index ++ "`>" ++ icon ++ 
     index = fromJust $ M.lookup ws indices
     indices = M.fromList $ zip myWorkspaces $ [1 .. 9] ++ [0]
 
-myXmobarConfig :: Handle -> Handle -> PP
-myXmobarConfig xm0 xm1 =
+myXmobarConfig :: PP
+myXmobarConfig =
   xmobarPP
-    { ppOutput = \x -> hPutStrLn xm0 x >> hPutStrLn xm1 x,
-      ppSep = " | ",
+    { ppSep = " | ",
       ppCurrent = xmobarColor myCurrentColor "" . boxed myCurrentColor . clickableWS,
       ppVisible = xmobarColor myVisibleColor "" . boxed myVisibleColor . clickableWS,
       ppHidden = xmobarColor myHiddenColor "" . clickableWS,
@@ -300,6 +374,10 @@ myXmobarConfig xm0 xm1 =
     clickableLayout = wrap "<action=`xdotool key super+shift+space`>" "</action>"
     boxed color = wrap ("<box type=Bottom width=3 color=" ++ color ++ ">") "</box>"
 
+myStatusBar1, myStatusBar2 :: StatusBarConfig
+myStatusBar1 = statusBarPropTo "_XMONAD_LOG_1" "xmobar -x 0 ~/.config/xmobar/xmobarrc_primary" (pure myXmobarConfig)
+myStatusBar2 = statusBarPropTo "_XMONAD_LOG_2" "xmobar -x 1 ~/.config/xmobar/xmobarrc_secondary" (pure myXmobarConfig)
+
 -- TODO: Focus workspace on cursor hover
 -- References:
 -- - https://reddit.com/r/xmonad/comments/qi1tlm/focus_empty_workspace_on_cursor_hover
@@ -308,26 +386,23 @@ myXmobarConfig xm0 xm1 =
 -- Main
 main :: IO ()
 main = do
-  xm0 <- spawnPipe "xmobar -x 0 ~/.config/xmobar/xmobarrc_primary"
-  xm1 <- spawnPipe "xmobar -x 1 ~/.config/xmobar/xmobarrc_secondary"
   xmonad $
     docks $
-      ewmh
-        desktopConfig
-          { modMask = myModMask,
-            terminal = myTerminal,
-            focusedBorderColor = myCurrentColor,
-            normalBorderColor = myBlack,
-            borderWidth = 1,
-            workspaces = myWorkspaces,
-            startupHook = myStartupHook,
-            layoutHook = myLayoutHook,
-            manageHook = manageHook def <+> manageDocks <+> myManageHook,
-            handleEventHook = handleEventHook def <+> docksEventHook,
-            logHook =
-              dynamicLogWithPP (myXmobarConfig xm0 xm1)
-                >> workspaceHistoryHook
-                >> updatePointer (0.25, 0.1) (0.0, 0.0)
-          }
-        `removeKeysP` myRemoveKeys
-        `additionalKeysP` myAdditionalKeys
+      withSB (myStatusBar1 <> myStatusBar2) $
+        ewmh
+          desktopConfig
+            { modMask = myModMask,
+              terminal = myTerminal,
+              focusedBorderColor = myCurrentColor,
+              normalBorderColor = myBlack,
+              borderWidth = 1,
+              workspaces = myWorkspaces,
+              startupHook = myStartupHook,
+              layoutHook = myLayoutHook,
+              manageHook = manageHook def <+> manageDocks <+> myManageHook,
+              logHook =
+                workspaceHistoryHook
+                  >> updatePointer (0.25, 0.1) (0.0, 0.0)
+            }
+          `removeKeysP` myRemoveKeys
+          `additionalKeysP` myAdditionalKeys

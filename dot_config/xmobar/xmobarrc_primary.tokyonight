@@ -41,7 +41,7 @@ Config {
      -- Find icons at fontawesome.com, materialdesignicons.com or nerdfonts.com/cheat-sheet
      -- The refresh rate is given in tenths of seconds (10 = 1 second, 36000 = 1 hour)
   , commands =
-    [ Run UnsafeStdinReader
+    [ Run UnsafeXPropertyLog "_XMONAD_LOG_1"
     , Run Cpu           [ "--template", "<fc=#7dcfff><fn=1>\xf2db</fn></fc> <total>"
                         , "--low",    "#c0caf5", "--Low",  "50"
                         , "--normal", "#e0af68"
@@ -106,7 +106,7 @@ Config {
   -- Layout
   , sepChar  = "%"
   , alignSep = "}{"
-  , template = " %UnsafeStdinReader% \
+  , template = " %_XMONAD_LOG_1% \
                \ }   \
                \<box color=#7dcfff type=Bottom width=3>%SBGL%</box>  \
                \<box color=#bb9af7 type=Bottom width=3>%date%  %time%</box> \

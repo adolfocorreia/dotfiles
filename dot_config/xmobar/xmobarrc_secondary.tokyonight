@@ -15,13 +15,13 @@ Config {
 
   -- Plugin commands
   , commands =
-    [ Run UnsafeStdinReader
+    [ Run UnsafeXPropertyLog "_XMONAD_LOG_2"
     ]
 
   -- Layout
   , sepChar  = "%"
   , alignSep = "}{"
-  , template = " %UnsafeStdinReader% "
+  , template = " %_XMONAD_LOG_2% "
   }
 
 -- vi: ft=haskell
