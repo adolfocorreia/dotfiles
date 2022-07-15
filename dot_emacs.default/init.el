@@ -512,6 +512,9 @@
   :config
   (project-tab-groups-mode +1))
 
+(use-package ranger
+  :commands (deer ranger))
+
 (use-package restart-emacs
   :commands restart-emacs)
 
@@ -531,6 +534,10 @@
   :commands vlf
   :config
   (require 'vlf-setup))
+
+(use-package vterm
+  :unless ON-WINDOWS
+  :commands vterm)
 
 ;; Default prefix: C-x w
 (use-package winum
@@ -691,6 +698,7 @@
   :after evil
   :custom
   (evil-multiedit-follow-matches t)
+  (iedit-toggle-key-default nil)
   :config
   (evil-multiedit-default-keybinds))
 
@@ -968,13 +976,13 @@
                '("*pytest*"
                  (display-buffer-in-side-window) (side . right) (slot . 1) (window-width . 0.35))))
 
-
 (use-package lsp-pyright
   :after (python-mode lsp-mode))
 
 ; TODO: create python-mode hydra and/or major-mode specific bindings
 
 ; TODO: add poetry
+; TODO: add mypy backend for flymake
 ; TODO: evaluate ein (emacs-ipython-notebook) and emacs-jupyter
 ; TODO: evaluate lpy
 ; TODO: evaluate python-x
@@ -1011,13 +1019,7 @@
   ("\\.[rR]md\\'" . poly-markdown+R-mode))
 
 
-; LaTeX
-;; (use-package tex
-;;   :ensure auctex)
-
-; pdf-tools
-
-
+;; Haskell
 (use-package haskell-mode
   :unless ON-WINDOWS
   :custom
@@ -1027,10 +1029,15 @@
 (use-package lsp-haskell
   :after (haskell-mode lsp-mode))
 
+
+;; LaTeX
+; (use-package tex
+;   :ensure auctex)
+
+; pdf-tools
 ; tree sitter
 ; dap-mode
 ; lua
-; haskell
 
 
 
@@ -1054,18 +1061,16 @@
   :config
   (add-to-list 'display-buffer-alist
                '("magit:"
-                 (display-buffer-in-tab) (tab-name . "magit"))))
+                 (display-buffer-in-tab) (tab-name . "magit")))
+  (add-hook 'magit-pre-refresh-hook #'diff-hl-magit-pre-refresh)
+  (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
 
 ; TODO: evaluate git-gutter-fringe
 (use-package diff-hl
-  :after magit
   :hook
   (conf-mode . diff-hl-mode)
   (prog-mode . diff-hl-mode)
-  (dired-mode . diff-hl-dired-mode)
-  :config
-  (add-hook 'magit-pre-refresh-hook #'diff-hl-magit-pre-refresh)
-  (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
+  (dired-mode . diff-hl-dired-mode))
 
 
 
@@ -1074,6 +1079,7 @@
 ;; Vertico
 (use-package vertico
   :custom
+  (vertico-count 20)
   (vertico-cycle t)
   :config
   (vertico-mode +1))
@@ -1140,21 +1146,9 @@
   :config
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
-; tabnine?
+; TODO: tabnine?
 
-
-
-;;;; Terminal and file management support ;;;;
-
-(use-package vterm
-  :unless ON-WINDOWS
-  :commands vterm)
-
-; dired/diredfl/ranger/dirvish
-; eshell
+; TODO:
 ; eval-in-repl
 ; isend-mode
 ; quickrun
-
-
-
