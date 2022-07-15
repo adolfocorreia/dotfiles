@@ -50,7 +50,7 @@ class CpuMemWidget : BarWidgetBase {
         _timer = new Timer(_interval);
         _timer.Elapsed += (s, e) => {
             _text = _GenerateTextFromCounters();
-            Context.MarkDirty();
+            MarkDirty();
         };
         _timer.Enabled = true;
     }
