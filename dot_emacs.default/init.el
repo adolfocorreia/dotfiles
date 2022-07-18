@@ -164,15 +164,11 @@
   (general-def
     :prefix "C-c"
 
-    "C-u" #'universal-argument
-    "h"   #'major-mode-hydra
-
     ; TODO: set "C-c I" to open init file (e.g. crux-find-user-init-file)
-
     ; TODO: lsp
 
-    ; TODO: improve project bindings
-    "p" '(:keymap project-prefix-map :which-key "project"))
+    "u" #'universal-argument
+    "h" #'major-mode-hydra)
 
   ; Prefix renaming (which-key)
   (general-def
@@ -508,6 +504,9 @@
   :config
   (global-page-break-lines-mode +1))
 
+(use-package pcmpl-args
+  :after eshell)
+
 (use-package project-tab-groups
   :config
   (project-tab-groups-mode +1))
@@ -592,6 +591,10 @@
   (define-key evil-window-map "3" #'winum-select-window-3)
   (define-key evil-window-map "4" #'winum-select-window-4)
   (define-key evil-window-map "5" #'winum-select-window-5)
+  (define-key evil-window-map (kbd "C-h") #'evil-window-left)
+  (define-key evil-window-map (kbd "C-l") #'evil-window-right)
+  (define-key evil-window-map (kbd "C-j") #'evil-window-down)
+  (define-key evil-window-map (kbd "C-k") #'evil-window-up)
 
   (general-def
     :prefix "C-w"
@@ -658,6 +661,12 @@
   :after evil
   :config
   (define-key evil-normal-state-map "gc" #'evil-commentary))
+
+; Usage: gx MOTION (twice or . to repeat), gxx to select line, gX to cancel
+(use-package evil-exchange
+  :after evil
+  :config
+  (evil-exchange-install))
 
 (use-package evil-extra-operator
   :after evil
@@ -847,7 +856,6 @@
 
 ; evil-cleverparens
 ; evil-embrace
-; evil-exchange (http://evgeni.io/posts/quick-start-evil-mode)
 ; evil-markdown
 ; evil-quick-diff
 ; evil-replace-with-register
@@ -873,6 +881,13 @@
   :config
   (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
 ; TODO: evaluate flycheck
+
+(use-package string-inflection
+  :commands (string-inflection-camelcase-function
+             string-inflection-kebabcase-function
+             string-inflection-pascal-case-function
+             string-inflection-underscore-function
+             string-inflection-upcase-function))
 
 (use-package ws-butler
   :hook
@@ -921,9 +936,10 @@
 (use-package parinfer-rust-mode
   :hook emacs-lisp-mode
   :custom
-  (parinfer-rust-auto-download t)
-  :config
-  (general-def :prefix "C-c" "C-p" '(:ignore t :which-key "parinfer")))
+  (parinfer-rust-auto-download t))
+  ; TODO: change prefix name according to major-mode
+  ;; :config
+  ;; (general-def :prefix "C-c" "C-p" '(:ignore t :which-key "parinfer")))
 
 
 ;; Python
@@ -943,6 +959,8 @@
   (python-shell-font-lock-enable nil)
   :mode
   ("\\.py\\'" . python-mode)
+  :hook
+  (python-mode . apheleia-mode)
   :config
   (general-def :prefix "C-c" "C-t" '(:ignore t :which-key "python-skeleton")))
 
@@ -1037,6 +1055,7 @@
 ; pdf-tools
 ; tree sitter
 ; dap-mode
+; realgud
 ; lua
 
 
@@ -1079,6 +1098,8 @@
 ;; Vertico
 (use-package vertico
   :custom
+  (read-buffer-completion-ignore-case t)
+  (read-file-name-completion-ignore-case t)
   (vertico-count 20)
   (vertico-cycle t)
   :config
@@ -1122,6 +1143,7 @@
   :defer 1
   :bind
   ("C-;"      . embark-act)
+  ("C-:"      . embark-dwim)
   ("<help> B" . embark-bindings))
 
 (use-package embark-consult
@@ -1135,18 +1157,38 @@
   (corfu-auto nil)
   (corfu-cycle t)
   (corfu-quit-no-match 'separator)
-  :config
-  (global-corfu-mode +1))
+  :hook
+  (prog-mode . corfu-mode))
 
 (use-package kind-icon
   :after corfu
-  :defer 1
   :custom
   (kind-icon-default-face 'corfu-default)
   :config
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
-; TODO: tabnine?
+(use-package cape
+  :after corfu
+  :init
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-file)
+  :config
+  (general-def
+    :prefix "C-c"
+    "p" '(:ignore t :which-key "cape"))
+  (general-def
+    :prefix "C-c p"
+    "p" #'completion-at-point
+    "d" #'cape-dabbrev
+    "h" #'cape-history
+    "f" #'cape-file
+    "k" #'cape-keyword
+    "s" #'cape-symbol
+    "i" #'cape-ispell
+    "l" #'cape-line
+    "t" #'cape-tex
+    "&" #'cape-sgml
+    "r" #'cape-rfc1345))
 
 ; TODO:
 ; eval-in-repl
