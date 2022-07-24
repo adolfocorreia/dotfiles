@@ -293,13 +293,11 @@
 
 (use-package apropos
   :ensure nil
-  :defer t
   :custom
   (apropos-do-all t))
 
 (use-package autorevert
   :ensure nil
-  :defer t
   :custom
   (global-auto-revert-non-file-buffers t)
   :config
@@ -352,13 +350,6 @@
   :custom
   (ediff-split-window-function 'split-window-horizontally)
   (ediff-window-setup-function 'ediff-setup-windows-plain))
-
-; TODO: evaluate this better
-(use-package elec-pair
-  :ensure nil
-  :hook
-  (conf-mode . electric-pair-mode)
-  (text-mode . electric-pair-mode))
 
 (use-package eshell
   :ensure nil
@@ -870,7 +861,10 @@
 ;;;; Editing helps ;;;;
 
 (use-package apheleia
-  :commands (apheleia-mode apheleia-format-buffer))
+  :commands (apheleia-mode apheleia-format-buffer)
+  :config
+  (setf (alist-get 'python-mode apheleia-mode-alist)
+        '(isort black)))
 
 (use-package expand-region
   :bind
@@ -936,10 +930,12 @@
 (use-package parinfer-rust-mode
   :hook emacs-lisp-mode
   :custom
-  (parinfer-rust-auto-download t))
-  ; TODO: change prefix name according to major-mode
-  ;; :config
-  ;; (general-def :prefix "C-c" "C-p" '(:ignore t :which-key "parinfer")))
+  (parinfer-rust-auto-download t)
+  :config
+  ; TODO: associate parinfer prefix with parinfer minor mode (instead of elisp major mode)
+  (general-def
+      :major-modes 'emacs-lisp-mode
+      "C-c C-p" '(:ignore t :which-key "parinfer")))
 
 
 ;; Python
@@ -962,7 +958,9 @@
   :hook
   (python-mode . apheleia-mode)
   :config
-  (general-def :prefix "C-c" "C-t" '(:ignore t :which-key "python-skeleton")))
+  (general-def
+    :major-modes 'python-mode
+    "C-c C-t" '(:ignore t :which-key "python-skeleton")))
 
 (use-package anaconda-mode
   :hook
@@ -976,6 +974,9 @@
         ("C-c a" . pyvenv-activate)
         ("C-c d" . pyvenv-deactivate)
         ("C-c r" . pyvenv-restart-python)))
+
+(use-package poetry
+  :commands poetry)
 
 ; TODO: evaluate python-pytest (beware of projectile dependency)
 ; TODO: add --color argument
@@ -1081,6 +1082,7 @@
   (add-to-list 'display-buffer-alist
                '("magit:"
                  (display-buffer-in-tab) (tab-name . "magit")))
+  (add-hook 'after-save-hook #'magit-after-save-refresh-status)
   (add-hook 'magit-pre-refresh-hook #'diff-hl-magit-pre-refresh)
   (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
 
@@ -1167,6 +1169,7 @@
   :config
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
+; TODO: restrict to prog-mode
 (use-package cape
   :after corfu
   :init
