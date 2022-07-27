@@ -108,7 +108,7 @@
   :ensure nil
   :if ON-LINUX
   :custom-face
-  (default ((t :family "Hack" :height 105)))
+  (default ((t :family "Iosevka" :height 110)))
   :config
   (menu-bar-mode +1)
   (scroll-bar-mode +1)
@@ -148,7 +148,6 @@
 ; - M-x general-describe-keybindings
 ; - PREFIX C-h / F1
 
-; TODO: evaluate replacing bind-key for general
 (use-package bind-key
   :config
   ;; Make ESC quit prompts
@@ -157,7 +156,7 @@
   ;; Kill current buffer
   (bind-key "C-x C-k" #'kill-this-buffer))
 
-
+; TODO: evaluate replacing general for bind-key
 (use-package general
   :config
 
@@ -171,6 +170,7 @@
     "h" #'major-mode-hydra)
 
   ; Prefix renaming (which-key)
+  ; TODO: evaluate using which-key-add-keymap-based-replacements for prefix renaming
   (general-def
     :prefix "C-x"
     "RET" '(:ignore t :which-key "coding-system")
@@ -201,7 +201,9 @@
 ;;;; Windows, interface elements, visual editing helpers and themes ;;;;
 
 (use-package all-the-icons
-  :if (display-graphic-p))
+  :if (display-graphic-p)
+  :custom
+  (all-the-icons-scale-factor 0.9))
 
 (use-package dashboard
   :custom
@@ -544,14 +546,14 @@
 ; - https://github.com/noctuid/evil-guide
 
 (use-package evil
-  :hook
-  (after-init . evil-mode)
   :custom
   (evil-respect-visual-line-mode t)
   (evil-search-module 'isearch)
   (evil-split-window-right t) (evil-vsplit-window-below t)
   (evil-symbol-word-search t)
   (evil-undo-system 'undo-redo)
+  (evil-want-C-h-delete t)
+  (evil-want-C-u-delete t)
   (evil-want-C-u-scroll t)
   (evil-want-C-w-in-emacs-state t)
   (evil-want-Y-yank-to-eol t)
@@ -571,9 +573,6 @@
   (define-key evil-insert-state-map (kbd "M-p") #'previous-line)
   (define-key evil-insert-state-map (kbd "C-a") #'move-beginning-of-line)  ; original: evil-paste-last-insertion
   (define-key evil-insert-state-map (kbd "C-e") #'move-end-of-line)        ; original: evil-copy-from-below
-  ;; (define-key evil-insert-state-map (kbd "C-d") #'delete-char)             ; original: evil-shift-left
-  ;; (define-key evil-insert-state-map (kbd "C-h") #'delete-backward-char)    ; original: help prefix
-  ;; (define-key evil-insert-state-map (kbd "C-y") #'yank)                    ; original: evil-copy-from-above
 
   ; C-w extra bindings
   (define-key evil-window-map "`" #'evil-switch-to-windows-last-buffer)
@@ -872,6 +871,8 @@
 
 (use-package flymake
   :defer t
+  :custom
+  (python-flymake-command "pylint")
   :config
   (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
 ; TODO: evaluate flycheck
