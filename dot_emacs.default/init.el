@@ -590,6 +590,7 @@
     :prefix "C-w"
     :prefix-map 'evil-window-map
     "TAB"     '(:ignore t :which-key "tabs")
+    "TAB TAB" #'tab-bar-switch-to-recent-tab
     "TAB RET" #'tab-switch
     "TAB `"   #'tab-bar-switch-to-last-tab
     "TAB n"   #'tab-next
@@ -970,11 +971,22 @@
 
 (use-package pyvenv
   :hook (python-mode . pyvenv-mode)
-  :bind
-  (:map python-mode-map
-        ("C-c a" . pyvenv-activate)
-        ("C-c d" . pyvenv-deactivate)
-        ("C-c r" . pyvenv-restart-python)))
+  :init
+  (defun my/pyvenv-autoload ()
+    (interactive)
+    (f-traverse-upwards
+     (lambda (path)
+       (let ((venv-path (f-expand ".venv" path)))
+         (when (f-exists? venv-path)
+           (pyvenv-activate venv-path))))))
+  :general
+  (:major-modes 'python-mode
+    "C-c v" '(:ignore t :which-key "pyvenv")
+    "C-c v v" #'my/pyvenv-autoload
+    "C-c v a" #'pyvenv-activate
+    "C-c v w" #'pyvenv-workon
+    "C-c v d" #'pyvenv-deactivate
+    "C-c v r" #'pyvenv-restart-python))
 
 (use-package poetry
   :commands poetry)
@@ -986,11 +998,15 @@
   :custom
   (pytest-cmd-flags "--exitfirst --capture=no")
   (pytest-project-root-files '(".venv" "setup.py" ".git"))
-  :commands (pytest-one pytest-all)
-  :bind
-  (:map python-mode-map
-        ("C-c t" . pytest-one)
-        ("C-c T" . pytest-all))
+  :commands (pytest-all pytest-module pytest-one pytest-again pytest-directory)
+  :general
+  (:major-modes 'python-mode
+    "C-c t" '(:ignore t :which-key "pytest")
+    "C-c t a"  #'pytest-all
+    "C-c t m"  #'pytest-module
+    "C-c t 1"  #'pytest-one
+    "C-c t t"  #'pytest-again
+    "C-c t d"  #'pytest-directory)
   :config
   (add-to-list 'display-buffer-alist
                '("*pytest*"
