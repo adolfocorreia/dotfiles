@@ -109,6 +109,7 @@
   :if ON-LINUX
   :custom-face
   (default ((t :family "Iosevka" :height 110)))
+  (variable-pitch ((t :family "Iosevka Aile" :height 105)))
   :config
   (menu-bar-mode +1)
   (scroll-bar-mode +1)
@@ -119,7 +120,8 @@
   :ensure nil
   :if ON-WINDOWS
   :custom-face
-  (default ((t :family "Hack" :height 90)))
+  (default ((t :family "Iosevka" :height 100)))
+  (variable-pitch ((t :family "Iosevka Aile" :height 95)))
   :config
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
