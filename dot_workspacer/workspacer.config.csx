@@ -50,7 +50,7 @@ class CpuMemWidget : BarWidgetBase {
         _timer = new Timer(_interval);
         _timer.Elapsed += (s, e) => {
             _text = _GenerateTextFromCounters();
-            MarkDirty();
+            Context.MarkDirty();
         };
         _timer.Enabled = true;
     }
@@ -251,20 +251,20 @@ Action<IConfigContext> doConfig = (context) => {
             new ActiveLayoutWidget() { LeftPadding = "[", RightPadding = "]" },
             new TextWidget(" | "),
             new ColorFocusedMonitorWidget() {
-                FocusedText = "\uf005\uf005\uf005\uf005\uf005",
+                FocusedText = "\uf005  ",
                 ForegroundColor = yellow },
             new TitleWidget() {
                 IsShortTitle = true,
                 MonitorHasFocusColor = yellow,
                 NoWindowMessage = "-" },
             new ColorFocusedMonitorWidget() {
-                FocusedText = "\uf005\uf005\uf005\uf005\uf005",
+                FocusedText = "  \uf005",
                 ForegroundColor = yellow },
         },
         RightWidgets = () => new IBarWidget[] {
             new CpuMemWidget(1000 * 15, "  \uf109 [cpu]%  \uf978 [mem]%"),
             /* TODO: Change icon according to battery level */
-            new TextWidget(" \uf242"),
+            new TextWidget(" \uf581"),
             new BatteryWidget() {
                 LowChargeColor = red,
                 MedChargeColor = yellow,
