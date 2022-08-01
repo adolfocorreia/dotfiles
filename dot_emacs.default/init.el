@@ -108,7 +108,7 @@
   :ensure nil
   :if ON-LINUX
   :custom-face
-  (default ((t :family "Iosevka" :height 110)))
+  (default ((t :family "Iosevka Fixed" :height 110)))
   (variable-pitch ((t :family "Iosevka Aile" :height 105)))
   :config
   (menu-bar-mode +1)
@@ -120,7 +120,7 @@
   :ensure nil
   :if ON-WINDOWS
   :custom-face
-  (default ((t :family "Iosevka" :height 100)))
+  (default ((t :family "Iosevka Fixed" :height 100)))
   (variable-pitch ((t :family "Iosevka Aile" :height 95)))
   :config
   (menu-bar-mode -1)
@@ -529,6 +529,7 @@
   :config
   (require 'vlf-setup))
 
+; TODO: do not download package on Windows
 (use-package vterm
   :unless ON-WINDOWS
   :commands vterm)
@@ -847,6 +848,7 @@
   (define-key evil-window-map "U" #'winner-redo))
 ; TODO: evaluate tab-bar-history-mode
 
+; TODO: evaluate packages
 ; evil-cleverparens
 ; evil-embrace
 ; evil-markdown
@@ -918,6 +920,7 @@
 (use-package lsp-treemacs
   :after lsp)
 
+; TODO: evaluate packages
 ; autopairs
 ; hl-todo
 ; smartparens/evil-smartparens
@@ -971,6 +974,7 @@
   (python-mode . anaconda-mode)
   (python-mode . anaconda-eldoc-mode))
 
+; TODO: make this work on Windows
 (use-package pyvenv
   :hook (python-mode . pyvenv-mode)
   :init
@@ -1019,7 +1023,6 @@
 
 ; TODO: create python-mode hydra and/or major-mode specific bindings
 
-; TODO: add poetry
 ; TODO: add mypy backend for flymake
 ; TODO: evaluate ein (emacs-ipython-notebook) and emacs-jupyter
 ; TODO: evaluate lpy
@@ -1069,9 +1072,11 @@
 
 
 ;; LaTeX
+; TODO: config LaTeX
 ; (use-package tex
 ;   :ensure auctex)
 
+; TODO: evaluate packages
 ; pdf-tools
 ; tree sitter
 ; dap-mode
@@ -1111,6 +1116,8 @@
   (conf-mode . diff-hl-mode)
   (prog-mode . diff-hl-mode)
   (dired-mode . diff-hl-dired-mode))
+
+; TODO: evaluate chezmoi.el
 
 
 
@@ -1212,7 +1219,7 @@
     "&" #'cape-sgml
     "r" #'cape-rfc1345))
 
-; TODO:
+; TODO: evaluate packages
 ; eval-in-repl
 ; isend-mode
 ; quickrun
