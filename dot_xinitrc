@@ -31,9 +31,12 @@ fi
 # - https://wiki.haskell.org/Xmonad/Frequently_asked_questions#Preferred_Method
 export _JAVA_AWT_WM_NONREPARENTING=1
 
-# Monitor configuration (check monitors with 'xrandr --listmonitors')
-# Reference: https://wiki.archlinux.org/title/Xorg#Display_size_and_DPI
-xrandr --output DP-2 --primary --mode 2560x1440 --left-of HDMI-0 --dpi 96 --output HDMI-0 --auto
+# Monitor configuration (monitor 1: 3840x2160 / monitor 2: 2560x1440)
+# References:
+# - https://wiki.archlinux.org/title/Xorg#Display_size_and_DPI
+# - https://wiki.archlinux.org/title/Xrandr#Configuration_using_arandr
+# - check monitor with 'xrandr --listmonitors'
+xrandr --dpi 96 --output DP-3 --off --output DP-4 --off --output DP-5 --primary --mode 2560x1440 --pos 0x0 --rotate normal --output HDMI-1 --mode 2560x1440 --pos 2560x0 --rotate normal
 
 # Remap mouse buttons
 # 1: left, 2: middle, 3: right, 4/5: mouse wheel up/down, 6/7: mouse wheel left/right, 8/9: back/forward
