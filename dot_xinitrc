@@ -36,7 +36,9 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 # - https://wiki.archlinux.org/title/Xorg#Display_size_and_DPI
 # - https://wiki.archlinux.org/title/Xrandr#Configuration_using_arandr
 # - check monitor with 'xrandr --listmonitors'
-xrandr --dpi 96 --output DP-3 --off --output DP-4 --off --output DP-5 --primary --mode 2560x1440 --pos 0x0 --rotate normal --output HDMI-1 --mode 2560x1440 --pos 2560x0 --rotate normal
+{ read -r DP1; read -r DP2; } < <(xrandr | grep DP | grep ' disconnected ' | awk '{print $1}')
+{ read -r DP3; } < <(xrandr | grep DP | grep ' connected ' | awk '{print $1}')
+xrandr --dpi 96 --output $DP1 --off --output $DP2 --off --output $DP3 --primary --mode 2560x1440 --pos 0x0 --rotate normal --output HDMI-1 --mode 2560x1440 --pos 2560x0 --rotate normal
 
 # Remap mouse buttons
 # 1: left, 2: middle, 3: right, 4/5: mouse wheel up/down, 6/7: mouse wheel left/right, 8/9: back/forward
