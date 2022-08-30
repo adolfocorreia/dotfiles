@@ -1504,7 +1504,7 @@ LEADER_MAPPINGS = {
     ['h'] = {'<Cmd>Startify<CR>',                 'Open home buffer'},
     ['s'] = {'<Cmd>tab StartupTime<CR>',          'View startup time'},
     ['H'] = {'<Cmd>checkhealth<CR>',              'Check health'},
-    ['P'] = {'<Cmd>Dirbuf '..plugin_path..'<CR>', 'Check health'},
+    ['P'] = {'<Cmd>Dirbuf '..plugin_path..'<CR>', 'Open plugins path'},
   },
 
   p = {
@@ -1589,16 +1589,16 @@ LEADER_MAPPINGS = {
 
   g = {
     name  = 'git',
-    ['g'] = {'<Cmd>tab Git<Bar>LualineRenameTab git<CR>', 'Git status' },
-    ['c'] = {'<Cmd>Git commit<CR>',                       'Git commit' },
-    ['p'] = {'<Cmd>Git push<CR>',                         'Git push' },
-    ['l'] = {'<Cmd>Git log<Bar>wincmd L<CR>',             'Git log' },
-    ['b'] = {'<Cmd>Git blame<CR>',                        'Git blame' },
-    ['C'] = {'<Cmd>Telescope git_commits<CR>',            'List git commits'},
-    ['B'] = {'<Cmd>Telescope git_branches<CR>',           'List git branches'},
-    ['S'] = {'<Cmd>Telescope git_status<CR>',             'List changes per files'},
-    ['d'] = {'<Cmd>DiffviewOpen<CR>',                     'Diff view' },
-    ['f'] = {'<Cmd>DiffviewFileHistory<CR>',              'Diff view file history' },
+    ['g'] = {'<Cmd>tab Git<CR>',                'Git status' },
+    ['c'] = {'<Cmd>Git commit<CR>',             'Git commit' },
+    ['p'] = {'<Cmd>Git push<CR>',               'Git push' },
+    ['l'] = {'<Cmd>Git log<Bar>wincmd L<CR>',   'Git log' },
+    ['b'] = {'<Cmd>Git blame<CR>',              'Git blame' },
+    ['C'] = {'<Cmd>Telescope git_commits<CR>',  'List git commits'},
+    ['B'] = {'<Cmd>Telescope git_branches<CR>', 'List git branches'},
+    ['S'] = {'<Cmd>Telescope git_status<CR>',   'List changes per files'},
+    ['d'] = {'<Cmd>DiffviewOpen<CR>',           'Diff view' },
+    ['f'] = {'<Cmd>DiffviewFileHistory<CR>',    'Diff view file history' },
     h = {
       name = 'hunk',
       ['h'] = {'Preview hunk'},
