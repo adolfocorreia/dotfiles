@@ -604,7 +604,6 @@ require('packer').startup({function(use)
           -- TODO: evaluate removal
           { name = 'nvim_lua' },
           { name = 'luasnip' },
-          { name = 'cmp_tabnine' },
           { name = 'buffer', keyword_length = 4 },
           { name = 'rg', keyword_length = 4 },
           { name = 'path' },
@@ -618,7 +617,6 @@ require('packer').startup({function(use)
             menu = ({
               buffer      = '[buf]',
               cmdline     = '[nvim]',
-              cmp_tabnine = '[tab9]',
               luasnip     = '[snip]',
               nvim_lsp    = '[lsp]',
               nvim_lua    = '[lua]',
@@ -662,29 +660,6 @@ require('packer').startup({function(use)
 
   use { 'hrsh7th/cmp-nvim-lsp', after = 'nvim-cmp', requires = 'hrsh7th/nvim-cmp' }
   use { 'lukas-reineke/cmp-rg', after = 'nvim-cmp', requires = 'hrsh7th/nvim-cmp' }
-
-  -- TODO: evaluate loading this plugin at VimEnter to speedup its external engine
-  local tabnine = {
-    'tzachar/cmp-tabnine',
-    -- event = 'VimEnter',
-    after = 'nvim-cmp',
-    requires = 'hrsh7th/nvim-cmp',
-    config = function()
-      require('cmp_tabnine.config'):setup({
-        max_lines = 1000;
-        max_num_results = 100;
-        sort = true;
-        run_on_every_keystroke = true;
-      })
-    end,
-  }
-  if vim.g.os == 'Windows' then
-    tabnine['run'] = 'pwsh ./install.ps1'
-    use(tabnine)
-  else
-    tabnine['run'] = 'sh ./install.sh'
-    use(tabnine)
-  end
 
   -- Snippets.
   -- TODO: evaluate this better
