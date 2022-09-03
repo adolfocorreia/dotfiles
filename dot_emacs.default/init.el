@@ -302,6 +302,7 @@
 
 (use-package autorevert
   :ensure nil
+  :defer 1
   :custom
   (global-auto-revert-non-file-buffers t)
   :config
@@ -534,6 +535,9 @@
   :unless ON-WINDOWS
   :commands vterm)
 
+(use-package windresize
+  :commands windresize)
+
 ;; Default prefix: C-x w
 (use-package winum
   :defer 1
@@ -699,6 +703,7 @@
 ; TODO: evaluate evil-mc (https://github.com/doomemacs/doomemacs/blob/master/modules/editor/multiple-cursors/config.el)
 (use-package evil-multiedit
   :after evil
+  :defer 1
   :custom
   (evil-multiedit-follow-matches t)
   (iedit-toggle-key-default nil)
@@ -1108,7 +1113,8 @@
                  (display-buffer-in-tab) (tab-name . "magit")))
   (add-hook 'after-save-hook #'magit-after-save-refresh-status)
   (add-hook 'magit-pre-refresh-hook #'diff-hl-magit-pre-refresh)
-  (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
+  (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh)
+  (magit-wip-mode +1))
 
 ; TODO: evaluate git-gutter-fringe
 (use-package diff-hl
@@ -1190,6 +1196,7 @@
 
 (use-package kind-icon
   :after corfu
+  :defer 10
   :custom
   (kind-icon-default-face 'corfu-default)
   :config
