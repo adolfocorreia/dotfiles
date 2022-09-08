@@ -742,15 +742,17 @@
              (group (any alnum "_") word-end))))
 
   (defun evil-variable-segment--get-first-matched-group ()
+    "Return list with the positions (beginning and end) of the first matched group from match-data."
     (let ((matched-groups (cdr (cdr (match-data t))))
-          (begin nil) (end nil))
-      (while (and (not begin) (not end))
-        (setq begin (pop matched-groups))
+          (beg nil) (end nil))
+      (while (and (not beg) (not end))
+        (setq beg (pop matched-groups))
         (setq end (pop matched-groups)))
-      (list begin end)))
+      (list beg end)))
 
   ; TODO: check for search fails
   ; TODO: select the left '_' only at the last segment of the word
+  ; TODO: evaluate text objects arguments (count beg end type inclusive)
   (defun evil-variable-segment--find-range (left-re right-re)
     "Return [begin, end) range defined by text object."
     (save-match-data
