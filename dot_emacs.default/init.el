@@ -44,6 +44,9 @@
 
 (use-package no-littering)
 
+; TODO: evaluate this better
+;; (use-package quelpa-use-package)
+
 
 
 ;;;; General Emacs configuration ;;;;
@@ -111,9 +114,9 @@
   (default ((t :family "Iosevka Fixed" :height 110)))
   (variable-pitch ((t :family "Iosevka Aile" :height 105)))
   :config
-  (menu-bar-mode +1)
+  (menu-bar-mode -1)
   (scroll-bar-mode +1)
-  (tool-bar-mode +1))
+  (tool-bar-mode -1))
 
 ; Windows
 (use-package emacs
@@ -221,10 +224,14 @@
   (dashboard-setup-startup-hook))
 
 (use-package doom-modeline
+  :after (all-the-icons doom-themes)
   :custom
   (doom-modeline-height 30)
   (doom-modeline-minor-modes t)
   :config
+  (add-to-list 'mode-line-misc-info (propertize (all-the-icons-material "menu")
+                                                'local-map (make-mode-line-mouse-map 'mouse-1 'menu-bar-open)
+                                                'mouse-face 'doom-modeline-highlight))
   (doom-modeline-mode +1))
 
 (use-package doom-themes
@@ -700,6 +707,71 @@
   (define-key evil-visual-state-map "gl" #'evil-lion-left)
   (define-key evil-visual-state-map "gL" #'evil-lion-right))
 
+; TODO: make evil-variable-segment package
+; https://github.com/Julian/vim-textobj-variable-segment/blob/main/autoload/textobj/variable_segment.vim
+(use-package emacs
+  :after evil
+  :config
+  (setq evil-variable-segment-left-inner-regex
+        (rx (or
+             (seq (one-or-more "_") (group alnum))
+             (group word-start)
+             (seq lower (group upper))
+             (seq alpha (group digit))
+             (seq digit (group alpha)))))
+  (setq evil-variable-segment-right-inner-regex
+        (rx (or
+             (seq (group not-newline) (one-or-more "_"))
+             (seq (group lower) upper)
+             (seq (group alpha) digit)
+             (seq (group digit) alpha)
+             (group (any alnum "_") word-end))))
+  (setq evil-variable-segment-left-outer-regex
+        (rx (or
+             (group (one-or-more "_") alnum)
+             (group word-start)
+             (seq lower (group upper))
+             (seq alpha (group digit))
+             (seq digit (group alpha)))))
+  (setq evil-variable-segment-right-outer-regex
+        (rx (or
+             (group (one-or-more "_"))
+             (seq (group lower) upper)
+             (seq (group alpha) digit)
+             (seq (group digit) alpha)
+             (group (any alnum "_") word-end))))
+
+  (defun evil-variable-segment--get-first-matched-group ()
+    (let ((matched-groups (cdr (cdr (match-data t))))
+          (begin nil) (end nil))
+      (while (and (not begin) (not end))
+        (setq begin (pop matched-groups))
+        (setq end (pop matched-groups)))
+      (list begin end)))
+
+  ; TODO: check for search fails
+  ; TODO: select the left '_' only at the last segment of the word
+  (defun evil-variable-segment--find-range (left-re right-re)
+    "Return [begin, end) range defined by text object."
+    (save-match-data
+      (let ((case-fold-search nil) (begin nil) (end nil))
+         (save-excursion
+           (forward-char)
+           (re-search-backward left-re)
+           (setq begin (car (evil-variable-segment--get-first-matched-group)))
+           (goto-char (+ begin 1))
+           (re-search-forward right-re)
+           (setq end (car (cdr (evil-variable-segment--get-first-matched-group)))))
+         (list begin end))))
+
+  (evil-define-text-object evil-variable-segment-inner (count &optional beg end type)
+    (evil-variable-segment--find-range evil-variable-segment-left-inner-regex evil-variable-segment-right-inner-regex))
+  (evil-define-text-object evil-variable-segment-outer (count &optional beg end type)
+    (evil-variable-segment--find-range evil-variable-segment-left-outer-regex evil-variable-segment-right-outer-regex))
+
+  (define-key evil-inner-text-objects-map "v" #'evil-variable-segment-inner)
+  (define-key evil-outer-text-objects-map "v" #'evil-variable-segment-outer))
+
 ; TODO: evaluate evil-mc (https://github.com/doomemacs/doomemacs/blob/master/modules/editor/multiple-cursors/config.el)
 (use-package evil-multiedit
   :after evil
@@ -979,6 +1051,7 @@
   (python-mode . anaconda-mode)
   (python-mode . anaconda-eldoc-mode))
 
+; TODO: evaluate emacs-pet
 ; TODO: make this work on Windows
 (use-package pyvenv
   :hook (python-mode . pyvenv-mode)
