@@ -229,6 +229,7 @@
   (doom-modeline-height 30)
   (doom-modeline-minor-modes t)
   :config
+  ; TODO: place menu icon in tab-bar instead of modeline
   (add-to-list 'mode-line-misc-info (propertize (all-the-icons-material "menu")
                                                 'local-map (make-mode-line-mouse-map 'mouse-1 'menu-bar-open)
                                                 'mouse-face 'doom-modeline-highlight))
@@ -750,21 +751,21 @@
         (setq end (pop matched-groups)))
       (list beg end)))
 
-  ; TODO: check for search fails
-  ; TODO: select the left '_' only at the last segment of the word
-  ; TODO: evaluate text objects arguments (count beg end type inclusive)
   (defun evil-variable-segment--find-range (left-re right-re)
-    "Return [begin, end) range defined by text object."
+    "Return [beg, end) range defined by text object."
     (save-match-data
-      (let ((case-fold-search nil) (begin nil) (end nil))
+      (let ((case-fold-search nil) (beg nil) (end nil))
          (save-excursion
            (forward-char)
            (re-search-backward left-re)
-           (setq begin (car (evil-variable-segment--get-first-matched-group)))
-           (goto-char (+ begin 1))
+           (setq beg (car (evil-variable-segment--get-first-matched-group)))
+           (goto-char (+ beg 1))
            (re-search-forward right-re)
-           (setq end (car (cdr (evil-variable-segment--get-first-matched-group)))))
-         (list begin end))))
+           (setq end (car (cdr (evil-variable-segment--get-first-matched-group))))
+           ; If there are '_' characters on both sides of the range, select only the right one
+           (if (and (eq (char-after beg) ?_) (eq (char-before end) ?_))
+               (setq beg (+ beg 1))))
+         (list beg end))))
 
   (evil-define-text-object evil-variable-segment-inner (count &optional beg end type)
     (evil-variable-segment--find-range evil-variable-segment-left-inner-regex evil-variable-segment-right-inner-regex))
@@ -1088,11 +1089,17 @@
   :general
   (:major-modes 'python-mode
     "C-c t" '(:ignore t :which-key "pytest")
-    "C-c t a"  #'pytest-all
-    "C-c t m"  #'pytest-module
-    "C-c t 1"  #'pytest-one
     "C-c t t"  #'pytest-again
-    "C-c t d"  #'pytest-directory)
+    "C-c t 1"  #'pytest-one
+    "C-c t p"  #'pytest-pdb-one
+    "C-c t a"  #'pytest-all
+    "C-c t A"  #'pytest-pdb-all
+    "C-c t m"  #'pytest-module
+    "C-c t M"  #'pytest-pdb-module
+    "C-c t d"  #'pytest-directory
+    "C-c t D"  #'pytest-pdb-directory
+    "C-c t f"  #'pytest-last-failed
+    "C-c t F"  #'pytest-pbd-last-failed)
   :config
   (add-to-list 'display-buffer-alist
                '("*pytest*"
