@@ -1,11 +1,11 @@
 ;;; init.el -*- lexical-binding: t; -*-
 
-;; Check the system used
+; Check the system used
 (defconst ON-LINUX   (eq system-type 'gnu/linux))
 (defconst ON-MAC     (eq system-type 'darwin))
 (defconst ON-WINDOWS (memq system-type '(cygwin windows-nt ms-dos)))
 
-;; Custom settings
+; Custom settings
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (if (file-exists-p custom-file)
     (load custom-file))
@@ -45,7 +45,7 @@
 (use-package no-littering)
 
 ; TODO: evaluate this better
-;; (use-package quelpa-use-package)
+; (use-package quelpa-use-package)
 
 
 
@@ -155,10 +155,10 @@
 
 (use-package bind-key
   :config
-  ;; Make ESC quit prompts
+  ; Make ESC quit prompts
   (bind-key "<escape>" #'keyboard-escape-quit)
 
-  ;; Kill current buffer
+  ; Kill current buffer
   (bind-key "C-x C-k" #'kill-this-buffer))
 
 ; TODO: evaluate replacing general for bind-key
@@ -254,6 +254,7 @@
           help-mode
           helpful-mode
           apropos-mode
+          devdocs-mode  ; TODO: move this to devdocs section
           compilation-mode))
   :config
   (popper-mode +1)
@@ -279,15 +280,15 @@
   :ensure nil
   :custom
   (display-buffer-alist
-    '(;; no window
+    '(; no window
       ("\\`\\*Async Shell Command\\*\\'"
        (display-buffer-no-window))
-      ;; top side window
+      ; top side window
       ("\\*\\(Messages\\|package update results\\)\\*"
        (display-buffer-in-side-window) (side . top) (slot . -1) (window-height . 0.3))
       ("\\*\\(Warnings\\|Compile-Log\\)\\*"
        (display-buffer-in-side-window) (side . top) (slot . +1) (window-height . 0.3))
-      ;; right side window
+      ; right side window
       ("\\*\\(Help\\|helpful\\|Apropos\\|info\\)"
        (display-buffer-in-side-window) (side . right) (slot . 0) (window-width . 0.35))))
   (display-buffer-base-action
@@ -454,7 +455,7 @@
   :config
   (tab-bar-mode +1)
   (tab-bar-rename-tab "main" 1))
-; TODO: add ibuffer tab/project filters
+; TODO: add ibuffer tab/project filters (bufler?)
 ; TODO: evaluate desktop-save-mode
 
 (use-package uniquify
@@ -546,7 +547,7 @@
 (use-package windresize
   :commands windresize)
 
-;; Default prefix: C-x w
+; Default prefix: C-x w
 (use-package winum
   :defer 1
   :config
@@ -575,7 +576,7 @@
   (evil-want-fine-undo t)
   (evil-want-integration t)
   (evil-want-keybinding nil)
-  ;; evil-want-o/O-to-continue-comments t ; TODO: check this in Doom Emacs
+  ; evil-want-o/O-to-continue-comments t ; TODO: check this in Doom Emacs
   :config
   (modify-syntax-entry ?_ "w")
 
@@ -591,6 +592,7 @@
 
   ; C-w extra bindings
   (define-key evil-window-map "`" #'evil-switch-to-windows-last-buffer)
+  (define-key evil-window-map "C" #'kill-buffer-and-window)
   (define-key evil-window-map "1" #'winum-select-window-1)
   (define-key evil-window-map "2" #'winum-select-window-2)
   (define-key evil-window-map "3" #'winum-select-window-3)
@@ -775,7 +777,6 @@
   (define-key evil-inner-text-objects-map "v" #'evil-variable-segment-inner)
   (define-key evil-outer-text-objects-map "v" #'evil-variable-segment-outer))
 
-; TODO: evaluate evil-mc (https://github.com/doomemacs/doomemacs/blob/master/modules/editor/multiple-cursors/config.el)
 (use-package evil-multiedit
   :after evil
   :defer 1
@@ -962,6 +963,20 @@
   (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
 ; TODO: evaluate flycheck
 
+; TODO: evaluate evil-mc (https://github.com/doomemacs/doomemacs/blob/master/modules/editor/multiple-cursors/config.el)
+; Works better in Emacs state (C-z)
+(use-package multiple-cursors
+  :bind
+  ; Create cursors on each line of active region
+  ("C-c C-l" . mc/edit-lines)
+  ; Create cursor on next/previous line or active region
+  ("C->" . mc/mark-next-like-this)
+  ("C-<" . mc/mark-previous-like-this)
+  ; Create cursor on mouse click
+  ("C-S-<mouse-1>" . mc/add-cursor-on-click)
+  :custom
+  (mc/always-run-for-all t))
+
 (use-package string-inflection
   :commands (string-inflection-camelcase-function
              string-inflection-kebabcase-function
@@ -975,8 +990,20 @@
   (prog-mode . ws-butler-mode)
   (text-mode . ws-butler-mode))
 
+; TODO: evaluate packages
+; autopairs
+; hl-todo
+; smartparens/evil-smartparens
+; yasnippets
+; tempel
+; which-func
+; whitespace-mode
 
-;; LSP
+
+
+;;;; Language support ;;;;
+
+;; LSP ;;
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :custom
@@ -1000,20 +1027,20 @@
 (use-package lsp-treemacs
   :after lsp)
 
-; TODO: evaluate packages
-; autopairs
-; hl-todo
-; smartparens/evil-smartparens
-; yasnippets
-; tempel
-; which-func
-; whitespace-mode
+
+;; Language documentation ;;
+; TODO: set devdocs-current-docs variable using dir-local variables
+(use-package devdocs
+  :bind
+  ("<help> D" . devdocs-lookup)
+  :commands (devdocs-lookup devdocs-peruse devdocs-install devdocs-update-all)
+  :config
+  (add-to-list 'display-buffer-alist
+               '("*devdocs*"
+                 (display-buffer-in-side-window) (side . right) (slot . 0) (window-width . 0.35))))
 
 
-
-;;;; Language support ;;;;
-
-;; Emacs Lisp
+;; Emacs Lisp ;;
 (use-package parinfer-rust-mode
   :hook emacs-lisp-mode
   :custom
@@ -1025,7 +1052,7 @@
       "C-c C-p" '(:ignore t :which-key "parinfer")))
 
 
-;; Python
+;; Python ;;
 
 ; References:
 ; - https://wikemacs.org/wiki/Python
@@ -1055,9 +1082,11 @@
   (python-mode . anaconda-eldoc-mode))
 
 ; TODO: evaluate emacs-pet
-; TODO: make this work on Windows
+; TODO: make pyvenv work on Windows
 (use-package pyvenv
+  :after python
   :hook (python-mode . pyvenv-mode)
+  :commands (my/pyvenv-autoload pyvenv-activate)
   :init
   (defun my/pyvenv-autoload ()
     (interactive)
@@ -1083,9 +1112,9 @@
 (use-package pytest
   :after python
   :custom
-  (pytest-cmd-flags "--exitfirst --capture=no")
+  (pytest-cmd-flags "--exitfirst --capture=no --durations=10")
   (pytest-project-root-files '(".venv" "setup.py" ".git"))
-  :commands (pytest-all pytest-module pytest-one pytest-again pytest-directory)
+  :commands (pytest-again pytest-all pytest-directory pytest-last-failed pytest-module pytest-one pytest-pdb-all pytest-pdb-directory pytest-pdb-last-failed pytest-pdb-module pytest-pdb-one)
   :general
   (:major-modes 'python-mode
     "C-c t" '(:ignore t :which-key "pytest")
@@ -1099,7 +1128,7 @@
     "C-c t d"  #'pytest-directory
     "C-c t D"  #'pytest-pdb-directory
     "C-c t f"  #'pytest-last-failed
-    "C-c t F"  #'pytest-pbd-last-failed)
+    "C-c t F"  #'pytest-pdb-last-failed)
   :config
   (add-to-list 'display-buffer-alist
                '("*pytest*"
@@ -1117,13 +1146,13 @@
 ; TODO: evaluate python-mls
 
 
-;; Julia
+;; Julia ;;
 (use-package julia-mode
   :mode "\\.jl\\'"
   :interpreter "julia")
 
-;; Julia REPL usage: C-c C-z (raise REPL), C-c C-a (activate project),
-;; C-c C-b (send buffer), C-c C-c (send region or line), C-c C-d (invoke @doc))
+; Julia REPL usage: C-c C-z (raise REPL), C-c C-a (activate project),
+; C-c C-b (send buffer), C-c C-c (send region or line), C-c C-d (invoke @doc))
 (use-package julia-repl
   :after julia-mode
   :hook (julia-mode . julia-repl-mode))
@@ -1131,7 +1160,7 @@
 ; TODO: evaluate julia-snail
 
 
-;; ESS
+;; ESS ;;
 (use-package ess
   :mode
   ("\\.[rR]\\'" . R-mode)
@@ -1147,7 +1176,7 @@
   ("\\.[rR]md\\'" . poly-markdown+R-mode))
 
 
-;; Haskell
+;; Haskell ;;
 (use-package haskell-mode
   :unless ON-WINDOWS
   :custom
@@ -1158,7 +1187,7 @@
   :after (haskell-mode lsp-mode))
 
 
-;; LaTeX
+;; LaTeX ;;
 ; TODO: config LaTeX
 ; (use-package tex
 ;   :ensure auctex)
@@ -1181,7 +1210,7 @@
 
 ;;;; Git ;;;;
 
-;; Magit
+;; Magit ;;
 (use-package magit
   :bind
   ("C-x g" . magit-status)
@@ -1211,7 +1240,6 @@
 
 ;;;; Fuzzy search & completion ;;;;
 
-;; Vertico
 (use-package vertico
   :custom
   (read-buffer-completion-ignore-case t)
@@ -1235,9 +1263,10 @@
 (use-package consult
   :defer 1
   :bind
-  ("C-x C-r"  . consult-recent-file)
+  ("C-x C-r" . consult-recent-file)
   ([remap apropos-command] . consult-apropos)
   ([remap project-switch-to-buffer] . consult-project-buffer)
+  ([remap switch-to-buffer] . consult-buffer)
   :hook (completion-list-mode . consult-preview-at-point-mode)
   :config
   (general-def
@@ -1247,13 +1276,23 @@
     :prefix "C-c SPC"
     "SPC" #'consult-buffer
     "b"   #'consult-buffer
+    "f"   #'consult-find                ; find file by name
+    "g"   #'consult-ripgrep             ; search for regexes in files
+    "G"   #'consult-git-grep            ; search for regexes in git tracked files
     "o"   #'consult-outline
     "i"   #'consult-imenu
-    "l"   #'consult-line
-    "r"   #'consult-ripgrep
-    "g"   #'consult-git-grep
-    "f"   #'consult-find
-    "y"   #'consult-flymake))
+    "l"   #'consult-line                ; search for lines in current buffer
+    "L"   #'consult-line-multi          ; search for lines in all buffer
+    "y"   #'consult-yank-from-kill-ring ; search for previous yanks
+    "O"   #'consult-multi-occur
+    "F"   #'consult-flymake
+    "D"   #'consult-lsp-diagnostics
+    "C"   #'consult-complex-command     ; find commands in command-history
+    "H"   #'consult-history))           ; find commands in current buffer history (e.g. eshell or comint)
+
+(use-package consult-lsp
+  :after (consult lsp)
+  :commands (consult-lsp-diagnostics))
 
 (use-package embark
   :defer 1
