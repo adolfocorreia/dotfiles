@@ -157,6 +157,15 @@
   :config
   ; Make ESC quit prompts
   (bind-key "<escape>" #'keyboard-escape-quit)
+  ; Avoid delete-other-windows call when pressing ESC
+  ; Reference: https://stackoverflow.com/questions/557282/in-emacs-whats-the-best-way-for-keyboard-escape-quit-not-destroy-other-windows
+  (defadvice keyboard-escape-quit (around my/keyboard-escape-quit-advice activate)
+    (let (orig-one-window-p)
+      (fset 'orig-one-window-p (symbol-function 'one-window-p))
+      (fset 'one-window-p (lambda (&optional nomini all-frames) t))
+      (unwind-protect
+          ad-do-it
+        (fset 'one-window-p (symbol-function 'orig-one-window-p)))))
 
   ; Kill current buffer
   (bind-key "C-x C-k" #'kill-this-buffer))
@@ -172,7 +181,7 @@
     ; TODO: lsp
 
     "u" #'universal-argument
-    "h" #'major-mode-hydra)
+    "H" #'major-mode-hydra)
 
   ; Prefix renaming (which-key)
   ; TODO: evaluate using which-key-add-keymap-based-replacements for prefix renaming
@@ -350,8 +359,8 @@
                 ("t" dired-toggle-marks     :exit nil))
                "Operations"
                (("C" dired-do-copy)
-                ("D" dired-delete)
-                ("R" dired-rename)
+                ("D" dired-do-delete)
+                ("R" dired-do-rename)
                 ("Z" dired-do-compress)
                 ("+" dired-create-directory))
                "Shell"
@@ -490,6 +499,26 @@
   :config
   (gcmh-mode +1))
 
+; TODO: evaluate native equivalent features (e.g. bookmarks)
+(use-package harpoon
+  :custom
+  (harpoon-project-package 'project)
+  :config
+  (general-def
+    :prefix "C-c"
+    "h" '(:ignore t :which-key "harpoon"))
+  (general-def
+    :prefix "C-c h"
+    "<return>" #'harpoon-add-file
+    "h"        #'harpoon-toggle-quick-menu
+    "1"        #'harpoon-go-to-1
+    "2"        #'harpoon-go-to-2
+    "3"        #'harpoon-go-to-3
+    "4"        #'harpoon-go-to-4
+    "5"        #'harpoon-go-to-5
+    "F"        #'harpoon-toggle-file
+    "C"        #'harpoon-clear))
+
 (use-package helpful
   :bind
   ([remap describe-function] . helpful-callable)
@@ -589,6 +618,12 @@
   (define-key evil-insert-state-map (kbd "M-p") #'previous-line)
   (define-key evil-insert-state-map (kbd "C-a") #'move-beginning-of-line)  ; original: evil-paste-last-insertion
   (define-key evil-insert-state-map (kbd "C-e") #'move-end-of-line)        ; original: evil-copy-from-below
+  (define-key evil-insert-state-map (kbd "C-d") #'delete-char)             ; original: evil-shift-left-line
+  ; TODO: evaluate evil-rsi and what to do with C-t (e.g. transpose-char)
+
+  ; Since C-d is not available in insert mode (see above), remap evil-shift-line commands
+  (define-key evil-insert-state-map (kbd "C-,") #'evil-shift-left-line)
+  (define-key evil-insert-state-map (kbd "C-.") #'evil-shift-right-line)
 
   ; C-w extra bindings
   (define-key evil-window-map "`" #'evil-switch-to-windows-last-buffer)
@@ -879,6 +914,40 @@
   (define-key evil-inner-text-objects-map "e" #'evil-entire-entire-buffer)
   (define-key evil-outer-text-objects-map "e" #'evil-entire-entire-buffer))
 
+; TODO: evaluate Doom Emacs' tree-sitter config: https://github.com/doomemacs/doomemacs/blob/master/modules/tools/tree-sitter/config.el
+(use-package evil-textobj-tree-sitter
+  :after (evil tree-sitter)
+  :config
+  ; TODO: evaluate creating text objects for loops, parameters and comments
+  (define-key evil-inner-text-objects-map "f" (evil-textobj-tree-sitter-get-textobj "function.inner"))
+  (define-key evil-outer-text-objects-map "f" (evil-textobj-tree-sitter-get-textobj "function.outer"))
+  (define-key evil-inner-text-objects-map "c" (evil-textobj-tree-sitter-get-textobj "class.inner"))
+  (define-key evil-outer-text-objects-map "c" (evil-textobj-tree-sitter-get-textobj "class.outer"))
+
+  ; Goto next start
+  (define-key evil-normal-state-map (kbd "]]") (lambda () (interactive)
+                                                 (if tree-sitter-mode
+                                                     (evil-textobj-tree-sitter-goto-textobj "function.outer" nil nil)
+                                                   (evil-forward-section-begin))))
+  (define-key evil-normal-state-map (kbd "]c") (lambda () (interactive) (evil-textobj-tree-sitter-goto-textobj "class.outer" nil nil)))
+  ; Goto next end
+  (define-key evil-normal-state-map (kbd "][") (lambda () (interactive)
+                                                 (if tree-sitter-mode
+                                                     (evil-textobj-tree-sitter-goto-textobj "function.outer" nil t)
+                                                   (evil-forward-section-end))))
+  (define-key evil-normal-state-map (kbd "]C") (lambda () (interactive) (evil-textobj-tree-sitter-goto-textobj "class.outer" nil t)))
+  ; Got previous start
+  (define-key evil-normal-state-map (kbd "[[") (lambda () (interactive)
+                                                 (if tree-sitter-mode
+                                                     (evil-textobj-tree-sitter-goto-textobj "function.outer" t nil)
+                                                   (evil-backward-section-begin))))
+  (define-key evil-normal-state-map (kbd "[c") (lambda () (interactive) (evil-textobj-tree-sitter-goto-textobj "class.outer" t nil)))
+  ; Goto previous end
+  (define-key evil-normal-state-map (kbd "[]") (lambda () (interactive)
+                                                 (if tree-sitter-mode (evil-textobj-tree-sitter-goto-textobj "function.outer" t t)
+                                                   (evil-backward-section-end))))
+  (define-key evil-normal-state-map (kbd "[C") (lambda () (interactive) (evil-textobj-tree-sitter-goto-textobj "class.outer" t t))))
+
 (use-package evil-visualstar
   :after evil
   :config
@@ -936,7 +1005,6 @@
 ; evil-quick-diff
 ; evil-replace-with-register
 ; evil-string-inflection
-; evil-textobj-tree-sitter
 ; evil-vimish-fold
 ; exato
 ; text-objects (targets/things)
@@ -968,7 +1036,7 @@
 (use-package multiple-cursors
   :bind
   ; Create cursors on each line of active region
-  ("C-c C-l" . mc/edit-lines)
+  ("C-S-c C-S-c" . mc/edit-lines)
   ; Create cursor on next/previous line or active region
   ("C->" . mc/mark-next-like-this)
   ("C-<" . mc/mark-previous-like-this)
@@ -1004,6 +1072,8 @@
 ;;;; Language support ;;;;
 
 ;; LSP ;;
+; TODO: improve warning/errors display (e.g. instead of consult-lsp)
+; TODO: use dir-locals flag to autoload LSP on prog-mode (e.g. python) buffers
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :custom
@@ -1026,6 +1096,17 @@
 
 (use-package lsp-treemacs
   :after lsp)
+
+
+;; tree-sitter ;;
+(use-package tree-sitter
+  :defer 1
+  :config
+  (global-tree-sitter-mode +1)
+  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+
+(use-package tree-sitter-langs
+  :after tree-sitter)
 
 
 ;; Language documentation ;;
@@ -1061,6 +1142,8 @@
 ; - https://develop.spacemacs.org/layers/+lang/python/README.html
 ; - https://elpa.gnu.org/packages/python.html
 
+; TODO: improve documentation display when coding (e.g. explain function arguments)
+; TODO: evaluate comint-mime
 (use-package python
   :ensure nil
   :custom
@@ -1194,7 +1277,6 @@
 
 ; TODO: evaluate packages
 ; pdf-tools
-; tree sitter
 ; dap-mode
 ; realgud
 ; lua
@@ -1265,8 +1347,11 @@
   :bind
   ("C-x C-r" . consult-recent-file)
   ([remap apropos-command] . consult-apropos)
+  ([remap bookmark-jump] . consult-bookmark)
   ([remap project-switch-to-buffer] . consult-project-buffer)
   ([remap switch-to-buffer] . consult-buffer)
+  ([remap switch-to-buffer-other-frame] . consult-buffer-other-frame)
+  ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
   :hook (completion-list-mode . consult-preview-at-point-mode)
   :config
   (general-def
