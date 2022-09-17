@@ -150,9 +150,9 @@
 ; - M-x describe-bindings
 ; - M-x describe-mode
 ; - M-x describe-personal-keybindings
-; - M-x general-describe-keybindings
 ; - PREFIX C-h / F1
 
+; TODO: set "C-c I" to open init file (e.g. crux-find-user-init-file)
 (use-package bind-key
   :config
   ; Make ESC quit prompts
@@ -167,22 +167,16 @@
           ad-do-it
         (fset 'one-window-p (symbol-function 'orig-one-window-p)))))
 
+  ; Alternative binding for universal-argument
+  (bind-key "C-c u" #'universal-argument)
+
   ; Kill current buffer
   (bind-key "C-x C-k" #'kill-this-buffer))
 
-; TODO: evaluate replacing general for bind-key
+; TODO: evaluate replacing general for something else
+; TODO: find best way to replace +prefix with appropriate name for all minor and major modes (e.g. flycheck, pytest, pyenv, parinfer)
 (use-package general
   :config
-
-  (general-def
-    :prefix "C-c"
-
-    ; TODO: set "C-c I" to open init file (e.g. crux-find-user-init-file)
-    ; TODO: lsp
-
-    "u" #'universal-argument
-    "H" #'major-mode-hydra)
-
   ; Prefix renaming (which-key)
   ; TODO: evaluate using which-key-add-keymap-based-replacements for prefix renaming
   (general-def
@@ -238,10 +232,6 @@
   (doom-modeline-height 30)
   (doom-modeline-minor-modes t)
   :config
-  ; TODO: place menu icon in tab-bar instead of modeline
-  (add-to-list 'mode-line-misc-info (propertize (all-the-icons-material "menu")
-                                                'local-map (make-mode-line-mouse-map 'mouse-1 'menu-bar-open)
-                                                'mouse-face 'doom-modeline-highlight))
   (doom-modeline-mode +1))
 
 (use-package doom-themes
@@ -275,7 +265,9 @@
 (use-package major-mode-hydra
   :custom
   (major-mode-hydra-invisible-quit-key "q")
-  (major-mode-hydra-separator "-"))
+  (major-mode-hydra-separator "-")
+  :config
+  (bind-key "C-c H" #'major-mode-hydra))
 
 (use-package which-key
   :config
@@ -455,17 +447,29 @@
 (use-package tab-bar
   :ensure nil
   :custom
-  (tab-bar-format '(tab-bar-format-align-right tab-bar-format-tabs-groups tab-bar-separator))
+  (tab-bar-format '(my/tab-bar-format-menu-bar tab-bar-format-align-right tab-bar-format-tabs-groups tab-bar-separator))
   (tab-bar-close-button-show nil)
-  (tab-bar-new-tab-choice "*dashboard*")
+  (tab-bar-new-tab-choice t)
   (tab-bar-separator "   ")
-  (tab-bar-show +1)
   (tab-bar-tab-hints t)
+  :init
+  (defun my/tab-bar-format-menu-bar ()
+    `((menu-bar menu-item (propertize (concat " " (all-the-icons-material "menu") "  ") 'face 'tab-bar-tab-inactive) tab-bar-menu-bar :help "Menu Bar")))
   :config
   (tab-bar-mode +1)
-  (tab-bar-rename-tab "main" 1))
+  (tab-bar-rename-tab "main" 1)
+  (toggle-frame-tab-bar))
 ; TODO: add ibuffer tab/project filters (bufler?)
-; TODO: evaluate desktop-save-mode
+; TODO: evaluate desktop-save-mode / tab-bar-history-mode
+
+(use-package tab-line
+  :ensure nil
+  :custom
+  (tab-line-exclude-modes '(completion-list-mode dashboard-mode))
+  (tab-line-new-button-show nil)
+  (tab-line-tabs-function #'tab-line-tabs-mode-buffers)
+  :config
+  (global-tab-line-mode +1))
 
 (use-package uniquify
   :ensure nil
@@ -507,17 +511,18 @@
   (general-def
     :prefix "C-c"
     "h" '(:ignore t :which-key "harpoon"))
-  (general-def
+  (bind-keys
     :prefix "C-c h"
-    "<return>" #'harpoon-add-file
-    "h"        #'harpoon-toggle-quick-menu
-    "1"        #'harpoon-go-to-1
-    "2"        #'harpoon-go-to-2
-    "3"        #'harpoon-go-to-3
-    "4"        #'harpoon-go-to-4
-    "5"        #'harpoon-go-to-5
-    "F"        #'harpoon-toggle-file
-    "C"        #'harpoon-clear))
+    :prefix-map my/harpoon-prefix-map
+    ("<return>" . harpoon-add-file)
+    ("h"        . harpoon-toggle-quick-menu)
+    ("1"        . harpoon-go-to-1)
+    ("2"        . harpoon-go-to-2)
+    ("3"        . harpoon-go-to-3)
+    ("4"        . harpoon-go-to-4)
+    ("5"        . harpoon-go-to-5)
+    ("F"        . harpoon-toggle-file)
+    ("C"        . harpoon-clear)))
 
 (use-package helpful
   :bind
@@ -625,6 +630,10 @@
   (define-key evil-insert-state-map (kbd "C-,") #'evil-shift-left-line)
   (define-key evil-insert-state-map (kbd "C-.") #'evil-shift-right-line)
 
+  ; Also use readline-like binding in minibuffer
+  (define-key minibuffer-local-map (kbd "C-h") #'delete-backward-char)
+  (define-key minibuffer-local-map (kbd "C-w") #'backward-kill-word)
+
   ; C-w extra bindings
   (define-key evil-window-map "`" #'evil-switch-to-windows-last-buffer)
   (define-key evil-window-map "C" #'kill-buffer-and-window)
@@ -638,29 +647,37 @@
   (define-key evil-window-map (kbd "C-j") #'evil-window-down)
   (define-key evil-window-map (kbd "C-k") #'evil-window-up)
 
+  ; C-w TAB bindings
+  (defun my/tab-goto-1 () (interactive) (tab-bar-select-tab 1))
+  (defun my/tab-goto-2 () (interactive) (tab-bar-select-tab 2))
+  (defun my/tab-goto-3 () (interactive) (tab-bar-select-tab 3))
+  (defun my/tab-goto-4 () (interactive) (tab-bar-select-tab 4))
+  (defun my/tab-goto-5 () (interactive) (tab-bar-select-tab 5))
   (general-def
     :prefix "C-w"
-    :prefix-map 'evil-window-map
-    "TAB"     '(:ignore t :which-key "tabs")
-    "TAB TAB" #'tab-bar-switch-to-recent-tab
-    "TAB RET" #'tab-switch
-    "TAB `"   #'tab-bar-switch-to-last-tab
-    "TAB n"   #'tab-next
-    "TAB p"   #'tab-previous
-    "TAB r"   #'tab-rename
-    "TAB u"   #'tab-undo
-    "TAB c"   #'tab-close
-    "TAB D"   #'tab-duplicate
-    "TAB N"   #'tab-new
-    "TAB b"   #'switch-to-buffer-other-tab
-    "TAB d"   #'dired-other-tab
-    "TAB f"   #'find-file-other-tab
-    "TAB P"   #'project-other-tab-command
-    "TAB 1"   '((lambda () (interactive) (tab-bar-select-tab 1)) :which-key "goto-tab-1")
-    "TAB 2"   '((lambda () (interactive) (tab-bar-select-tab 2)) :which-key "goto-tab-2")
-    "TAB 3"   '((lambda () (interactive) (tab-bar-select-tab 3)) :which-key "goto-tab-3")
-    "TAB 4"   '((lambda () (interactive) (tab-bar-select-tab 4)) :which-key "goto-tab-4")
-    "TAB 5"   '((lambda () (interactive) (tab-bar-select-tab 5)) :which-key "goto-tab-5"))
+    "TAB" '(:ignore t :which-key "tabs")
+    "g"   '(:ignore t :which-key "tab-bar-switch"))
+  (bind-keys
+    :map evil-window-map
+    ("TAB TAB" . tab-bar-switch-to-recent-tab)
+    ("TAB RET" . tab-switch)
+    ("TAB `"   . tab-bar-switch-to-last-tab)
+    ("TAB n"   . tab-next)
+    ("TAB p"   . tab-previous)
+    ("TAB r"   . tab-rename)
+    ("TAB u"   . tab-undo)
+    ("TAB c"   . tab-close)
+    ("TAB D"   . tab-duplicate)
+    ("TAB N"   . tab-new)
+    ("TAB b"   . switch-to-buffer-other-tab)
+    ("TAB d"   . dired-other-tab)
+    ("TAB f"   . find-file-other-tab)
+    ("TAB P"   . project-other-tab-command)
+    ("TAB 1"   . my/tab-goto-1)
+    ("TAB 2"   . my/tab-goto-2)
+    ("TAB 3"   . my/tab-goto-3)
+    ("TAB 4"   . my/tab-goto-4)
+    ("TAB 5"   . my/tab-goto-5))
 
   ; Open Dired buffer
   (define-key evil-normal-state-map "-" #'dired-jump)
@@ -684,10 +701,26 @@
     (kbd "C-p") #'comint-previous-input
     (kbd "C-n") #'comint-next-input)
 
+  ; custom mode
+  (evil-collection-define-key 'normal 'custom-mode-map
+    (kbd "C-p") #'evil-previous-line
+    (kbd "C-n") #'evil-next-line
+    (kbd "<mouse-1>") #'widget-button-click)
+
   ; dashboard mode
   (evil-collection-define-key 'normal 'dashboard-mode-map
     (kbd "C-p") #'dashboard-previous-line
-    (kbd "C-n") #'dashboard-next-line))
+    (kbd "C-n") #'dashboard-next-line)
+
+  ; dired mode
+  (evil-collection-define-key 'normal 'dired-mode-map
+    (kbd "C-p") #'dired-previous-line
+    (kbd "C-n") #'dired-next-line)
+
+  ; ibuffer mode
+  (evil-collection-define-key 'normal 'ibuffer-mode-map
+    (kbd "C-p") #'evil-previous-line
+    (kbd "C-n") #'evil-next-line))
 
 (use-package evil-anzu
   :after evil
@@ -975,11 +1008,11 @@
   :config
   (general-def
     :prefix "g"
-    "s" '(:ignore t :which-key "goto"))
+    "s" '(:ignore t :which-key "avy-goto"))
   (define-key evil-normal-state-map "gsl" #'evil-avy-goto-line)
   (define-key evil-normal-state-map "gsw" #'evil-avy-goto-word-1)
   (define-key evil-normal-state-map "gss" #'evil-avy-goto-char-2)
-  (define-key evil-normal-state-map (kbd "g s SPC") #'my/goto-char-timer))
+  (define-key evil-normal-state-map (kbd "g s SPC") #'my/evil-avy-goto-char-timer))
 
 (use-package transpose-frame
   :after evil
@@ -1023,13 +1056,13 @@
   :bind
   ("C-=" . er/expand-region))
 
-(use-package flymake
+(use-package flycheck
   :defer t
-  :custom
-  (python-flymake-command "pylint")
   :config
-  (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
-; TODO: evaluate flycheck
+  (general-def
+    :prefix "C-c"
+    "!" '(:ignore t :which-key "flycheck"))
+  (global-flycheck-mode))
 
 ; TODO: evaluate evil-mc (https://github.com/doomemacs/doomemacs/blob/master/modules/editor/multiple-cursors/config.el)
 ; Works better in Emacs state (C-z)
@@ -1072,7 +1105,6 @@
 ;;;; Language support ;;;;
 
 ;; LSP ;;
-; TODO: improve warning/errors display (e.g. instead of consult-lsp)
 ; TODO: use dir-locals flag to autoload LSP on prog-mode (e.g. python) buffers
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
@@ -1092,10 +1124,7 @@
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
   :custom
-  (lsp-ui-doc-position 'bottom))
-
-(use-package lsp-treemacs
-  :after lsp)
+  (lsp-ui-doc-position 'at-point))
 
 
 ;; tree-sitter ;;
@@ -1127,10 +1156,9 @@
   :custom
   (parinfer-rust-auto-download t)
   :config
-  ; TODO: associate parinfer prefix with parinfer minor mode (instead of elisp major mode)
   (general-def
-      :major-modes 'emacs-lisp-mode
-      "C-c C-p" '(:ignore t :which-key "parinfer")))
+    :major-modes 'emacs-lisp-mode
+    "C-c C-p" '(:ignore t :which-key "parinfer")))
 
 
 ;; Python ;;
@@ -1160,6 +1188,7 @@
     "C-c C-t" '(:ignore t :which-key "python-skeleton")))
 
 (use-package anaconda-mode
+  :after python
   :hook
   (python-mode . anaconda-mode)
   (python-mode . anaconda-eldoc-mode))
@@ -1168,61 +1197,66 @@
 ; TODO: make pyvenv work on Windows
 (use-package pyvenv
   :after python
-  :hook (python-mode . pyvenv-mode)
-  :commands (my/pyvenv-autoload pyvenv-activate)
   :init
+  (pyvenv-mode +1)  ; for some reason this package is not being loaded with the :hook mechanism
+  :config
   (defun my/pyvenv-autoload ()
     (interactive)
     (f-traverse-upwards
-     (lambda (path)
-       (let ((venv-path (f-expand ".venv" path)))
-         (when (f-exists? venv-path)
-           (pyvenv-activate venv-path))))))
-  :general
-  (:major-modes 'python-mode
-    "C-c v" '(:ignore t :which-key "pyvenv")
-    "C-c v v" #'my/pyvenv-autoload
-    "C-c v a" #'pyvenv-activate
-    "C-c v w" #'pyvenv-workon
-    "C-c v d" #'pyvenv-deactivate
-    "C-c v r" #'pyvenv-restart-python))
+      (lambda (path)
+        (let ((venv-path (f-expand ".venv" path)))
+          (when (f-exists? venv-path)
+            (pyvenv-activate venv-path))))))
+
+  (general-def
+    :major-modes 'python-mode
+    "C-c v" '(:ignore t :which-key "pyvenv"))
+  (bind-keys
+    :map python-mode-map
+    ("C-c v v" . my/pyvenv-autoload)
+    ("C-c v a" . pyvenv-activate)
+    ("C-c v w" . pyvenv-workon)
+    ("C-c v d" . pyvenv-deactivate)
+    ("C-c v r" . pyvenv-restart-python)))
 
 (use-package poetry
+  :after python
   :commands poetry)
 
 ; TODO: evaluate python-pytest (beware of projectile dependency)
 ; TODO: add --color argument
 (use-package pytest
   :after python
+  :hook (python-mode . pytest-mode)
   :custom
   (pytest-cmd-flags "--exitfirst --capture=no --durations=10")
   (pytest-project-root-files '(".venv" "setup.py" ".git"))
-  :commands (pytest-again pytest-all pytest-directory pytest-last-failed pytest-module pytest-one pytest-pdb-all pytest-pdb-directory pytest-pdb-last-failed pytest-pdb-module pytest-pdb-one)
-  :general
-  (:major-modes 'python-mode
-    "C-c t" '(:ignore t :which-key "pytest")
-    "C-c t t"  #'pytest-again
-    "C-c t 1"  #'pytest-one
-    "C-c t p"  #'pytest-pdb-one
-    "C-c t a"  #'pytest-all
-    "C-c t A"  #'pytest-pdb-all
-    "C-c t m"  #'pytest-module
-    "C-c t M"  #'pytest-pdb-module
-    "C-c t d"  #'pytest-directory
-    "C-c t D"  #'pytest-pdb-directory
-    "C-c t f"  #'pytest-last-failed
-    "C-c t F"  #'pytest-pdb-last-failed)
   :config
   (add-to-list 'display-buffer-alist
                '("*pytest*"
-                 (display-buffer-in-side-window) (side . right) (slot . 1) (window-width . 0.35))))
+                 (display-buffer-in-side-window) (side . right) (slot . 1) (window-width . 0.35)))
+
+  (general-def
+    :major-modes 'python-mode
+    "C-c t" '(:ignore t :which-key "pytest"))
+  (bind-keys
+    :map python-mode-map
+    ("C-c t t" . pytest-again)
+    ("C-c t 1" . pytest-one)
+    ("C-c t p" . pytest-pdb-one)
+    ("C-c t a" . pytest-all)
+    ("C-c t A" . pytest-pdb-all)
+    ("C-c t m" . pytest-module)
+    ("C-c t M" . pytest-pdb-module)
+    ("C-c t d" . pytest-directory)
+    ("C-c t D" . pytest-pdb-directory)
+    ("C-c t f" . pytest-last-failed)
+    ("C-c t F" . pytest-pdb-last-failed)))
 
 (use-package lsp-pyright
-  :after (python-mode lsp-mode))
+  :after (python lsp-mode))
 
-; TODO: create python-mode hydra and/or major-mode specific bindings
-
-; TODO: add mypy backend for flymake
+; TODO: add mypy backend for flycheck
 ; TODO: evaluate ein (emacs-ipython-notebook) and emacs-jupyter
 ; TODO: evaluate lpy
 ; TODO: evaluate python-x
@@ -1356,28 +1390,28 @@
   :config
   (general-def
     :prefix "C-c"
-    "SPC" '(:ignore t :which-key "consult"))
-  (general-def
-    :prefix "C-c SPC"
-    "SPC" #'consult-buffer
-    "b"   #'consult-buffer
-    "f"   #'consult-find                ; find file by name
-    "g"   #'consult-ripgrep             ; search for regexes in files
-    "G"   #'consult-git-grep            ; search for regexes in git tracked files
-    "o"   #'consult-outline
-    "i"   #'consult-imenu
-    "l"   #'consult-line                ; search for lines in current buffer
-    "L"   #'consult-line-multi          ; search for lines in all buffer
-    "y"   #'consult-yank-from-kill-ring ; search for previous yanks
-    "O"   #'consult-multi-occur
-    "F"   #'consult-flymake
-    "D"   #'consult-lsp-diagnostics
-    "C"   #'consult-complex-command     ; find commands in command-history
-    "H"   #'consult-history))           ; find commands in current buffer history (e.g. eshell or comint)
+    "c" '(:ignore t :which-key "consult"))
+  (bind-keys
+    :prefix "C-c c"
+    :prefix-map my/consult-prefix-map
+    ("c" . consult-buffer)
+    ("b" . consult-buffer)
+    ("f" . consult-find)                ; find file by name
+    ("g" . consult-ripgrep)             ; search for regexes in files
+    ("G" . consult-git-grep)            ; search for regexes in git tracked files
+    ("o" . consult-outline)
+    ("i" . consult-imenu)
+    ("l" . consult-line)                ; search for lines in current buffer
+    ("L" . consult-line-multi)          ; search for lines in all buffer
+    ("y" . consult-yank-from-kill-ring) ; search for previous yanks
+    ("O" . consult-multi-occur)
+    ("F" . consult-flycheck)
+    ("D" . consult-lsp-diagnostics)
+    ("C" . consult-complex-command)     ; find commands in command-history
+    ("H" . consult-history)))           ; find commands in current buffer history (e.g. eshell or comint)
 
-(use-package consult-lsp
-  :after (consult lsp)
-  :commands (consult-lsp-diagnostics))
+(use-package consult-flycheck
+  :after (consult flycheck))
 
 (use-package embark
   :defer 1
@@ -1418,19 +1452,20 @@
   (general-def
     :prefix "C-c"
     "p" '(:ignore t :which-key "cape"))
-  (general-def
+  (bind-keys
     :prefix "C-c p"
-    "p" #'completion-at-point
-    "d" #'cape-dabbrev
-    "h" #'cape-history
-    "f" #'cape-file
-    "k" #'cape-keyword
-    "s" #'cape-symbol
-    "i" #'cape-ispell
-    "l" #'cape-line
-    "t" #'cape-tex
-    "&" #'cape-sgml
-    "r" #'cape-rfc1345))
+    :prefix-map my/cape-prefix-map
+    ("p" . completion-at-point)
+    ("d" . cape-dabbrev)
+    ("h" . cape-history)
+    ("f" . cape-file)
+    ("k" . cape-keyword)
+    ("s" . cape-symbol)
+    ("i" . cape-ispell)
+    ("l" . cape-line)
+    ("t" . cape-tex)
+    ("&" . cape-sgml)
+    ("r" . cape-rfc1345)))
 
 ; TODO: evaluate packages
 ; eval-in-repl
