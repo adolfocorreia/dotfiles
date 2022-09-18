@@ -459,7 +459,6 @@
   (tab-bar-mode +1)
   (tab-bar-rename-tab "main" 1)
   (toggle-frame-tab-bar))
-; TODO: add ibuffer tab/project filters (bufler?)
 ; TODO: evaluate desktop-save-mode / tab-bar-history-mode
 
 (use-package tab-line
@@ -488,10 +487,6 @@
   (auto-package-update-prompt-before-update t)
   :config
   (auto-package-update-maybe))
-
-; TODO: make evil bindings work with bufler
-(use-package bufler
-  :commands bufler)
 
 ; TODO: evaluate crux and better-defaults
 (use-package crux
@@ -534,6 +529,15 @@
   (add-hook 'helpful-mode-hook #'display-line-numbers-mode)
   (add-hook 'helpful-mode-hook #'hl-line-mode))
 
+(use-package ibuffer-project
+  :defer 1
+  :config
+  (defun my/ibuffer-project ()
+    (setq ibuffer-filter-groups (ibuffer-project-generate-filter-groups))
+    (unless (eq ibuffer-sorting-mode 'project-file-relative)
+      (ibuffer-do-sort-by-project-file-relative)))
+  (add-hook 'ibuffer-hook #'my/ibuffer-vc))
+
 (use-package minions
   :config
   (minions-mode +1))
@@ -559,6 +563,12 @@
 (use-package tab-bar-echo-area
   :config
   (tab-bar-echo-area-mode +1))
+
+(use-package tabspaces
+  :custom
+  (tabspaces-use-filtered-buffers-as-default t)
+  :config
+  (tabspaces-mode +1))
 
 (use-package try
   :commands try)
@@ -648,11 +658,11 @@
   (define-key evil-window-map (kbd "C-k") #'evil-window-up)
 
   ; C-w TAB bindings
-  (defun my/tab-goto-1 () (interactive) (tab-bar-select-tab 1))
-  (defun my/tab-goto-2 () (interactive) (tab-bar-select-tab 2))
-  (defun my/tab-goto-3 () (interactive) (tab-bar-select-tab 3))
-  (defun my/tab-goto-4 () (interactive) (tab-bar-select-tab 4))
-  (defun my/tab-goto-5 () (interactive) (tab-bar-select-tab 5))
+  (defun my/tab-goto-1 () (interactive) (tab-select 1))
+  (defun my/tab-goto-2 () (interactive) (tab-select 2))
+  (defun my/tab-goto-3 () (interactive) (tab-select 3))
+  (defun my/tab-goto-4 () (interactive) (tab-select 4))
+  (defun my/tab-goto-5 () (interactive) (tab-select 5))
   (general-def
     :prefix "C-w"
     "TAB" '(:ignore t :which-key "tabs")
@@ -1227,7 +1237,6 @@
 ; TODO: add --color argument
 (use-package pytest
   :after python
-  :hook (python-mode . pytest-mode)
   :custom
   (pytest-cmd-flags "--exitfirst --capture=no --durations=10")
   (pytest-project-root-files '(".venv" "setup.py" ".git"))
@@ -1383,7 +1392,7 @@
   ([remap apropos-command] . consult-apropos)
   ([remap bookmark-jump] . consult-bookmark)
   ([remap project-switch-to-buffer] . consult-project-buffer)
-  ([remap switch-to-buffer] . consult-buffer)
+  ; ([remap switch-to-buffer] . consult-buffer)
   ([remap switch-to-buffer-other-frame] . consult-buffer-other-frame)
   ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
   :hook (completion-list-mode . consult-preview-at-point-mode)
