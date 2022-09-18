@@ -567,6 +567,8 @@
 
 (use-package tabspaces
   :custom
+  (tabspaces-exclude-buffers '("*dashboard*"))
+  (tabspaces-include-buffers '("*scratch*" "*Messages*"))
   (tabspaces-use-filtered-buffers-as-default t)
   :config
   (tabspaces-mode +1))
@@ -1315,19 +1317,64 @@
 
 
 ;; LaTeX ;;
+; Documentation: https://www.gnu.org/software/auctex/manual/auctex.index.html
 (use-package tex
   :unless ON-WINDOWS
   :ensure auctex
   :mode ("\\.tex\\'" . LaTeX-mode)
   :custom
-  (TeX-auto-save t)  ; parse on save
-  (TeX-parse-self t) ; parse on load
-  :init
-  (setq-default TeX-master nil)
+  (TeX-PDF-mode t)
+  (TeX-check-TeX t)
+  (TeX-check-engine t)
+  ; Parse on save and load
+  (TeX-auto-save t)
+  (TeX-parse-self t)
+  ; Use hidden directories for AUCTeX files
+  (TeX-auto-local ".auctex-auto")
+  (TeX-style-local ".auctex-style")
+  ; Pause on errors
+  (TeX-interactive-mode t)
+  ; Correlate tex and pdf files
+  (TeX-source-correlate-mode t)
+  (TeX-source-correlate-method 'synctex)
+  (TeX-source-correlate-start-server nil)
   :config
   (add-to-list 'TeX-view-program-selection '(output-pdf "PDF Tools"))
-  ; Reference: https://pdftools.wiki/24b671c6
-  (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer))
+  (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer) ; Reference: https://pdftools.wiki/24b671c6
+  (general-def
+    :prefix "C-c"
+    :major-modes 'latex-mode
+    "C-o"     '(:ignore t :which-key "TeX-fold")
+    "C-p"     '(:ignore t :which-key "preview")
+    "C-p C-c" '(:ignore t :which-key "preview-clearout")
+    "C-q"     '(:ignore t :which-key "LaTeX-fill")
+    "C-t"     '(:ignore t :which-key "LaTeX-toggle")))
+
+; Documentation: https://www.gnu.org/software/auctex/manual/preview-latex.index.html
+(use-package preview
+  :unless ON-WINDOWS
+  :ensure auctex
+  :after tex
+  :hook (LaTeX-mode . LaTeX-preview-setup)
+  :custom
+  (preview-auto-cache-preamble nil)
+  :init
+  (setq-default preview-scale 1.5))
+
+(use-package auctex-latexmk
+  :unless ON-WINDOWS
+  :after tex
+  :hook (LaTeX-mode . auctex-latexmk-setup)
+  :init
+  (provide 'tex-buf) ; Reference: https://github.com/tom-tan/auctex-latexmk/issues/44
+  :custom
+  (auctex-latexmk-inherit-TeX-PDF-mode t)
+  (TeX-command-default "LatexMk"))
+
+(use-package cdlatex
+  :unless ON-WINDOWS
+  :after tex
+  :hook (LaTeX-mode . turn-on-cdlatex))
 
 (use-package latex-preview-pane
   :unless ON-WINDOWS
@@ -1339,13 +1386,27 @@
   :hook (LaTeX-mode . evil-tex-mode))
 
 (use-package pdf-tools
-  :unless ON-WINDOWS
   :mode ("\\.pdf\\'" . pdf-view-mode)
   :init
   (setq-default pdf-view-display-size 'fit-width)
   :config
   (pdf-tools-install)
-  (add-hook 'pdf-tools-enabled-hook #'pdf-view-midnight-minor-mode))
+  (add-hook 'pdf-tools-enabled-hook #'pdf-view-midnight-minor-mode)
+  (general-def
+    :prefix "C-c"
+    :major-modes 'pdf-view-mode
+    "C-a"     '(:ignore t :which-key "pdf-annot")
+    "C-r"     '(:ignore t :which-key "pdf-view")))
+
+; TODO: evaluate latex related packages
+; reftex/bibtex (https://www.gnu.org/software/auctex/manual/reftex.index.html)
+; latex-lsp/texlab
+; company-auctex/company-reftex/company-math
+; latex + flycheck/flymake
+; evil-matchit
+; magic-latex-buffer
+; adaptive-wrap
+; prettify-symbols-mode for custom commands (e.g. \R)
 
 ; TODO: evaluate packages
 ; dap-mode
