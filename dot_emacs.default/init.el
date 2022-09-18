@@ -12,6 +12,7 @@
 
 ; TODO: evaluate (setq debug-on-error t)
 ; TODO: replace :init with :custom in use-package declarations
+; TODO: define and set order for :mode :custom :bind :commands :interpeter keywords
 ; TODO: open emacs as server
 
 
@@ -1314,12 +1315,39 @@
 
 
 ;; LaTeX ;;
-; TODO: config LaTeX
-; (use-package tex
-;   :ensure auctex)
+(use-package tex
+  :unless ON-WINDOWS
+  :ensure auctex
+  :mode ("\\.tex\\'" . LaTeX-mode)
+  :custom
+  (TeX-auto-save t)  ; parse on save
+  (TeX-parse-self t) ; parse on load
+  :init
+  (setq-default TeX-master nil)
+  :config
+  (add-to-list 'TeX-view-program-selection '(output-pdf "PDF Tools"))
+  ; Reference: https://pdftools.wiki/24b671c6
+  (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer))
+
+(use-package latex-preview-pane
+  :unless ON-WINDOWS
+  :after tex)
+
+(use-package evil-tex
+  :unless ON-WINDOWS
+  :after (evil tex)
+  :hook (LaTeX-mode . evil-tex-mode))
+
+(use-package pdf-tools
+  :unless ON-WINDOWS
+  :mode ("\\.pdf\\'" . pdf-view-mode)
+  :init
+  (setq-default pdf-view-display-size 'fit-width)
+  :config
+  (pdf-tools-install)
+  (add-hook 'pdf-tools-enabled-hook #'pdf-view-midnight-minor-mode))
 
 ; TODO: evaluate packages
-; pdf-tools
 ; dap-mode
 ; realgud
 ; lua
