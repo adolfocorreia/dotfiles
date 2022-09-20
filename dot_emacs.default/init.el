@@ -12,8 +12,9 @@
 
 ; TODO: evaluate (setq debug-on-error t)
 ; TODO: replace :init with :custom in use-package declarations
-; TODO: define and set order for :mode :custom :bind :commands :interpeter keywords
-; TODO: open emacs as server
+; TODO: define and set order for :mode :custom :bind :commands :interpreter keywords
+; TODO: check if :hook declarations are only being used to load the package at hand, since :hook implies :defer t (e.g. :hook (some-other-mode . this-package-mode))
+; TODO: open Emacs as server
 
 
 
@@ -35,6 +36,14 @@
   (require 'use-package))
 (setq use-package-always-ensure t
       use-package-compute-statistics t)
+
+; use-package keywords that imply :defer t
+; - :bind, :bind*
+; - :bind-keymap, :bind-keymap*
+; - :commands
+; - :hook
+; - :interpreter
+; - :mode
 
 
 ;; Early setup packages ;;
@@ -411,7 +420,7 @@
               (("C-o" Info-history-back    :exit nil)
                ("C-i" Info-history-forward :exit nil)
                ("gL"  Info-history))
-              "Goto"
+              "Go to"
               (("d"  Info-directory)
                ("gt" Info-top-node)
                ("gm" Info-menu)
@@ -858,6 +867,18 @@
   (define-key evil-inner-text-objects-map "v" #'evil-variable-segment-inner)
   (define-key evil-outer-text-objects-map "v" #'evil-variable-segment-outer))
 
+(use-package evil-mc
+  :after evil
+  :commands evil-mc-mode
+  :init
+  ; evil-mc will be loaded after the first usage of "g.", which will then be remapped
+  (define-key evil-normal-state-map "g." #'evil-mc-mode)
+  :config
+  (define-key evil-mc-cursors-map (kbd "<mouse-1>") #'evil-mc-toggle-cursor-on-click)
+  (general-def
+    :prefix "g"
+    "." '(:ignore t :which-key "evil-mc")))
+
 (use-package evil-multiedit
   :after evil
   :defer 1
@@ -866,6 +887,23 @@
   (iedit-toggle-key-default nil)
   :config
   (evil-multiedit-default-keybinds))
+
+; Only works in Emacs state (C-z)
+(use-package multiple-cursors
+  :after evil
+  :defer 1
+  :custom
+  (mc/always-run-for-all t)
+  :config
+  ; Create cursors on each line of active region
+  (define-key evil-emacs-state-map (kbd "C-S-c C-S-c") #'mc/edit-lines)
+  ; Create cursor on next/previous line or active region
+  (define-key evil-emacs-state-map (kbd "C->") #'mc/mark-next-like-this)
+  (define-key evil-emacs-state-map (kbd "C-<") #'mc/mark-previous-like-this)
+  ; Create cursor on mouse click
+  (define-key evil-emacs-state-map (kbd "C-S-<mouse-1>") #'mc/add-cursor-on-click)
+  ; Delete all cursors when exiting Emacs state
+  (add-hook 'evil-emacs-state-exit-hook #'mc/keyboard-quit))
 
 (use-package evil-numbers
   :after evil
@@ -1077,20 +1115,6 @@
     "!" '(:ignore t :which-key "flycheck"))
   (global-flycheck-mode))
 
-; TODO: evaluate evil-mc (https://github.com/doomemacs/doomemacs/blob/master/modules/editor/multiple-cursors/config.el)
-; Works better in Emacs state (C-z)
-(use-package multiple-cursors
-  :bind
-  ; Create cursors on each line of active region
-  ("C-S-c C-S-c" . mc/edit-lines)
-  ; Create cursor on next/previous line or active region
-  ("C->" . mc/mark-next-like-this)
-  ("C-<" . mc/mark-previous-like-this)
-  ; Create cursor on mouse click
-  ("C-S-<mouse-1>" . mc/add-cursor-on-click)
-  :custom
-  (mc/always-run-for-all t))
-
 (use-package string-inflection
   :commands (string-inflection-camelcase-function
              string-inflection-kebabcase-function
@@ -1232,9 +1256,13 @@
     ("C-c v d" . pyvenv-deactivate)
     ("C-c v r" . pyvenv-restart-python)))
 
+; TODO: evaluate poetry-tracking-mode
 (use-package poetry
   :after python
-  :commands poetry)
+  :commands poetry
+  :bind
+  (:map python-mode-map
+   ("C-c P" . poetry)))
 
 ; TODO: evaluate python-pytest (beware of projectile dependency)
 ; TODO: add --color argument
