@@ -155,6 +155,24 @@
                 "hidden": false
             },
             {
+                "name": "mingw64 (MSYS2)",
+                "guid": "{b66acca9-afbc-4677-bf5b-6f3a6cbbd86f}",
+                "commandline": "mingw64.cmd",
+                "startingDirectory": "%USERPROFILE%",
+                "colorScheme": "One Half Dark",
+                "icon": "%SCOOP%/apps/msys2/current/mingw64.ico",
+                "hidden": false
+            },
+            {
+                "name": "msys (MSYS2)",
+                "guid": "{1c0ab1d2-3385-465a-bb01-545d53f7f4cc}",
+                "commandline": "msys2.cmd",
+                "startingDirectory": "%USERPROFILE%",
+                "colorScheme": "One Half Dark",
+                "icon": "%SCOOP%/apps/msys2/current/msys2.ico",
+                "hidden": false
+            },
+            {
                 "name": "Ubuntu",
                 "guid": "{2c4de342-38b7-51cf-b940-2309a097f518}",
                 "commandline": "wsl.exe ~ -d Ubuntu",
