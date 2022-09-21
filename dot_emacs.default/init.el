@@ -11,6 +11,7 @@
     (load custom-file))
 
 ; TODO: evaluate (setq debug-on-error t)
+; TODO: set use-package-always-defer t with :demand t
 ; TODO: replace :init with :custom in use-package declarations
 ; TODO: define and set order for :mode :custom :bind :commands :interpreter keywords
 ; TODO: check if :hook declarations are only being used to load the package at hand, since :hook implies :defer t (e.g. :hook (some-other-mode . this-package-mode))
@@ -34,8 +35,10 @@
   (package-install 'use-package))
 (eval-when-compile
   (require 'use-package))
-(setq use-package-always-ensure t
-      use-package-compute-statistics t)
+(use-package use-package
+  :custom
+  (use-package-always-ensure t)
+  (use-package-compute-statistics t))
 
 ; use-package keywords that imply :defer t
 ; - :bind, :bind*
@@ -47,6 +50,10 @@
 
 
 ;; Early setup packages ;;
+
+(use-package benchmark-init
+  :config
+  (add-hook 'after-init-hook #'benchmark-init/deactivate))
 
 (use-package auto-compile
   :config
@@ -317,6 +324,7 @@
 
 (use-package apropos
   :ensure nil
+  :defer t
   :custom
   (apropos-do-all t))
 
@@ -352,6 +360,7 @@
   :custom
   (dired-auto-revert-buffer t)
   (dired-dwim-target t)
+  (dired-kill-when-opening-new-dired-buffer t)
   :mode-hydra
   (dired-mode (:title "Dired")
               ("Mark"
@@ -464,7 +473,7 @@
   (tab-bar-tab-hints t)
   :init
   (defun my/tab-bar-format-menu-bar ()
-    `((menu-bar menu-item (propertize (concat " " (all-the-icons-material "menu") "  ") 'face 'tab-bar-tab-inactive) tab-bar-menu-bar :help "Menu Bar")))
+    `((menu-bar menu-item (propertize (concat " " (if ON-LINUX (all-the-icons-material "menu") "Menu") "  ") 'face 'tab-bar-tab-inactive) tab-bar-menu-bar :help "Menu Bar")))
   :config
   (tab-bar-mode +1)
   (tab-bar-rename-tab "main" 1)
@@ -547,6 +556,8 @@
     (unless (eq ibuffer-sorting-mode 'project-file-relative)
       (ibuffer-do-sort-by-project-file-relative)))
   (add-hook 'ibuffer-hook #'my/ibuffer-vc))
+
+; TODO: evaluate mode-minder
 
 (use-package minions
   :config
@@ -1215,6 +1226,7 @@
   (python-indent-offset 4)
   (python-indent-guess-indent-offset nil)
   (python-shell-font-lock-enable nil)
+  (python-shell-interpreter "python")  ; On Windows, some virtual environments don't come with the "python3" binary
   :mode
   ("\\.py\\'" . python-mode)
   :hook
