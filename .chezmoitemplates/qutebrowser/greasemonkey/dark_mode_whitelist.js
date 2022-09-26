@@ -3,7 +3,6 @@
 // @match http://www.cachedpages.com/
 // @match https://*.readthedocs.io/*
 // @match https://*.readthedocs.org/*
-// @match https://guix.gnu.org/*
 // ==/UserScript==
 
 // Reference: https://github.com/qutebrowser/qutebrowser/issues/5542#issuecomment-782040210
