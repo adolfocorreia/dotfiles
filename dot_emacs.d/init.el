@@ -16,6 +16,8 @@
 ; TODO: define and set order for :mode :custom :bind :commands :interpreter keywords
 ; TODO: check if :hook declarations are only being used to load the package at hand, since :hook implies :defer t (e.g. :hook (some-other-mode . this-package-mode))
 ; TODO: open Emacs as server
+; TODO: evaluate all packages for lazy loading (e.g. evil extension packages)
+; TODO: evaluate Flycheck warnings
 
 
 
@@ -37,6 +39,7 @@
   (require 'use-package))
 (use-package use-package
   :custom
+  (use-package-always-defer t)
   (use-package-always-ensure t)
   (use-package-compute-statistics t))
 
@@ -52,14 +55,17 @@
 ;; Early setup packages ;;
 
 (use-package benchmark-init
+  :demand t
   :config
   (add-hook 'after-init-hook #'benchmark-init/deactivate))
 
 (use-package auto-compile
+  :demand t
   :config
   (auto-compile-on-load-mode +1))
 
-(use-package no-littering)
+(use-package no-littering
+  :demand t)
 
 ; TODO: evaluate this better
 ; (use-package quelpa-use-package)
@@ -72,6 +78,7 @@
 
 (use-package emacs
   :ensure nil
+  :demand t
   :custom
   (initial-scratch-message nil)
   (visible-bell t)
@@ -85,6 +92,7 @@
 
 (use-package emacs
   :ensure nil
+  :demand t
   :init
   (setq-default indent-tabs-mode nil
                 truncate-lines t)
@@ -114,6 +122,7 @@
 
 (use-package emacs
   :ensure nil
+  :demand t
   :custom
   (delete-by-moving-to-trash t)
   (native-comp-deferred-compilation t)
@@ -126,6 +135,7 @@
 ; Linux
 (use-package emacs
   :ensure nil
+  :demand ON-LINUX
   :if ON-LINUX
   :custom-face
   (default ((t :family "Iosevka Fixed" :height 110)))
@@ -138,6 +148,7 @@
 ; Windows
 (use-package emacs
   :ensure nil
+  :demand ON-WINDOWS
   :if ON-WINDOWS
   :custom-face
   (default ((t :family "Iosevka Fixed" :height 100)))
@@ -149,6 +160,8 @@
 
 ; Terminal
 (use-package emacs
+  :ensure nil
+  :demand (not (display-graphic-p))
   :unless (display-graphic-p)
   :config
   (menu-bar-mode -1)
@@ -169,8 +182,8 @@
 ; - M-x describe-personal-keybindings
 ; - PREFIX C-h / F1
 
-; TODO: set "C-c I" to open init file (e.g. crux-find-user-init-file)
 (use-package bind-key
+  :demand t
   :config
   ; Make ESC quit prompts
   (bind-key "<escape>" #'keyboard-escape-quit)
@@ -188,11 +201,18 @@
   (bind-key "C-c u" #'universal-argument)
 
   ; Kill current buffer
-  (bind-key "C-x C-k" #'kill-this-buffer))
+  (bind-key "C-x C-k" #'kill-this-buffer)
+
+  ; Open Messages buffer
+  (defun my/open-messages-buffer ()
+    (interactive)
+    (switch-to-buffer "*Messages*"))
+  (bind-key "C-c M" #'my/open-messages-buffer))
 
 ; TODO: evaluate replacing general for something else
 ; TODO: find best way to replace +prefix with appropriate name for all minor and major modes (e.g. flycheck, pytest, pyenv, parinfer)
 (use-package general
+  :demand t
   :config
   ; Prefix renaming (which-key)
   ; TODO: evaluate using which-key-add-keymap-based-replacements for prefix renaming
@@ -226,11 +246,13 @@
 ;;;; Windows, interface elements, visual editing helpers and themes ;;;;
 
 (use-package all-the-icons
+  :demand (not (display-graphic-p))
   :if (display-graphic-p)
   :custom
   (all-the-icons-scale-factor 0.9))
 
 (use-package dashboard
+  :demand t
   :custom
   (dashboard-center-content t)
   (dashboard-projects-backend 'project-el)
@@ -244,6 +266,7 @@
   (dashboard-setup-startup-hook))
 
 (use-package doom-modeline
+  :demand t
   :after (all-the-icons doom-themes)
   :custom
   (doom-modeline-height 30)
@@ -252,6 +275,7 @@
   (doom-modeline-mode +1))
 
 (use-package doom-themes
+  :demand t
   :config
   (load-theme 'doom-tokyo-night t))
 
@@ -270,7 +294,8 @@
           help-mode
           helpful-mode
           apropos-mode
-          devdocs-mode  ; TODO: move this to devdocs section
+          devdocs-mode             ; TODO: place this with mode declaration
+          flycheck-error-list-mode ; TODO: place this with mode declaration
           compilation-mode))
   :config
   (popper-mode +1)
@@ -280,6 +305,7 @@
   (bind-key "C-M-`" #'popper-toggle-type))
 
 (use-package major-mode-hydra
+  :demand t
   :custom
   (major-mode-hydra-invisible-quit-key "q")
   (major-mode-hydra-separator "-")
@@ -287,6 +313,7 @@
   (bind-key "C-c H" #'major-mode-hydra))
 
 (use-package which-key
+  :demand t
   :config
   (which-key-mode +1))
 
@@ -296,6 +323,7 @@
 ; - https://www.gnu.org/software/emacs/manual/html_node/elisp/Side-Windows.html
 (use-package window
   :ensure nil
+  :demand t
   :custom
   (display-buffer-alist
     '(; no window
@@ -324,7 +352,6 @@
 
 (use-package apropos
   :ensure nil
-  :defer t
   :custom
   (apropos-do-all t))
 
@@ -338,7 +365,6 @@
 
 (use-package comint
   :ensure nil
-  :defer t
   :custom
   (comint-scroll-to-bottom-on-input t))
 
@@ -354,13 +380,13 @@
 
 (use-package dired
   :ensure nil
-  :hook
-  (dired-mode . display-line-numbers-mode)
-  (dired-mode . hl-line-mode)
   :custom
   (dired-auto-revert-buffer t)
   (dired-dwim-target t)
   (dired-kill-when-opening-new-dired-buffer t)
+  :config
+  (add-hook 'dired-mode-hook #'display-line-numbers-mode)
+  (add-hook 'dired-mode-hook #'hl-line-mode)
   :mode-hydra
   (dired-mode (:title "Dired")
               ("Mark"
@@ -380,26 +406,22 @@
 
 (use-package ediff
   :ensure nil
-  :defer t
   :custom
   (ediff-split-window-function 'split-window-horizontally)
   (ediff-window-setup-function 'ediff-setup-windows-plain))
 
 (use-package eshell
   :ensure nil
-  :defer t
   :custom
   (eshell-scroll-to-bottom-on-input t))
 
 (use-package eww
   :ensure nil
-  :defer t
   :custom
   (browse-url-browser-function 'eww-browse-url))
 
 (use-package help
   :ensure nil
-  :defer t
   :config
   (add-hook 'help-mode-hook #'display-line-numbers-mode)
   (add-hook 'help-mode-hook #'hl-line-mode))
@@ -465,6 +487,7 @@
 
 (use-package tab-bar
   :ensure nil
+  :demand t
   :custom
   (tab-bar-format '(my/tab-bar-format-menu-bar tab-bar-format-align-right tab-bar-format-tabs-groups tab-bar-separator))
   (tab-bar-close-button-show nil)
@@ -482,6 +505,7 @@
 
 (use-package tab-line
   :ensure nil
+  :demand t
   :custom
   (tab-line-exclude-modes '(completion-list-mode dashboard-mode))
   (tab-line-new-button-show nil)
@@ -491,6 +515,7 @@
 
 (use-package uniquify
   :ensure nil
+  :defer 1
   :custom
   (uniquify-buffer-name-style 'forward))
 
@@ -510,6 +535,7 @@
 ; TODO: evaluate crux and better-defaults
 (use-package crux
   :bind
+  ("C-c I" . crux-find-user-init-file)
   ([remap move-beginning-of-line] . crux-move-beginning-of-line))
 
 (use-package gcmh
@@ -519,9 +545,10 @@
 
 ; TODO: evaluate native equivalent features (e.g. bookmarks)
 (use-package harpoon
+  :demand t
   :custom
   (harpoon-project-package 'project)
-  :config
+  :init
   (general-def
     :prefix "C-c"
     "h" '(:ignore t :which-key "harpoon"))
@@ -549,17 +576,18 @@
   (add-hook 'helpful-mode-hook #'hl-line-mode))
 
 (use-package ibuffer-project
-  :defer 1
-  :config
+  :init
   (defun my/ibuffer-project ()
     (setq ibuffer-filter-groups (ibuffer-project-generate-filter-groups))
     (unless (eq ibuffer-sorting-mode 'project-file-relative)
       (ibuffer-do-sort-by-project-file-relative)))
-  (add-hook 'ibuffer-hook #'my/ibuffer-vc))
+  :hook
+  (ibuffer-mode . my/ibuffer-project))
 
 ; TODO: evaluate mode-minder
 
 (use-package minions
+  :demand t
   :config
   (minions-mode +1))
 
@@ -572,6 +600,7 @@
   :after eshell)
 
 (use-package project-tab-groups
+  :demand t
   :config
   (project-tab-groups-mode +1))
 
@@ -582,10 +611,12 @@
   :commands restart-emacs)
 
 (use-package tab-bar-echo-area
+  :demand t
   :config
   (tab-bar-echo-area-mode +1))
 
 (use-package tabspaces
+  :demand t
   :custom
   (tabspaces-exclude-buffers '("*dashboard*"))
   (tabspaces-include-buffers '("*scratch*" "*Messages*"))
@@ -609,6 +640,8 @@
 ; TODO: do not download package on Windows
 (use-package vterm
   :unless ON-WINDOWS
+  :custom
+  (vterm-kill-buffer-on-exit nil)
   :commands vterm)
 
 (use-package windresize
@@ -629,6 +662,7 @@
 ; - https://github.com/noctuid/evil-guide
 
 (use-package evil
+  :demand t
   :custom
   (evil-respect-visual-line-mode t)
   (evil-search-module 'isearch)
@@ -723,6 +757,7 @@
 
 (use-package evil-collection
   :after evil
+  :demand t
   :custom
   ; TODO: evaluate this variable
   (evil-collection-want-find-usages-bindings nil)  ; Conflicts with 'gr' binding from evil-extra-operator
@@ -757,28 +792,33 @@
 
 (use-package evil-anzu
   :after evil
+  :demand t
   :config
   (global-anzu-mode +1))
 
 (use-package evil-args
   :after evil
+  :demand t
   :config
   (define-key evil-inner-text-objects-map "a" #'evil-inner-arg)
   (define-key evil-outer-text-objects-map "a" #'evil-outer-arg))
 
 (use-package evil-commentary
   :after evil
+  :demand t
   :config
   (define-key evil-normal-state-map "gc" #'evil-commentary))
 
 ; Usage: gx MOTION (twice or . to repeat), gxx to select line, gX to cancel
 (use-package evil-exchange
   :after evil
+  :demand t
   :config
   (evil-exchange-install))
 
 (use-package evil-extra-operator
   :after evil
+  :demand t
   :config
   (define-key evil-motion-state-map "gr" #'evil-operator-eval))
 
@@ -794,6 +834,7 @@
 
 (use-package evil-indent-plus
   :after evil
+  :demand t
   :config
   (define-key evil-inner-text-objects-map "i" #'evil-indent-plus-i-indent)
   (define-key evil-outer-text-objects-map "i" #'evil-indent-plus-a-indent)
@@ -805,6 +846,7 @@
 ; Usage: gl MOTION CHAR or gl MOTION / REGEX
 (use-package evil-lion
   :after evil
+  :demand t
   :config
   (define-key evil-normal-state-map "gl" #'evil-lion-left)
   (define-key evil-normal-state-map "gL" #'evil-lion-right)
@@ -815,6 +857,7 @@
 ; https://github.com/Julian/vim-textobj-variable-segment/blob/main/autoload/textobj/variable_segment.vim
 (use-package emacs
   :after evil
+  :demand t
   :config
   (setq evil-variable-segment-left-inner-regex
         (rx (or
@@ -918,6 +961,7 @@
 
 (use-package evil-numbers
   :after evil
+  :demand t
   :config
   (define-key evil-normal-state-map "g-" #'evil-numbers/dec-at-pt)
   (define-key evil-normal-state-map "g=" #'evil-numbers/inc-at-pt))
@@ -943,7 +987,7 @@
   :config
   (add-to-list 'display-buffer-alist
                '("*evil-owl*"
-                 (display-buffer-in-side-window) (side . bottom) (slot . 0) (window-height . 0.3)))
+                 (display-buffer-in-side-window) (side . bottom) (slot . -1) (window-height . 0.3)))
   (evil-owl-mode +1))
 
 (use-package evil-quickscope
@@ -955,6 +999,7 @@
 
 (use-package evil-snipe
   :after evil
+  :demand t
   :custom
   (evil-snipe-scope 'whole-visible)
   (evil-snipe-repeat-scope 'whole-visible)
@@ -979,6 +1024,7 @@
 
 (use-package evil-textobj-anyblock
   :after evil
+  :demand t
   :config
   (evil-define-text-object my/evil-textobj-anyblock-inner-quote (count &optional beg end type)
     "Select the closest outer quote."
@@ -1005,6 +1051,7 @@
 
 (use-package evil-textobj-entire
   :after evil
+  :demand t
   :config
   (define-key evil-inner-text-objects-map "e" #'evil-entire-entire-buffer)
   (define-key evil-outer-text-objects-map "e" #'evil-entire-entire-buffer))
@@ -1012,12 +1059,18 @@
 ; TODO: evaluate Doom Emacs' tree-sitter config: https://github.com/doomemacs/doomemacs/blob/master/modules/tools/tree-sitter/config.el
 (use-package evil-textobj-tree-sitter
   :after (evil tree-sitter)
+  :demand t
   :config
+  ; This wrapper function prevents eager expansion
+  ; Reference: https://github.com/doomemacs/doomemacs/commit/84d47016d0eb26f5eae37c1de13c16717dc0f090
+  (defun my/evil-textobj-tree-sitter-get-textobj (group &optional query)
+    (eval `(evil-textobj-tree-sitter-get-textobj ,group ,query)))
+
   ; TODO: evaluate creating text objects for loops, parameters and comments
-  (define-key evil-inner-text-objects-map "f" (evil-textobj-tree-sitter-get-textobj "function.inner"))
-  (define-key evil-outer-text-objects-map "f" (evil-textobj-tree-sitter-get-textobj "function.outer"))
-  (define-key evil-inner-text-objects-map "c" (evil-textobj-tree-sitter-get-textobj "class.inner"))
-  (define-key evil-outer-text-objects-map "c" (evil-textobj-tree-sitter-get-textobj "class.outer"))
+  (define-key evil-inner-text-objects-map "f" (my/evil-textobj-tree-sitter-get-textobj "function.inner"))
+  (define-key evil-outer-text-objects-map "f" (my/evil-textobj-tree-sitter-get-textobj "function.outer"))
+  (define-key evil-inner-text-objects-map "c" (my/evil-textobj-tree-sitter-get-textobj "class.inner"))
+  (define-key evil-outer-text-objects-map "c" (my/evil-textobj-tree-sitter-get-textobj "class.outer"))
 
   ; Goto next start
   (define-key evil-normal-state-map (kbd "]]") (lambda () (interactive)
@@ -1045,6 +1098,7 @@
 
 (use-package evil-visualstar
   :after evil
+  :demand t
   :config
   (define-key evil-visual-state-map "*" #'evil-visualstar/begin-search-forward)
   (define-key evil-visual-state-map "#" #'evil-visualstar/begin-search-backward))
@@ -1067,10 +1121,10 @@
     (interactive)
     ; Calling avy functions with an argument negates the current setting of 'avy-all-windows'
     (avy-goto-char-timer t))
-  :config
   (general-def
     :prefix "g"
     "s" '(:ignore t :which-key "avy-goto"))
+  :config
   (define-key evil-normal-state-map "gsl" #'evil-avy-goto-line)
   (define-key evil-normal-state-map "gsw" #'evil-avy-goto-word-1)
   (define-key evil-normal-state-map "gss" #'evil-avy-goto-char-2)
@@ -1119,12 +1173,15 @@
   ("C-=" . er/expand-region))
 
 (use-package flycheck
-  :defer t
+  :after popper
   :config
   (general-def
     :prefix "C-c"
     "!" '(:ignore t :which-key "flycheck"))
-  (global-flycheck-mode))
+  (global-flycheck-mode)
+  (add-to-list 'display-buffer-alist
+               '("*Flycheck errors*"
+                 (display-buffer-in-side-window) (side . bottom) (slot . 0) (window-height . 0.3))))
 
 (use-package string-inflection
   :commands (string-inflection-camelcase-function
@@ -1170,16 +1227,19 @@
   (lsp-enable-which-key-integration t))
 
 (use-package lsp-ui
-  :hook (lsp-mode . lsp-ui-mode)
+  :hook
+  (lsp-mode . lsp-ui-mode)
   :custom
   (lsp-ui-doc-position 'at-point))
 
 
 ;; tree-sitter ;;
 (use-package tree-sitter
-  :defer 1
+  :hook
+  (haskell-mode . tree-sitter-mode)
+  ; (julia-mode . tree-sitter-mode)
+  (python-mode . tree-sitter-mode)
   :config
-  (global-tree-sitter-mode +1)
   (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
 
 (use-package tree-sitter-langs
@@ -1189,6 +1249,7 @@
 ;; Language documentation ;;
 ; TODO: set devdocs-current-docs variable using dir-local variables
 (use-package devdocs
+  :after popper
   :bind
   ("<help> D" . devdocs-lookup)
   :commands (devdocs-lookup devdocs-peruse devdocs-install devdocs-update-all)
@@ -1200,10 +1261,11 @@
 
 ;; Emacs Lisp ;;
 (use-package parinfer-rust-mode
-  :hook emacs-lisp-mode
+  :hook
+  (emacs-lisp-mode . parinfer-rust-mode)
   :custom
   (parinfer-rust-auto-download t)
-  :config
+  :init
   (general-def
     :major-modes 'emacs-lisp-mode
     "C-c C-p" '(:ignore t :which-key "parinfer")))
@@ -1229,12 +1291,15 @@
   (python-shell-interpreter "python")  ; On Windows, some virtual environments don't come with the "python3" binary
   :mode
   ("\\.py\\'" . python-mode)
-  :hook
-  (python-mode . apheleia-mode)
-  :config
+  :init
   (general-def
     :major-modes 'python-mode
-    "C-c C-t" '(:ignore t :which-key "python-skeleton")))
+    "C-c C-t" '(:ignore t :which-key "python-skeleton"))
+  :config
+  (add-hook 'python-mode-hook #'apheleia-mode)
+  (add-to-list 'display-buffer-alist
+               '("*Python*"
+                 (display-buffer-reuse-window display-buffer-same-window))))
 
 (use-package anaconda-mode
   :after python
@@ -1246,9 +1311,16 @@
 ; TODO: make pyvenv work on Windows
 (use-package pyvenv
   :after python
+  :bind
+  (:map python-mode-map
+    ("C-c v v" . my/pyvenv-autoload)
+    ("C-c v a" . pyvenv-activate)
+    ("C-c v w" . pyvenv-workon)
+    ("C-c v d" . pyvenv-deactivate)
+    ("C-c v r" . pyvenv-restart-python))
+  :hook
+  (python-mode . pyvenv-mode)
   :init
-  (pyvenv-mode +1)  ; for some reason this package is not being loaded with the :hook mechanism
-  :config
   (defun my/pyvenv-autoload ()
     (interactive)
     (f-traverse-upwards
@@ -1256,17 +1328,9 @@
         (let ((venv-path (f-expand ".venv" path)))
           (when (f-exists? venv-path)
             (pyvenv-activate venv-path))))))
-
   (general-def
     :major-modes 'python-mode
-    "C-c v" '(:ignore t :which-key "pyvenv"))
-  (bind-keys
-    :map python-mode-map
-    ("C-c v v" . my/pyvenv-autoload)
-    ("C-c v a" . pyvenv-activate)
-    ("C-c v w" . pyvenv-workon)
-    ("C-c v d" . pyvenv-deactivate)
-    ("C-c v r" . pyvenv-restart-python)))
+    "C-c v" '(:ignore t :which-key "pyvenv")))
 
 ; TODO: evaluate poetry-tracking-mode
 (use-package poetry
@@ -1280,19 +1344,8 @@
 ; TODO: add --color argument
 (use-package pytest
   :after python
-  :custom
-  (pytest-cmd-flags "--exitfirst --capture=no --durations=10")
-  (pytest-project-root-files '(".venv" "setup.py" ".git"))
-  :config
-  (add-to-list 'display-buffer-alist
-               '("*pytest*"
-                 (display-buffer-in-side-window) (side . right) (slot . 1) (window-width . 0.35)))
-
-  (general-def
-    :major-modes 'python-mode
-    "C-c t" '(:ignore t :which-key "pytest"))
-  (bind-keys
-    :map python-mode-map
+  :bind
+  (:map python-mode-map
     ("C-c t t" . pytest-again)
     ("C-c t 1" . pytest-one)
     ("C-c t p" . pytest-pdb-one)
@@ -1303,7 +1356,18 @@
     ("C-c t d" . pytest-directory)
     ("C-c t D" . pytest-pdb-directory)
     ("C-c t f" . pytest-last-failed)
-    ("C-c t F" . pytest-pdb-last-failed)))
+    ("C-c t F" . pytest-pdb-last-failed))
+  :custom
+  (pytest-cmd-flags "--exitfirst --capture=no --durations=10")
+  (pytest-project-root-files '(".venv" "setup.py" ".git"))
+  :init
+  (general-def
+    :major-modes 'python-mode
+    "C-c t" '(:ignore t :which-key "pytest"))
+  :config
+  (add-to-list 'display-buffer-alist
+               '("*pytest*"
+                 (display-buffer-in-side-window) (side . right) (slot . 1) (window-width . 0.35))))
 
 (use-package lsp-pyright
   :after (python lsp-mode))
@@ -1324,9 +1388,23 @@
 ; C-c C-b (send buffer), C-c C-c (send region or line), C-c C-d (invoke @doc))
 (use-package julia-repl
   :after julia-mode
-  :hook (julia-mode . julia-repl-mode))
+  :hook
+  (julia-mode . julia-repl-mode)
+  :config
+  (add-to-list 'display-buffer-alist
+               '("*julia*"
+                 (display-buffer-reuse-window display-buffer-same-window)))
+  (unless ON-WINDOWS
+    (julia-repl-set-terminal-backend 'vterm)))
+
+(use-package lsp-julia
+  :after (julia-mode lsp-mode)
+  :demand t
+  :config
+  (add-hook 'before-save-hook #'lsp-format-buffer))
 
 ; TODO: evaluate julia-snail
+; TODO: evaluate ess-julia-mode (Windows): https://github.com/emacs-ess/ESS/wiki/Julia
 
 
 ;; ESS ;;
@@ -1342,7 +1420,7 @@
 
 (use-package poly-R
   :mode
-  ("\\.[rR]md\\'" . poly-markdown+R-mode))
+  ("\\.[rR]md\\'" . poly-markdown+r-mode))
 
 
 ;; Haskell ;;
@@ -1378,9 +1456,7 @@
   (TeX-source-correlate-mode t)
   (TeX-source-correlate-method 'synctex)
   (TeX-source-correlate-start-server nil)
-  :config
-  (add-to-list 'TeX-view-program-selection '(output-pdf "PDF Tools"))
-  (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer) ; Reference: https://pdftools.wiki/24b671c6
+  :init
   (general-def
     :prefix "C-c"
     :major-modes 'latex-mode
@@ -1388,14 +1464,18 @@
     "C-p"     '(:ignore t :which-key "preview")
     "C-p C-c" '(:ignore t :which-key "preview-clearout")
     "C-q"     '(:ignore t :which-key "LaTeX-fill")
-    "C-t"     '(:ignore t :which-key "LaTeX-toggle")))
+    "C-t"     '(:ignore t :which-key "LaTeX-toggle"))
+  :config
+  (add-to-list 'TeX-view-program-selection '(output-pdf "PDF Tools"))
+  (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)) ; Reference: https://pdftools.wiki/24b671c6
 
 ; Documentation: https://www.gnu.org/software/auctex/manual/preview-latex.index.html
 (use-package preview
   :unless ON-WINDOWS
   :ensure auctex
   :after tex
-  :hook (LaTeX-mode . LaTeX-preview-setup)
+  :hook
+  (LaTeX-mode . LaTeX-preview-setup)
   :custom
   (preview-auto-cache-preamble nil)
   :init
@@ -1404,7 +1484,8 @@
 (use-package auctex-latexmk
   :unless ON-WINDOWS
   :after tex
-  :hook (LaTeX-mode . auctex-latexmk-setup)
+  :hook
+  (LaTeX-mode . auctex-latexmk-setup)
   :init
   (provide 'tex-buf) ; Reference: https://github.com/tom-tan/auctex-latexmk/issues/44
   :custom
@@ -1414,7 +1495,8 @@
 (use-package cdlatex
   :unless ON-WINDOWS
   :after tex
-  :hook (LaTeX-mode . turn-on-cdlatex))
+  :hook
+  (LaTeX-mode . turn-on-cdlatex))
 
 (use-package latex-preview-pane
   :unless ON-WINDOWS
@@ -1423,7 +1505,8 @@
 (use-package evil-tex
   :unless ON-WINDOWS
   :after (evil tex)
-  :hook (LaTeX-mode . evil-tex-mode))
+  :hook
+  (LaTeX-mode . evil-tex-mode))
 
 (use-package pdf-tools
   :mode ("\\.pdf\\'" . pdf-view-mode)
@@ -1495,6 +1578,7 @@
 ;;;; Fuzzy search & completion ;;;;
 
 (use-package vertico
+  :demand t
   :custom
   (read-buffer-completion-ignore-case t)
   (read-file-name-completion-ignore-case t)
@@ -1505,11 +1589,13 @@
 
 (use-package marginalia
   :after vertico
+  :demand t
   :config
   (marginalia-mode +1))
 
 (use-package orderless
   :after vertico
+  :demand t
   :custom
   (completion-category-overrides '((file (styles . (partial-completion)))))
   (completion-styles '(orderless basic partial-completion)))
@@ -1521,11 +1607,11 @@
   ([remap apropos-command] . consult-apropos)
   ([remap bookmark-jump] . consult-bookmark)
   ([remap project-switch-to-buffer] . consult-project-buffer)
-  ; ([remap switch-to-buffer] . consult-buffer)
   ([remap switch-to-buffer-other-frame] . consult-buffer-other-frame)
   ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
-  :hook (completion-list-mode . consult-preview-at-point-mode)
-  :config
+  :hook
+  (completion-list-mode . consult-preview-at-point-mode)
+  :init
   (general-def
     :prefix "C-c"
     "c" '(:ignore t :which-key "consult"))
@@ -1549,7 +1635,8 @@
     ("H" . consult-history)))           ; find commands in current buffer history (e.g. eshell or comint)
 
 (use-package consult-flycheck
-  :after (consult flycheck))
+  :after (consult flycheck)
+  :demand t)
 
 (use-package embark
   :defer 1
@@ -1559,7 +1646,8 @@
   ("<help> B" . embark-bindings))
 
 (use-package embark-consult
-  :after (embark consult))
+  :after (embark consult)
+  :demand t)
 
 ; TODO: evaluate corfu vs company
 ; TODO: evaluate how to use corfu (or vertico) in evil-ex minibuffer
@@ -1583,10 +1671,10 @@
 ; TODO: restrict to prog-mode
 (use-package cape
   :after corfu
+  :demand t
   :init
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
   (add-to-list 'completion-at-point-functions #'cape-file)
-  :config
   (general-def
     :prefix "C-c"
     "p" '(:ignore t :which-key "cape"))
