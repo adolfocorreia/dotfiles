@@ -44,10 +44,6 @@ vim.g.loaded_netrwPlugin = 1
 vim.g.loaded_netrwSettings = 1
 vim.g.loaded_netrwFileHandlers = 1
 
--- Enable filetype.lua and disable filetype.vim.
-vim.g.do_filetype_lua = 1
-vim.g.did_load_filetypes = 0
-
 -- Buffer and file types blacklists (disable visual effects).
 BUFTYPE_BL = {
   'help',
@@ -91,20 +87,19 @@ end
 require('packer').startup({function(use)
 
   -- TODO: try to lazy load each plugin (check NvChad and LunarVim)
+  -- TODO: reevaluate if lazy loading is worth the trouble, specially if loading after VimEnter or BufRead/BufNewFile
 
   --[[
   General guidelines for lazy loading plugins (start/opt):
   - Base plugins (e.g. packer, impatient, colorscheme, bar, which-key) should be loaded at startup
   - Don't bother making light plugins optional (no significant benefit)
   - Heavy or uncommonly used plugins are good candidates for lazy loading
-  - Editing help plugins can be loaded when first reading a buffer (BufRead/BufNewFile events)
   - Lua dependency plugins can be loaded when required using 'module' key
-  -- TODO: is it really the case that loading at VimEnter makes vi more responsive at startup?
-  - Heavy and commonly used plugins can be loaded right after startup (VimEnter event)
 
   Special cases:
-  - Treesitter: loaded at VimEnter to force :TSUpdate after startup
   - LSP: loaded with filetypes of configured LSP servers
+  - TODO: evaluate benefits of lazy loading treesitter and cmp
+  - Treesitter: loaded at VimEnter to force :TSUpdate after startup
   - Completion: loaded at InsertEnter and CmdlineEnter (because of ':' and '/' completions)
   --]]
 
@@ -121,14 +116,6 @@ require('packer').startup({function(use)
   use {
     'famiu/bufdelete.nvim',
     cmd = 'Bwipeout',
-  }
-
-  -- Fix CursorHold Performance.
-  use {
-    'antoinemadec/FixCursorHold.nvim',
-    setup = function()
-      vim.g.cursorhold_updatetime = 100
-    end,
   }
 
   -- TODO: evaluate https://github.com/ethanholz/nvim-lastplace
@@ -354,6 +341,7 @@ require('packer').startup({function(use)
     end,
   }
 
+  -- TODO: look for maintained alternative
   -- Several text objects with in (i), a (a), inside (I), around (A), next (_n)
   -- and last (_l) semantics.
   -- Pairs: () {} [] <> t (XML/HTML tags)
@@ -502,6 +490,7 @@ require('packer').startup({function(use)
   use 'tpope/vim-sleuth'
 
   -- TODO: read :h lsp
+  -- TODO: evaluate loading LSP only on user demand
   -- LSP configuration.
   use {
     'neovim/nvim-lspconfig',
@@ -562,6 +551,7 @@ require('packer').startup({function(use)
     end,
   }
 
+  -- TODO: evaluate this better
   -- TODO: evaluate aerial & vista.vim
   -- Tree like view for code symbols.
   use {
@@ -1041,6 +1031,7 @@ require('packer').startup({function(use)
   }
 
   -- Color highlighter.
+  -- TODO: evaluate loading this only on user demand
   use {
     'norcalli/nvim-colorizer.lua',
     event = { 'BufRead', 'BufNewFile' },
