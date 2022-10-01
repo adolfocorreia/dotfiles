@@ -1183,6 +1183,10 @@
                '("*Flycheck errors*"
                  (display-buffer-in-side-window) (side . bottom) (slot . 0) (window-height . 0.3))))
 
+(use-package flycheck-grammarly
+  :after flycheck
+  :commands flycheck-grammarly-setup)
+
 (use-package string-inflection
   :commands (string-inflection-camelcase-function
              string-inflection-kebabcase-function
@@ -1436,6 +1440,7 @@
 
 ;; LaTeX ;;
 ; Documentation: https://www.gnu.org/software/auctex/manual/auctex.index.html
+; Useful functions: (repunctuate-sentences)
 (use-package tex
   :unless ON-WINDOWS
   :ensure auctex
@@ -1467,7 +1472,9 @@
     "C-t"     '(:ignore t :which-key "LaTeX-toggle"))
   :config
   (add-to-list 'TeX-view-program-selection '(output-pdf "PDF Tools"))
-  (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)) ; Reference: https://pdftools.wiki/24b671c6
+  (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer) ; Reference: https://pdftools.wiki/24b671c6
+  (add-hook 'LaTeX-mode-hook #'turn-on-auto-fill)  ; Also use M-q (fill-paragraph) to reset paragraph shape
+  (add-hook 'LaTeX-mode-hook #'TeX-fold-mode))
 
 ; Documentation: https://www.gnu.org/software/auctex/manual/preview-latex.index.html
 (use-package preview
@@ -1511,7 +1518,7 @@
 (use-package pdf-tools
   :mode ("\\.pdf\\'" . pdf-view-mode)
   :init
-  (setq-default pdf-view-display-size 'fit-width)
+  (setq-default pdf-view-display-size 'fit-page)
   :config
   (pdf-tools-install)
   (add-hook 'pdf-tools-enabled-hook #'pdf-view-midnight-minor-mode)
@@ -1600,6 +1607,7 @@
   (completion-category-overrides '((file (styles . (partial-completion)))))
   (completion-styles '(orderless basic partial-completion)))
 
+; Use M-n to insert symbol or thing at point into the input
 (use-package consult
   :defer 1
   :bind
@@ -1611,6 +1619,9 @@
   ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
   :hook
   (completion-list-mode . consult-preview-at-point-mode)
+  :custom
+  (consult-narrow-key "<")
+  (consult-widen-key ">")
   :init
   (general-def
     :prefix "C-c"
@@ -1627,10 +1638,10 @@
     ("i" . consult-imenu)
     ("l" . consult-line)                ; search for lines in current buffer
     ("L" . consult-line-multi)          ; search for lines in all buffer
+    ("m" . consult-mark)                ; search for mark
     ("y" . consult-yank-from-kill-ring) ; search for previous yanks
     ("O" . consult-multi-occur)
     ("F" . consult-flycheck)
-    ("D" . consult-lsp-diagnostics)
     ("C" . consult-complex-command)     ; find commands in command-history
     ("H" . consult-history)))           ; find commands in current buffer history (e.g. eshell or comint)
 
