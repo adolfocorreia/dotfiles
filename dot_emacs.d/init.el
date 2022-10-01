@@ -637,12 +637,11 @@
   :config
   (require 'vlf-setup))
 
-; TODO: do not download package on Windows
-(use-package vterm
-  :unless ON-WINDOWS
-  :custom
-  (vterm-kill-buffer-on-exit nil)
-  :commands vterm)
+(unless ON-WINDOWS
+  (use-package vterm
+    :custom
+    (vterm-kill-buffer-on-exit nil)
+    :commands vterm))
 
 (use-package windresize
   :commands windresize)
@@ -1428,92 +1427,87 @@
 
 
 ;; Haskell ;;
-(use-package haskell-mode
-  :unless ON-WINDOWS
-  :custom
-  (haskell-process-suggest-remove-import-lines t)
-  :mode "\\.hs\\'")
+(unless ON-WINDOWS
+  (use-package haskell-mode
+    :custom
+    (haskell-process-suggest-remove-import-lines t)
+    :mode "\\.hs\\'")
 
-(use-package lsp-haskell
-  :after (haskell-mode lsp-mode))
+  (use-package lsp-haskell
+    :after (haskell-mode lsp-mode)))
 
 
 ;; LaTeX ;;
-; Documentation: https://www.gnu.org/software/auctex/manual/auctex.index.html
 ; Useful functions: (repunctuate-sentences)
-(use-package tex
-  :unless ON-WINDOWS
-  :ensure auctex
-  :mode ("\\.tex\\'" . LaTeX-mode)
-  :custom
-  (TeX-PDF-mode t)
-  (TeX-check-TeX t)
-  (TeX-check-engine t)
-  ; Parse on save and load
-  (TeX-auto-save t)
-  (TeX-parse-self t)
-  ; Use hidden directories for AUCTeX files
-  (TeX-auto-local ".auctex-auto")
-  (TeX-style-local ".auctex-style")
-  ; Pause on errors
-  (TeX-interactive-mode t)
-  ; Correlate tex and pdf files
-  (TeX-source-correlate-mode t)
-  (TeX-source-correlate-method 'synctex)
-  (TeX-source-correlate-start-server nil)
-  :init
-  (general-def
-    :prefix "C-c"
-    :major-modes 'latex-mode
-    "C-o"     '(:ignore t :which-key "TeX-fold")
-    "C-p"     '(:ignore t :which-key "preview")
-    "C-p C-c" '(:ignore t :which-key "preview-clearout")
-    "C-q"     '(:ignore t :which-key "LaTeX-fill")
-    "C-t"     '(:ignore t :which-key "LaTeX-toggle"))
-  :config
-  (add-to-list 'TeX-view-program-selection '(output-pdf "PDF Tools"))
-  (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer) ; Reference: https://pdftools.wiki/24b671c6
-  (add-hook 'LaTeX-mode-hook #'turn-on-auto-fill)  ; Also use M-q (fill-paragraph) to reset paragraph shape
-  (add-hook 'LaTeX-mode-hook #'TeX-fold-mode))
+(unless ON-WINDOWS
+  ; Documentation: https://www.gnu.org/software/auctex/manual/auctex.index.html
+  (use-package tex
+    :ensure auctex
+    :mode ("\\.tex\\'" . LaTeX-mode)
+    :custom
+    (TeX-PDF-mode t)
+    (TeX-check-TeX t)
+    (TeX-check-engine t)
+    ; Parse on save and load
+    (TeX-auto-save t)
+    (TeX-parse-self t)
+    ; Use hidden directories for AUCTeX files
+    (TeX-auto-local ".auctex-auto")
+    (TeX-style-local ".auctex-style")
+    ; Pause on errors
+    (TeX-interactive-mode t)
+    ; Correlate tex and pdf files
+    (TeX-source-correlate-mode t)
+    (TeX-source-correlate-method 'synctex)
+    (TeX-source-correlate-start-server nil)
+    :init
+    (general-def
+      :prefix "C-c"
+      :major-modes 'latex-mode
+      "C-o"     '(:ignore t :which-key "TeX-fold")
+      "C-p"     '(:ignore t :which-key "preview")
+      "C-p C-c" '(:ignore t :which-key "preview-clearout")
+      "C-q"     '(:ignore t :which-key "LaTeX-fill")
+      "C-t"     '(:ignore t :which-key "LaTeX-toggle"))
+    :config
+    (add-to-list 'TeX-view-program-selection '(output-pdf "PDF Tools"))
+    (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer) ; Reference: https://pdftools.wiki/24b671c6
+    (add-hook 'LaTeX-mode-hook #'turn-on-auto-fill)  ; Also use M-q (fill-paragraph) to reset paragraph shape
+    (add-hook 'LaTeX-mode-hook #'TeX-fold-mode))
 
-; Documentation: https://www.gnu.org/software/auctex/manual/preview-latex.index.html
-(use-package preview
-  :unless ON-WINDOWS
-  :ensure auctex
-  :after tex
-  :hook
-  (LaTeX-mode . LaTeX-preview-setup)
-  :custom
-  (preview-auto-cache-preamble nil)
-  :init
-  (setq-default preview-scale 1.5))
+  ; Documentation: https://www.gnu.org/software/auctex/manual/preview-latex.index.html
+  (use-package preview
+    :ensure auctex
+    :after tex
+    :hook
+    (LaTeX-mode . LaTeX-preview-setup)
+    :custom
+    (preview-auto-cache-preamble nil)
+    :init
+    (setq-default preview-scale 1.5))
 
-(use-package auctex-latexmk
-  :unless ON-WINDOWS
-  :after tex
-  :hook
-  (LaTeX-mode . auctex-latexmk-setup)
-  :init
-  (provide 'tex-buf) ; Reference: https://github.com/tom-tan/auctex-latexmk/issues/44
-  :custom
-  (auctex-latexmk-inherit-TeX-PDF-mode t)
-  (TeX-command-default "LatexMk"))
+  (use-package auctex-latexmk
+    :after tex
+    :hook
+    (LaTeX-mode . auctex-latexmk-setup)
+    :init
+    (provide 'tex-buf) ; Reference: https://github.com/tom-tan/auctex-latexmk/issues/44
+    :custom
+    (auctex-latexmk-inherit-TeX-PDF-mode t)
+    (TeX-command-default "LatexMk"))
 
-(use-package cdlatex
-  :unless ON-WINDOWS
-  :after tex
-  :hook
-  (LaTeX-mode . turn-on-cdlatex))
+  (use-package cdlatex
+    :after tex
+    :hook
+    (LaTeX-mode . turn-on-cdlatex))
 
-(use-package latex-preview-pane
-  :unless ON-WINDOWS
-  :after tex)
+  (use-package latex-preview-pane
+    :after tex)
 
-(use-package evil-tex
-  :unless ON-WINDOWS
-  :after (evil tex)
-  :hook
-  (LaTeX-mode . evil-tex-mode))
+  (use-package evil-tex
+    :after (evil tex)
+    :hook
+    (LaTeX-mode . evil-tex-mode)))
 
 (use-package pdf-tools
   :mode ("\\.pdf\\'" . pdf-view-mode)
