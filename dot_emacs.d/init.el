@@ -18,6 +18,7 @@
 ; TODO: open Emacs as server
 ; TODO: evaluate all packages for lazy loading (e.g. evil extension packages)
 ; TODO: evaluate Flycheck warnings
+; TODO: check if :after declarations are necessary/useful
 
 
 
@@ -677,8 +678,13 @@
   (evil-want-integration t)
   (evil-want-keybinding nil)
   ; evil-want-o/O-to-continue-comments t ; TODO: check this in Doom Emacs
+
+  :init
+  (defun my/set-underscore-as-word ()
+    (modify-syntax-entry ?_ "w"))
+
   :config
-  (modify-syntax-entry ?_ "w")
+  (my/set-underscore-as-word)
 
   (evil-mode +1)
 
@@ -1116,7 +1122,7 @@
   (avy-keys '(?a ?s ?d ?h ?j ?k ?l))
   (avy-single-candidate-jump t)
   :init
-  (defun my/goto-char-timer ()
+  (defun my/evil-avy-goto-char-timer ()
     (interactive)
     ; Calling avy functions with an argument negates the current setting of 'avy-all-windows'
     (avy-goto-char-timer t))
@@ -1305,35 +1311,18 @@
                  (display-buffer-reuse-window display-buffer-same-window))))
 
 (use-package anaconda-mode
-  :after python
   :hook
   (python-mode . anaconda-mode)
   (python-mode . anaconda-eldoc-mode))
 
 ; TODO: evaluate emacs-pet
-; TODO: make pyvenv work on Windows
 (use-package pyvenv
-  :after python
-  :bind
-  (:map python-mode-map
-    ("C-c v v" . my/pyvenv-autoload)
-    ("C-c v a" . pyvenv-activate)
-    ("C-c v w" . pyvenv-workon)
-    ("C-c v d" . pyvenv-deactivate)
-    ("C-c v r" . pyvenv-restart-python))
   :hook
-  (python-mode . pyvenv-mode)
-  :init
-  (defun my/pyvenv-autoload ()
-    (interactive)
-    (f-traverse-upwards
-      (lambda (path)
-        (let ((venv-path (f-expand ".venv" path)))
-          (when (f-exists? venv-path)
-            (pyvenv-activate venv-path))))))
-  (general-def
-    :major-modes 'python-mode
-    "C-c v" '(:ignore t :which-key "pyvenv")))
+  (python-mode . pyvenv-mode))
+
+(use-package auto-virtualenv
+  :hook
+  (python-mode . auto-virtualenv-set-virtualenv))
 
 ; TODO: evaluate poetry-tracking-mode
 (use-package poetry
@@ -1374,6 +1363,14 @@
 
 (use-package lsp-pyright
   :after (python lsp-mode))
+
+(use-package rst
+  :ensure nil
+  :mode
+  ("\\.rst\\'" . rst-mode)
+  :config
+  (add-hook 'rst-mode-hook #'my/set-underscore-as-word)
+  (add-hook 'rst-mode-hook #'ws-butler-mode))
 
 ; TODO: add mypy backend for flycheck
 ; TODO: evaluate ein (emacs-ipython-notebook) and emacs-jupyter
