@@ -16,7 +16,7 @@
 ; TODO: define and set order for :mode :custom :bind :commands :interpreter keywords
 ; TODO: check if :hook declarations are only being used to load the package at hand, since :hook implies :defer t (e.g. :hook (some-other-mode . this-package-mode))
 ; TODO: open Emacs as server
-; TODO: evaluate all packages for lazy loading (e.g. evil extension packages)
+; TODO: evaluate all packages for lazy loading and :defer declarations (e.g. evil extension packages)
 ; TODO: evaluate Flycheck warnings
 ; TODO: check if :after declarations are necessary/useful
 
@@ -282,7 +282,7 @@
 
 ; TODO: evaluate removing popper (e.g. window-toggle-side-windows)
 (use-package popper
-  :defer 1
+  :demand t
   :custom
   (popper-display-control nil)
   (popper-group-function #'popper-group-by-directory)
@@ -358,7 +358,7 @@
 
 (use-package autorevert
   :ensure nil
-  :defer 1
+  :demand t
   :custom
   (global-auto-revert-non-file-buffers t)
   :config
@@ -468,7 +468,7 @@
 
 (use-package recentf
   :ensure nil
-  :defer 1
+  :demand t
   :custom
   (recentf-max-saved-items 20)
   :config
@@ -476,13 +476,13 @@
 
 (use-package savehist
   :ensure nil
-  :defer 1
+  :demand t
   :config
   (savehist-mode +1))
 
 (use-package saveplace
   :ensure nil
-  :defer 1
+  :demand t
   :config
   (save-place-mode +1))
 
@@ -516,7 +516,7 @@
 
 (use-package uniquify
   :ensure nil
-  :defer 1
+  :demand t
   :custom
   (uniquify-buffer-name-style 'forward))
 
@@ -593,7 +593,7 @@
   (minions-mode +1))
 
 (use-package page-break-lines
-  :defer 1
+  :demand t
   :config
   (global-page-break-lines-mode +1))
 
@@ -629,7 +629,7 @@
   :commands try)
 
 (use-package unkillable-scratch
-  :defer 1
+  :demand t
   :config
   (unkillable-scratch t))
 
@@ -649,7 +649,7 @@
 
 ; Default prefix: C-x w
 (use-package winum
-  :defer 1
+  :demand t
   :config
   (winum-mode +1))
 
@@ -829,7 +829,7 @@
 
 (use-package evil-goggles
   :after evil
-  :defer 1
+  :demand t
   :config
   ; Also pulse on evil-operator-eval
   (add-to-list 'evil-goggles--commands
@@ -940,7 +940,7 @@
 
 (use-package evil-multiedit
   :after evil
-  :defer 1
+  :demand t
   :custom
   (evil-multiedit-follow-matches t)
   (iedit-toggle-key-default nil)
@@ -950,7 +950,7 @@
 ; Only works in Emacs state (C-z)
 (use-package multiple-cursors
   :after evil
-  :defer 1
+  :demand t
   :custom
   (mc/always-run-for-all t)
   :config
@@ -985,7 +985,7 @@
 ; Use C-f and C-b to scroll the evil-owl buffer
 (use-package evil-owl
   :after evil
-  :defer 1
+  :demand t
   :custom
   (evil-owl-display-method 'window)
   (evil-owl-idle-delay 0.25)
@@ -1110,13 +1110,13 @@
 
 (use-package ace-window
   :after evil
-  :defer 1
+  :demand t
   :config
   (define-key evil-window-map "a" #'ace-window))
 
 (use-package avy
   :after evil
-  :defer 1
+  :demand t
   :custom
   (avy-all-windows nil)
   (avy-keys '(?a ?s ?d ?h ?j ?k ?l))
@@ -1137,13 +1137,13 @@
 
 (use-package transpose-frame
   :after evil
-  :defer 1
+  :demand t
   :config
   (define-key evil-window-map "T" #'transpose-frame))
 
 (use-package winner
   :after evil
-  :defer 1
+  :demand t
   :custom
   (winner-dont-bind-my-keys t)
   :config
@@ -1279,6 +1279,10 @@
     :major-modes 'emacs-lisp-mode
     "C-c C-p" '(:ignore t :which-key "parinfer")))
 
+(use-package flycheck-package
+  :after flycheck
+  :commands flycheck-package-setup)
+
 
 ;; Python ;;
 
@@ -1370,7 +1374,15 @@
   ("\\.rst\\'" . rst-mode)
   :config
   (add-hook 'rst-mode-hook #'my/set-underscore-as-word)
-  (add-hook 'rst-mode-hook #'ws-butler-mode))
+  (add-hook 'rst-mode-hook #'turn-on-auto-fill)  ; Also use M-q (fill-paragraph) to reset paragraph shape
+  (add-hook 'rst-mode-hook #'ws-butler-mode)
+  (general-def
+    :major-modes 'rst-mode
+    "C-c C-a" '(:ignore t :which-key "adjust")
+    "C-c C-c" '(:ignore t :which-key "compile")
+    "C-c C-l" '(:ignore t :which-key "list")
+    "C-c C-r" '(:ignore t :which-key "region")
+    "C-c C-t" '(:ignore t :which-key "toc")))
 
 ; TODO: add mypy backend for flycheck
 ; TODO: evaluate ein (emacs-ipython-notebook) and emacs-jupyter
@@ -1539,7 +1551,7 @@
 ;;;; Org-mode ;;;;
 
 (use-package org
-  :defer 5)
+  :defer t)
 
 
 
@@ -1600,7 +1612,7 @@
 
 ; Use M-n to insert symbol or thing at point into the input
 (use-package consult
-  :defer 1
+  :demand t
   :bind
   ("C-x C-r" . consult-recent-file)
   ([remap apropos-command] . consult-apropos)
@@ -1641,7 +1653,7 @@
   :demand t)
 
 (use-package embark
-  :defer 1
+  :demand t
   :bind
   ("C-;"      . embark-act)
   ("C-:"      . embark-dwim)
@@ -1664,7 +1676,7 @@
 
 (use-package kind-icon
   :after corfu
-  :defer 10
+  :demand t
   :custom
   (kind-icon-default-face 'corfu-default)
   :config
