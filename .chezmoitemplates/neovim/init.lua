@@ -705,7 +705,7 @@ require('packer').startup({function(use)
   -- send line (grr) and send paragraph (grR).
   use {
     'jpalardy/vim-slime',
-    keys = 'gr',
+    keys = 'gy',
     cmd = 'SlimeConfig',
     -- ft = { 'python', 'julia' },
     setup = function()
@@ -738,10 +738,10 @@ require('packer').startup({function(use)
       ]])
     end,
     config = function()
-      vim.api.nvim_set_keymap('x', 'gr',  '<Plug>SlimeRegionSend',    {})
-      vim.api.nvim_set_keymap('n', 'gr',  '<Plug>SlimeMotionSend',    {})
-      vim.api.nvim_set_keymap('n', 'grr', '<Plug>SlimeLineSend',      {})
-      vim.api.nvim_set_keymap('n', 'grR', '<Plug>SlimeParagraphSend', {})
+      vim.api.nvim_set_keymap('x', 'gy',  '<Plug>SlimeRegionSend',    {})
+      vim.api.nvim_set_keymap('n', 'gy',  '<Plug>SlimeMotionSend',    {})
+      vim.api.nvim_set_keymap('n', 'gyy', '<Plug>SlimeLineSend',      {})
+      vim.api.nvim_set_keymap('n', 'gyY', '<Plug>SlimeParagraphSend', {})
 
       -- Reset vim-slime configuration in all buffers.
       vim.cmd([[autocmd vimrc TermClose * bufdo if exists('b:slime_config') | unlet b:slime_config | endif]])
