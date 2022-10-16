@@ -1,5 +1,6 @@
 Format 24
 
+\bind_file "custom"
 
 #
 # MISC SECTION ######################################
@@ -60,7 +61,7 @@ Format 24
 \set_color "marginlabel" "#a3be8c"
 \set_color "math" "#d8dee9"
 \set_color "mathbg" "#2e3440"
-\set_color "mathcorners" "#ebcb8b"
+\set_color "mathcorners" "#2e3440"
 \set_color "mathframe" "#81a1c1"
 \set_color "mathline" "#ebcb8b"
 \set_color "mathmacrobg" "#2e3440"

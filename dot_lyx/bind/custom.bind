@@ -1,0 +1,60 @@
+# References:
+# - https://wiki.lyx.org/Tips/KeyboardShortcuts
+# - /usr/share/lynx/bind
+# - Help/Shortcuts
+# - Help/LyX Functions
+
+\bind_file emacs.bind
+
+\bind "Escape"  "cancel"
+\bind "Home"    "line-begin"
+\bind "End"     "line-end"
+\bind "C-Home"  "buffer-begin"
+\bind "C-End"   "buffer-end"
+
+\bind "C-b"           "char-backward"
+\bind "C-f"           "char-forward"
+\bind "M-b"           "word-left"
+\bind "M-f"           "word-right"
+\bind "C-a"           "line-begin"
+\bind "C-e"           "line-end"
+\bind "C-n"           "down"
+\bind "C-p"           "up"
+\bind "C-v"           "screen-down"
+\bind "M-v"           "screen-up"
+\bind "M-~S-less"     "buffer-begin"
+\bind "M-~S-greater"  "buffer-end"
+
+\bind "C-d"  "char-delete-forward"
+\bind "C-h"  "char-delete-backward"
+\bind "M-d"  "word-delete-forward"
+\bind "M-h"  "word-delete-backward"
+\bind "C-k"  "line-delete-forward"
+\bind "C-u"  "command-sequence line-begin-select ; char-delete-forward"
+
+\bind "C-~S-at"   "mark-on"
+\bind "C-space"   "mark-on"
+\bind "C-w"       "cut"
+\bind "M-w"       "copy"
+\bind "C-y"       "paste"
+\bind "S-Delete"  "cut"
+\bind "C-Insert"  "copy"
+\bind "S-Insert"  "paste"
+
+\bind "C-~S-underscore"  "undo"
+\bind "C-x u"            "undo"
+\bind "C-slash"          "undo"
+\bind "C-S-question"     "redo"
+
+\bind "C-x C-k"  "buffer-close"
+
+\bind "C-x r"    "buffer-view"
+\bind "C-x C-r"  "buffer-view pdf"
+\bind "C-x p"    "buffer-view"
+\bind "C-x C-p"  "buffer-view pdf"
+\bind "C-x t"    "buffer-update"
+\bind "C-x C-t"  "buffer-update pdf"
+
+\bind "C-m"    "math-mode"
+\bind "C-S-m"  "math-display"
+
