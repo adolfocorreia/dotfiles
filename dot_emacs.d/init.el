@@ -379,6 +379,14 @@
   ("M-/" . dabbrev-completion)
   ("C-M-/" . dabbrev-expand))
 
+; TODO: HTTP proxy configuration
+(use-package dictionary
+  :ensure nil
+  :custom
+  (dictionary-server "dict.org")
+  (dictionary-proxy-server "localhost")
+  (dictionary-proxy-port 3128))
+
 (use-package dired
   :ensure nil
   :custom
@@ -666,14 +674,12 @@
   :custom
   (evil-respect-visual-line-mode t)
   (evil-search-module 'isearch)
-  (evil-split-window-right t) (evil-vsplit-window-below t)
   (evil-symbol-word-search t)
   (evil-undo-system 'undo-redo)
   (evil-want-C-h-delete t)
   (evil-want-C-u-delete t)
   (evil-want-C-u-scroll t)
   (evil-want-C-w-in-emacs-state t)
-  (evil-want-Y-yank-to-eol t)
   (evil-want-fine-undo t)
   (evil-want-integration t)
   (evil-want-keybinding nil)
@@ -684,6 +690,12 @@
     (modify-syntax-entry ?_ "w"))
 
   :config
+  ; For some reason, some evil customizations do not work with :custom
+  ; Reference: https://github.com/emacs-evil/evil/issues/1571
+  (customize-set-variable 'evil-split-window-right t)
+  (customize-set-variable 'evil-vsplit-window-below t)
+  (customize-set-variable 'evil-want-Y-yank-to-eol t)
+
   (my/set-underscore-as-word)
 
   (evil-mode +1)
@@ -696,6 +708,7 @@
   (define-key evil-insert-state-map (kbd "C-a") #'move-beginning-of-line)  ; original: evil-paste-last-insertion
   (define-key evil-insert-state-map (kbd "C-e") #'move-end-of-line)        ; original: evil-copy-from-below
   (define-key evil-insert-state-map (kbd "C-d") #'delete-char)             ; original: evil-shift-left-line
+  (define-key evil-insert-state-map (kbd "M-h") #'backward-kill-word)      ; original: mark-paragraph
   ; TODO: evaluate evil-rsi and what to do with C-t (e.g. transpose-char)
 
   ; Since C-d is not available in insert mode (see above), remap evil-shift-line commands
@@ -704,7 +717,7 @@
 
   ; Also use readline-like binding in minibuffer
   (define-key minibuffer-local-map (kbd "C-h") #'delete-backward-char)
-  (define-key minibuffer-local-map (kbd "C-w") #'backward-kill-word)
+  (define-key minibuffer-local-map (kbd "M-h") #'backward-kill-word)
 
   ; C-w extra bindings
   (define-key evil-window-map "`" #'evil-switch-to-windows-last-buffer)
@@ -758,14 +771,14 @@
   (defun my/other-window (&rest _)
     (other-window 1))
   (advice-add 'evil-window-split  :after #'my/other-window)
-  (advice-add 'evil-window-vsplit :after #'my/other-window))
+  (advice-add 'evil-window-vsplit :after #'my/other-window)
+
+  ; Use @p to paste with a space before the inserted text (let @p="a \<Esc>p")
+  (evil-set-register ?p [?a ?\s escape ?p]))
 
 (use-package evil-collection
   :after evil
   :demand t
-  :custom
-  ; TODO: evaluate this variable
-  (evil-collection-want-find-usages-bindings nil)  ; Conflicts with 'gr' binding from evil-extra-operator
   :config
   (evil-collection-init)
 
@@ -825,7 +838,7 @@
   :after evil
   :demand t
   :config
-  (define-key evil-motion-state-map "gr" #'evil-operator-eval))
+  (define-key evil-motion-state-map "gy" #'evil-operator-eval))
 
 (use-package evil-goggles
   :after evil
@@ -1199,6 +1212,18 @@
              string-inflection-underscore-function
              string-inflection-upcase-function))
 
+(use-package yasnippet
+  :hook
+  (prog-mode . yas-minor-mode)
+  :config
+  (general-def
+    :prefix "C-c"
+    "&" '(:ignore t :which-key "yas")))
+
+(use-package yasnippet-snippets
+  :after yasnippet
+  :demand t)
+
 (use-package ws-butler
   :hook
   (conf-mode . ws-butler-mode)
@@ -1209,7 +1234,6 @@
 ; autopairs
 ; hl-todo
 ; smartparens/evil-smartparens
-; yasnippets
 ; tempel
 ; which-func
 ; whitespace-mode
@@ -1469,6 +1493,8 @@
     (TeX-source-correlate-mode t)
     (TeX-source-correlate-method 'synctex)
     (TeX-source-correlate-start-server nil)
+    ; Do not ask before saving file
+    (TeX-save-query nil)
     :init
     (general-def
       :prefix "C-c"
@@ -1481,7 +1507,6 @@
     :config
     (add-to-list 'TeX-view-program-selection '(output-pdf "PDF Tools"))
     (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer) ; Reference: https://pdftools.wiki/24b671c6
-    (add-hook 'LaTeX-mode-hook #'turn-on-auto-fill)  ; Also use M-q (fill-paragraph) to reset paragraph shape
     (add-hook 'LaTeX-mode-hook #'TeX-fold-mode))
 
   ; Documentation: https://www.gnu.org/software/auctex/manual/preview-latex.index.html
@@ -1491,9 +1516,8 @@
     :hook
     (LaTeX-mode . LaTeX-preview-setup)
     :custom
-    (preview-auto-cache-preamble nil)
-    :init
-    (setq-default preview-scale 1.5))
+    (preview-auto-cache-preamble t)
+    (preview-scale-function 1.1))
 
   (use-package auctex-latexmk
     :after tex
@@ -1509,9 +1533,6 @@
     :after tex
     :hook
     (LaTeX-mode . turn-on-cdlatex))
-
-  (use-package latex-preview-pane
-    :after tex)
 
   (use-package evil-tex
     :after (evil tex)
