@@ -29,8 +29,11 @@ if status is-interactive
     end
 
     # Set aliases
-    alias emacs="emacs -nw"
     alias ls=exa
+    alias ll="exa -l"
+    alias la="exa -la"
+
+    alias emacs="emacs -nw"
     alias vi="nvim --clean"
 
     # Load conda
