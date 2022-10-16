@@ -22,8 +22,9 @@ config.load_autoconfig()
 # Show current bindings with :bind
 # Commands reference: qute://help/commands.html
 
-# Unbind quit
+# Unbind quit and tab-close
 config.unbind("<Ctrl+q>", mode="normal")
+config.unbind("<Ctrl+w>", mode="normal")
 
 # Bind Shift-Insert to clipboard selection.
 config.bind("<Shift-Ins>", "insert-text -- {clipboard}",  mode="insert")
@@ -40,7 +41,7 @@ config.bind("<Ctrl+e>",         "scroll down")
 # Command mode key bindings
 config.bind("<Ctrl+p>",       "completion-item-focus --history prev", mode="command")
 config.bind("<Ctrl+n>",       "completion-item-focus --history next", mode="command")
-config.bind("<Ctrl+l>",       "command-accept",                       mode="command")
+config.bind("<Ctrl+m>",       "command-accept",                       mode="command")
 config.bind("<Shift+PgUp>",   "command-history-prev",                 mode="command")
 config.bind("<Shift+PgDown>", "command-history-next",                 mode="command")
 
@@ -54,15 +55,18 @@ config.bind("<Ctrl+a>", "fake-key <Home>",                     mode="insert")
 config.bind("<Ctrl+e>", "fake-key <End>",                      mode="insert")
 config.bind("<Ctrl+h>", "fake-key <Backspace>",                mode="insert")
 config.bind("<Ctrl+d>", "fake-key <Delete>",                   mode="insert")
+config.bind("<Alt+h>",  "fake-key <Shift+Ctrl+Left><Delete>",  mode="insert")
 config.bind("<Ctrl+w>", "fake-key <Shift+Ctrl+Left><Delete>",  mode="insert")
 config.bind("<Alt+d>",  "fake-key <Shift+Ctrl+Right><Delete>", mode="insert")
 config.bind("<Ctrl+u>", "fake-key <Shift+Home><Delete>",       mode="insert")
 config.bind("<Ctrl+k>", "fake-key <Shift+End><Delete>",        mode="insert")
 config.bind("<Ctrl+p>", "fake-key <Up>",                       mode="insert")
 config.bind("<Ctrl+n>", "fake-key <Down>",                     mode="insert")
+config.bind("<Alt+v>",  "fake-key <PgUp>",                     mode="insert")
+config.bind("<Ctrl+v>", "fake-key <PgDown>",                   mode="insert")
 config.bind("<Ctrl+m>", "fake-key <Enter>",                    mode="insert")
 config.bind("<Ctrl+y>", "insert-text {primary}",               mode="insert")
-config.bind("<Ctrl+_>", "fake-key <Ctrl+z>",                   mode="insert")
+config.bind("<Ctrl+/>", "fake-key <Ctrl+z>",                   mode="insert")
 
 # Mode leave key bindings
 config.bind("<Ctrl+g>", "mode-leave", mode="caret")
