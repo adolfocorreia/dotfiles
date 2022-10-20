@@ -383,6 +383,7 @@
 (use-package dictionary
   :ensure nil
   :custom
+  (dictionary-use-single-buffer t)
   (dictionary-server "dict.org")
   (dictionary-proxy-server "localhost")
   (dictionary-proxy-port 3128))
@@ -428,6 +429,14 @@
   :ensure nil
   :custom
   (browse-url-browser-function 'eww-browse-url))
+
+; Fold blocks (activate with hs-minor-mode)
+(use-package hideshow
+  :ensure nil
+  :config
+  (general-def
+    :prefix "C-c"
+    "@" '(:ignore t :which-key "hideshow")))
 
 (use-package help
   :ensure nil
@@ -632,6 +641,9 @@
   (tabspaces-use-filtered-buffers-as-default t)
   :config
   (tabspaces-mode +1))
+
+(use-package tmr
+  :commands tmr)
 
 (use-package try
   :commands try)
@@ -958,7 +970,9 @@
   (evil-multiedit-follow-matches t)
   (iedit-toggle-key-default nil)
   :config
-  (evil-multiedit-default-keybinds))
+  (evil-multiedit-default-keybinds)
+  ; Use readline-like bindings in insert state
+  (define-key evil-insert-state-map (kbd "M-d") #'kill-word))
 
 ; Only works in Emacs state (C-z)
 (use-package multiple-cursors
@@ -1298,7 +1312,7 @@
   (emacs-lisp-mode . parinfer-rust-mode)
   :custom
   (parinfer-rust-auto-download t)
-  :init
+  :config
   (general-def
     :major-modes 'emacs-lisp-mode
     "C-c C-p" '(:ignore t :which-key "parinfer")))
@@ -1328,11 +1342,10 @@
   (python-shell-interpreter "python")  ; On Windows, some virtual environments don't come with the "python3" binary
   :mode
   ("\\.py\\'" . python-mode)
-  :init
+  :config
   (general-def
     :major-modes 'python-mode
     "C-c C-t" '(:ignore t :which-key "python-skeleton"))
-  :config
   (add-hook 'python-mode-hook #'apheleia-mode)
   (add-to-list 'display-buffer-alist
                '("*Python*"
@@ -1344,21 +1357,21 @@
   (python-mode . anaconda-eldoc-mode))
 
 ; TODO: evaluate emacs-pet
-(use-package pyvenv
-  :hook
-  (python-mode . pyvenv-mode))
+(use-package pyvenv)
 
-(use-package auto-virtualenv
-  :hook
-  (python-mode . auto-virtualenv-set-virtualenv))
-
-; TODO: evaluate poetry-tracking-mode
 (use-package poetry
-  :after python
-  :commands poetry
+  :custom
+  (poetry-tracking-strategy 'switch-buffer)
+  :hook
+  (python-mode . poetry-tracking-mode)
   :bind
   (:map python-mode-map
    ("C-c P" . poetry)))
+
+; Use this package with non-poetry projects
+; (use-package auto-virtualenv
+;   :hook
+;   (python-mode . auto-virtualenv-set-virtualenv))
 
 ; TODO: evaluate python-pytest (beware of projectile dependency)
 ; TODO: add --color argument
@@ -1380,11 +1393,10 @@
   :custom
   (pytest-cmd-flags "--exitfirst --capture=no --durations=10")
   (pytest-project-root-files '(".venv" "setup.py" ".git"))
-  :init
+  :config
   (general-def
     :major-modes 'python-mode
     "C-c t" '(:ignore t :which-key "pytest"))
-  :config
   (add-to-list 'display-buffer-alist
                '("*pytest*"
                  (display-buffer-in-side-window) (side . right) (slot . 1) (window-width . 0.35))))
@@ -1491,11 +1503,14 @@
     (TeX-interactive-mode t)
     ; Correlate tex and pdf files
     (TeX-source-correlate-mode t)
-    (TeX-source-correlate-method 'synctex)
     (TeX-source-correlate-start-server nil)
     ; Do not ask before saving file
     (TeX-save-query nil)
-    :init
+    ; TeX electricity
+    (TeX-electric-math (cons "$" "$"))
+    (TeX-electric-sub-and-superscript t)
+    (LaTeX-electric-left-right-brace t)
+    :config
     (general-def
       :prefix "C-c"
       :major-modes 'latex-mode
@@ -1504,10 +1519,12 @@
       "C-p C-c" '(:ignore t :which-key "preview-clearout")
       "C-q"     '(:ignore t :which-key "LaTeX-fill")
       "C-t"     '(:ignore t :which-key "LaTeX-toggle"))
-    :config
+    ; Set Emacs' PDF Tools as default
     (add-to-list 'TeX-view-program-selection '(output-pdf "PDF Tools"))
-    (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer) ; Reference: https://pdftools.wiki/24b671c6
-    (add-hook 'LaTeX-mode-hook #'TeX-fold-mode))
+    ; Enable corfu completion
+    (add-hook 'LaTeX-mode-hook #'corfu-mode)
+    ; Misc configuration
+    (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer))  ; Reference: https://pdftools.wiki/24b671c6
 
   ; Documentation: https://www.gnu.org/software/auctex/manual/preview-latex.index.html
   (use-package preview
@@ -1519,20 +1536,17 @@
     (preview-auto-cache-preamble t)
     (preview-scale-function 1.1))
 
-  (use-package auctex-latexmk
+  ; Documentation: https://www.gnu.org/software/auctex/manual/reftex.index.html
+  (use-package reftex
+    :ensure auctex
     :after tex
-    :hook
-    (LaTeX-mode . auctex-latexmk-setup)
-    :init
-    (provide 'tex-buf) ; Reference: https://github.com/tom-tan/auctex-latexmk/issues/44
     :custom
-    (auctex-latexmk-inherit-TeX-PDF-mode t)
-    (TeX-command-default "LatexMk"))
-
-  (use-package cdlatex
-    :after tex
+    (reftex-plug-into-AUCTeX t)
     :hook
-    (LaTeX-mode . turn-on-cdlatex))
+    (LaTeX-mode . turn-on-reftex))
+
+  (use-package lsp-latex
+    :after (tex lsp-mode))
 
   (use-package evil-tex
     :after (evil tex)
@@ -1549,8 +1563,8 @@
   (general-def
     :prefix "C-c"
     :major-modes 'pdf-view-mode
-    "C-a"     '(:ignore t :which-key "pdf-annot")
-    "C-r"     '(:ignore t :which-key "pdf-view")))
+    "C-a" '(:ignore t :which-key "pdf-annot")
+    "C-r" '(:ignore t :which-key "pdf-view")))
 
 ; TODO: evaluate latex related packages
 ; reftex/bibtex (https://www.gnu.org/software/auctex/manual/reftex.index.html)
@@ -1572,7 +1586,14 @@
 ;;;; Org-mode ;;;;
 
 (use-package org
-  :defer t)
+  :defer t
+  :config
+  (general-def
+    :prefix "C-c"
+    :major-modes 'org-mode
+    "\""  '(:ignore t :which-key "plot")
+    "C-v" '(:ignore t :which-key "babel")
+    "C-x" '(:ignore t :which-key "org")))
 
 
 
