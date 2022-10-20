@@ -321,8 +321,6 @@ myManageHook =
         ("www", "firefox"),
         -- Emacs
         ("dev", "Emacs"),
-        -- RStudio
-        ("dev", "RStudio"),
         -- Visual Studio Code
         ("dev", "code"),
         -- LibreOffice
@@ -332,8 +330,6 @@ myManageHook =
         ("doc", "libreoffice-startcenter"),
         -- Lyx
         ("doc", "lyx"),
-        -- Xreader
-        ("doc", "Xreader"),
         -- PCManFM
         ("file", "Pcmanfm"),
         -- Chromium
