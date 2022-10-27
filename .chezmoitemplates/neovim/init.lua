@@ -75,7 +75,7 @@ if ok_impatient then impatient.enable_profile() end
 -- Install packer if not present.
 -- Reference: https://github.com/wbthomason/packer.nvim#bootstrapping
 local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
-if vim.fn.empty(vim.fn.glob(install_path, nil, nil)) > 0 then
+if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   local url = 'https://github.com/wbthomason/packer.nvim'
   PACKER_BOOTSTRAP = vim.fn.system({'git', 'clone', '--depth', '1', url, install_path})
   vim.cmd('packadd packer.nvim')
@@ -499,7 +499,7 @@ require('packer').startup({function(use)
       -- Reference: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 
       local lsp_opts = {
-        capabilities = require('cmp_nvim_lsp').update_capabilities(
+        capabilities = require('cmp_nvim_lsp').default_capabilities(
           vim.lsp.protocol.make_client_capabilities()
         ),
       }
@@ -519,10 +519,8 @@ require('packer').startup({function(use)
 
       -- Lua (sumneko)
       -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#sumneko_lua
-      local luadev = require('lua-dev').setup({})
-      require('lspconfig').sumneko_lua.setup(luadev)
-      -- TODO: evaluate if lsp_opt must also be passed to sumneko
-      -- require('lspconfig').sumneko_lua.setup(vim.tbl_extend('error', {lsp_opts, luadev}))
+      require('neodev').setup({})
+      require('lspconfig').sumneko_lua.setup(lsp_opts)
     end,
   }
 
@@ -563,8 +561,8 @@ require('packer').startup({function(use)
 
   -- Lua development setup for init.lua and plugins.
   use {
-    'folke/lua-dev.nvim',
-    module = 'lua-dev',
+    'folke/neodev.nvim',
+    module = 'neodev',
   }
 
   -- TODO: set correct lazy dependencies for completion plugins
