@@ -614,6 +614,11 @@
   :config
   (global-page-break-lines-mode +1))
 
+(use-package persistent-scratch
+  :demand t
+  :config
+  (persistent-scratch-setup-default))
+
 (use-package pcmpl-args
   :after eshell)
 
@@ -1357,7 +1362,13 @@
   (python-mode . anaconda-eldoc-mode))
 
 ; TODO: evaluate emacs-pet
-(use-package pyvenv)
+(use-package pyvenv
+  :bind
+  (:map python-mode-map
+   ("C-c R" . pyvenv-restart-python)
+   ; TODO: make this work in inferior python buffers
+   :map inferior-python-mode-map
+   ("C-c R" . pyvenv-restart-python)))
 
 (use-package poetry
   :custom
@@ -1595,6 +1606,10 @@
     "C-v" '(:ignore t :which-key "babel")
     "C-x" '(:ignore t :which-key "org")))
 
+(use-package org-inline-pdf
+  :hook
+  (org-mode . org-inline-pdf-mode))
+
 
 
 ;;;; Git ;;;;
@@ -1706,15 +1721,21 @@
   :demand t)
 
 ; TODO: evaluate corfu vs company
+; TODO: disable corfu when using multicursors
 ; TODO: evaluate how to use corfu (or vertico) in evil-ex minibuffer
 (use-package corfu
   :after vertico
   :custom
-  (corfu-auto nil)
+  (corfu-auto t)
+  (corfu-count 15)
   (corfu-cycle t)
+  (corfu-min-width 30)
   (corfu-quit-no-match 'separator)
   :hook
-  (prog-mode . corfu-mode))
+  (comint-mode . corfu-mode)
+  (prog-mode . corfu-mode)
+  :config
+  (add-hook 'corfu-mode-hook #'corfu-history-mode))
 
 (use-package kind-icon
   :after corfu
@@ -1723,6 +1744,14 @@
   (kind-icon-default-face 'corfu-default)
   :config
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+
+(use-package corfu-doc
+  :after corfu
+  :custom
+  (corfu-doc-display-within-parent-frame nil)
+  (corfu-doc-max-height 15)
+  :hook
+  (corfu-mode . corfu-doc-mode))
 
 ; TODO: restrict to prog-mode
 (use-package cape
