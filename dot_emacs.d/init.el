@@ -703,6 +703,7 @@
   ; evil-want-o/O-to-continue-comments t ; TODO: check this in Doom Emacs
 
   :init
+  ; Reference: https://evil.readthedocs.io/en/latest/faq.html#underscore-is-not-a-word-character
   (defun my/set-underscore-as-word ()
     (modify-syntax-entry ?_ "w"))
 
@@ -713,7 +714,9 @@
   (customize-set-variable 'evil-vsplit-window-below t)
   (customize-set-variable 'evil-want-Y-yank-to-eol t)
 
-  (my/set-underscore-as-word)
+  (add-hook 'conf-mode-hook #'my/set-underscore-as-word)
+  (add-hook 'prog-mode-hook #'my/set-underscore-as-word)
+  (add-hook 'text-mode-hook #'my/set-underscore-as-word)
 
   (evil-mode +1)
 
@@ -1269,14 +1272,12 @@
   (lsp-completion-provider :none)  ; avoid using company
   (lsp-enable-snippet nil)
   (lsp-keymap-prefix "C-c l")
-  :init
+  :config
+  (lsp-enable-which-key-integration t)
   (defun my/lsp-mode-setup-completion ()
     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
           '(orderless)))
-  :hook
-  (lsp-completion-mode . my/lsp-mode-setup-completion)
-  :config
-  (lsp-enable-which-key-integration t))
+  (add-hook 'lsp-completion-mode-hook #'my/lsp-mode-setup-completion))
 
 (use-package lsp-ui
   :hook
@@ -1611,7 +1612,6 @@
   (org-mode . org-inline-pdf-mode))
 
 
-
 ;;;; Git ;;;;
 
 ;; Magit ;;
@@ -1703,7 +1703,9 @@
     ("O" . consult-multi-occur)
     ("F" . consult-flycheck)
     ("C" . consult-complex-command)     ; find commands in command-history
-    ("H" . consult-history)))           ; find commands in current buffer history (e.g. eshell or comint)
+    ("H" . consult-history))            ; find commands in current buffer history (e.g. eshell or comint)
+  :config
+  (consult-customize consult-ripgrep :initial (thing-at-point 'symbol)))
 
 (use-package consult-flycheck
   :after (consult flycheck)
