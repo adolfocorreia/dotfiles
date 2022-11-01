@@ -425,8 +425,8 @@ Action<IConfigContext> doConfig = (context) => {
         w.ProcessName.Equals("XMind") && w.Class.Equals("Static")
     ));
 
-    context.WindowRouter.RouteProcessName("notes2",   ws_notes);
-    context.WindowRouter.RouteProcessName("WhatsApp", ws_chat);
+    context.WindowRouter.RouteProcessName("notes2", ws_notes);
+    context.WindowRouter.RouteTitle("WhatsApp",     ws_chat);
 
     context.WindowRouter.RouteTitle("Gmail",                     ws_gapps);
     context.WindowRouter.RouteTitle("Google Calendar",           ws_gapps);
