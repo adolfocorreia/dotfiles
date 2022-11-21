@@ -1349,6 +1349,7 @@
   :mode
   ("\\.py\\'" . python-mode)
   :config
+  (if ON-WINDOWS (setenv "PYTHONIOENCODING" "UTF-8"))
   (general-def
     :major-modes 'python-mode
     "C-c C-t" '(:ignore t :which-key "python-skeleton"))
