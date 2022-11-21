@@ -97,10 +97,10 @@ Action<IConfigContext> doConfig = (context) => {
     KeyModifiers modS  = mod | KeyModifiers.Shift;
     KeyModifiers modCS = mod | KeyModifiers.Control | KeyModifiers.Shift;
 
-    string ws_notes  = "notes";
+    string ws_mail   = "mail";
     string ws_chat   = "chat";
     string ws_gapps  = "gapps";
-    int ws_notes_num = 10;
+    int ws_mail_num  = 10;
     int ws_chat_num  = 11;
     int ws_gapps_num = 12;
 
@@ -139,7 +139,7 @@ Action<IConfigContext> doConfig = (context) => {
         k.Subscribe(modA, Keys.K,         () => w.FocusedWorkspace.FocusPreviousWindow(),             "focus previous window");
         k.Subscribe(modA, Keys.Down,      () => w.FocusedWorkspace.FocusNextWindow(),                 "focus next window");
         k.Subscribe(modA, Keys.Up,        () => w.FocusedWorkspace.FocusPreviousWindow(),             "focus previous window");
-        k.Subscribe(modA, Keys.M,         () => w.FocusedWorkspace.FocusPrimaryWindow(),              "focus primary window");
+        /*k.Subscribe(modA, Keys.M,         () => w.FocusedWorkspace.FocusPrimaryWindow(),              "focus primary window");*/
         k.Subscribe(modS, Keys.J,         () => w.FocusedWorkspace.SwapFocusAndNextWindow(),          "swap focus and next window");
         k.Subscribe(modS, Keys.K,         () => w.FocusedWorkspace.SwapFocusAndPreviousWindow(),      "swap focus and previous window");
         k.Subscribe(modS, Keys.Down,      () => w.FocusedWorkspace.SwapFocusAndNextWindow(),          "swap focus and next window");
@@ -172,7 +172,7 @@ Action<IConfigContext> doConfig = (context) => {
         k.Subscribe(modA, Keys.D8,    () => w.SwitchToWorkspace(7),                       "switch to workspace 8");
         k.Subscribe(modA, Keys.D9,    () => w.SwitchToWorkspace(8),                       "switch to workspace 9");
         k.Subscribe(modA, Keys.D0,    () => w.SwitchToWorkspace(9),                       "switch to workspace 10");
-        k.Subscribe(modA, Keys.N,     () => w.SwitchToWorkspace(ws_notes_num),            "switch to workspace " + ws_notes);
+        k.Subscribe(modA, Keys.M,     () => w.SwitchToWorkspace(ws_mail_num),             "switch to workspace " + ws_mail);
         k.Subscribe(modA, Keys.Z,     () => w.SwitchToWorkspace(ws_chat_num),             "switch to workspace " + ws_chat);
         k.Subscribe(modA, Keys.G,     () => w.SwitchToWorkspace(ws_gapps_num),            "switch to workspace " + ws_gapps);
         k.Subscribe(modC, Keys.J,     () => w.SwitchToNextWorkspace(),                    "switch to next workspace");
@@ -197,7 +197,7 @@ Action<IConfigContext> doConfig = (context) => {
         k.Subscribe(modS, Keys.D8,    () => w.MoveFocusedWindowToWorkspace(7),            "move focused window to workspace 8");
         k.Subscribe(modS, Keys.D9,    () => w.MoveFocusedWindowToWorkspace(8),            "move focused window to workspace 9");
         k.Subscribe(modS, Keys.D0,    () => w.MoveFocusedWindowToWorkspace(9),            "move focused window to workspace 10");
-        k.Subscribe(modS, Keys.N,     () => w.MoveFocusedWindowToWorkspace(ws_notes_num), "move focused window to workspace " + ws_notes);
+        k.Subscribe(modS, Keys.M,     () => w.MoveFocusedWindowToWorkspace(ws_mail_num),  "move focused window to workspace " + ws_mail);
         k.Subscribe(modS, Keys.Z,     () => w.MoveFocusedWindowToWorkspace(ws_chat_num),  "move focused window to workspace " + ws_chat);
         k.Subscribe(modS, Keys.G,     () => w.MoveFocusedWindowToWorkspace(ws_gapps_num), "move focused window to workspace " + ws_gapps);
         k.Subscribe(modS, Keys.W,     () => w.MoveFocusedWindowToMonitor(0),              "move focused window to monitor 1");
@@ -218,7 +218,7 @@ Action<IConfigContext> doConfig = (context) => {
         k.Subscribe(modCS, Keys.D8, () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, 7)),            "move all windows to workspace 8");
         k.Subscribe(modCS, Keys.D9, () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, 8)),            "move all windows to workspace 9");
         k.Subscribe(modCS, Keys.D0, () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, 9)),            "move all windows to workspace 10");
-        k.Subscribe(modCS, Keys.N,  () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, ws_notes_num)), "move all windows to workspace " + ws_notes);
+        k.Subscribe(modCS, Keys.M,  () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, ws_mail_num)),  "move all windows to workspace " + ws_mail);
         k.Subscribe(modCS, Keys.Z,  () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, ws_chat_num)),  "move all windows to workspace " + ws_chat);
         k.Subscribe(modCS, Keys.G,  () => w.MoveAllWindows(w.FocusedWorkspace, c.GetWorkspaceAtIndex(w.FocusedWorkspace, ws_gapps_num)), "move all windows to workspace " + ws_gapps);
 
@@ -334,7 +334,7 @@ Action<IConfigContext> doConfig = (context) => {
         ("8th",    defaultLayouts()),
         ("9th",    defaultLayouts()),
         ("10th",   new ILayoutEngine[] { new HorzLayoutEngine(), new FullLayoutEngine() }),
-        (ws_notes, new ILayoutEngine[] { new TallLayoutEngine(1, 0.75, 0.025, false) }),
+        (ws_mail,  defaultLayouts()),
         (ws_chat,  defaultLayouts()),
         (ws_gapps, new ILayoutEngine[] { new VertLayoutEngine(), new FullLayoutEngine() }),
     };
@@ -425,8 +425,10 @@ Action<IConfigContext> doConfig = (context) => {
         w.ProcessName.Equals("XMind") && w.Class.Equals("Static")
     ));
 
-    context.WindowRouter.RouteProcessName("notes2", ws_notes);
-    context.WindowRouter.RouteTitle("WhatsApp",     ws_chat);
+    context.WindowRouter.RouteProcessName("notes2",  ws_mail);
+    context.WindowRouter.RouteProcessName("OUTLOOK", ws_mail);
+    context.WindowRouter.RouteProcessName("Teams",   ws_chat);
+    context.WindowRouter.RouteTitle("WhatsApp",      ws_chat);
 
     context.WindowRouter.RouteTitle("Gmail",                     ws_gapps);
     context.WindowRouter.RouteTitle("Google Calendar",           ws_gapps);
