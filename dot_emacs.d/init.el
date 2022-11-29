@@ -1202,11 +1202,19 @@
 
 ;;;; Editing helps ;;;;
 
-(use-package apheleia
-  :commands (apheleia-mode apheleia-format-buffer)
-  :config
-  (setf (alist-get 'python-mode apheleia-mode-alist)
-        '(isort black)))
+; TODO: make apheleia work on Windows (Python) and remove blacken
+(unless ON-WINDOWS
+  (use-package apheleia
+    :commands (apheleia-mode apheleia-format-buffer)
+    :hook
+    (python-mode . apheleia-mode)
+    :config
+    (setf (alist-get 'python-mode apheleia-mode-alist
+              '(isort black)))))
+(if ON-WINDOWS
+  (use-package blacken
+    :hook
+    (python-mode . blacken-mode)))
 
 (use-package expand-region
   :bind
@@ -1353,7 +1361,6 @@
   (general-def
     :major-modes 'python-mode
     "C-c C-t" '(:ignore t :which-key "python-skeleton"))
-  (add-hook 'python-mode-hook #'apheleia-mode)
   (add-to-list 'display-buffer-alist
                '("*Python*"
                  (display-buffer-reuse-window display-buffer-same-window))))
