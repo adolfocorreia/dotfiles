@@ -1739,13 +1739,15 @@
   (corfu-auto t)
   (corfu-count 15)
   (corfu-cycle t)
+  (corfu-popupinfo-max-height 15)
   (corfu-min-width 30)
   (corfu-quit-no-match 'separator)
   :hook
   (comint-mode . corfu-mode)
   (prog-mode . corfu-mode)
   :config
-  (add-hook 'corfu-mode-hook #'corfu-history-mode))
+  (add-hook 'corfu-mode-hook #'corfu-history-mode)
+  (add-hook 'corfu-mode-hook #'corfu-popupinfo-mode))
 
 (use-package kind-icon
   :after corfu
@@ -1754,14 +1756,6 @@
   (kind-icon-default-face 'corfu-default)
   :config
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
-
-(use-package corfu-doc
-  :after corfu
-  :custom
-  (corfu-doc-display-within-parent-frame nil)
-  (corfu-doc-max-height 15)
-  :hook
-  (corfu-mode . corfu-doc-mode))
 
 ; TODO: restrict to prog-mode
 (use-package cape
