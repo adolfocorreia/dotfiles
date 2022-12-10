@@ -1209,8 +1209,10 @@
     :hook
     (python-mode . apheleia-mode)
     :config
-    (setf (alist-get 'python-mode apheleia-mode-alist
-              '(isort black)))))
+    (setf (alist-get 'isort apheleia-formatters)
+          '("isort" "--stdout" "-"))
+    (setf (alist-get 'python-mode apheleia-mode-alist)
+          '(isort black))))
 (if ON-WINDOWS
   (use-package blacken
     :hook
@@ -1325,11 +1327,7 @@
   :hook
   (emacs-lisp-mode . parinfer-rust-mode)
   :custom
-  (parinfer-rust-auto-download t)
-  :config
-  (general-def
-    :major-modes 'emacs-lisp-mode
-    "C-c C-p" '(:ignore t :which-key "parinfer")))
+  (parinfer-rust-auto-download t))
 
 (use-package flycheck-package
   :after flycheck
