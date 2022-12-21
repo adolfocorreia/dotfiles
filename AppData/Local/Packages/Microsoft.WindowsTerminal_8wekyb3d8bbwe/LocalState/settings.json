@@ -107,6 +107,7 @@
     {
         "defaults":
         {
+            "closeOnExit": "graceful",
             "cursorShape": "underscore",
             "font":
             {
