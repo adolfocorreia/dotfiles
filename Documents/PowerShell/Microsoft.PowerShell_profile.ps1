@@ -11,7 +11,7 @@ $OutputEncoding = [Console]::InputEncoding = [Console]::OutputEncoding = New-Obj
 
 # Update PATH environment variable
 function Refresh-Path {
-  $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+  $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH","User")
 }
 Refresh-Path
 
@@ -92,6 +92,8 @@ Set-PSReadLineOption -ViModeIndicator Script -ViModeChangeHandler $Function:OnVi
 Set-PsFzfOption -PSReadlineChordProvider Ctrl+t
 # Search command history
 Set-PsFzfOption -PSReadlineChordReverseHistory Ctrl+r
+# fzf Ctrl-R options
+$env:FZF_CTRL_R_OPTS = "--scheme=history"
 # Enable 'fkill' alias for Invoke-FuzzyKillProcess
 Set-PsFzfOption -EnableAliasFuzzyKillProcess
 # Uses the fd command instead of OS specific file and directory commands
