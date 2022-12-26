@@ -1202,22 +1202,6 @@
 
 ;;;; Editing helps ;;;;
 
-; TODO: make apheleia work on Windows (Python) and remove blacken
-(unless ON-WINDOWS
-  (use-package apheleia
-    :commands (apheleia-mode apheleia-format-buffer)
-    :hook
-    (python-mode . apheleia-mode)
-    :config
-    (setf (alist-get 'isort apheleia-formatters)
-          '("isort" "--stdout" "-"))
-    (setf (alist-get 'python-mode apheleia-mode-alist)
-          '(isort black))))
-(if ON-WINDOWS
-  (use-package blacken
-    :hook
-    (python-mode . blacken-mode)))
-
 (use-package expand-region
   :bind
   ("C-=" . er/expand-region))
@@ -1368,28 +1352,23 @@
   (python-mode . anaconda-mode)
   (python-mode . anaconda-eldoc-mode))
 
-; TODO: evaluate emacs-pet
-(use-package pyvenv
-  :bind
-  (:map python-mode-map
-   ("C-c R" . pyvenv-restart-python)
-   ; TODO: make this work in inferior python buffers
-   :map inferior-python-mode-map
-   ("C-c R" . pyvenv-restart-python)))
-
-(use-package poetry
-  :custom
-  (poetry-tracking-strategy 'switch-buffer)
+(use-package pet
   :hook
-  (python-mode . poetry-tracking-mode)
-  :bind
-  (:map python-mode-map
-   ("C-c P" . poetry)))
+  (python-mode . pet-mode))
 
-; Use this package with non-poetry projects
-; (use-package auto-virtualenv
-;   :hook
-;   (python-mode . auto-virtualenv-set-virtualenv))
+(use-package blacken
+  :hook
+  (python-mode . blacken-mode))
+
+(use-package python-isort
+  :hook
+  (python-mode . python-isort-on-save-mode))
+
+(unless ON-WINDOWS
+  (use-package poetry
+    :bind
+    (:map python-mode-map
+     ("C-c P" . poetry))))
 
 ; TODO: evaluate python-pytest (beware of projectile dependency)
 ; TODO: add --color argument
