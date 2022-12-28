@@ -1573,6 +1573,13 @@
 ; adaptive-wrap
 ; prettify-symbols-mode for custom commands (e.g. \R)
 
+
+;; XML ;;
+(use-package xml-format
+  :after nxml-mode
+  :mode "\\.xml\\'")
+
+
 ; TODO: evaluate packages
 ; dap-mode
 ; realgud
