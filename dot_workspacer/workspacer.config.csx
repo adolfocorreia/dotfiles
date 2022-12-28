@@ -17,10 +17,7 @@ Examples:
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Timers;
-using Microsoft.VisualBasic.Devices;
 using workspacer;
 using workspacer.ActionMenu;
 using workspacer.Bar;
@@ -29,40 +26,6 @@ using workspacer.FocusIndicator;
 using workspacer.Gap;
 using workspacer.TitleBar;
 
-
-class CpuMemWidget : BarWidgetBase {
-    private double _interval;
-    private string _template;
-    private ulong _totalMemory;
-    private Timer _timer;
-    private PerformanceCounter _cpuCounter;
-    private PerformanceCounter _memCounter;
-    private string _text;
-    public CpuMemWidget(double interval, string template) {
-        _interval = interval;
-        _template = template;
-    }
-    public override void Initialize() {
-        _totalMemory = new ComputerInfo().TotalPhysicalMemory / (1024*1024);
-        _cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total", true);
-        _memCounter = new PerformanceCounter("Memory", "Available MBytes", true);
-        _text = _GenerateTextFromCounters();
-        _timer = new Timer(_interval);
-        _timer.Elapsed += (s, e) => {
-            _text = _GenerateTextFromCounters();
-            Context.MarkDirty();
-        };
-        _timer.Enabled = true;
-    }
-    public override IBarWidgetPart[] GetParts() {
-        return Parts(Part(_text, fontname: FontName));
-    }
-    private string _GenerateTextFromCounters() {
-        string cpu = Convert.ToInt32(_cpuCounter.NextValue()).ToString();
-        string mem = Convert.ToInt32((1 - _memCounter.NextValue()/_totalMemory) * 100).ToString();
-        return _template.Replace("[cpu]", cpu).Replace("[mem]", mem);
-    }
-}
 
 class ColorFocusedMonitorWidget : FocusedMonitorWidget {
     public Color ForegroundColor { get; set; }
@@ -255,14 +218,16 @@ Action<IConfigContext> doConfig = (context) => {
                 ForegroundColor = yellow },
             new TitleWidget() {
                 IsShortTitle = true,
-                MonitorHasFocusColor = yellow,
+                WindowHasFocusColor = yellow,
                 NoWindowMessage = "-" },
             new ColorFocusedMonitorWidget() {
                 FocusedText = "  \uf005",
                 ForegroundColor = yellow },
         },
         RightWidgets = () => new IBarWidget[] {
-            new CpuMemWidget(1000 * 15, "  \uf109 [cpu]%  \uf978 [mem]%"),
+            new CpuPerformanceWidget() { Interval = 1000*10, StringFormat = "\uf109{0}%" },
+            new TextWidget(" "),
+            new MemoryPerformanceWidget() { Interval = 1000*10, StringFormat = "\uf978{0}%" },
             /* TODO: Change icon according to battery level */
             new TextWidget(" \uf581"),
             new BatteryWidget() {
