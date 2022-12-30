@@ -290,14 +290,14 @@
   (popper-reference-buffers
         '("\\*Messages\\*"
           "\\*Warnings\\*"
+          "\\*Compile-Log\\*"
           "Output\\*"
           "\\*package update results\\*"
           help-mode
           helpful-mode
           apropos-mode
-          devdocs-mode             ; TODO: place this with mode declaration
-          flycheck-error-list-mode ; TODO: place this with mode declaration
-          compilation-mode))
+          compilation-mode
+          emacs-lisp-compilation-mode))
   :config
   (popper-mode +1)
   (popper-echo-mode +1)
@@ -1250,6 +1250,8 @@
 ; autopairs
 ; hl-todo
 ; smartparens/evil-smartparens
+; puni
+; vundo
 ; tempel
 ; which-func
 ; whitespace-mode
@@ -1284,7 +1286,7 @@
 (use-package tree-sitter
   :hook
   (haskell-mode . tree-sitter-mode)
-  ; (julia-mode . tree-sitter-mode)
+  (julia-mode . tree-sitter-mode)
   (python-mode . tree-sitter-mode)
   :config
   (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
@@ -1303,7 +1305,8 @@
   :config
   (add-to-list 'display-buffer-alist
                '("*devdocs*"
-                 (display-buffer-in-side-window) (side . right) (slot . 0) (window-width . 0.35))))
+                 (display-buffer-in-side-window) (side . right) (slot . 0) (window-width . 0.35)))
+  (add-to-list 'popper-reference-buffers devdocs-mode))
 
 
 ;; Emacs Lisp ;;
@@ -1314,8 +1317,10 @@
   (parinfer-rust-auto-download t))
 
 (use-package flycheck-package
-  :after flycheck
-  :commands flycheck-package-setup)
+  :after (flycheck popper)
+  :commands flycheck-package-setup
+  :config
+  (add-to-list 'popper-reference-buffers flycheck-error-list-mode))
 
 
 ;; Python ;;
@@ -1348,30 +1353,36 @@
                  (display-buffer-reuse-window display-buffer-same-window))))
 
 (use-package anaconda-mode
+  :after python
   :hook
   (python-mode . anaconda-mode)
   (python-mode . anaconda-eldoc-mode))
 
 (use-package pet
+  :after python
   :hook
   (python-mode . pet-mode))
 
 (use-package blacken
+  :after python
   :hook
   (python-mode . blacken-mode))
 
 (use-package python-isort
+  :after python
   :hook
   (python-mode . python-isort-on-save-mode))
 
-(unless ON-WINDOWS
-  (use-package poetry
-    :bind
-    (:map python-mode-map
-     ("C-c P" . poetry))))
+(use-package poetry
+  :after python
+  :custom
+  (poetry-tracking-strategy 'switch-buffer)
+  :hook
+  (python-mode . poetry-tracking-mode)
+  :bind
+  (:map python-mode-map
+   ("C-c P" . poetry)))
 
-; TODO: evaluate python-pytest (beware of projectile dependency)
-; TODO: add --color argument
 (use-package pytest
   :after python
   :bind
@@ -1422,6 +1433,7 @@
 ; TODO: evaluate lpy
 ; TODO: evaluate python-x
 ; TODO: evaluate python-mls
+; TODO: evaluate https://github.com/andcarnivorous/pyconf
 
 
 ;; Julia ;;
@@ -1602,6 +1614,10 @@
 (use-package org-inline-pdf
   :hook
   (org-mode . org-inline-pdf-mode))
+
+; TODO: evaluate packages
+; denote
+
 
 
 ;;;; Git ;;;;
