@@ -13,8 +13,9 @@
 ; Set title template for visible frames
 (setq-default frame-title-format '(multiple-frames "%b" ("" "%b - GNU Emacs")))
 
-; Start frame at maximum width and height and with no title bar
-(add-to-list 'default-frame-alist '(fullscreen . fullboth))
+; Start frames maximized and with no window decorations (including title bar)
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+(add-to-list 'default-frame-alist '(undecorated . t))
 
 ; Avoid black screen at startup (bg/fg colors taken from doom-tokyo-night theme)
 (add-to-list 'default-frame-alist '(background-color . "#1a1b26"))
