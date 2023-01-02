@@ -491,6 +491,16 @@
   :config
   (recentf-mode +1))
 
+(use-package replace
+  :ensure nil
+  :commands occur
+  :config
+  (add-hook 'occur-hook #'occur-rename-buffer)
+  (add-to-list 'display-buffer-alist
+               '("\\*Occur\\*"
+                 (display-buffer-below-selected) (inhibit-same-window . t) (window-height . 0.25)))
+  (add-to-list 'popper-reference-buffers #'occur-mode))
+
 (use-package savehist
   :ensure nil
   :demand t
@@ -1026,7 +1036,7 @@
   (evil-owl-idle-delay 0.25)
   :config
   (add-to-list 'display-buffer-alist
-               '("*evil-owl*"
+               '("\\*evil-owl\\*"
                  (display-buffer-in-side-window) (side . bottom) (slot . -1) (window-height . 0.3)))
   (evil-owl-mode +1))
 
@@ -1214,7 +1224,7 @@
     "!" '(:ignore t :which-key "flycheck"))
   (global-flycheck-mode)
   (add-to-list 'display-buffer-alist
-               '("*Flycheck errors*"
+               '("\\*Flycheck errors\\*"
                  (display-buffer-in-side-window) (side . bottom) (slot . 0) (window-height . 0.3))))
 
 (use-package flycheck-grammarly
@@ -1286,7 +1296,7 @@
 (use-package tree-sitter
   :hook
   (haskell-mode . tree-sitter-mode)
-  (julia-mode . tree-sitter-mode)
+  ; (julia-mode . tree-sitter-mode)
   (python-mode . tree-sitter-mode)
   :config
   (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
@@ -1304,9 +1314,9 @@
   :commands (devdocs-lookup devdocs-peruse devdocs-install devdocs-update-all)
   :config
   (add-to-list 'display-buffer-alist
-               '("*devdocs*"
+               '("\\*devdocs\\*"
                  (display-buffer-in-side-window) (side . right) (slot . 0) (window-width . 0.35)))
-  (add-to-list 'popper-reference-buffers devdocs-mode))
+  (add-to-list 'popper-reference-buffers #'devdocs-mode))
 
 
 ;; Emacs Lisp ;;
@@ -1320,7 +1330,7 @@
   :after (flycheck popper)
   :commands flycheck-package-setup
   :config
-  (add-to-list 'popper-reference-buffers flycheck-error-list-mode))
+  (add-to-list 'popper-reference-buffers #'flycheck-error-list-mode))
 
 
 ;; Python ;;
@@ -1337,6 +1347,7 @@
 (use-package python
   :ensure nil
   :custom
+  (python-check-command "epylint")
   (python-indent-offset 4)
   (python-indent-guess-indent-offset nil)
   (python-shell-font-lock-enable nil)
@@ -1349,7 +1360,7 @@
     :major-modes 'python-mode
     "C-c C-t" '(:ignore t :which-key "python-skeleton"))
   (add-to-list 'display-buffer-alist
-               '("*Python*"
+               '("\\*Python\\*"
                  (display-buffer-reuse-window display-buffer-same-window))))
 
 (use-package anaconda-mode
@@ -1406,7 +1417,7 @@
     :major-modes 'python-mode
     "C-c t" '(:ignore t :which-key "pytest"))
   (add-to-list 'display-buffer-alist
-               '("*pytest*"
+               '("\\*pytest\\*"
                  (display-buffer-in-side-window) (side . right) (slot . 1) (window-width . 0.35))))
 
 (use-package lsp-pyright
@@ -1443,15 +1454,15 @@
 
 ; Julia REPL usage: C-c C-z (raise REPL), C-c C-a (activate project),
 ; C-c C-b (send buffer), C-c C-c (send region or line), C-c C-d (invoke @doc))
-(use-package julia-repl
-  :after julia-mode
-  :hook
-  (julia-mode . julia-repl-mode)
-  :config
-  (add-to-list 'display-buffer-alist
-               '("*julia*"
-                 (display-buffer-reuse-window display-buffer-same-window)))
-  (unless ON-WINDOWS
+(unless ON-WINDOWS
+  (use-package julia-repl
+    :after julia-mode
+    :hook
+    (julia-mode . julia-repl-mode)
+    :config
+    (add-to-list 'display-buffer-alist
+                 '("\\*julia\\*"
+                   (display-buffer-reuse-window display-buffer-same-window)))
     (julia-repl-set-terminal-backend 'vterm)))
 
 (use-package lsp-julia
@@ -1461,7 +1472,6 @@
   (add-hook 'before-save-hook #'lsp-format-buffer))
 
 ; TODO: evaluate julia-snail
-; TODO: evaluate ess-julia-mode (Windows): https://github.com/emacs-ess/ESS/wiki/Julia
 
 
 ;; ESS ;;
@@ -1680,7 +1690,6 @@
   :demand t
   :bind
   ("C-x C-r" . consult-recent-file)
-  ([remap apropos-command] . consult-apropos)
   ([remap bookmark-jump] . consult-bookmark)
   ([remap project-switch-to-buffer] . consult-project-buffer)
   ([remap switch-to-buffer-other-frame] . consult-buffer-other-frame)
@@ -1708,7 +1717,6 @@
     ("L" . consult-line-multi)          ; search for lines in all buffer
     ("m" . consult-mark)                ; search for mark
     ("y" . consult-yank-from-kill-ring) ; search for previous yanks
-    ("O" . consult-multi-occur)
     ("F" . consult-flycheck)
     ("C" . consult-complex-command)     ; find commands in command-history
     ("H" . consult-history))            ; find commands in current buffer history (e.g. eshell or comint)
@@ -1724,7 +1732,14 @@
   :bind
   ("C-;"      . embark-act)
   ("C-:"      . embark-dwim)
-  ("<help> B" . embark-bindings))
+  ("<help> B" . embark-bindings)
+  :config
+  (add-to-list 'display-buffer-alist
+               '("\\*Embark Actions\\*"
+                 (display-buffer-in-side-window) (side . left) (slot . 1) (window-width . 0.4)))
+  (add-to-list 'display-buffer-alist
+               '("\\*Embark Collect"
+                 (display-buffer-below-selected) (inhibit-same-window . t) (window-height . 0.25))))
 
 (use-package embark-consult
   :after (embark consult)
