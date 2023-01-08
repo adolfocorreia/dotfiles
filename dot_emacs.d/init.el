@@ -157,7 +157,10 @@
   :config
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
-  (tool-bar-mode -1))
+  (tool-bar-mode -1)
+  (defun my/maximize-window ()
+    (dotimes (_ 5) (toggle-frame-maximized)))
+  (add-hook 'after-init-hook #'my/maximize-window))
 
 ; Terminal
 (use-package emacs
