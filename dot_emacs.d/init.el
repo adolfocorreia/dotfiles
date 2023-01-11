@@ -159,7 +159,7 @@
   (scroll-bar-mode -1)
   (tool-bar-mode -1)
   (defun my/maximize-window ()
-    (dotimes (_ 5) (toggle-frame-maximized)))
+    (dotimes (_ 2) (progn (sleep-for 1) (toggle-frame-maximized))))
   (add-hook 'after-init-hook #'my/maximize-window))
 
 ; Terminal
