@@ -1180,8 +1180,7 @@
   :config
   (define-key evil-normal-state-map "gsl" #'evil-avy-goto-line)
   (define-key evil-normal-state-map "gsw" #'evil-avy-goto-word-1)
-  (define-key evil-normal-state-map "gss" #'evil-avy-goto-char-2)
-  (define-key evil-normal-state-map (kbd "g s SPC") #'my/evil-avy-goto-char-timer))
+  (define-key evil-normal-state-map "gss" #'my/evil-avy-goto-char-timer))
 
 (use-package transpose-frame
   :after evil
