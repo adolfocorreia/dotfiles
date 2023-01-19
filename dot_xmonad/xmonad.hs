@@ -304,6 +304,7 @@ myManageHook =
     myClassCenterFloats =
       [ "Hdajackretask",
         "Pavucontrol",
+        "Xarchiver",
         "Xdg-desktop-portal-gtk"
       ]
     myClassResizeFloats =
