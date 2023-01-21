@@ -11,6 +11,7 @@
     (load custom-file))
 
 ; TODO: evaluate (setq debug-on-error t)
+; TODO: evaluate bug-hunter (ELPA)
 ; TODO: set use-package-always-defer t with :demand t
 ; TODO: replace :init with :custom in use-package declarations
 ; TODO: define and set order for :mode :custom :bind :commands :interpreter keywords
@@ -19,6 +20,7 @@
 ; TODO: evaluate all packages for lazy loading and :defer declarations (e.g. evil extension packages)
 ; TODO: evaluate Flycheck warnings
 ; TODO: check if :after declarations are necessary/useful
+; TODO: evaluate project-rootfile
 
 
 
@@ -646,6 +648,9 @@
 (use-package restart-emacs
   :commands restart-emacs)
 
+(use-package rg
+  :commands (rg rg-menu rg-project))
+
 (use-package tab-bar-echo-area
   :demand t
   :config
@@ -665,11 +670,6 @@
 
 (use-package try
   :commands try)
-
-(use-package unkillable-scratch
-  :demand t
-  :config
-  (unkillable-scratch t))
 
 (use-package vlf
   :commands vlf
@@ -1293,6 +1293,10 @@
   :custom
   (lsp-ui-doc-position 'at-point))
 
+(use-package lsp-treemacs
+  :after lsp-mode
+  :commands (lsp-treemacs-errors-list lsp-treemacs-symbols))
+
 
 ;; tree-sitter ;;
 (use-package tree-sitter
@@ -1351,7 +1355,6 @@
   :custom
   (python-check-command "epylint")
   (python-indent-offset 4)
-  (python-indent-guess-indent-offset nil)
   (python-shell-font-lock-enable nil)
   (python-shell-interpreter "python")  ; On Windows, some virtual environments don't come with the "python3" binary
   :mode
