@@ -142,26 +142,6 @@ Set-Alias -Name trash -Value recycle-bin
 Function vi { & nvim --clean $args }
 
 
-# Change working dir in powershell to last dir in lf on exit
-# Reference: https://github.com/gokcehan/lf/blob/master/etc/lfcd.ps1
-Function lfcd {
-  $tmp_file = [System.IO.Path]::GetTempFileName()
-  & lf.exe -last-dir-path="$tmp_file" @args
-  if (Test-Path -PathType Leaf "$tmp_file") {
-    $dir = Get-Content "$tmp_file"
-    Remove-Item -Force "$tmp_file"
-    if (Test-Path -PathType Container "$dir") {
-      if ("$dir" -ne "$pwd") {
-        cd "$dir"
-      }
-    }
-  }
-}
-Set-PSReadLineKeyHandler -Key Ctrl+o -ScriptBlock {
-  [Microsoft.PowerShell.PSConsoleReadLine]::RevertLine()
-  lfcd
-  [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
-}
 # Set LF_ICONS environment variable
 . $env:LOCALAPPDATA\lf\icons.ps1
 
