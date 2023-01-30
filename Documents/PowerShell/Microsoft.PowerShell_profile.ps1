@@ -158,7 +158,7 @@ Function Invoke-Starship-PreCommand {
   # Reference: https://github.com/starship/starship/pull/3115
   $CurrentWorkingDirectory = Split-Path -Path (Get-Location) -Leaf
   $CurrentWorkingProcess = (Get-Process -Id $PID).ProcessName
-  $Host.UI.RawUI.WindowTitle = "$CurrentWorkingProcess / $CurrentWorkingDirectory"
+  $Host.UI.RawUI.WindowTitle = "$CurrentWorkingProcess | $CurrentWorkingDirectory"
 
   # Open new Windows Terminal tab/pane in the same directory
   # References:

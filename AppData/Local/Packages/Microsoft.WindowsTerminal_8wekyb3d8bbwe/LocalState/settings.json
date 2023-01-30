@@ -6,7 +6,9 @@
     "copyFormatting": "none",
     "copyOnSelect": true,
     "focusFollowMouse": true,
-    "launchMode": "maximizedFocus",
+    "initialCols": 175,
+    "initialRows": 50,
+    "launchMode": "default",
     "snapToGridOnResize": false,
     "useAcrylicInTabRow": true,
 
@@ -171,22 +173,6 @@
                 "startingDirectory": "%USERPROFILE%",
                 "colorScheme": "One Half Dark",
                 "icon": "%SCOOP%/apps/msys2/current/msys2.ico",
-                "hidden": false
-            },
-            {
-                "name": "Ubuntu",
-                "guid": "{2c4de342-38b7-51cf-b940-2309a097f518}",
-                "commandline": "wsl.exe ~ -d Ubuntu",
-                "source": "Windows.Terminal.Wsl",
-                "colorScheme": "Gruvbox Dark",
-                "hidden": false
-            },
-            {
-                "name": "Debian",
-                "guid": "{58ad8b0c-3ef8-5f4d-bc6f-13e4c00f2530}",
-                "commandline": "wsl.exe ~ -d Debian",
-                "source": "Windows.Terminal.Wsl",
-                "colorScheme": "Solarized Dark",
                 "hidden": false
             }
         ]
