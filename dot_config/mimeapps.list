@@ -32,7 +32,8 @@
 
 
 [Default Applications]
-application/pdf=xreader.desktop
+application/djvu=org.pwmt.zathura.desktop
+application/pdf=org.pwmt.zathura.desktop
 image/gif=feh.desktop
 image/jpeg=feh.desktop
 image/jpg=feh.desktop
