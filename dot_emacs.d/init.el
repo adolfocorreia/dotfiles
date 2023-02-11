@@ -529,7 +529,7 @@
   :custom
   (tab-bar-format '(my/tab-bar-format-menu-bar tab-bar-format-align-right tab-bar-format-tabs-groups tab-bar-separator))
   (tab-bar-close-button-show nil)
-  (tab-bar-new-tab-choice t)
+  (tab-bar-new-tab-choice "*scratch*")
   (tab-bar-separator "   ")
   (tab-bar-tab-hints t)
   :init
@@ -537,8 +537,7 @@
     `((menu-bar menu-item (propertize (concat " " (if ON-LINUX (all-the-icons-material "menu") "Menu") "  ") 'face 'tab-bar-tab-inactive) tab-bar-menu-bar :help "Menu Bar")))
   :config
   (tab-bar-mode +1)
-  (tab-bar-rename-tab "main" 1)
-  (toggle-frame-tab-bar))
+  (tab-bar-rename-tab "main" 1))
 ; TODO: evaluate desktop-save-mode / tab-bar-history-mode
 
 (use-package tab-line
@@ -1594,7 +1593,7 @@
   :config
   ; On Windows, build in mingw64 with command build/server/autobuild
   (pdf-tools-install)
-  (add-hook 'pdf-tools-enabled-hook #'pdf-view-midnight-minor-mode)
+  (add-hook 'pdf-tools-enabled-hook #'pdf-view-themed-minor-mode)
   (general-def
     :prefix "C-c"
     :major-modes 'pdf-view-mode
@@ -1768,7 +1767,8 @@
     ("y" . consult-yank-from-kill-ring) ; search for previous yanks
     ("F" . consult-flycheck)
     ("C" . consult-complex-command)     ; find commands in command-history
-    ("H" . consult-history))            ; find commands in current buffer history (e.g. eshell or comint)
+    ("H" . consult-history)             ; find commands in current buffer history (e.g. eshell or comint)
+    ("I" . consult-info))               ; search info pages (full text search)
   :config
   (consult-customize consult-ripgrep :initial (thing-at-point 'symbol)))
 
