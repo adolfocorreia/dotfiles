@@ -1,0 +1,47 @@
+" Vim Settings
+
+set autoindent
+set ignorecase
+set smartcase
+
+set number
+set cursorline
+set scrolloff=2
+
+set autochdir
+
+set clipboard=unnamedplus
+
+
+" Vrapper Settings
+
+set contentassistmode
+set startnormalmode
+
+
+" Sneak Plugin Keybindings
+
+nmap s <Plug>(sneak_s)
+nmap S <Plug>(sneak_S)
+vmap s <Plug>(sneak_s)
+vmap Z <Plug>(sneak_S)
+
+nmap ; <Plug>(sneak-next)
+nmap , <Plug>(sneak-prev)
+vmap ; <Plug>(sneak-next)
+vmap , <Plug>(sneak-prev)
+
+nmap f <Plug>(sneak_f)
+nmap F <Plug>(sneak_F)
+nmap t <Plug>(sneak_t)
+nmap T <Plug>(sneak_T)
+vmap f <Plug>(sneak_f)
+vmap F <Plug>(sneak_F)
+vmap t <Plug>(sneak_t)
+vmap T <Plug>(sneak_T)
+
+omap z <Plug>(sneak_s)
+omap Z <Plug>(sneak_S)
+
+
+" vim: set ft=vim:
