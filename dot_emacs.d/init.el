@@ -1,10 +1,5 @@
 ;;; init.el -*- lexical-binding: t; -*-
 
-; Check the system used
-(defconst ON-LINUX   (eq system-type 'gnu/linux))
-(defconst ON-MAC     (eq system-type 'darwin))
-(defconst ON-WINDOWS (memq system-type '(cygwin windows-nt ms-dos)))
-
 ; Custom settings
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (if (file-exists-p custom-file)
@@ -159,10 +154,7 @@
   :config
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
-  (tool-bar-mode -1)
-  (defun my/maximize-window ()
-    (dotimes (_ 2) (progn (sleep-for 1) (toggle-frame-maximized))))
-  (add-hook 'after-init-hook #'my/maximize-window))
+  (tool-bar-mode -1))
 
 ; Terminal
 (use-package emacs
@@ -209,11 +201,24 @@
   ; Kill current buffer
   (bind-key "C-x C-k" #'kill-this-buffer)
 
+  ; Open Emacs init file
+  (defun my/open-init-file ()
+    (interactive)
+    (find-file user-init-file))
+  (bind-key "C-c I" #'my/open-init-file)
+
   ; Open Messages buffer
   (defun my/open-messages-buffer ()
     (interactive)
     (switch-to-buffer "*Messages*"))
-  (bind-key "C-c M" #'my/open-messages-buffer))
+  (bind-key "C-c M" #'my/open-messages-buffer)
+
+  ; Toggle frame decoration
+  (defun my/toggle-frame-decoration ()
+    (interactive)
+    (set-frame-parameter nil 'undecorated (not (frame-parameter nil 'undecorated))))
+  (bind-key "M-<f11>" #'my/toggle-frame-decoration))
+
 
 ; TODO: evaluate replacing general for something else
 ; TODO: find best way to replace +prefix with appropriate name for all minor and major modes (e.g. flycheck, pytest, pyenv, parinfer)
@@ -568,7 +573,6 @@
 ; TODO: evaluate crux and better-defaults
 (use-package crux
   :bind
-  ("C-c I" . crux-find-user-init-file)
   ([remap move-beginning-of-line] . crux-move-beginning-of-line))
 
 (use-package gcmh
@@ -718,6 +722,7 @@
   :init
   ; Reference: https://evil.readthedocs.io/en/latest/faq.html#underscore-is-not-a-word-character
   (defun my/set-underscore-as-word ()
+    (interactive)
     (modify-syntax-entry ?_ "w"))
 
   :config
@@ -972,6 +977,11 @@
   (define-key evil-inner-text-objects-map "v" #'evil-variable-segment-inner)
   (define-key evil-outer-text-objects-map "v" #'evil-variable-segment-outer))
 
+(use-package evil-matchit
+  :after evil
+  :config
+  (global-evil-matchit-mode +1))
+
 (use-package evil-mc
   :after evil
   :commands evil-mc-mode
@@ -1021,12 +1031,12 @@
 
 (use-package evil-org
   :after (evil org)
+  :hook
+  (org-mode . evil-org-mode)
   :custom
   (evil-org-key-theme '(navigation insert textobjects additional return))
   (evil-org-retain-visual-state-on-shift t)
   (evil-org-use-additional-insert t)
-  :hook
-  (org-mode . evil-org-mode)
   :config
   (evil-org-set-key-theme))
 
@@ -1391,10 +1401,10 @@
 
 (use-package poetry
   :after python
-  :custom
-  (poetry-tracking-strategy 'switch-buffer)
   :hook
   (python-mode . poetry-tracking-mode)
+  :custom
+  (poetry-tracking-strategy 'switch-buffer)
   :bind
   (:map python-mode-map
    ("C-c P" . poetry)))
@@ -1564,10 +1574,10 @@
   (use-package reftex
     :ensure auctex
     :after tex
-    :custom
-    (reftex-plug-into-AUCTeX t)
     :hook
-    (LaTeX-mode . turn-on-reftex))
+    (LaTeX-mode . turn-on-reftex)
+    :custom
+    (reftex-plug-into-AUCTeX t))
 
   (use-package lsp-latex
     :after (tex lsp-mode))
@@ -1582,6 +1592,7 @@
   :init
   (setq-default pdf-view-display-size 'fit-page)
   :config
+  ; On Windows, build in mingw64 with command build/server/autobuild
   (pdf-tools-install)
   (add-hook 'pdf-tools-enabled-hook #'pdf-view-midnight-minor-mode)
   (general-def
@@ -1595,16 +1606,49 @@
 ; latex-lsp/texlab
 ; company-auctex/company-reftex/company-math
 ; latex + flycheck/flymake
-; evil-matchit
 ; magic-latex-buffer
 ; adaptive-wrap
 ; prettify-symbols-mode for custom commands (e.g. \R)
 
 
 ;; XML ;;
+
 (use-package xml-format
   :after nxml-mode
   :mode "\\.xml\\'")
+
+
+;; SQL ;;
+
+; The sql-product variable needs to be set (using local variable or sql-set-product function)
+(use-package sql
+  :ensure nil
+  :custom
+  (sql-sqlite-options '("-interactive"))
+  :config
+  (modify-syntax-entry ?_ "w" sql-mode-syntax-table)
+  (add-to-list 'display-buffer-alist
+               '("\\*SQL: "
+                 (display-buffer-reuse-window display-buffer-same-window)))
+  (general-def
+    :prefix "C-c"
+    :major-modes 'sql-mode
+    "C-l" '(:ignore t :which-key "list")))
+
+(use-package sql-indent
+  :hook
+  (sql-mode . sqlind-minor-mode)
+  :custom
+  (sqlind-basic-offset 4))
+
+(use-package sqlup-mode
+  :hook
+  (sql-mode . sqlup-mode))
+
+(use-package sqlformat
+  :custom
+  (sqlformat-command 'sqlfluff)
+  :commands (sqlformat sqlformat-buffer))
 
 
 ; TODO: evaluate packages
@@ -1753,8 +1797,17 @@
 ; TODO: evaluate corfu vs company
 ; TODO: disable corfu when using multicursors
 ; TODO: evaluate how to use corfu (or vertico) in evil-ex minibuffer
+; TODO: enable corfu in comint case by case (e.g. eshell, inferior python, inferior elisp)
 (use-package corfu
   :after vertico
+  :hook
+  (prog-mode . corfu-mode)
+  (conf-mode . corfu-mode)
+  ; comint-modes
+  (eshell-mode . corfu-mode)
+  (inferior-elisp-mode . corfu-mode)
+  (inferior-ess-mode . corfu-mode)
+  (inferior-python-mode . corfu-mode)
   :custom
   (corfu-auto t)
   (corfu-count 15)
@@ -1762,9 +1815,6 @@
   (corfu-popupinfo-max-height 15)
   (corfu-min-width 30)
   (corfu-quit-no-match 'separator)
-  :hook
-  (comint-mode . corfu-mode)
-  (prog-mode . corfu-mode)
   :config
   (add-hook 'corfu-mode-hook #'corfu-history-mode)
   (add-hook 'corfu-mode-hook #'corfu-popupinfo-mode))

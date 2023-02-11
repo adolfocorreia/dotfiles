@@ -1,5 +1,10 @@
 ;;; early-init.el -*- lexical-binding: t; no-byte-compile: t; -*-
 
+; Check the system used
+(defconst ON-LINUX   (eq system-type 'gnu/linux))
+(defconst ON-MAC     (eq system-type 'darwin))
+(defconst ON-WINDOWS (memq system-type '(cygwin windows-nt ms-dos)))
+
 ; Increase garbage collector threshold during startup
 (setq gc-cons-threshold most-positive-fixnum)
 
@@ -14,8 +19,11 @@
 (setq-default frame-title-format '(multiple-frames "%b" ("" "%b - GNU Emacs")))
 
 ; Start frames maximized and with no window decorations (including title bar)
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
-(add-to-list 'default-frame-alist '(undecorated . t))
+(unless ON-WINDOWS
+   (add-to-list 'default-frame-alist '(undecorated . t)))
+(add-to-list 'default-frame-alist '(height . 50))
+(add-to-list 'default-frame-alist '(width . 200))
+(setq frame-inhibit-implied-resize t)
 
 ; Avoid black screen at startup (bg/fg colors taken from doom-tokyo-night theme)
 (add-to-list 'default-frame-alist '(background-color . "#1a1b26"))
