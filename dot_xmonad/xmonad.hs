@@ -298,6 +298,7 @@ myManageHook =
   where
     myClassFloats =
       [ "copyq",
+        "Gscreenshot",
         "SpeedCrunch",
         "Variety"
       ]
@@ -315,20 +316,10 @@ myManageHook =
       ]
     myTitleFloats = []
     myClassShifts =
-      [ -- Brave
-        ("www", "Brave-browser"),
-        -- Firefox
-        ("www", "Firefox"),
-        ("www", "firefox"),
-        -- Emacs
+      [ -- Emacs
         ("dev", "Emacs"),
         -- Visual Studio Code
         ("dev", "code"),
-        -- LibreOffice
-        ("doc", "Soffice"),
-        ("doc", "libreoffice-calc"),
-        ("doc", "libreoffice-writer"),
-        ("doc", "libreoffice-startcenter"),
         -- Lyx
         ("doc", "lyx"),
         -- PCManFM
