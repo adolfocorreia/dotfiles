@@ -898,15 +898,15 @@
   (define-key evil-inner-text-objects-map "J" #'evil-indent-plus-a-indent-up-down)
   (define-key evil-outer-text-objects-map "J" #'evil-indent-plus-a-indent-up-down))
 
-; Usage: gl MOTION CHAR or gl MOTION / REGEX
+; Usage: ga MOTION CHAR or ga MOTION / REGEX
 (use-package evil-lion
   :after evil
   :demand t
   :config
-  (define-key evil-normal-state-map "gl" #'evil-lion-left)
-  (define-key evil-normal-state-map "gL" #'evil-lion-right)
-  (define-key evil-visual-state-map "gl" #'evil-lion-left)
-  (define-key evil-visual-state-map "gL" #'evil-lion-right))
+  (define-key evil-normal-state-map "ga" #'evil-lion-left)
+  (define-key evil-normal-state-map "gA" #'evil-lion-right)
+  (define-key evil-visual-state-map "ga" #'evil-lion-left)
+  (define-key evil-visual-state-map "gA" #'evil-lion-right))
 
 ; TODO: make evil-variable-segment package
 ; https://github.com/Julian/vim-textobj-variable-segment/blob/main/autoload/textobj/variable_segment.vim
