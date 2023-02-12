@@ -38,6 +38,7 @@ image/gif=feh.desktop
 image/jpeg=feh.desktop
 image/jpg=feh.desktop
 image/png=feh.desktop
+inode/directory=pcmanfm.desktop
 text/html=librewolf.desktop
 text/plain=l3afpad.desktop;sublime_text.desktop
 x-scheme-handler/about=librewolf.desktop
