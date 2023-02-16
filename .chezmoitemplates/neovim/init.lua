@@ -59,6 +59,9 @@ vim.opt.termguicolors = true
 -- Enable the window title.
 vim.opt.title = true
 
+-- Disable showing of partial commands on the last line.
+vim.opt.showcmd = false
+
 -- Disable mode indication on last line.
 vim.opt.showmode = false
 
@@ -143,6 +146,12 @@ vim.cmd([[autocmd vimrc FileType git,help,juliadoc,qf nnoremap <silent> <buffer>
 
 -- Send help windows to the right.
 vim.cmd([[autocmd vimrc FileType help,juliadoc setlocal bufhidden=unload | wincmd L]])
+
+-- Disable cursor highlighting in help buffers.
+vim.cmd([[autocmd vimrc FileType help,juliadoc setlocal nocursorline nocursorcolumn colorcolumn=]])
+
+-- Enable numbering in help buffers.
+vim.cmd([[autocmd vimrc FileType help,juliadoc setlocal number relativenumber]])
 
 -- Set name for first tab.
 vim.cmd([[autocmd vimrc VimEnter * let t:tabname = 'main']])
@@ -695,6 +704,7 @@ PLUGINS = {
 
       -- Add cmdline completion
       cmp.setup.cmdline({'/', '?'}, {
+        -- TODO: make TAB complete selection work
         mapping = cmp.mapping.preset.cmdline({
           ['<Tab>'] = cmp.mapping.confirm(),
         }),
@@ -703,6 +713,7 @@ PLUGINS = {
         },
       })
       cmp.setup.cmdline(':', {
+        -- TODO: make TAB complete selection work
         mapping = cmp.mapping.preset.cmdline({
           ['<Tab>'] = cmp.mapping.confirm(),
         }),
@@ -1033,6 +1044,7 @@ PLUGINS = {
       end
       table.insert(header, '')
       theme.header.val = header
+      theme.header.opts.hl = "Normal"
 
       local dashboard = require('alpha.themes.dashboard')
       local buttons = {
