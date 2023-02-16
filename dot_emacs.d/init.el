@@ -201,6 +201,9 @@
   ; Kill current buffer
   (bind-key "C-x C-k" #'kill-this-buffer)
 
+  ; Open dashboard buffer
+  (bind-key "C-c D" #'dashboard-refresh-buffer)
+
   ; Open Emacs init file
   (defun my/open-init-file ()
     (interactive)
@@ -306,8 +309,14 @@
           help-mode
           helpful-mode
           apropos-mode
+          Man-mode
+          woman-mode
+          devdocs-mode
+          dictionary-mode
           compilation-mode
-          emacs-lisp-compilation-mode))
+          emacs-lisp-compilation-mode
+          occur-mode
+          xref--xref-buffer-mode))
   :config
   (popper-mode +1)
   (popper-echo-mode +1)
@@ -346,8 +355,11 @@
       ("\\*\\(Warnings\\|Compile-Log\\)\\*"
        (display-buffer-in-side-window) (side . top) (slot . +1) (window-height . 0.3))
       ; right side window
-      ("\\*\\(Help\\|helpful\\|Apropos\\|info\\)"
-       (display-buffer-in-side-window) (side . right) (slot . 0) (window-width . 0.35))))
+      ("\\*\\(Help\\|helpful\\|Apropos\\|info\\|Man\\|WoMan\\|Dictionary\\)"
+       (display-buffer-in-side-window) (side . right) (slot . 0) (window-width . 0.35))
+      ; bottom side window
+      ("\\*Process List\\*"
+       (display-buffer-in-side-window) (side . bottom) (slot . 0) (window-height . 0.2))))
   (display-buffer-base-action
    '((display-buffer-reuse-window
       display-buffer-reuse-mode-window
@@ -508,8 +520,7 @@
   (add-hook 'occur-hook #'occur-rename-buffer)
   (add-to-list 'display-buffer-alist
                '("\\*Occur\\*"
-                 (display-buffer-below-selected) (inhibit-same-window . t) (window-height . 0.25)))
-  (add-to-list 'popper-reference-buffers #'occur-mode))
+                 (display-buffer-below-selected) (inhibit-same-window . t) (window-height . 0.25))))
 
 (use-package savehist
   :ensure nil
@@ -526,10 +537,12 @@
 (use-package tab-bar
   :ensure nil
   :demand t
+  :custom-face
+  (tab-bar-tab ((t :underline t)))
   :custom
   (tab-bar-format '(my/tab-bar-format-menu-bar tab-bar-format-align-right tab-bar-format-tabs-groups tab-bar-separator))
   (tab-bar-close-button-show nil)
-  (tab-bar-new-tab-choice "*scratch*")
+  (tab-bar-new-tab-choice #'life)
   (tab-bar-separator "   ")
   (tab-bar-tab-hints t)
   :init
@@ -556,6 +569,22 @@
   :custom
   (uniquify-buffer-name-style 'forward))
 
+(use-package xref
+  :ensure nil
+  :demand t
+  :custom
+  (xref-search-program 'ripgrep)
+  :config
+  (add-to-list 'display-buffer-alist
+          '("\\*xref\\*"
+            (display-buffer-in-side-window) (side . right) (slot . 1) (window-width . 0.35))))
+
+(use-package zone
+  :ensure nil
+  :demand t
+  :config
+  (zone-when-idle (* 5 60)))
+
 
 ;; Community packages ;;
 
@@ -578,6 +607,9 @@
   :defer 2
   :config
   (gcmh-mode +1))
+
+(use-package hackernews
+  :commands hackernews)
 
 ; TODO: evaluate native equivalent features (e.g. bookmarks)
 (use-package harpoon
@@ -683,7 +715,13 @@
   (use-package vterm
     :custom
     (vterm-kill-buffer-on-exit nil)
-    :commands vterm))
+    :commands vterm
+    :config
+    ; Reference: https://github.com/akermu/emacs-libvterm/issues/313
+    ; Fix cursor shape in vterm with evil-mode
+    (advice-add #'vterm--redraw :around (lambda (fun &rest args) (let ((cursor-type cursor-type)) (apply fun args))))
+    ; Fix cursor position after append
+    (advice-add #'vterm-send-key :before (lambda (&rest args) (vterm-goto-char (point))))))
 
 (use-package windresize
   :commands windresize)
@@ -793,6 +831,7 @@
     ("TAB N"   . tab-new)
     ("TAB b"   . switch-to-buffer-other-tab)
     ("TAB d"   . dired-other-tab)
+    ("TAB w"   . tab-window-detach)
     ("TAB f"   . find-file-other-tab)
     ("TAB P"   . project-other-tab-command)
     ("TAB 1"   . my/tab-goto-1)
@@ -818,6 +857,13 @@
   :demand t
   :config
   (evil-collection-init)
+
+  ; unimpaired-like bindings
+  (evil-collection-define-key 'normal 'evil-collection-unimpaired-mode-map
+    "[h" #'diff-hl-previous-hunk
+    "]h" #'diff-hl-next-hunk
+    "[d" #'flycheck-previous-error
+    "]d" #'flycheck-next-error)
 
   ; comint mode
   (evil-collection-define-key 'insert 'comint-mode-map
@@ -871,6 +917,7 @@
   :config
   (evil-exchange-install))
 
+; TODO: evaluate replacement (e.g. quickrun.el)
 (use-package evil-extra-operator
   :after evil
   :demand t
@@ -978,6 +1025,7 @@
 
 (use-package evil-matchit
   :after evil
+  :demand t
   :config
   (global-evil-matchit-mode +1))
 
@@ -1300,7 +1348,10 @@
   :hook
   (lsp-mode . lsp-ui-mode)
   :custom
-  (lsp-ui-doc-position 'at-point))
+  (lsp-ui-doc-position 'at-point)
+  :config
+  ; TODO: add more LSP evil-mode mappings (e.g. from lsp-zero.nvim)
+  (define-key lsp-ui-mode-map [remap evil-lookup] #'lsp-ui-doc-glance))  ; "K"
 
 (use-package lsp-treemacs
   :after lsp-mode
@@ -1311,6 +1362,7 @@
 (use-package tree-sitter
   :hook
   (haskell-mode . tree-sitter-mode)
+  ; TODO: try new grammar @ https://github.com/tree-sitter/tree-sitter-julia
   ; (julia-mode . tree-sitter-mode)
   (python-mode . tree-sitter-mode)
   :config
@@ -1330,8 +1382,7 @@
   :config
   (add-to-list 'display-buffer-alist
                '("\\*devdocs\\*"
-                 (display-buffer-in-side-window) (side . right) (slot . 0) (window-width . 0.35)))
-  (add-to-list 'popper-reference-buffers #'devdocs-mode))
+                 (display-buffer-in-side-window) (side . right) (slot . 0) (window-width . 0.35))))
 
 
 ;; Emacs Lisp ;;
@@ -1343,9 +1394,7 @@
 
 (use-package flycheck-package
   :after (flycheck popper)
-  :commands flycheck-package-setup
-  :config
-  (add-to-list 'popper-reference-buffers #'flycheck-error-list-mode))
+  :commands flycheck-package-setup)
 
 
 ;; Python ;;
@@ -1504,6 +1553,12 @@
   ("\\.[rR]md\\'" . poly-markdown+r-mode))
 
 
+;; Lua ;;
+(use-package lua-mode
+  :mode
+  ("\\.lua\\'" . lua-mode))
+
+
 ;; Haskell ;;
 (unless ON-WINDOWS
   (use-package haskell-mode
@@ -1598,7 +1653,10 @@
     :prefix "C-c"
     :major-modes 'pdf-view-mode
     "C-a" '(:ignore t :which-key "pdf-annot")
-    "C-r" '(:ignore t :which-key "pdf-view")))
+    "C-r" '(:ignore t :which-key "pdf-view"))
+  ; Fix blinkg cursor arounf PDF in evil-mode
+  ; Reference: https://github.com/doomemacs/doomemacs/pull/1107
+  (add-hook 'pdf-view-mode-hook (lambda () (set (make-local-variable 'evil-normal-state-cursor) (list nil)))))
 
 ; TODO: evaluate latex related packages
 ; reftex/bibtex (https://www.gnu.org/software/auctex/manual/reftex.index.html)
@@ -1702,6 +1760,7 @@
   :hook
   (conf-mode . diff-hl-mode)
   (prog-mode . diff-hl-mode)
+  (text-mode . diff-hl-mode)
   (dired-mode . diff-hl-dired-mode))
 
 ; TODO: evaluate chezmoi.el
