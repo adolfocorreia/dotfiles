@@ -542,7 +542,7 @@
   :custom
   (tab-bar-format '(my/tab-bar-format-menu-bar tab-bar-format-align-right tab-bar-format-tabs-groups tab-bar-separator))
   (tab-bar-close-button-show nil)
-  (tab-bar-new-tab-choice #'life)
+  (tab-bar-new-tab-choice "*scratch*")
   (tab-bar-separator "   ")
   (tab-bar-tab-hints t)
   :init
@@ -578,12 +578,6 @@
   (add-to-list 'display-buffer-alist
           '("\\*xref\\*"
             (display-buffer-in-side-window) (side . right) (slot . 1) (window-width . 0.35))))
-
-(use-package zone
-  :ensure nil
-  :demand t
-  :config
-  (zone-when-idle (* 5 60)))
 
 
 ;; Community packages ;;
@@ -1695,8 +1689,8 @@
 (use-package sql-indent
   :hook
   (sql-mode . sqlind-minor-mode)
-  :custom
-  (sqlind-basic-offset 4))
+  :init
+  (setq-default sqlind-basic-offset 4))
 
 (use-package sqlup-mode
   :hook
