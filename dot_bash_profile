@@ -7,7 +7,6 @@ fi
 
 # Add extra directories to PATH.
 [[ -d "$HOME/.local/bin" ]]   && PATH="$HOME/.local/bin:${PATH}"
-[[ -d "$HOME/.emacs.doom/bin" ]] && PATH="${PATH}:$HOME/.emacs.doom/bin"
 export PATH
 
 # Init pyenv by adding it to PATH.

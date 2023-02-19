@@ -27,8 +27,6 @@ README.md
 .config/xmobar
 .config/zathura
 
-.local
-
 .bash_profile
 .bashrc
 
