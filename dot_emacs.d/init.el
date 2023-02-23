@@ -78,6 +78,7 @@
   :ensure nil
   :demand t
   :custom
+  (initial-major-mode 'text-mode)
   (initial-scratch-message nil)
   (visible-bell t)
   :init
@@ -205,16 +206,17 @@
   (bind-key "C-c D" #'dashboard-refresh-buffer)
 
   ; Open Emacs init file
-  (defun my/open-init-file ()
-    (interactive)
-    (find-file user-init-file))
+  (defun my/open-init-file () (interactive) (find-file user-init-file))
   (bind-key "C-c I" #'my/open-init-file)
 
   ; Open Messages buffer
-  (defun my/open-messages-buffer ()
-    (interactive)
-    (switch-to-buffer "*Messages*"))
+  (defun my/open-messages-buffer () (interactive) (switch-to-buffer "*Messages*"))
   (bind-key "C-c M" #'my/open-messages-buffer)
+
+  ; Open scratch buffers
+  (defun my/open-scratch-buffer () (interactive) (switch-to-buffer "*scratch*"))
+  (bind-key "C-c S" #'my/open-scratch-buffer)
+  (bind-key "C-c s" #'scratch)
 
   ; Toggle frame decoration
   (defun my/toggle-frame-decoration ()
@@ -447,6 +449,7 @@
   :custom
   (eshell-scroll-to-bottom-on-input t))
 
+; TODO: add hydra (https://readingworldmagazine.com/emacs/2022-01-24-how-to-use-eww-browser-in-emacs)
 (use-package eww
   :ensure nil
   :custom
@@ -597,13 +600,38 @@
   :bind
   ([remap move-beginning-of-line] . crux-move-beginning-of-line))
 
+(use-package elfeed
+  :defer 10
+  :custom
+  (elfeed-feeds '(
+                  ("https://hnrss.org/frontpage" hn)
+                  ("https://planet.emacslife.com/atom.xml" emacs)
+                  ("https://rss.slashdot.org/Slashdot/slashdotMain" slashdot)
+                  ("https://this-week-in-neovim.org/rss" vim)
+                  ("https://www.reddit.com/r/emacs/.rss" emacs reddit)
+                  ("https://www.reddit.com/r/neovim/.rss" vim reddit)
+                  ("https://www.reddit.com/r/vim/.rss" vim reddit)))
+  (elfeed-search-filter "@6-months-ago +unread ")
+  :config
+  (elfeed-goodies/setup)
+  (add-hook 'elfeed-search-mode-hook #'elfeed-update)
+  (run-at-time t (* 60 60) #'elfeed-update)
+  ; TODO: open elfeed in exclusive frame
+  ; Display elfeed in new tab
+  (advice-add #'elfeed :before (lambda (&rest args) (display-buffer-in-tab (elfeed-search-buffer) '((tab-name . "elfeed")))))
+  ; Avoid flicker when closing elfeed-show buffer
+  (advice-add #'elfeed-kill-buffer :after (lambda (&rest args) (evil-window-delete))))
+
+(use-package elfeed-goodies
+  :after elfeed
+  :custom
+  (elfeed-goodies/feed-source-column-width 40)
+  (elfeed-goodies/powerline-default-separator 'alternate))
+
 (use-package gcmh
   :defer 2
   :config
   (gcmh-mode +1))
-
-(use-package hackernews
-  :commands hackernews)
 
 ; TODO: evaluate native equivalent features (e.g. bookmarks)
 (use-package harpoon
@@ -679,6 +707,9 @@
 
 (use-package rg
   :commands (rg rg-menu rg-project))
+
+(use-package scratch
+  :commands scratch)
 
 (use-package tab-bar-echo-area
   :demand t
@@ -791,6 +822,7 @@
   ; C-w extra bindings
   (define-key evil-window-map "`" #'evil-switch-to-windows-last-buffer)
   (define-key evil-window-map "C" #'kill-buffer-and-window)
+  (define-key evil-window-map "T" #'tab-window-detach)
   (define-key evil-window-map "1" #'winum-select-window-1)
   (define-key evil-window-map "2" #'winum-select-window-2)
   (define-key evil-window-map "3" #'winum-select-window-3)
@@ -1234,10 +1266,7 @@
   (define-key evil-normal-state-map "gss" #'my/evil-avy-goto-char-timer))
 
 (use-package transpose-frame
-  :after evil
-  :demand t
-  :config
-  (define-key evil-window-map "T" #'transpose-frame))
+  :commands (transpose-frame flip-frame flop-frame))
 
 (use-package winner
   :after evil
@@ -1271,6 +1300,7 @@
 
 (use-package flycheck
   :after popper
+  :demand t
   :config
   (general-def
     :prefix "C-c"
@@ -1469,10 +1499,11 @@
   :custom
   (pytest-cmd-flags "--exitfirst --capture=no --durations=10")
   (pytest-project-root-files '(".venv" "setup.py" ".git"))
-  :config
+  :init
   (general-def
     :major-modes 'python-mode
     "C-c t" '(:ignore t :which-key "pytest"))
+  :config
   (add-to-list 'display-buffer-alist
                '("\\*pytest\\*"
                  (display-buffer-in-side-window) (side . right) (slot . 1) (window-width . 0.35))))
@@ -1635,6 +1666,7 @@
     :hook
     (LaTeX-mode . evil-tex-mode)))
 
+; TODO: add hydra
 (use-package pdf-tools
   :mode ("\\.pdf\\'" . pdf-view-mode)
   :init
@@ -1701,11 +1733,11 @@
   (sqlformat-command 'sqlfluff)
   :commands (sqlformat sqlformat-buffer))
 
+; TODO: evaluate ejc-sql (JDBC client)
 
 ; TODO: evaluate packages
 ; dap-mode
 ; realgud
-; lua
 
 
 
