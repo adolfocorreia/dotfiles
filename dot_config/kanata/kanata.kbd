@@ -1,0 +1,119 @@
+;; -*- mode: lisp -*-
+
+;; References:
+;; - https://github.com/jtroo/kanata/blob/main/docs/config.adoc
+
+;; Add to system startup using systemd:
+;; - https://github.com/jtroo/kanata/discussions/130
+
+
+(defcfg
+  linux-dev /dev/input/by-id/usb-HyperX_Alloy_Elite_RGB_HyperX_Alloy_Elite_RGB-event-kbd)
+
+
+;; US ansi 100% src and layer template
+;; Reference: https://github.com/kmonad/kmonad/blob/master/keymap/template/us_ansi_100.kbd
+#|
+(deflayer layer-name
+  _    _    _    _    _    _    _    _    _    _    _    _    _          _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _     _    _    _     _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _     _    _    _     _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _                          _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _                    _          _    _    _    _
+  _    _    _              _              _    _    _    _               _    _    _     _    _)
+|#
+(defsrc
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12        ssrq slck pause
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc  ins  home pgup  nlck kp/  kp*  kp-
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \     del  end  pgdn  kp7  kp8  kp9  kp+
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret                        kp4  kp5  kp6
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft                 up         kp1  kp2  kp3  kprt
+  lctl lmet lalt           spc            ralt rmet cmp  rctl            left down rght  kp0  kp.)
+
+
+#|
+Default layer:
+- capslock as left control
+- double tap right shift to toggle capslock
+- hold space to enable vim-emacs layer
+- hold w to enable mouse layer
+|#
+(deflayer qwerty
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12        ssrq slck pause
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc  ins  home pgup  nlck kp/  kp*  kp-
+  tab  q    @mse e    r    t    y    u    i    o    p    [    ]    \     del  end  pgdn  kp7  kp8  kp9  kp+
+  lctl a    s    d    f    g    h    j    k    l    ;    '    ret                        kp4  kp5  kp6
+  lsft z    x    c    v    b    n    m    ,    .    /    @rsc                 up         kp1  kp2  kp3  kprt
+  lctl lmet lalt           @vim           ralt rmet cmp  rctl            left down rght  kp0  kp.)
+
+
+#|
+Vim/Emacs layer:
+- h,j,k,l as arrows movement
+- w,b as word movement
+- n,p as page down/up
+- a,e as line movement
+- x as delete
+- d as backspace
+- m as enter
+|#
+(deflayer vim-emacs
+  _    _    _    _    _    _    _    _    _    _    _    _    _          _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _     _    _    _     _    _    _    _
+  _    _    @w   end  _    _    _    _    _    _    pgup _    _    _     _    _    _     _    _    _    _
+  _    home _    bspc _    _    left down up   rght _    _    _                          _    _    _
+  _    _    del  _    _    @b   pgdn ret  _    _    _    _                    _          _    _    _    _
+  _    _    _              _              _    _    _    _               _    _    _     _    _)
+
+
+(defalias
+  ;; layer toggling
+  vim (tap-hold 200 200 spc (layer-while-held vim-emacs))
+  mse (tap-hold 200 200 w (layer-while-held mouse))
+
+  ;; caps remap
+  rsc (tap-dance 200 (rsft caps))
+
+  ;; chords
+  w C-rght
+  b C-left)
+
+
+;; TODO: tap both shifts to toggle caps
+;; (defchords caps-toggle 500
+;;   (l  ) lsft
+;;   (  r) rsft
+;;   (l r) caps)
+;; (defalias
+;;     lsc (chord caps-toggle l)
+;;     rsc (chord caps-toggle r))
+
+
+;; TODO: add numbers layer (using tab?)
+;; TODO: add symbols layer (using a,s,d,f ?)
+
+
+#|
+Mouse layer:
+- h,j,k,l as mouse movement
+- a,s,d as mouse buttons
+|#
+(deflayer mouse
+  _    _    _    _    _    _    _    _    _    _    _    _    _          _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _     _    _    _     _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _     _    _    _     _    _    _    _
+  _    mlft mmid mrgt _    _    @mal @mad @mau @mar _    _    _                          _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _                    _          _    _    _    _
+  _    _    _              _              _    _    _    _               _    _    _     _    _)
+
+
+(defalias
+  mal (movemouse-accel-left 1 1000 1 5)
+  mad (movemouse-accel-down 1 1000 1 5)
+  mau (movemouse-accel-up 1 1000 1 5)
+  mar (movemouse-accel-right 1 1000 1 5))
+
+
+;; TODO: toggle RGB profile when layers are enabled
+
+;; vim: ft=lisp

@@ -55,8 +55,6 @@ xsetroot -cursor_name left_ptr
 # Keyboard configuration (man xkeyboard-config)
 # - Use Win+Space to toggle keyboard layouts
 setxkbmap -layout 'us,us(intl)' -option grp:win_space_toggle
-# - CapsLock as Ctrl, both Shifts to toggle CapsLock
-setxkbmap -option ctrl:nocaps,shift:both_capslock
 # Enable numlock in X
 numlockx
 

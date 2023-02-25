@@ -22,6 +22,7 @@ README.md
 .config/qutebrowser
 .config/rofi
 .config/sublime-text
+.config/systemd
 .config/tmux
 .config/variety
 .config/xmobar
