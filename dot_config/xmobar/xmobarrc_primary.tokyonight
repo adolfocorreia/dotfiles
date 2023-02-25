@@ -26,9 +26,9 @@ Config {
 
   -- Appearance
   -- TODO: create color variables
-    font            = "xft:Roboto Mono:pixelsize=14:antialias=true:weight=semibold"
-  , additionalFonts = [ "xft:Font Awesome 6 Free Solid:pixelsize=14"
-                      , "xft:Material Design Icons:pixelsize=18"]
+    font            = "Roboto Mono Semi-Bold 10.5"
+  , additionalFonts = [ "Font Awesome 6 Free Solid 10"
+                      , "Material Design Icons 14"]
   , bgColor         = "#292e42"
   , fgColor         = "#c0caf5"
   , position        = TopSize L 100 24
@@ -63,10 +63,11 @@ Config {
                         , "--suffix", "True"
                         ] 50
     -- Weather data source/reference:
-    -- - https://tgftp.nws.noaa.gov/data/observations/metar/decoded/SBJR.TXT
-    -- - https://tgftp.nws.noaa.gov/weather/current/SBJR.html
+    -- - https://tgftp.nws.noaa.gov/data/observations/metar/decoded/SBRJ.TXT
+    -- - https://tgftp.nws.noaa.gov/weather/current/SBRJ.html
     -- - https://forecast.weather.gov/glossary.php?word=sky%20condition
-    , Run WeatherX "SBGL"
+    -- Do not forget to also change the location tag on the template string below
+    , Run WeatherX "SBRJ"
                 [ ("clear",                   "\xf185")   -- 0/8 cloud coverage
                 , ("sunny",                   "\xf185")   -- 0/8 cloud coverage
                 , ("mostly clear",            "\xf185")   -- 1/8 to 2/8 cloud coverage
@@ -110,7 +111,7 @@ Config {
   , alignSep = "}{"
   , template = " %_XMONAD_LOG_1% \
                \ }   \
-               \<box color=#7dcfff type=Bottom width=3>%SBGL%</box>  \
+               \<box color=#7dcfff type=Bottom width=3>%SBRJ%</box>  \
                \<box color=#bb9af7 type=Bottom width=3>%date%  %time%</box> \
                \   { \
                \<box color=#7dcfff type=Bottom width=3>%cpu%  %memory%  %multicoretemp%</box>  \
