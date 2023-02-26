@@ -49,10 +49,13 @@ import XMonad
     io,
     kill,
     mod4Mask,
+    screenWorkspace,
     sendMessage,
     spawn,
     title,
+    whenJust,
     windows,
+    withFocused,
     xmonad,
     (-->),
     (<+>),
@@ -140,10 +143,41 @@ myModMask = mod4Mask -- Super/Windows key
 myTerminal :: String
 myTerminal = "alacritty"
 
+{- Default (not replaced or deleted) Xmonad key bindings
+   Reference: https://github.com/xmonad/xmonad/blob/master/src/XMonad/Config.hs
+
+   -- Launch terminal
+   ("M-S-<Return>", spawn $ XMonad.terminal conf)
+   -- Close the focused window
+   ("M-S-c", kill)
+   -- Resize viewed windows to the correct size
+   ("M-n", refresh)
+
+   -- Move focus up or down the window stack
+   ("M-j", windows W.focusDown)
+   ("M-k", windows W.focusUp)
+   ("M-m", windows W.focusMaster)
+
+   -- Modifying the window order
+   ("M-S-j", windows W.swapDown)
+   ("M-S-k", windows W.swapUp)
+
+   -- Resizing the master/slave ratio
+   ("M-h", sendMessage Shrink)
+   ("M-l", sendMessage Expand)
+
+   -- Increase or decrease number of windows in the master area
+   ("M-,", sendMessage (IncMasterN 1))
+   ("M-.", sendMessage (IncMasterN (-1)))
+
+   -- Switch to workspace N
+   ("M-[1..9]")
+   -- Move client to workspace N
+   ("M-S-[1..9]")
+-}
+
 -- Custom key bindings
--- References:
--- - https://github.com/xmonad/xmonad/blob/master/src/XMonad/Config.hs
--- - https://hackage.haskell.org/package/xmonad-contrib/docs/XMonad-Util-EZConfig.html
+-- Reference: https://hackage.haskell.org/package/xmonad-contrib/docs/XMonad-Util-EZConfig.html
 myAdditionalKeys :: [(String, X ())]
 myAdditionalKeys =
   [ -- Spawn app launcher (rofi)
@@ -154,10 +188,10 @@ myAdditionalKeys =
     -- Close the focused window
     ("M-q", kill),
     -- Force window kill with xkill
-    ("M-k", spawn "xkill"),
+    ("M-C-S-k", spawn "xkill"),
     -- Restart xmonad
     ("M-S-q", spawn "xmonad --recompile && xmonad --restart"),
-    -- Quit xmonad (this key binding should be hard to use)
+    -- Quit xmonad (this key binding should be hard to trigger by accident)
     ("M-<Pause>", io exitSuccess),
     -- Lock screen
     ("M-<Escape>", spawn "xset s activate"),
@@ -190,9 +224,14 @@ myAdditionalKeys =
     ("M-S-l", shiftNextScreen >> nextScreen),
     ("M-S-<Left>", shiftPrevScreen >> prevScreen),
     ("M-S-<Right>", shiftNextScreen >> nextScreen),
+    -- Switch to left (w) or right (r) monitor
+    ("M-w", screenWorkspace 0 >>= flip whenJust (windows . W.view)),
+    ("M-r", screenWorkspace 1 >>= flip whenJust (windows . W.view)),
     -- Use Alt-Tab to cycle through visible windows
     ("M1-<Tab>", nextMatch Forward isOnAnyVisibleWS),
     ("M1-S-<Tab>", nextMatch Backward isOnAnyVisibleWS),
+    -- Toggle floating state of window
+    ("M-t", withFocused toggleFloat),
     -- Cycle through non-empty workspaces
     ("M-<Tab>", moveTo Next (Not emptyWS)),
     ("M-S-<Tab>", moveTo Prev (Not emptyWS)),
@@ -201,12 +240,23 @@ myAdditionalKeys =
     ("<XF86AudioRaiseVolume>", spawn "pamixer --increase 5 --unmute"),
     ("<XF86AudioMute>", spawn "pamixer --toggle-mute")
     -- TODO: add bindings to change desktop background
+    -- TODO: add key bindings description (see DescriptiveKeys and NamedActions packages)
   ]
+  where
+    toggleFloat w = windows $ \s ->
+      if M.member w (W.floating s)
+        then W.sink w s
+        else W.float w (W.RationalRect (1 % 8) (1 % 8) (3 % 4) (3 % 4)) s
 
 myRemoveKeys :: [String]
 myRemoveKeys =
   [ -- Win+Space is used in X to toggle keyboard layouts
-    "M-<Space>"
+    "M-<Space>",
+    -- gmrun not installed
+    "M-S-p",
+    -- Do not show default key bindings message
+    "M-S-/",
+    "M-?"
   ]
 
 -- System tray
@@ -346,8 +396,8 @@ clickableWS ws = "<action=`xdotool key super+" ++ show index ++ "`>" ++ icon ++ 
     index = fromJust $ M.lookup ws indices
     indices = M.fromList $ zip myWorkspaces $ [1 .. 9] ++ [0]
 
-myXmobarConfig :: PP
-myXmobarConfig =
+myXmobarConfig :: Int -> PP
+myXmobarConfig numChars =
   xmobarPP
     { ppSep = " | ",
       ppCurrent = xmobarColor myCurrentColor "" . boxed myCurrentColor . clickableWS,
@@ -356,15 +406,15 @@ myXmobarConfig =
       ppHiddenNoWindows = xmobarColor myHiddenNoWindowsColor "" . clickableWS,
       ppUrgent = xmobarColor myRed myYellow . wrap "!" "!",
       ppLayout = clickableLayout,
-      ppTitle = xmobarColor myCurrentColor "" . boxed myCurrentColor . shorten 85 . xmobarStrip
+      ppTitle = xmobarColor myCurrentColor "" . boxed myCurrentColor . shorten numChars . xmobarStrip
     }
   where
     clickableLayout = wrap "<action=`xdotool key super+shift+space`>" "</action>"
     boxed color = wrap ("<box type=Bottom width=3 color=" ++ color ++ ">") "</box>"
 
 myStatusBar1, myStatusBar2 :: StatusBarConfig
-myStatusBar1 = statusBarPropTo "_XMONAD_LOG_1" "xmobar -x 0 ~/.config/xmobar/xmobarrc_primary" (pure myXmobarConfig)
-myStatusBar2 = statusBarPropTo "_XMONAD_LOG_2" "xmobar -x 1 ~/.config/xmobar/xmobarrc_secondary" (pure myXmobarConfig)
+myStatusBar1 = statusBarPropTo "_XMONAD_LOG_1" "xmobar -x 0 ~/.config/xmobar/xmobarrc_primary" (pure $ myXmobarConfig 85)
+myStatusBar2 = statusBarPropTo "_XMONAD_LOG_2" "xmobar -x 1 ~/.config/xmobar/xmobarrc_secondary" (pure $ myXmobarConfig 250)
 
 -- TODO: Focus workspace on cursor hover
 -- References:
