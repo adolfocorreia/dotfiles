@@ -36,6 +36,10 @@ if status is-interactive
     alias emacs="emacs -nw"
     alias vi="nvim --clean"
 
+    # Sponge plugin settings
+    set sponge_allow_previously_successful false
+    set sponge_purge_only_on_exit true
+
     # Load conda
     # Reference: https://stackoverflow.com/questions/34280113/add-conda-to-path-in-fish
     if type -q /opt/miniconda3/bin/conda
