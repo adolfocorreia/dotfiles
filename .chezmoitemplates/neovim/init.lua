@@ -311,6 +311,19 @@ vim.cmd([[
   nnoremap <C-w>5 5<C-w>w
 ]])
 
+vim.cmd([[
+  nnoremap <C-w><Tab>c :tabclose<CR>
+  nnoremap <C-w><Tab>e :tabedit<CR>
+  nnoremap <C-w><Tab>n :tabnext<CR>
+  nnoremap <C-w><Tab>p :tabprevious<CR>
+  nnoremap <C-w><Tab>o :tabonly<CR>
+  nnoremap <C-w><Tab>1 1gt
+  nnoremap <C-w><Tab>2 2gt
+  nnoremap <C-w><Tab>3 3gt
+  nnoremap <C-w><Tab>4 4gt
+  nnoremap <C-w><Tab>5 5gt
+]])
+
 
 
 --------------------------------
@@ -963,7 +976,16 @@ PLUGINS = {
   -- directory, gh to toggle hidden files and - to open parent directory.
   {
     'elihunter173/dirbuf.nvim',
-    keys = { '-' },
+    keys = { '<BS>' },
+    cmd = 'Dirbuf',
+    init = function()
+      -- Hack to avoid the plugin automatically mapping '-'
+      vim.api.nvim_set_keymap('n', '-', '-', { noremap=true })
+    end,
+    config = function()
+      require('dirbuf').setup({})
+      vim.api.nvim_set_keymap('n', '<BS>', '<Plug>(dirbuf_up)', {})
+    end,
   },
 
   -- Shell commands :Delete, :Move, :Rename, :Mkdir, :Chmod, :Wall (save all).
@@ -1400,7 +1422,6 @@ LEADER_MAPPINGS = {
     ['R'] = {'<Cmd>checktime<CR>',                   'Reload all buffers'},
   },
 
-  -- TODO: copy these bindings to <C-w> <TAB>
   ['<Tab>'] = {
     name      = 'tab',
     ['<Tab>'] = {new_or_next_tab,        'New or next tab'},

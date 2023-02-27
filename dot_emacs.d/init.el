@@ -866,8 +866,8 @@
     ("TAB 4"   . my/tab-goto-4)
     ("TAB 5"   . my/tab-goto-5))
 
-  ; Open Dired buffer
-  (define-key evil-normal-state-map "-" #'dired-jump)
+  ; Open Dired buffer with backspace
+  (define-key evil-normal-state-map (kbd "DEL") #'dired-jump)
 
   ; Select new window after evil split)
   (defun my/other-window (&rest _)
@@ -1413,6 +1413,7 @@
 (use-package parinfer-rust-mode
   :hook
   (emacs-lisp-mode . parinfer-rust-mode)
+  (lisp-mode . parinfer-rust-mode)
   :custom
   (parinfer-rust-auto-download t))
 
@@ -1666,7 +1667,6 @@
     :hook
     (LaTeX-mode . evil-tex-mode)))
 
-; TODO: add hydra
 (use-package pdf-tools
   :mode ("\\.pdf\\'" . pdf-view-mode)
   :init
@@ -1682,7 +1682,22 @@
     "C-r" '(:ignore t :which-key "pdf-view"))
   ; Fix blinkg cursor arounf PDF in evil-mode
   ; Reference: https://github.com/doomemacs/doomemacs/pull/1107
-  (add-hook 'pdf-view-mode-hook (lambda () (set (make-local-variable 'evil-normal-state-cursor) (list nil)))))
+  (add-hook 'pdf-view-mode-hook (lambda () (set (make-local-variable 'evil-normal-state-cursor) (list nil))))
+  :mode-hydra
+  (pdf-view-mode (:title "PDF View")
+                 ("Zoom"
+                  (("=" pdf-view-enlarge              :exit nil)
+                   ("-" pdf-view-shrink               :exit nil)
+                   ("0" pdf-view-scale-reset          :exit nil)
+                   ("H" pdf-view-fit-height-to-window :exit nil)
+                   ("P" pdf-view-fit-page-to-window   :exit nil)
+                   ("W" pdf-view-fit-width-to-window  :exit nil))
+                  "Color modes"
+                  (("d" pdf-view-dark-minor-mode      :exit nil)
+                   ("m" pdf-view-midnight-minor-mode  :exit nil)
+                   ("p" pdf-view-printer-minor-mode   :exit nil)
+                   ("t" pdf-view-themed-minor-mode    :exit nil)))))
+
 
 ; TODO: evaluate latex related packages
 ; reftex/bibtex (https://www.gnu.org/software/auctex/manual/reftex.index.html)
@@ -1704,6 +1719,7 @@
 ;; SQL ;;
 
 ; The sql-product variable needs to be set (using local variable or sql-set-product function)
+; TODO: auto-select interactive buffer
 (use-package sql
   :ensure nil
   :custom
