@@ -68,7 +68,7 @@ colorscheme nord
 nmap gl <Plug>(EasyAlign)
 xmap gl <Plug>(EasyAlign)
 
-nmap - <Plug>(dirvish_up)
+nmap <BS> <Plug>(dirvish_up)
 
 let g:sneak#label = 1
 
