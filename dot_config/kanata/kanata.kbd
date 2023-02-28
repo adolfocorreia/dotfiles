@@ -1,6 +1,15 @@
 ;; -*- mode: lisp -*-
 
-;; References:
+;; Layers and mods references:
+;; - https://dreymar.colemak.org
+;; - http://colemakmods.github.io/ergonomic-mods
+;; - https://github.com/stevep99/keyboard-tweaks
+;; - https://stevep99.github.io/seniply/
+;; - https://forum.colemak.com/topic/2014-extend-extra-extreme
+;; - https://github.com/kmonad/kmonad-contrib
+;; - https://github.com/manna-harbour/miryoku
+
+;; Configuration reference:
 ;; - https://github.com/jtroo/kanata/blob/main/docs/config.adoc
 
 ;; Add to system startup using systemd:
@@ -33,64 +42,82 @@
 
 #|
 Default layer:
-- capslock as left control
-- double tap right shift to toggle capslock
-- hold space to enable vim-emacs layer
-- hold w to enable mouse layer
+- wide mod
+- caps lock as left control
+- scroll lock as cap slock
+- hold space to enable extension layer
+- hold tab to enable symbol layer
 |#
 (deflayer qwerty
-  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12        ssrq slck pause
-  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc  ins  home pgup  nlck kp/  kp*  kp-
-  tab  q    @mse e    r    t    y    u    i    o    p    [    ]    \     del  end  pgdn  kp7  kp8  kp9  kp+
-  lctl a    s    d    f    g    h    j    k    l    ;    '    ret                        kp4  kp5  kp6
-  lsft z    x    c    v    b    n    m    ,    .    /    @rsc                 up         kp1  kp2  kp3  kprt
-  lctl lmet lalt           @vim           ralt rmet cmp  rctl            left down rght  kp0  kp.)
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12        ssrq caps pause
+  grv  1    2    3    4    5    6    =    7    8    9    0    -    bspc  ins  home pgup  nlck kp/  kp*  kp-
+  @sym q    w    e    r    t    [    y    u    i    o    p    '    \     del  end  pgdn  kp7  kp8  kp9  kp+
+  lctl a    s    d    f    g    ]    h    j    k    l    ;    ret                        kp4  kp5  kp6
+  lsft z    x    c    v    /    b    n    m    ,    .    rsft                 up         kp1  kp2  kp3  kprt
+  lctl lmet lalt           @ext           ralt rmet cmp  rctl            left down rght  kp0  kp.)
 
 
 #|
-Vim/Emacs layer:
-- h,j,k,l as arrows movement
-- w,b as word movement
-- n,p as page down/up
-- a,e as line movement
-- x as delete
-- d as backspace
-- m as enter
+Extended layer:
+- h,j,k,l as arrow movements
+- home,end,page up/down movements
+- delete,backspace,enter
+- space (to allow repetition)
+- scroll lock as scroll lock
 |#
-(deflayer vim-emacs
-  _    _    _    _    _    _    _    _    _    _    _    _    _          _    _    _
-  _    _    _    _    _    _    _    _    _    _    _    _    _    _     _    _    _     _    _    _    _
-  _    _    @w   end  _    _    _    _    _    _    pgup _    _    _     _    _    _     _    _    _    _
-  _    home _    bspc _    _    left down up   rght _    _    _                          _    _    _
-  _    _    del  _    _    @b   pgdn ret  _    _    _    _                    _          _    _    _    _
-  _    _    _              _              _    _    _    _               _    _    _     _    _)
-
+(deflayer extended
+  _    _    _    _    _    _    _    _    _    _    _    _    _          _    slck _
+  _    _    _    _    _    _    _    _    _    _    _    _    _     _    _    _    _    _    _    _    _
+  _    _    _    esc  _    _    _    pgup home end  _    _    _     _    _    _    _    _    _    _    _
+  _    lalt lmet lctl lsft _    pgdn left down up   rght _    _                         _    _    _
+  _    _    _    _    _    spc  bspc del  ret  _    _    _                    _         _    _    _    _
+  _    _    _              _              _    _    _    _               _    _    _    _    _)
 
 (defalias
   ;; layer toggling
-  vim (tap-hold 200 200 spc (layer-while-held vim-emacs))
-  mse (tap-hold 200 200 w (layer-while-held mouse))
-
-  ;; caps remap
-  rsc (tap-dance 200 (rsft caps))
-
-  ;; chords
-  w C-rght
-  b C-left)
+  ext (tap-hold 200 200 spc (layer-while-held extended)))
 
 
-;; TODO: tap both shifts to toggle caps
-;; (defchords caps-toggle 500
-;;   (l  ) lsft
-;;   (  r) rsft
-;;   (l r) caps)
-;; (defalias
-;;     lsc (chord caps-toggle l)
-;;     rsc (chord caps-toggle r))
+#|
+Symbol layer (left handed):
+~ ! @ # $ \
+  % ^ & * |
+  = + { [ (
+  _ - } ] )
+|#
+#|
+(deflayer symbol
+  _    _    _    _    _    _    _    _    _    _    _    _    _          _    _    _
+  S-`  S-1  S-2  S-3  S-4  \    _    _    _    _    _    _    _    _     _    _    _     _    _    _    _
+  _    S-5  S-6  S-7  S-8  S-\  _    _    _    _    _    _    _    _     _    _    _     _    _    _    _
+  _    =    S-=  S-[  [    S-9  _    _    _    _    _    _    _                          _    _    _
+  _    S--  -    S-]  ]    S-0  _    _    _    _    _    _                    _          _    _    _    _
+  _    _    _              _              _    _    _    _               _    _    _     _    _)
+
+(defalias
+  ;; toggle symbol layer
+  sym (tap-hold 200 200 ralt (layer-while-held symbol)))
+|#
 
 
-;; TODO: add numbers layer (using tab?)
-;; TODO: add symbols layer (using a,s,d,f ?)
+#|
+Symbol layer (right handed):
+  & * ( ) _
+? $ % ^ [ ]
+= ! @ # /
++ - { }
+|#
+(deflayer symbol
+  _    _    _    _    _    _    _    _    _    _    _    _    _          _    _    _
+  _    _    _    _    _    _    _    _    S-7  S-8  S-9  S-0  S--  _     _    _    _     _    _    _    _
+  _    _    _    _    _    _    _    S-/  S-4  S-5  S-6  [    ]    _     _    _    _     _    _    _    _
+  _    _    _    _    _    _    _    =    S-1  S-2  S-3  /    _                          _    _    _
+  _    _    _    _    _    _    _    S-=  -    S-[  S-]  _                    _          _    _    _    _
+  _    _    _              _              _    _    _    _               _    _    _     _    _)
+
+(defalias
+  ;; toggle symbol layer
+  sym (tap-hold-press 200 200 tab (layer-while-held symbol)))
 
 
 #|
@@ -105,7 +132,6 @@ Mouse layer:
   _    mlft mmid mrgt _    _    @mal @mad @mau @mar _    _    _                          _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _                    _          _    _    _    _
   _    _    _              _              _    _    _    _               _    _    _     _    _)
-
 
 (defalias
   mal (movemouse-accel-left 1 1000 1 5)
