@@ -84,7 +84,7 @@ c.content.cookies.store = False
 c.content.notifications.enabled = False
 c.content.prefers_reduced_motion = True
 c.downloads.position = "bottom"
-c.hints.chars = "asdhjkl"
+c.hints.chars = "asdfhjkl"
 c.hints.uppercase = True
 c.qt.args = ["autoplay-policy=user-gesture-required"]
 #c.qt.process_model = "process-per-site"
