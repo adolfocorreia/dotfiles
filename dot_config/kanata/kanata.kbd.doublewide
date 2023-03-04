@@ -42,7 +42,7 @@
 
 #|
 Default layer:
-- wide mod
+- double wide mod
 - caps lock as left control
 - scroll lock as cap slock
 - hold space to enable extension layer
@@ -50,74 +50,53 @@ Default layer:
 |#
 (deflayer qwerty
   esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12        ssrq caps pause
-  grv  1    2    3    4    5    6    =    7    8    9    0    -    bspc  ins  home pgup  nlck kp/  kp*  kp-
-  @sym q    w    e    r    t    [    y    u    i    o    p    '    \     del  end  pgdn  kp7  kp8  kp9  kp+
-  lctl a    s    d    f    g    ]    h    j    k    l    ;    ret                        kp4  kp5  kp6
-  lsft z    x    c    v    /    b    n    m    ,    .    rsft                 up         kp1  kp2  kp3  kprt
+  grv  1    2    3    4    5    6    =    -    7    8    9    0    bspc  ins  home pgup  nlck kp/  kp*  kp-
+  @syt q    w    e    r    t    [    ]    y    u    i    o    p    @sy\  del  end  pgdn  kp6  kp8  kp9  kp+
+  lctl a    s    d    f    g    /    ;    h    j    k    l    ret                        kp4  kp5  kp6
+  lsft z    x    c    v    ,    .    b    n    m    '    rsft                 up         kp1  kp2  kp3  kprt
   lctl lmet lalt           @ext           ralt rmet cmp  rctl            left down rght  kp0  kp.)
 
 
 #|
-Extended layer:
+Extend layer:
 - h,j,k,l as arrow movements
 - home,end,page up/down movements
 - delete,backspace,enter
 - space (to allow repetition)
 - scroll lock as scroll lock
 |#
-(deflayer extended
+(deflayer extend
   _    _    _    _    _    _    _    _    _    _    _    _    _          _    slck _
-  _    _    _    _    _    _    _    _    _    _    _    _    _     _    _    _    _    _    _    _    _
-  _    _    _    esc  _    _    _    pgup home end  _    _    _     _    _    _    _    _    _    _    _
-  _    lalt lmet lctl lsft _    pgdn left down up   rght _    _                         _    _    _
-  _    _    _    _    _    spc  bspc del  ret  _    _    _                    _         _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _     _    _    _    _    _    _    _
+  _    _    ins  esc  _    _    _    _    pgup home end  _    _    _     _    _    _    _    _    _    _
+  _    lalt lmet lctl lsft _    _    pgdn left down up   rght _                         _    _    _
+  _    _    _    _    _    _    spc  bspc del  ret  spc  _                    _         _    _    _    _
   _    _    _              _              _    _    _    _               _    _    _    _    _)
 
 (defalias
   ;; layer toggling
-  ext (tap-hold 200 200 spc (layer-while-held extended)))
+  ext (tap-hold 200 200 spc (layer-while-held extend)))
 
 
 #|
-Symbol layer (left handed):
-~ ! @ # $ \
-  % ^ & * |
-  = + { [ (
-  _ - } ] )
+Symbol layer:
+! @ # $       & * ( )
+% ^ & *       / $ % ^ ?
+( [ { <       = ! @ #
+) ] } >       + - _
 |#
-#|
 (deflayer symbol
   _    _    _    _    _    _    _    _    _    _    _    _    _          _    _    _
-  S-`  S-1  S-2  S-3  S-4  \    _    _    _    _    _    _    _    _     _    _    _     _    _    _    _
-  _    S-5  S-6  S-7  S-8  S-\  _    _    _    _    _    _    _    _     _    _    _     _    _    _    _
-  _    =    S-=  S-[  [    S-9  _    _    _    _    _    _    _                          _    _    _
-  _    S--  -    S-]  ]    S-0  _    _    _    _    _    _                    _          _    _    _    _
+  _    S-1  S-2  S-3  S-4  _    _    _    _    S-7  S-8  S-9  S-0  _     _    _    _     _    _    _    _
+  _    S-5  S-6  S-7  S-8  _    _    _    /    S-4  S-5  S-6  S-/  _     _    _    _     _    _    _    _
+  _    S-9  [    S-[  S-,  _    _    _    =    S-1  S-2  S-3  _                          _    _    _
+  _    S-0  ]    S-}  S-.  _    _    _    S-=  -    S--  _                    _          _    _    _    _
   _    _    _              _              _    _    _    _               _    _    _     _    _)
 
 (defalias
   ;; toggle symbol layer
-  sym (tap-hold 200 200 ralt (layer-while-held symbol)))
-|#
-
-
-#|
-Symbol layer (right handed):
-  & * ( ) _
-? $ % ^ [ ]
-= ! @ # /
-+ - { }
-|#
-(deflayer symbol
-  _    _    _    _    _    _    _    _    _    _    _    _    _          _    _    _
-  _    _    _    _    _    _    _    _    S-7  S-8  S-9  S-0  S--  _     _    _    _     _    _    _    _
-  _    _    _    _    _    _    _    S-/  S-4  S-5  S-6  [    ]    _     _    _    _     _    _    _    _
-  _    _    _    _    _    _    _    =    S-1  S-2  S-3  /    _                          _    _    _
-  _    _    _    _    _    _    _    S-=  -    S-[  S-]  _                    _          _    _    _    _
-  _    _    _              _              _    _    _    _               _    _    _     _    _)
-
-(defalias
-  ;; toggle symbol layer
-  sym (tap-hold-press 200 200 tab (layer-while-held symbol)))
+  syt (tap-hold-press 200 200 tab (layer-while-held symbol))
+  sy\ (tap-hold-press 200 200 \ (layer-while-held symbol)))
 
 
 #|
