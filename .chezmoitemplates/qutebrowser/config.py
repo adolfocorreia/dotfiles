@@ -37,6 +37,8 @@ config.bind("<Ctrl+p>",         "scroll-page 0 -0.75")
 config.bind("<Ctrl+n>",         "scroll-page 0 0.75")
 config.bind("<Ctrl+y>",         "scroll up")
 config.bind("<Ctrl+e>",         "scroll down")
+config.bind("gp",               "tab-clone --private")
+config.bind("gs",               "navigate strip")
 
 # Command mode key bindings
 config.bind("<Ctrl+p>",       "completion-item-focus --history prev", mode="command")
@@ -146,5 +148,5 @@ if platform.system() == "Linux":
     cmd = "mpv --profile=qutebrowser"
 elif platform.system() == "Windows":
     cmd = "vlc"
-config.bind(",M", "hint links spawn %s {hint-url}" % cmd)
-config.bind(",m", "spawn %s {url}" % cmd)
+config.bind(",V", "hint links spawn %s {hint-url}" % cmd)
+config.bind(",v", "spawn %s {url}" % cmd)
