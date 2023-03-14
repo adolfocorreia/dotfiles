@@ -137,8 +137,8 @@
   :demand ON-LINUX
   :if ON-LINUX
   :custom-face
-  (default ((t :family "Iosevka Fixed" :height 110)))
-  (variable-pitch ((t :family "Iosevka Aile" :height 105)))
+  (default ((t :family "Iosevka Fixed" :height 120)))
+  (variable-pitch ((t :family "Iosevka Aile" :height 115)))
   :config
   (menu-bar-mode -1)
   (scroll-bar-mode +1)
@@ -769,7 +769,6 @@
   :demand t
   :custom
   (evil-respect-visual-line-mode t)
-  (evil-search-module 'isearch)
   (evil-symbol-word-search t)
   (evil-undo-system 'undo-redo)
   (evil-want-C-h-delete t)
@@ -790,6 +789,7 @@
   :config
   ; For some reason, some evil customizations do not work with :custom
   ; Reference: https://github.com/emacs-evil/evil/issues/1571
+  (customize-set-variable 'evil-search-module 'evil-search)
   (customize-set-variable 'evil-split-window-right t)
   (customize-set-variable 'evil-vsplit-window-below t)
   (customize-set-variable 'evil-want-Y-yank-to-eol t)
@@ -911,6 +911,14 @@
   (evil-collection-define-key 'normal 'dired-mode-map
     (kbd "C-p") #'dired-previous-line
     (kbd "C-n") #'dired-next-line)
+
+  ; elfeed modes
+  (evil-collection-define-key 'normal 'elfeed-search-mode-map
+    (kbd "C-p") #'evil-previous-line
+    (kbd "C-n") #'evil-next-line)
+  (evil-collection-define-key 'normal 'elfeed-show-mode-map
+    (kbd "C-p") #'evil-previous-line
+    (kbd "C-n") #'evil-next-line)
 
   ; ibuffer mode
   (evil-collection-define-key 'normal 'ibuffer-mode-map
