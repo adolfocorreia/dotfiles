@@ -142,10 +142,6 @@ Set-Alias -Name trash -Value recycle-bin
 Function vi { & nvim --clean $args }
 
 
-# Set LF_ICONS environment variable
-. $env:LOCALAPPDATA\lf\icons.ps1
-
-
 # Echo selected path
 $env:_ZO_ECHO=1
 # Load zoxide

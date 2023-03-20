@@ -21,9 +21,6 @@ export TIME_STYLE=long-iso
 export EDITOR=nvim
 export OPENER=mimeopen
 
-# Set LF_ICONS environment variable.
-[[ -f "$HOME/.config/lf/icons.sh" ]] && source "$HOME/.config/lf/icons.sh"
-
 # Set aliases.
 alias open="handlr open"
 
