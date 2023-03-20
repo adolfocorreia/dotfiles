@@ -23,6 +23,7 @@ README.md
 .config/rofi
 .config/sublime-text
 .config/systemd
+.config/tealdeer
 .config/tmux
 .config/variety
 .config/xmobar
