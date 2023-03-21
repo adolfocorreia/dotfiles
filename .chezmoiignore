@@ -49,6 +49,7 @@ README.md
 AppData
 Documents
 
+.config/ahk
 .config/scoop
 
 .workspacer
