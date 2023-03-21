@@ -22,6 +22,13 @@ let loaded_netrwFileHandlers = 1
 
 """"" Plugin declaration """""
 
+let data_dir = expand(has('win32') || has('win64') ? '~/vimfiles' : '~/.vim')
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  let url = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  silent execute '!curl -fLo ' . data_dir . '/autoload/plug.vim --create-dirs ' . url
+  autocmd vimrc VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
 call plug#begin()
 
 Plug 'Julian/vim-textobj-variable-segment'
