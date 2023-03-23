@@ -97,4 +97,5 @@
     "workbench.editorAssociations": {
         "*.ipynb": "jupyter.notebook.ipynb"
     },
+    "workbench.iconTheme": "vscode-icons",
 }
