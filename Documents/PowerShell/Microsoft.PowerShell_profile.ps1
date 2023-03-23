@@ -141,6 +141,16 @@ Set-Alias -Name e -Value explorer
 Set-Alias -Name trash -Value recycle-bin
 Function vi { & nvim --clean $args }
 
+Function Create-Link ([String] $link, [String] $real) {
+  if (Test-Path $real -PathType Container) {
+    # Create directory junction (must be on the same computer)
+    cmd /C mklink /J $link.Replace("/", "\") $real.Replace("/", "\")
+  } else {
+    # Create file hard link (must be on the same volume)
+    cmd /C mklink /H $link.Replace("/", "\") $real.Replace("/", "\")
+  }
+}
+
 
 # Echo selected path
 $env:_ZO_ECHO=1
