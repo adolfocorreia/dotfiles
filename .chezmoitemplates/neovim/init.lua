@@ -448,6 +448,14 @@ PLUGINS = {
       require('leap').add_default_mappings()
       vim.keymap.del({'x', 'o'}, 'x')
       vim.keymap.del({'x', 'o'}, 'X')
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'LeapEnter',
+        command = 'QuickScopeToggle',
+      })
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'LeapLeave',
+        command = 'QuickScopeToggle',
+      })
     end,
   },
 
@@ -755,14 +763,10 @@ PLUGINS = {
       })
 
       -- Adjust cmp mappings
-      local cmp = require('cmp')
       lsp_zero.setup_nvim_cmp({
-        mapping = lsp_zero.defaults.cmp_mappings({
-          ['<CR>']  = cmp.config.disable,
-          ['<Tab>'] = cmp.mapping.confirm(),
-          ['<C-e>'] = cmp.config.disable,  -- conflict with vim-rsi
-          ['<C-g>'] = cmp.mapping.abort(), -- in place of C-e
-        })
+        -- Use C-e to abort, C-y or Enter to confirm and C-n, C-p, Tab, S-Tab, Up or Down to choose
+        -- Reference: https://github.com/hrsh7th/nvim-cmp/blob/main/lua/cmp/config/mapping.lua
+        mapping = lsp_zero.defaults.cmp_mappings({})
       })
 
       -- Configure lua language server for neovim
