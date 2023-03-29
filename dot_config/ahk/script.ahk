@@ -22,54 +22,10 @@ SC073::RCtrl
 #HotIf
 
 
-; Disable Alt+<number> Notes key bindings.
-; Reference: https://stackoverflow.com/questions/5954682/create-lotus-notes-hotkey-shortcut-key-for-reply-to-all-with-history
-#HotIf WinActive("ahk_exe notes2.exe")
-  !1::return
-  !2::return
-  !3::return
-  !4::return
-  !5::return
-  !6::return
-  !7::return
-  !8::return
-  !9::return
-#HotIf
-
-
 ; Remap Alt+D to Ctrl+L in Firefox.
 #HotIf WinActive("ahk_exe firefox.exe")
   !d::SendInput "^l"
 #HotIf
-
-
-; Disable problematic Windows bindings.
-; Reference: https://support.microsoft.com/en-us/windows/keyboard-shortcuts-in-windows-dcc61a57-8ff0-cffe-9796-cb9706c75eec
-#Tab::return
-#Up::return
-#Down::return
-#Left::return
-#Right::return
-#+Left::return
-#+Right::return
-#^d::return
-
-
-; Workspacer bindings.
-#0::#!0
-#1::#!1
-#2::#!2
-#3::#!3
-#4::#!4
-#5::#!5
-#6::#!6
-#7::#!7
-#8::#!8
-#9::#!9
-#g::#!g
-#n::#!n
-#z::#!z
-#q::#!q
 
 
 ; Multimedia keys remapping.
@@ -84,5 +40,5 @@ SC073::RCtrl
 ; Launch_Media
 ; Launch_Mail
 ; Ctrl+Shift+Esc
-Launch_App2::Run "speedcrunch.exe"
+; Launch_App2
 
