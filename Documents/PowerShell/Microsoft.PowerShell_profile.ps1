@@ -11,7 +11,7 @@ $OutputEncoding = [Console]::InputEncoding = [Console]::OutputEncoding = New-Obj
 
 # Update PATH environment variable
 function Refresh-Path {
-  $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("PATH","User")
+  $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH","User") + ";" + [System.Environment]::GetEnvironmentVariable("PATH","Machine")
 }
 Refresh-Path
 
