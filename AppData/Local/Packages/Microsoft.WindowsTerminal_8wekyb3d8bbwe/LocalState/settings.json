@@ -32,6 +32,8 @@
         { "command": "unbound", "keys": "alt+shift+up" },     // Resize pane up
         { "command": "unbound", "keys": "alt+shift+left" },   // Resize pane left
         { "command": "unbound", "keys": "alt+shift+right" },  // Resize pane right
+        { "command": "unbound", "keys": "alt+shift+minus" },  // Split pane, split: down
+        { "command": "unbound", "keys": "alt+shift+plus" },   // Split pane, split: right
         { "command": "unbound", "keys": "ctrl+shift+down" },  // Scroll down
         { "command": "unbound", "keys": "ctrl+shift+up" },    // Scroll up
         { "command": "unbound", "keys": "ctrl+shift+pgdn" },  // Scroll down one page
@@ -57,47 +59,46 @@
         { "command": "unbound", "keys": "ctrl+alt+7" },       // Switch to tab, index: 6
         { "command": "unbound", "keys": "ctrl+alt+8" },       // Switch to tab, index: 7
         { "command": "unbound", "keys": "ctrl+alt+9" },       // Switch to tab, index: 8
+        { "command": "unbound", "keys": "enter" },            // Copy text
         { "command": "unbound", "keys": "win+sc(41)" },       // Summon Quake window
 
         // Switch to tab
-        { "command": { "action": "switchToTab", "index": 0 }, "keys": "alt+shift+1" },
-        { "command": { "action": "switchToTab", "index": 1 }, "keys": "alt+shift+2" },
-        { "command": { "action": "switchToTab", "index": 2 }, "keys": "alt+shift+3" },
-        { "command": { "action": "switchToTab", "index": 3 }, "keys": "alt+shift+4" },
-        { "command": { "action": "switchToTab", "index": 4 }, "keys": "alt+shift+5" },
-        { "command": { "action": "switchToTab", "index": 5 }, "keys": "alt+shift+6" },
-        { "command": { "action": "switchToTab", "index": 6 }, "keys": "alt+shift+7" },
-        { "command": { "action": "switchToTab", "index": 7 }, "keys": "alt+shift+8" },
-        { "command": { "action": "switchToTab", "index": 8 }, "keys": "alt+shift+9" },
+        { "command": { "action": "switchToTab", "index": 0 }, "keys": "ctrl+shift+1" },
+        { "command": { "action": "switchToTab", "index": 1 }, "keys": "ctrl+shift+2" },
+        { "command": { "action": "switchToTab", "index": 2 }, "keys": "ctrl+shift+3" },
+        { "command": { "action": "switchToTab", "index": 3 }, "keys": "ctrl+shift+4" },
+        { "command": { "action": "switchToTab", "index": 4 }, "keys": "ctrl+shift+5" },
+        { "command": { "action": "switchToTab", "index": 5 }, "keys": "ctrl+shift+6" },
+        { "command": { "action": "switchToTab", "index": 6 }, "keys": "ctrl+shift+7" },
+        { "command": { "action": "switchToTab", "index": 7 }, "keys": "ctrl+shift+8" },
+        { "command": { "action": "switchToTab", "index": 8 }, "keys": "ctrl+shift+9" },
 
         // tmux-like keybindings
         // Reference: https://docs.microsoft.com/en-us/windows/terminal/customize-settings/actions
-        { "command": { "action": "splitPane",  "split": "horizontal", "splitMode": "duplicate" }, "keys": "alt+shift+minus" },
-        { "command": { "action": "splitPane",  "split": "vertical",   "splitMode": "duplicate" }, "keys": "alt+shift+\\" },
-        { "command": { "action": "splitPane",  "split": "horizontal", "splitMode": "duplicate" }, "keys": "alt+shift+s" },
-        { "command": { "action": "splitPane",  "split": "vertical",   "splitMode": "duplicate" }, "keys": "alt+shift+v" },
-        { "command": { "action": "moveFocus",  "direction": "left"  }, "keys": "alt+shift+h" },
-        { "command": { "action": "moveFocus",  "direction": "down"  }, "keys": "alt+shift+j" },
-        { "command": { "action": "moveFocus",  "direction": "up"    }, "keys": "alt+shift+k" },
-        { "command": { "action": "moveFocus",  "direction": "right" }, "keys": "alt+shift+l" },
+        { "command": { "action": "splitPane",  "split": "horizontal", "splitMode": "duplicate" }, "keys": "ctrl+shift+s" },
+        { "command": { "action": "splitPane",  "split": "vertical",   "splitMode": "duplicate" }, "keys": "ctrl+shift+v" },
+        { "command": { "action": "moveFocus",  "direction": "left"  }, "keys": "ctrl+shift+h" },
+        { "command": { "action": "moveFocus",  "direction": "down"  }, "keys": "ctrl+shift+j" },
+        { "command": { "action": "moveFocus",  "direction": "up"    }, "keys": "ctrl+shift+k" },
+        { "command": { "action": "moveFocus",  "direction": "right" }, "keys": "ctrl+shift+l" },
         { "command": { "action": "resizePane", "direction": "left"  }, "keys": "ctrl+alt+shift+h" },
         { "command": { "action": "resizePane", "direction": "down"  }, "keys": "ctrl+alt+shift+j" },
         { "command": { "action": "resizePane", "direction": "up"    }, "keys": "ctrl+alt+shift+k" },
         { "command": { "action": "resizePane", "direction": "right" }, "keys": "ctrl+alt+shift+l" },
-        { "command": "duplicateTab",   "keys": "alt+shift+c" },
-        { "command": "closePane",      "keys": "alt+shift+x" },
-        { "command": "nextTab",        "keys": "alt+shift+n" },
-        { "command": "prevTab",        "keys": "alt+shift+p" },
-        { "command": "togglePaneZoom", "keys": "alt+shift+z" },
+        { "command": "duplicateTab",   "keys": "ctrl+shift+c" },
+        { "command": "closePane",      "keys": "ctrl+shift+x" },
+        { "command": "nextTab",        "keys": "ctrl+shift+n" },
+        { "command": "prevTab",        "keys": "ctrl+shift+p" },
+        { "command": "togglePaneZoom", "keys": "ctrl+shift+z" },
 
         // Scroll up and down
         { "command": "scrollUpPage",   "keys": "shift+pgup" },
         { "command": "scrollDownPage", "keys": "shift+pgdn" },
 
         // Other bindings
-        { "command": "find", "keys": "alt+shift+f" },                             // Open search box
-        { "command": "toggleFocusMode", "keys": "alt+shift+t" },                  // Show or hide tab bar
-        { "command": { "action": "commandPalette" }, "keys": "alt+shift+space" }  // Toggle command palette
+        { "command": "find", "keys": "ctrl+shift+f" },                             // Open search box
+        { "command": "toggleFocusMode", "keys": "ctrl+shift+t" },                  // Show or hide tab bar
+        { "command": { "action": "commandPalette" }, "keys": "ctrl+shift+space" }  // Toggle command palette
     ],
 
     "defaultProfile": "{bfb3dd1d-ccbc-4fc8-8c09-c6d7199ec0ba}",
