@@ -10,7 +10,7 @@ $OutputEncoding = [Console]::InputEncoding = [Console]::OutputEncoding = New-Obj
 [System.Net.WebRequest]::DefaultWebProxy.Credentials = [System.Net.CredentialCache]::DefaultNetworkCredentials
 
 # Update PATH environment variable
-function Refresh-Path {
+Function Refresh-Path {
   $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH","User") + ";" + [System.Environment]::GetEnvironmentVariable("PATH","Machine")
 }
 Refresh-Path
@@ -77,7 +77,7 @@ Set-PSReadLineOption -Colors @{
 # - https://terminalguide.namepad.de/seq/csi_sq_t_space
 # - https://invisible-island.net/xterm/ctlseqs/ctlseqs.html
 # - https://github.com/microsoft/terminal/pull/7379
-function OnViModeChange {
+Function OnViModeChange {
   if ($args[0] -eq 'Command') {
     # Set the cursor to a blinking block
     Write-Host -NoNewLine "`e[1 q"
@@ -141,7 +141,9 @@ Set-Alias -Name e -Value explorer
 Set-Alias -Name trash -Value recycle-bin
 Function vi { & nvim --clean $args }
 
-Function Create-Link ([String] $link, [String] $real) {
+Function Create-Link (
+    [Parameter(Mandatory=$true)] [String] $link,
+    [Parameter(Mandatory=$true)] [String] $real) {
   if (Test-Path $real -PathType Container) {
     # Create directory junction (must be on the same computer)
     cmd /C mklink /J $link.Replace("/", "\") $real.Replace("/", "\")
