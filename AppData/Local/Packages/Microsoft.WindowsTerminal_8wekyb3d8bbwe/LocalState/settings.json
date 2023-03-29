@@ -137,15 +137,6 @@
                 "hidden": false
             },
             {
-                "name": "Miniforge Powershell Prompt",
-                "guid": "{9e2d3ba6-3809-423e-a85a-24c349c9e55a}",
-                "commandline": "pwsh.exe -ExecutionPolicy ByPass -NoExit -Command \"& '%CONDA_HOME%/shell/condabin/conda-hook.ps1' ; conda activate '%CONDA_HOME%' \"",
-                "startingDirectory": "%USERPROFILE%/development",
-                "colorScheme": "DjangoRebornAgain",
-                "icon": "%CONDA_HOME%/Lib/site-packages/conda/shell/conda_icon.ico",
-                "hidden": false
-            },
-            {
                 "name": "Windows PowerShell",
                 "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
                 "colorScheme": "Campbell Powershell",
