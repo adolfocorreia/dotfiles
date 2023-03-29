@@ -1,0 +1,112 @@
+let mapleader = " "
+
+
+""" Handlers
+
+sethandler <C-6> a:vim
+sethandler <C-A> a:vim
+sethandler <C-B> a:vim
+sethandler <C-C> a:vim
+sethandler <C-D> a:vim
+sethandler <C-E> a:vim
+sethandler <C-F> a:vim
+sethandler <C-G> a:vim
+sethandler <C-H> a:vim
+sethandler <C-I> a:vim
+sethandler <C-J> a:vim
+sethandler <C-K> a:vim
+sethandler <C-L> a:vim
+sethandler <C-M> a:vim
+sethandler <C-N> a:vim
+sethandler <C-O> a:vim
+sethandler <C-P> a:vim
+sethandler <C-R> a:vim
+sethandler <C-S> a:ide
+sethandler <C-T> a:vim
+sethandler <C-U> a:vim
+sethandler <C-V> a:vim
+sethandler <C-W> a:vim
+sethandler <C-X> a:vim
+sethandler <C-Y> a:vim
+
+
+
+""" Options
+" Reference: https://github.com/JetBrains/ideavim/blob/master/doc/set-commands.md
+
+set clipboard+=unnamedplus
+
+set hlsearch
+set ignorecase
+set smartcase
+
+set number
+set relativenumber
+
+set scrolloff=2
+set sidescrolloff=5
+
+set splitbelow
+set splitright
+
+
+
+""" IdeaVim options
+
+set ideastatusicon=gray
+
+
+
+""" Plugins
+" Reference: https://github.com/JetBrains/ideavim/blob/master/doc/IdeaVim%20Plugins.md
+
+set surround
+set commentary
+set matchit
+set exchange
+
+set highlightedyank
+
+set sneak
+set quickscope
+
+set NERDTree
+
+set which-key
+
+set argtextobj
+let g:argtextobj_pairs="(:),{:},<:>,[:]"
+
+set textobj-entire
+set textobj-indent
+
+
+
+""" Mappings
+
+nnoremap Y y$
+
+nmap n nzzzv
+nmap N Nzzzv
+
+vnoremap < <gv
+vnoremap > >gv
+
+""]<Space>
+""[<Space>
+
+""]e
+""[e
+
+""]p
+""[p
+
+map [[ <Action>(MethodUp)
+map ]] <Action>(MethodDown)
+
+map [c <Action>(VcsShowPrevChangeMarker)
+map ]c <Action>(VcsShowNextChangeMarker)
+
+map [d <Action>(GotoPreviousError)
+map ]d <Action>(GotoNextError)
+
