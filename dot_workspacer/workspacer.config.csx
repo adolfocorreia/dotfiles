@@ -91,10 +91,10 @@ Action<IConfigContext> doConfig = (context) => {
         k.Subscribe(modCS, Keys.Q,     () => context.Restart(),                          "quit workspacer");
 
         /* Window keybindings */
-        k.Subscribe(mod,  Keys.J,         () => w.FocusedWorkspace.FocusNextWindow(),                 "focus next window");
-        k.Subscribe(mod,  Keys.K,         () => w.FocusedWorkspace.FocusPreviousWindow(),             "focus previous window");
-        k.Subscribe(modS, Keys.J,         () => w.FocusedWorkspace.SwapFocusAndNextWindow(),          "swap focus and next window");
-        k.Subscribe(modS, Keys.K,         () => w.FocusedWorkspace.SwapFocusAndPreviousWindow(),      "swap focus and previous window");
+        // k.Subscribe(mod,  Keys.J,         () => w.FocusedWorkspace.FocusNextWindow(),                 "focus next window");
+        // k.Subscribe(mod,  Keys.K,         () => w.FocusedWorkspace.FocusPreviousWindow(),             "focus previous window");
+        // k.Subscribe(modS, Keys.J,         () => w.FocusedWorkspace.SwapFocusAndNextWindow(),          "swap focus and next window");
+        // k.Subscribe(modS, Keys.K,         () => w.FocusedWorkspace.SwapFocusAndPreviousWindow(),      "swap focus and previous window");
         k.Subscribe(mod,  Keys.Oemcomma,  () => w.FocusedWorkspace.ShrinkPrimaryArea(),               "shrink primary area");
         k.Subscribe(mod,  Keys.OemPeriod, () => w.FocusedWorkspace.ExpandPrimaryArea(),               "expand primary area");
         k.Subscribe(modS, Keys.Oemcomma,  () => w.FocusedWorkspace.DecrementNumberOfPrimaryWindows(), "decrement # primary windows");
@@ -113,7 +113,8 @@ Action<IConfigContext> doConfig = (context) => {
         }, "swap focus and primary window");
 
         /* Workspace keybindings */
-        k.Subscribe(mod,  Keys.Back,     () => w.SwitchToLastFocusedWorkspace(),  "switch to last focused workspace");
+        k.Subscribe(mod,  Keys.Back, () => w.SwitchToLastFocusedWorkspace(), "switch to last focused workspace");
+
         k.Subscribe(mod,  Keys.D1,       () => w.SwitchToWorkspace(0),            "switch to workspace 1");
         k.Subscribe(mod,  Keys.D2,       () => w.SwitchToWorkspace(1),            "switch to workspace 2");
         k.Subscribe(mod,  Keys.D3,       () => w.SwitchToWorkspace(2),            "switch to workspace 3");
@@ -134,12 +135,17 @@ Action<IConfigContext> doConfig = (context) => {
         k.Subscribe(modS, Keys.D0,       () => w.MoveFocusedWindowToWorkspace(7), "move focused window to workspace 8");
         k.Subscribe(modS, Keys.OemMinus, () => w.MoveFocusedWindowToWorkspace(8), "move focused window to workspace 9");
         k.Subscribe(modS, Keys.Oemplus,  () => w.MoveFocusedWindowToWorkspace(9), "move focused window to workspace 10");
-        k.Subscribe(mod,  Keys.W,        () => w.SwitchFocusedMonitor(2),         "switch to monitor 1");
-        k.Subscribe(mod,  Keys.E,        () => w.SwitchFocusedMonitor(0),         "switch to monitor 2");
-        k.Subscribe(mod,  Keys.R,        () => w.SwitchFocusedMonitor(1),         "switch to monitor 3");
-        k.Subscribe(modS, Keys.W,        () => w.MoveFocusedWindowToMonitor(2),   "move focused window to monitor 1");
-        k.Subscribe(modS, Keys.E,        () => w.MoveFocusedWindowToMonitor(0),   "move focused window to monitor 2");
-        k.Subscribe(modS, Keys.R,        () => w.MoveFocusedWindowToMonitor(1),   "move focused window to monitor 3");
+
+        k.Subscribe(mod,  Keys.W, () => w.SwitchFocusedMonitor(2),              "switch to monitor 1");
+        k.Subscribe(mod,  Keys.E, () => w.SwitchFocusedMonitor(0),              "switch to monitor 2");
+        k.Subscribe(mod,  Keys.R, () => w.SwitchFocusedMonitor(1),              "switch to monitor 3");
+        k.Subscribe(modS, Keys.W, () => w.MoveFocusedWindowToMonitor(2),        "move focused window to monitor 1");
+        k.Subscribe(modS, Keys.E, () => w.MoveFocusedWindowToMonitor(0),        "move focused window to monitor 2");
+        k.Subscribe(modS, Keys.R, () => w.MoveFocusedWindowToMonitor(1),        "move focused window to monitor 3");
+        // k.Subscribe(mod,  Keys.H, () => w.SwitchFocusToPreviousMonitor(),       "switch to previous monitor");
+        // k.Subscribe(mod,  Keys.L, () => w.SwitchFocusToNextMonitor(),           "switch to next monitor");
+        k.Subscribe(modS, Keys.H, () => w.MoveFocusedWindowToPreviousMonitor(), "move focused window to previous monitor");
+        k.Subscribe(modS, Keys.L, () => w.MoveFocusedWindowToNextMonitor(),     "move focused window to next monitor");
 
         /* Debug keybindings */
         // k.Subscribe(mod,  Keys.O, () => context.Windows.DumpWindowDebugOutput(),            "dump debug info to console for all windows");
