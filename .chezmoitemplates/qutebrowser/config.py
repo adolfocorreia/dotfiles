@@ -2,6 +2,7 @@
 # https://qutebrowser.org/doc/help/configuring.html
 # https://qutebrowser.org/doc/help/settings.html
 # https://qutebrowser.org/doc/help/commands.html
+# qute://help
 
 import os
 import platform
@@ -20,7 +21,6 @@ config.load_autoconfig()
 # - https://qutebrowser.org/doc/help/settings.html#bindings.default
 # - qute://help/img/cheatsheet-big.png
 # Show current bindings with :bind
-# Commands reference: qute://help/commands.html
 
 # Unbind quit and tab-close
 config.unbind("<Ctrl+q>", mode="normal")
@@ -78,18 +78,23 @@ config.bind("<Ctrl+g>", "mode-leave", mode="insert")
 
 
 # General configuration
+c.auto_save.session = True
 c.colors.webpage.darkmode.enabled = True
 c.colors.webpage.preferred_color_scheme = "dark"
+c.confirm_quit = ["always"]
 c.content.autoplay = False
 c.content.cookies.accept = "no-3rdparty"
 c.content.cookies.store = False
+c.content.dns_prefetch = False
+c.content.geolocation = False
 c.content.notifications.enabled = False
+c.content.pdfjs = True
 c.content.prefers_reduced_motion = True
 c.downloads.position = "bottom"
 c.hints.chars = "asdfhjkl"
 c.hints.uppercase = True
 c.qt.args = ["autoplay-policy=user-gesture-required"]
-#c.qt.process_model = "process-per-site"
+c.qt.chromium.process_model = "process-per-site"
 c.scrolling.bar = "always"
 c.session.lazy_restore = True
 c.statusbar.position = "bottom"
