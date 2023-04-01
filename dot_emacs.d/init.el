@@ -954,6 +954,7 @@
   (evil-exchange-install))
 
 ;; TODO: evaluate replacement (e.g. quickrun.el)
+;; TODO: make this work with julia-repl
 (use-package evil-extra-operator
   :after evil
   :demand t
@@ -1553,6 +1554,7 @@
 
 ;; Julia REPL usage: C-c C-z (raise REPL), C-c C-a (activate project),
 ;; C-c C-b (send buffer), C-c C-c (send region or line), C-c C-d (invoke @doc))
+;; TODO: use same bindings as python/ess
 (unless ON-WINDOWS
   (use-package julia-repl
     :after julia-mode
