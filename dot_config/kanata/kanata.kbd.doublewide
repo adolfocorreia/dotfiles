@@ -49,7 +49,7 @@ Default layer:
 - hold tab to enable symbol layer
 |#
 (deflayer qwerty
-  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12        ssrq caps pause
+  esc  @f1m f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12        ssrq caps pause
   grv  1    2    3    4    5    6    =    -    7    8    9    0    bspc  ins  home pgup  nlck kp/  kp*  kp-
   @syt q    w    e    r    t    [    ]    y    u    i    o    p    @sy\  del  end  pgdn  kp7  kp8  kp9  kp+
   lctl a    s    d    f    g    /    ;    h    j    k    l    ret                        kp4  kp5  kp6
@@ -96,27 +96,35 @@ Symbol layer:
 (defalias
   ;; toggle symbol layer
   syt (tap-hold-press 200 200 tab (layer-while-held symbol))
-  sy\ (tap-hold-press 200 200 \ (layer-while-held symbol)))
+  sy\ (tap-hold-press 200 200 \   (layer-while-held symbol)))
 
 
 #|
 Mouse layer:
 - h,j,k,l as mouse movement
-- a,s,d as mouse buttons
+- u,i,o,p as fast mouse movement
+- n,m,' as mouse buttons
 |#
 (deflayer mouse
   _    _    _    _    _    _    _    _    _    _    _    _    _          _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _    _    _     _    _    _     _    _    _    _
-  _    _    _    _    _    _    _    _    _    _    _    _    _    _     _    _    _     _    _    _    _
-  _    mlft mmid mrgt _    _    @mal @mad @mau @mar _    _    _                          _    _    _
-  _    _    _    _    _    _    _    _    _    _    _    _                    _          _    _    _    _
+  _    _    _    _    _    _    _    _    _    @mal @mad @mau @mar _     _    _    _     _    _    _    _
+  _    _    _    _    _    _    -    -    @mml @mmd @mmu @mmr _                          _    _    _
+  _    _    _    _    _    _    _    _    mlft mmid mrgt _                    _          _    _    _    _
   _    _    _              _              _    _    _    _               _    _    _     _    _)
 
 (defalias
-  mal (movemouse-accel-left 1 1000 1 5)
-  mad (movemouse-accel-down 1 1000 1 5)
-  mau (movemouse-accel-up 1 1000 1 5)
+  mml (movemouse-left  5 1)
+  mmd (movemouse-down  5 1)
+  mmu (movemouse-up    5 1)
+  mmr (movemouse-right 5 1)
+  mal (movemouse-accel-left  1 1000 1 5)
+  mad (movemouse-accel-down  1 1000 1 5)
+  mau (movemouse-accel-up    1 1000 1 5)
   mar (movemouse-accel-right 1 1000 1 5))
+
+(defalias
+  f1m (tap-hold 200 200 f1 (layer-while-held mouse)))
 
 
 ;; TODO: toggle RGB profile when layers are enabled
