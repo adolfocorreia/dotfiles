@@ -372,8 +372,6 @@ myManageHook =
         ("dev", "code"),
         -- Lyx
         ("doc", "lyx"),
-        -- PCManFM
-        ("file", "Pcmanfm"),
         -- Chromium
         ("mail", "Chromium"),
         -- Whatsapp (nativefier)
