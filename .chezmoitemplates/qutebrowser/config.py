@@ -94,7 +94,7 @@ c.downloads.position = "bottom"
 c.hints.chars = "asdfhjkl"
 c.hints.uppercase = True
 c.qt.args = ["autoplay-policy=user-gesture-required"]
-c.qt.chromium.process_model = "process-per-site"
+#c.qt.chromium.process_model = "process-per-site"
 c.scrolling.bar = "always"
 c.session.lazy_restore = True
 c.statusbar.position = "bottom"
