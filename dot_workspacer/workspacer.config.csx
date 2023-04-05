@@ -142,10 +142,13 @@ Action<IConfigContext> doConfig = (context) => {
         k.Subscribe(modS, Keys.W, () => w.MoveFocusedWindowToMonitor(2),        "move focused window to monitor 1");
         k.Subscribe(modS, Keys.E, () => w.MoveFocusedWindowToMonitor(0),        "move focused window to monitor 2");
         k.Subscribe(modS, Keys.R, () => w.MoveFocusedWindowToMonitor(1),        "move focused window to monitor 3");
+
         // k.Subscribe(mod,  Keys.H, () => w.SwitchFocusToPreviousMonitor(),       "switch to previous monitor");
         // k.Subscribe(mod,  Keys.L, () => w.SwitchFocusToNextMonitor(),           "switch to next monitor");
-        k.Subscribe(modS, Keys.H, () => w.MoveFocusedWindowToPreviousMonitor(), "move focused window to previous monitor");
-        k.Subscribe(modS, Keys.L, () => w.MoveFocusedWindowToNextMonitor(),     "move focused window to next monitor");
+        k.Subscribe(modS, Keys.H,     () => w.MoveFocusedWindowToPreviousMonitor(), "move focused window to previous monitor");
+        k.Subscribe(modS, Keys.L,     () => w.MoveFocusedWindowToNextMonitor(),     "move focused window to next monitor");
+        k.Subscribe(modS, Keys.Left,  () => w.MoveFocusedWindowToPreviousMonitor(), "move focused window to previous monitor");
+        k.Subscribe(modS, Keys.Right, () => w.MoveFocusedWindowToNextMonitor(),     "move focused window to next monitor");
 
         /* Debug keybindings */
         // k.Subscribe(mod,  Keys.O, () => context.Windows.DumpWindowDebugOutput(),            "dump debug info to console for all windows");
