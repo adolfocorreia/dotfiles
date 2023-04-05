@@ -1,8 +1,20 @@
+""" Leader mappings
+
 let mapleader = " "
+
+" List available actions with :actionlist
+" Enable action tracking with :set trackactionids
+
+map <Leader>e :edit ~/.ideavimrc<CR>
+map <Leader>r <Action>(IdeaVim.ReloadVimRc.reload)
+
+map <Leader>n :NERDTreeToggle<CR>
+map <Leader>t <Action>(Terminal.OpenInTerminal)
 
 
 """ Handlers
 
+" Use IdeaVim for Ctrl bindings
 sethandler <C-6> a:vim
 sethandler <C-A> a:vim
 sethandler <C-B> a:vim
@@ -20,21 +32,23 @@ sethandler <C-M> a:vim
 sethandler <C-N> a:vim
 sethandler <C-O> a:vim
 sethandler <C-P> a:vim
+sethandler <C-Q> a:vim
 sethandler <C-R> a:vim
-sethandler <C-S> a:ide
+sethandler <C-S> a:ide " Save using Idea
 sethandler <C-T> a:vim
 sethandler <C-U> a:vim
 sethandler <C-V> a:vim
 sethandler <C-W> a:vim
 sethandler <C-X> a:vim
 sethandler <C-Y> a:vim
-
+sethandler <C-[> a:vim
+sethandler <C-]> a:vim
 
 
 """ Options
 " Reference: https://github.com/JetBrains/ideavim/blob/master/doc/set-commands.md
 
-set clipboard+=unnamedplus
+set clipboard+=unnamed
 
 set hlsearch
 set ignorecase
@@ -50,15 +64,26 @@ set splitbelow
 set splitright
 
 
-
 """ IdeaVim options
 
-set ideastatusicon=gray
+" Use Idea to join lines smartly
+set ideajoin
 
+" Use gray icon on status bar
+set ideastatusicon=gray
 
 
 """ Plugins
 " Reference: https://github.com/JetBrains/ideavim/blob/master/doc/IdeaVim%20Plugins.md
+
+" Install via marketplace:
+" - IdeaVim
+" - Tokyo Night Theme
+" - AceJump:             https://github.com/acejump/AceJump
+" - IdeaVimMulticursor:  https://github.com/dankinsoid/IdeaVimMulticursor
+" - IdeaVim-Quickscope:  https://github.com/joshestein/ideavim-quickscope
+" - IdeaVim-Sneak:       https://github.com/Mishkun/ideavim-sneak
+" - Which-Key:           https://github.com/TheBlob42/idea-which-key
 
 set surround
 set commentary
@@ -69,10 +94,16 @@ set highlightedyank
 
 set sneak
 set quickscope
+let g:qs_primary_color = '#db4b4b'
+let g:qs_secondary_color = '#e0af68'
 
+set multicursor
+
+" NERDTree bindings: https://github.com/JetBrains/ideavim/wiki/NERDTree-support
 set NERDTree
 
 set which-key
+set notimeout " Suggested by which-key
 
 set argtextobj
 let g:argtextobj_pairs="(:),{:},<:>,[:]"
@@ -81,8 +112,8 @@ set textobj-entire
 set textobj-indent
 
 
-
 """ Mappings
+" Default mappings: https://github.com/JetBrains/ideavim/blob/master/src/main/java/com/maddyhome/idea/vim/package-info.java
 
 nnoremap Y y$
 
@@ -92,21 +123,22 @@ nmap N Nzzzv
 vnoremap < <gv
 vnoremap > >gv
 
-""]<Space>
-""[<Space>
+nmap gss <Action>(AceAction)
 
-""]e
-""[e
+nnoremap [<Space> O<Esc>j
+nnoremap ]<Space> o<Esc>k
 
-""]p
-""[p
+map [e <Action>(MoveLineUp)
+map ]e <Action>(MoveLineDown)
+
+nnoremap [p O<Esc>p
+nnoremap ]p o<Esc>p
 
 map [[ <Action>(MethodUp)
 map ]] <Action>(MethodDown)
 
-map [c <Action>(VcsShowPrevChangeMarker)
-map ]c <Action>(VcsShowNextChangeMarker)
-
 map [d <Action>(GotoPreviousError)
 map ]d <Action>(GotoNextError)
 
+map [h <Action>(VcsShowPrevChangeMarker)
+map ]h <Action>(VcsShowNextChangeMarker)
