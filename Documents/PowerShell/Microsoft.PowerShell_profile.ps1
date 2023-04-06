@@ -140,6 +140,7 @@ Set-Alias -Name "e." -Value Start-Explorer
 Set-Alias -Name e -Value explorer
 Set-Alias -Name trash -Value recycle-bin
 Function vi { & nvim --clean $args }
+Function pipx { & python $env:APPS\pipx\pipx.pyz $args }
 
 Function Create-Link (
     [Parameter(Mandatory=$true)] [String] $link,
