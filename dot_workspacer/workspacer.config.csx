@@ -120,7 +120,7 @@ Action<IConfigContext> doConfig = (context) => {
         k.Subscribe(mod,  Keys.D3,       () => w.SwitchToWorkspace(2),            "switch to workspace 3");
         k.Subscribe(mod,  Keys.D4,       () => w.SwitchToWorkspace(3),            "switch to workspace 4");
         k.Subscribe(mod,  Keys.D5,       () => w.SwitchToWorkspace(4),            "switch to workspace 5");
-        k.Subscribe(mod,  Keys.D6,       () => w.SwitchToWorkspace(5),            "switch to workspace 6");
+        k.Subscribe(mod,  Keys.D8,       () => w.SwitchToWorkspace(5),            "switch to workspace 6");
         k.Subscribe(mod,  Keys.D9,       () => w.SwitchToWorkspace(6),            "switch to workspace 7");
         k.Subscribe(mod,  Keys.D0,       () => w.SwitchToWorkspace(7),            "switch to workspace 8");
         k.Subscribe(mod,  Keys.OemMinus, () => w.SwitchToWorkspace(8),            "switch to workspace 9");
@@ -130,7 +130,7 @@ Action<IConfigContext> doConfig = (context) => {
         k.Subscribe(modS, Keys.D3,       () => w.MoveFocusedWindowToWorkspace(2), "move focused window to workspace 3");
         k.Subscribe(modS, Keys.D4,       () => w.MoveFocusedWindowToWorkspace(3), "move focused window to workspace 4");
         k.Subscribe(modS, Keys.D5,       () => w.MoveFocusedWindowToWorkspace(4), "move focused window to workspace 5");
-        k.Subscribe(modS, Keys.D6,       () => w.MoveFocusedWindowToWorkspace(5), "move focused window to workspace 6");
+        k.Subscribe(modS, Keys.D8,       () => w.MoveFocusedWindowToWorkspace(5), "move focused window to workspace 6");
         k.Subscribe(modS, Keys.D9,       () => w.MoveFocusedWindowToWorkspace(6), "move focused window to workspace 7");
         k.Subscribe(modS, Keys.D0,       () => w.MoveFocusedWindowToWorkspace(7), "move focused window to workspace 8");
         k.Subscribe(modS, Keys.OemMinus, () => w.MoveFocusedWindowToWorkspace(8), "move focused window to workspace 9");
