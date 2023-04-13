@@ -856,7 +856,6 @@
     ("TAB u"   . tab-undo)
     ("TAB c"   . tab-close)
     ("TAB D"   . tab-duplicate)
-    ("TAB N"   . tab-new)
     ("TAB b"   . switch-to-buffer-other-tab)
     ("TAB d"   . dired-other-tab)
     ("TAB w"   . tab-window-detach)
