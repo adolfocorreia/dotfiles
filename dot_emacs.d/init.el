@@ -701,6 +701,7 @@
   :config
   (project-tab-groups-mode +1))
 
+;; TODO: evaluate dired-hacks
 (use-package ranger
   :commands (deer ranger))
 
@@ -1880,9 +1881,7 @@
     ("F" . consult-flycheck)
     ("C" . consult-complex-command)     ; find commands in command-history
     ("H" . consult-history)             ; find commands in current buffer history (e.g. eshell or comint)
-    ("I" . consult-info))               ; search info pages (full text search)
-  :config
-  (consult-customize consult-ripgrep :initial (thing-at-point 'symbol)))
+    ("I" . consult-info)))              ; search info pages (full text search)
 
 (use-package consult-flycheck
   :after (consult flycheck)
