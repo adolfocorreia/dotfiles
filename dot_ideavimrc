@@ -51,6 +51,7 @@ sethandler <C-]> a:vim
 set clipboard+=unnamed
 
 set hlsearch
+set incsearch
 set ignorecase
 set smartcase
 
