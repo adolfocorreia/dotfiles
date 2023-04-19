@@ -791,8 +791,7 @@ PLUGINS = {
           null_ls.builtins.formatting.isort,
         },
       })
-      local mason_null_ls = require('mason-null-ls')
-      mason_null_ls.setup({
+      require('mason-null-ls').setup({
         ensure_installed = {
           'black',
           'isort',
@@ -801,7 +800,6 @@ PLUGINS = {
         automatic_installation = false,
         automatic_setup = true,
       })
-      mason_null_ls.setup_handlers({})
     end,
   },
 
@@ -1453,7 +1451,6 @@ LEADER_MAPPINGS = {
     ['p'] = {'<Cmd>Telescope projects<CR>',                 'Find projects'},
     ['n'] = {'<Cmd>enew<CR>',                               'New file'},
     ['D'] = {'<Cmd>Delete<CR>',                             'Delete file'},
-    ['-'] = {'<Cmd>Dirbuf<CR>',                             'Open directory'},
     ['R'] = {function() rr('New name: ', 'Rename {}') end,  'Rename file'},
   },
 
