@@ -21,8 +21,7 @@ import Data.Ratio ((%))
 import System.Exit (exitSuccess)
 import System.IO ()
 import XMonad
-  ( ChangeLayout (NextLayout),
-    Default (def),
+  ( Default (def),
     Full (Full),
     KeyMask,
     Query,
@@ -47,13 +46,11 @@ import XMonad
     doFloat,
     doShift,
     io,
-    kill,
+    mod1Mask,
     mod4Mask,
-    screenWorkspace,
     sendMessage,
     spawn,
     title,
-    whenJust,
     windows,
     withFocused,
     xmonad,
@@ -63,11 +60,7 @@ import XMonad
     (|||),
   )
 import XMonad.Actions.CycleWS
-  ( Direction1D (Next, Prev),
-    WSType (Not),
-    emptyWS,
-    moveTo,
-    nextScreen,
+  ( nextScreen,
     prevScreen,
     shiftNextScreen,
     shiftPrevScreen,
@@ -83,8 +76,7 @@ import XMonad.Actions.UpdatePointer (updatePointer)
 import XMonad.Config.Desktop (desktopConfig)
 import XMonad.Hooks.EwmhDesktops (ewmh)
 import XMonad.Hooks.ManageDocks
-  ( Direction1D (Next, Prev),
-    avoidStruts,
+  ( avoidStruts,
     docks,
     manageDocks,
   )
@@ -92,7 +84,6 @@ import XMonad.Hooks.ManageHelpers (doCenterFloat, doRectFloat)
 import XMonad.Hooks.StatusBar (StatusBarConfig, statusBarPropTo, withSB)
 import XMonad.Hooks.StatusBar.PP
   ( PP,
-    def,
     ppCurrent,
     ppHidden,
     ppHiddenNoWindows,
@@ -138,20 +129,25 @@ myBarBackgroundColor = "#292e42"
 
 -- Base settings
 myModMask :: KeyMask
-myModMask = mod4Mask -- Super/Windows key
+myModMask = mod1Mask -- Alt key
+-- myModMask = mod4Mask -- Super/Windows key
 
 myTerminal :: String
 myTerminal = "alacritty"
 
-{- Default (not replaced or deleted) Xmonad key bindings
-   Reference: https://github.com/xmonad/xmonad/blob/master/src/XMonad/Config.hs
+{- Default (not replaced nor removed) Xmonad key bindings
+   References:
+   - https://github.com/xmonad/xmonad/blob/master/src/XMonad/Config.hs
+   - https://xmonad.org/images/cheat/xmbindings.png
 
    -- Launch terminal
    ("M-S-<Return>", spawn $ XMonad.terminal conf)
    -- Close the focused window
    ("M-S-c", kill)
-   -- Resize viewed windows to the correct size
-   ("M-n", refresh)
+   -- Rotate through the available layout algorithms
+   ("M-<Space>", sendMessage NextLayout)
+   -- Reset layouts on the current workspace to default
+   ("M-S-<Space>", sendMessage NextLayout)
 
    -- Move focus up or down the window stack
    ("M-j", windows W.focusDown)
@@ -174,6 +170,11 @@ myTerminal = "alacritty"
    ("M-[1..9]")
    -- Move client to workspace N
    ("M-S-[1..9]")
+
+   -- Switch to screen 1, 2 or 3
+   ("M-{w,e,r}")
+   -- Move client to screen 1, 2 or 3
+   ("M-S-{w,e,r}")
 -}
 
 -- Custom key bindings
@@ -181,22 +182,19 @@ myTerminal = "alacritty"
 myAdditionalKeys :: [(String, X ())]
 myAdditionalKeys =
   [ -- Spawn app launcher (rofi)
-    ("M-p", spawn "rofi -show"),
     ("M-\\", spawn "rofi -show"),
-    -- Spawn file manager (PCManFM)
-    ("M-e", spawn "pcmanfm"),
-    -- Close the focused window
-    ("M-q", kill),
-    -- Force window kill with xkill
-    ("M-C-S-k", spawn "xkill"),
+    -- Spawn file manager
+    ("M-C-S-<Return>", spawn "pcmanfm"),
     -- Restart xmonad
     ("M-S-q", spawn "xmonad --recompile && xmonad --restart"),
     -- Quit xmonad (this key binding should be hard to trigger by accident)
     ("M-<Pause>", io exitSuccess),
+    -- Force window kill with xkill
+    ("M-C-S-k", spawn "xkill"),
     -- Lock screen
     ("M-<Escape>", spawn "xset s activate"),
-    -- Toggle workspace layout
-    ("M-S-<Space>", sendMessage NextLayout),
+    -- Toggle floating state of focused window
+    ("M-t", withFocused toggleFloat),
     -- Workspace 10/0 bindings
     ("M-0", windows $ W.greedyView $ myWorkspaces !! (10 - 1)),
     ("M-S-0", windows $ W.shift $ myWorkspaces !! (10 - 1)),
@@ -205,15 +203,15 @@ myAdditionalKeys =
     ("M-<Backspace>", toggleWS),
     -- Swap master window
     ("M-<Return>", dwmpromote),
+    -- Switch windows focus
+    ("M-<Down>", windows W.focusDown),
+    ("M-<Up>", windows W.focusUp),
     -- Swap windows
     ("M-S-<Down>", windows W.swapDown),
     ("M-S-<Up>", windows W.swapUp),
     -- Resize master/slave ratio
     ("M-<Left>", sendMessage Shrink),
     ("M-<Right>", sendMessage Expand),
-    -- Switch windows focus
-    ("M-<Down>", windows W.focusDown),
-    ("M-<Up>", windows W.focusUp),
     -- Switch focus to next monitor
     ("M-C-h", prevScreen),
     ("M-C-l", nextScreen),
@@ -224,22 +222,13 @@ myAdditionalKeys =
     ("M-S-l", shiftNextScreen >> nextScreen),
     ("M-S-<Left>", shiftPrevScreen >> prevScreen),
     ("M-S-<Right>", shiftNextScreen >> nextScreen),
-    -- Switch to left (w) or right (r) monitor
-    ("M-w", screenWorkspace 0 >>= flip whenJust (windows . W.view)),
-    ("M-r", screenWorkspace 1 >>= flip whenJust (windows . W.view)),
-    -- Use Alt-Tab to cycle through visible windows
-    ("M1-<Tab>", nextMatch Forward isOnAnyVisibleWS),
-    ("M1-S-<Tab>", nextMatch Backward isOnAnyVisibleWS),
-    -- Toggle floating state of window
-    ("M-t", withFocused toggleFloat),
-    -- Cycle through non-empty workspaces
-    ("M-<Tab>", moveTo Next (Not emptyWS)),
-    ("M-S-<Tab>", moveTo Prev (Not emptyWS)),
+    -- Cycle through visible windows
+    ("M-<Tab>", nextMatch Forward isOnAnyVisibleWS),
+    ("M-S-<Tab>", nextMatch Backward isOnAnyVisibleWS),
     -- Volume controls
     ("<XF86AudioLowerVolume>", spawn "pamixer --decrease 5 --unmute"),
     ("<XF86AudioRaiseVolume>", spawn "pamixer --increase 5 --unmute"),
     ("<XF86AudioMute>", spawn "pamixer --toggle-mute")
-    -- TODO: add bindings to change desktop background
     -- TODO: add key bindings description (see DescriptiveKeys and NamedActions packages)
   ]
   where
@@ -250,10 +239,16 @@ myAdditionalKeys =
 
 myRemoveKeys :: [String]
 myRemoveKeys =
-  [ -- Win+Space is used in X to toggle keyboard layouts
-    "M-<Space>",
-    -- gmrun not installed
+  [ -- Do not restart Xmonad with M-q
+    "M-q",
+    -- Do not use dmenu nor gmrun to launch apps
+    "M-p",
     "M-S-p",
+    -- Do not use refresh/resize windows
+    "M-n",
+    -- TODO: make toggle bar work
+    -- Do not toggle bar with M-b (defToggleStrutsKey)
+    "M-b",
     -- Do not show default key bindings message
     "M-S-/",
     "M-?"
@@ -388,11 +383,12 @@ myManageHook =
 -- - https://hackage.haskell.org/package/xmonad-contrib/docs/XMonad-Hooks-StatusBar-PP.html
 -- - https://codeberg.org/jao/xmobar/src/branch/master/doc/window-managers.org
 clickableWS :: WorkspaceId -> String
-clickableWS ws = "<action=`xdotool key super+" ++ show index ++ "`>" ++ icon ++ "</action>"
+clickableWS ws = "<action=`xdotool key " ++ modKey ++ "+" ++ index ++ "`>" ++ icon ++ "</action>"
   where
     icon = workspaceIcon ws
-    index = fromJust $ M.lookup ws indices
+    index = show $ fromJust $ M.lookup ws indices
     indices = M.fromList $ zip myWorkspaces $ [1 .. 9] ++ [0]
+    modKey = if myModMask == mod4Mask then "super" else "alt"
 
 myXmobarConfig :: Int -> PP
 myXmobarConfig numChars =
