@@ -23,6 +23,7 @@ import System.IO ()
 import XMonad
   ( Default (def),
     Full (Full),
+    IncMasterN (IncMasterN),
     KeyMask,
     Query,
     Resize (Expand, Shrink),
@@ -203,15 +204,12 @@ myAdditionalKeys =
     ("M-<Backspace>", toggleWS),
     -- Swap master window
     ("M-<Return>", dwmpromote),
-    -- Switch windows focus
-    ("M-<Down>", windows W.focusDown),
-    ("M-<Up>", windows W.focusUp),
-    -- Swap windows
-    ("M-S-<Down>", windows W.swapDown),
-    ("M-S-<Up>", windows W.swapUp),
     -- Resize master/slave ratio
-    ("M-<Left>", sendMessage Shrink),
-    ("M-<Right>", sendMessage Expand),
+    ("M-.", sendMessage Expand),
+    ("M-,", sendMessage Shrink),
+    -- Increase or decrease number of windows in the master area
+    ("M-S-.", sendMessage (IncMasterN 1)),
+    ("M-S-,", sendMessage (IncMasterN (-1))),
     -- Switch focus to next monitor
     ("M-C-h", prevScreen),
     ("M-C-l", nextScreen),
@@ -246,6 +244,9 @@ myRemoveKeys =
     "M-S-p",
     -- Do not use refresh/resize windows
     "M-n",
+    -- Do not use resize the master/slave ration with M-h and M-l
+    "M-h",
+    "M-l",
     -- TODO: make toggle bar work
     -- Do not toggle bar with M-b (defToggleStrutsKey)
     "M-b",
