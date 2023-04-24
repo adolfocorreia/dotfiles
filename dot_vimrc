@@ -169,16 +169,19 @@ nnoremap <silent> <C-s> :update<CR>
 inoremap <silent> <C-s> <C-o>:update<CR>
 tnoremap <C-g> <C-\><C-n>
 
-tnoremap <M-Left>  <C-\><C-n><C-w>h
-tnoremap <M-Down>  <C-\><C-n><C-w>j
-tnoremap <M-Up>    <C-\><C-n><C-w>k
-tnoremap <M-Right> <C-\><C-n><C-w>l
-inoremap <M-Left>  <C-\><C-n><C-w>h
-inoremap <M-Down>  <C-\><C-n><C-w>j
-inoremap <M-Up>    <C-\><C-n><C-w>k
-inoremap <M-Right> <C-\><C-n><C-w>l
-nnoremap <M-Left>  <C-w>h
-nnoremap <M-Down>  <C-w>j
-nnoremap <M-Up>    <C-w>k
-nnoremap <M-Right> <C-w>l
+nnoremap <C-w>1 1<C-w>w
+nnoremap <C-w>2 2<C-w>w
+nnoremap <C-w>3 3<C-w>w
+nnoremap <C-w>4 4<C-w>w
+nnoremap <C-w>5 5<C-w>w
 
+nnoremap <C-w><Tab>c :tabclose<CR>
+nnoremap <C-w><Tab>e :tabedit<CR>
+nnoremap <C-w><Tab>n :tabnext<CR>
+nnoremap <C-w><Tab>p :tabprevious<CR>
+nnoremap <C-w><Tab>o :tabonly<CR>
+nnoremap <C-w><Tab>1 1gt
+nnoremap <C-w><Tab>2 2gt
+nnoremap <C-w><Tab>3 3gt
+nnoremap <C-w><Tab>4 4gt
+nnoremap <C-w><Tab>5 5gt

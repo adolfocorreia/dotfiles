@@ -289,21 +289,6 @@ vim.cmd([[
 
 -- Window navigation mappings.
 vim.cmd([[
-  tnoremap <M-Left>  <C-\><C-n><C-w>h
-  tnoremap <M-Down>  <C-\><C-n><C-w>j
-  tnoremap <M-Up>    <C-\><C-n><C-w>k
-  tnoremap <M-Right> <C-\><C-n><C-w>l
-  inoremap <M-Left>  <C-\><C-n><C-w>h
-  inoremap <M-Down>  <C-\><C-n><C-w>j
-  inoremap <M-Up>    <C-\><C-n><C-w>k
-  inoremap <M-Right> <C-\><C-n><C-w>l
-  nnoremap <M-Left>  <C-w>h
-  nnoremap <M-Down>  <C-w>j
-  nnoremap <M-Up>    <C-w>k
-  nnoremap <M-Right> <C-w>l
-]])
-
-vim.cmd([[
   nnoremap <C-w>1 1<C-w>w
   nnoremap <C-w>2 2<C-w>w
   nnoremap <C-w>3 3<C-w>w
@@ -311,6 +296,8 @@ vim.cmd([[
   nnoremap <C-w>5 5<C-w>w
 ]])
 
+
+-- Tab navigation mappings.
 vim.cmd([[
   nnoremap <C-w><Tab>c :tabclose<CR>
   nnoremap <C-w><Tab>e :tabedit<CR>
@@ -634,21 +621,6 @@ PLUGINS = {
 
   --- Custom motions and text objects ---
 
-  -- TODO: find lua alternative
-  -- CamelCase and snake_case motions (M-w, M-b, M-e).
-  {
-    'chaoren/vim-wordmotion',
-    keys = { '<M-w>', '<M-b>', '<M-e>' },
-    init = function()
-      vim.g.wordmotion_nomap = 1
-    end,
-    config = function()
-      vim.api.nvim_set_keymap('n', '<M-w>', '<Plug>WordMotion_w', {})
-      vim.api.nvim_set_keymap('n', '<M-b>', '<Plug>WordMotion_b', {})
-      vim.api.nvim_set_keymap('n', '<M-e>', '<Plug>WordMotion_e', {})
-    end,
-  },
-
   -- Several text objects with inside (i) and around (a) semantics.
   -- and last (_l) semantics.
   -- Pairs: () {} [] <>
@@ -926,6 +898,8 @@ PLUGINS = {
 
 
   --- Terminal and file management support ---
+
+  -- TODO: Evaluate 'Olical/conjure'
 
   -- Send code to REPL: send motion in normal mode (gy_) or visual mode (gy),
   -- send line (gyy) and send paragraph (gyY).
