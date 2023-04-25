@@ -38,6 +38,8 @@ sethandler <C-X> a:vim
 sethandler <C-Y> a:vim
 sethandler <C-[> a:vim
 sethandler <C-]> a:vim
+sethandler <M-b> a:vim
+sethandler <M-f> a:vim
 
 
 """ Options
@@ -90,8 +92,6 @@ set highlightedyank
 
 set sneak
 set quickscope
-let g:qs_primary_color = "#db4b4b"
-let g:qs_secondary_color = "#e0af68"
 
 set multicursor
 
@@ -154,8 +154,6 @@ inoremap <M-b> <C-Left>
 inoremap <M-f> <C-Right>
 inoremap <C-a> <Home>
 inoremap <C-e> <End>
-inoremap <M-n> <Down>
-inoremap <M-p> <Up>
 inoremap <C-d> <Del>
 
 
