@@ -89,7 +89,7 @@ let g:qs_buftype_blacklist = ['help', 'nofile', 'nowrite', 'terminal']
 
 """"" Vim options """""
 
-set clipboard=unnamed
+set clipboard=unnamed,unnamedplus
 set completeopt=menu,menuone,noselect
 set confirm
 set cursorline
