@@ -4,12 +4,7 @@ let mapleader = " "
 
 " List available actions with :actionlist
 " Enable action tracking with :set trackactionids
-
-map <Leader>e :edit ~/.ideavimrc<CR>
-map <Leader>r <Action>(IdeaVim.ReloadVimRc.reload)
-
-map <Leader>n :NERDTreeToggle<CR>
-map <Leader>t <Action>(Terminal.OpenInTerminal)
+" List current maps with :map
 
 
 """ Handlers
@@ -48,7 +43,7 @@ sethandler <C-]> a:vim
 """ Options
 " Reference: https://github.com/JetBrains/ideavim/blob/master/doc/set-commands.md
 
-set clipboard+=unnamed
+set clipboard=ideaput,unnamed,unnamedplus
 
 set hlsearch
 set incsearch
@@ -95,8 +90,8 @@ set highlightedyank
 
 set sneak
 set quickscope
-let g:qs_primary_color = '#db4b4b'
-let g:qs_secondary_color = '#e0af68'
+let g:qs_primary_color = "#db4b4b"
+let g:qs_secondary_color = "#e0af68"
 
 set multicursor
 
@@ -105,6 +100,7 @@ set NERDTree
 
 set which-key
 set notimeout " Suggested by which-key
+let g:WhichKey_ShowVimActions = "true"
 
 set argtextobj
 let g:argtextobj_pairs="(:),{:},<:>,[:]"
@@ -118,14 +114,17 @@ set textobj-indent
 
 nnoremap Y y$
 
-nmap n nzzzv
-nmap N Nzzzv
+nnoremap n nzzzv
+nnoremap N Nzzzv
 
 vnoremap < <gv
 vnoremap > >gv
 
-nmap gss <Action>(AceAction)
+map g, <Action>(JumpToNextChange)
+map g; <Action>(JumpToLastChange)
 
+
+" Unimpaired-like bindings
 nnoremap [<Space> O<Esc>j
 nnoremap ]<Space> o<Esc>k
 
@@ -135,6 +134,9 @@ map ]e <Action>(MoveLineDown)
 nnoremap [p O<Esc>p
 nnoremap ]p o<Esc>p
 
+map [b <Action>(NextTab)
+map ]b <Action>(PreviousTab)
+
 map [[ <Action>(MethodUp)
 map ]] <Action>(MethodDown)
 
@@ -143,3 +145,71 @@ map ]d <Action>(GotoNextError)
 
 map [h <Action>(VcsShowPrevChangeMarker)
 map ]h <Action>(VcsShowNextChangeMarker)
+
+
+" RSI-like bindings
+inoremap <C-b> <Left>
+inoremap <C-f> <Right>
+inoremap <M-b> <C-Left>
+inoremap <M-f> <C-Right>
+inoremap <C-a> <Home>
+inoremap <C-e> <End>
+inoremap <M-n> <Down>
+inoremap <M-p> <Up>
+inoremap <C-d> <Del>
+
+
+" Plugin bindings
+map gss <Action>(AceAction)
+
+
+" Leader mappings
+" Reference: https://github.com/MarcoIeni/intellimacs
+
+" Leader
+map <Leader><Leader> <Action>(GotoAction)
+
+" Buffers
+map <Leader>bb <Action>(RecentFiles)
+map <Leader>bd <Action>(CloseContent)
+map <Leader>bn <Action>(NextTab)
+map <Leader>bp <Action>(PreviousTab)
+map <Leader>bs <Action>(NewScratchBuffer)
+map <Leader>bu <Action>(ReopenClosedTab)
+map <Leader>bx <Action>(CloseAllEditors)
+
+" Code
+map <Leader>cr <Action>(RenameElement)
+map <Leader>ch <Action>(HighlightUsagesInFile)
+map <Leader>cf <Action>(ReformatCode)
+
+" Files
+map <Leader>ff <Action>(GotoFile)
+map <Leader>fR <Action>(RenameFile)
+map <Leader>fr <Action>(RecentFiles)
+map <Leader>fS <Action>(SaveAll)
+map <Leader>fs <Action>(SaveDocument)
+
+" Git
+map <leader>gg <Action>(Vcs.Show.Local.Changes)
+map <leader>gl <Action>(Vcs.Show.Log)
+
+" IdeaVim
+map <Leader>ii :edit ~/.ideavimrc<CR>
+map <Leader>ir <Action>(IdeaVim.ReloadVimRc.reload)
+
+" Quit
+map <Leader>qq <Action>(Exit)
+map <Leader>qp <Action>(CloseProject)
+map <Leader>qr <Action>(RestartIde)
+
+" Search
+map <Leader>ss <Action>(ShowUsages)
+map <Leader>sp <Action>(FindInPath)
+map <Leader>sp <Action>(ReplaceInPath)
+map <Leader>su <Action>(FindUsages)
+map <Leader>sc :nohlsearch<CR>
+
+" Toggle
+map <Leader>tn :NERDTreeToggle<CR>
+map <Leader>tt <Action>(Terminal.OpenInTerminal)
