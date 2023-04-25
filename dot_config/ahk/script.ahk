@@ -22,7 +22,13 @@ SC073::RCtrl
 #HotIf
 
 
-; Remap Alt+D to Ctrl+L in Firefox.
+; Swallow Insert on Outlook.
+#HotIf WinActive("ahk_exe OUTLOOK.EXE")
+  Insert::return
+#HotIf
+
+
+; Remap Alt+D to Ctrl+L on Firefox.
 #HotIf WinActive("ahk_exe firefox.exe")
   !d::SendInput "^l"
 #HotIf
