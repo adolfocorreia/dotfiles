@@ -90,7 +90,7 @@ cmd zip ${{
 
 map . &pcmanfm $PWD
 map - updir
-
+map <backspace2> updir
 map a push :mkdir<space>
 map D trash
 map w $fish
@@ -101,7 +101,6 @@ map <c-z> $kill -STOP $PPID
 
 
 ## Directory mappings ##
-
 map g/ cd /
 map g~ cd ~
 map gh cd ~
