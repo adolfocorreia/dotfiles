@@ -126,6 +126,7 @@
   :demand t
   :custom
   (delete-by-moving-to-trash t)
+  (find-file-visit-truename t)
   (native-comp-deferred-compilation t)
   (read-extended-command-predicate #'command-completion-default-include-p)
   (use-short-answers t))
@@ -263,12 +264,6 @@
 
 ;;; Windows, interface elements, visual editing helpers and themes
 
-(use-package all-the-icons
-  :demand (not (display-graphic-p))
-  :if (display-graphic-p)
-  :custom
-  (all-the-icons-scale-factor 0.9))
-
 (use-package dashboard
   :demand t
   :custom
@@ -285,7 +280,7 @@
 
 (use-package doom-modeline
   :demand t
-  :after (all-the-icons doom-themes)
+  :after (doom-themes nerd-icons)
   :custom
   (doom-modeline-height 30)
   (doom-modeline-minor-modes t)
@@ -296,6 +291,27 @@
   :demand t
   :config
   (load-theme 'doom-tokyo-night t))
+
+(use-package major-mode-hydra
+  :demand t
+  :custom
+  (major-mode-hydra-invisible-quit-key "q")
+  (major-mode-hydra-separator "-")
+  :config
+  (bind-key "C-c H" #'major-mode-hydra))
+
+(use-package nerd-icons
+  :demand t
+  :custom
+  (nerd-icons-font-family "Symbols Nerd Font Mono"))
+
+(use-package nerd-icons-dired
+  :hook
+  (dired-mode . nerd-icons-dired-mode))
+
+(use-package nerd-icons-ibuffer
+  :hook
+  (ibuffer-mode . nerd-icons-ibuffer-mode))
 
 ;; TODO: evaluate removing popper (e.g. window-toggle-side-windows)
 (use-package popper
@@ -327,14 +343,6 @@
   (bind-key "C-`"   #'popper-cycle)
   (bind-key "M-`"   #'popper-toggle-latest)
   (bind-key "C-M-`" #'popper-toggle-type))
-
-(use-package major-mode-hydra
-  :demand t
-  :custom
-  (major-mode-hydra-invisible-quit-key "q")
-  (major-mode-hydra-separator "-")
-  :config
-  (bind-key "C-c H" #'major-mode-hydra))
 
 (use-package which-key
   :demand t
@@ -552,7 +560,7 @@
   (tab-bar-tab-hints t)
   :init
   (defun my/tab-bar-format-menu-bar ()
-    `((menu-bar menu-item (propertize (concat " " (if ON-LINUX (all-the-icons-material "menu") "Menu") "  ") 'face 'tab-bar-tab-inactive) tab-bar-menu-bar :help "Menu Bar")))
+    `((menu-bar menu-item (propertize " Menu " 'face 'tab-bar-tab-inactive) tab-bar-menu-bar :help "Menu Bar")))
   :config
   (tab-bar-mode +1)
   (tab-bar-rename-tab "main" 1))
@@ -1845,6 +1853,12 @@
   :custom
   (completion-category-overrides '((file (styles . (partial-completion)))))
   (completion-styles '(orderless basic partial-completion)))
+
+(use-package nerd-icons-completion
+  :after (vertico marginalia)
+  :demand t
+  :config
+  (nerd-icons-completion-mode +1))
 
 ;; Use M-n to insert symbol or thing at point into the input
 (use-package consult
