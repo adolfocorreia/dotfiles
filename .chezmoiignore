@@ -16,6 +16,7 @@ README.md
 .config/mimeapps.list
 .config/mpv
 .config/nvim
+.config/paru
 .config/picom
 .config/pypoetry
 .config/qt5ct
