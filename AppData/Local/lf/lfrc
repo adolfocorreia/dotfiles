@@ -56,7 +56,7 @@ cmd trash %recycle-bin %fx%
 ## Custom mappings ##
 
 map - updir
-map <backspace2> updir
+map <backspace> updir
 map . $explorer %PWD%
 map D trash
 map md mkdir
