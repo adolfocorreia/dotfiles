@@ -431,6 +431,7 @@ PLUGINS = {
   {
     'ggandor/leap.nvim',
     keys = { 's', 'S' },
+    dependencies = { 'unblevable/quick-scope' },
     config = function ()
       require('leap').add_default_mappings()
       vim.keymap.del({'x', 'o'}, 'x')
