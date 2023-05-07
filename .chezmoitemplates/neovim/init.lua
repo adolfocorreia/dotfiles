@@ -522,6 +522,38 @@ local LEADER_MAPPINGS = {
     },
   },
 
+  D = {
+    name = "debug",
+    ["D"] = { "<Cmd>lua require('dap').continue()<CR>", "Start" },
+    ["b"] = { "<Cmd>lua require('dap').step_back()<CR>", "Step Back" },
+    ["c"] = { "<Cmd>lua require('dap').continue()<CR>", "Continue" },
+    ["C"] = { "<Cmd>lua require('dap').set_breakpoint(vim.fn.input '[Condition] > ')<CR>", "Conditional Breakpoint" },
+    ["d"] = { "<Cmd>lua require('dap').disconnect()<CR>", "Disconnect" },
+    ["e"] = { "<Cmd>lua require('dapui').eval()<CR>", "Evaluate" },
+    ["E"] = { "<Cmd>lua require('dapui').eval(vim.fn.input '[Expression] > ')<CR>", "Evaluate Input" },
+    ["g"] = { "<Cmd>lua require('dap').session()<CR>", "Get Session" },
+    ["h"] = { "<Cmd>lua require('dap.ui.widgets').hover()<CR>", "Hover Variables" },
+    ["i"] = { "<Cmd>lua require('dap').step_into()<CR>", "Step Into" },
+    ["o"] = { "<Cmd>lua require('dap').step_over()<CR>", "Step Over" },
+    ["p"] = { "<Cmd>lua require('dap').pause.toggle()<CR>", "Pause" },
+    ["q"] = { "<Cmd>lua require('dap').close()<CR>", "Quit" },
+    ["r"] = { "<Cmd>lua require('dap').repl.toggle()<CR>", "Toggle Repl" },
+    ["R"] = { "<Cmd>lua require('dap').run_to_cursor()<CR>", "Run to Cursor" },
+    ["S"] = { "<Cmd>lua require('dap.ui.widgets').scopes()<CR>", "Scopes" },
+    ["t"] = { "<Cmd>lua require('dap').toggle_breakpoint()<CR>", "Toggle Breakpoint" },
+    ["u"] = { "<Cmd>lua require('dap').step_out()<CR>", "Step Out" },
+    ["U"] = { "<Cmd>lua require('dapui').toggle()<CR>", "Toggle UI" },
+    ["x"] = { "<Cmd>lua require('dap').terminate()<CR>", "Terminate" },
+    s = {
+      name = "Search",
+      ["b"] = { "<Cmd>Telescope dap list_breakpoints<CR>", "Breakpoints" },
+      ["c"] = { "<Cmd>Telescope dap commands<CR>", "Commands" },
+      ["C"] = { "<Cmd>Telescope dap configurations<CR>", "Configurations" },
+      ["f"] = { "<Cmd>Telescope dap frames<CR>", "Frames" },
+      ["v"] = { "<Cmd>Telescope dap variables<CR>", "Variables" },
+    },
+  },
+
   g = {
     name = "git",
     ["g"] = { "<Cmd>tab Git<CR>", "Git status" },
@@ -963,8 +995,8 @@ local PLUGINS = {
   {
     "VonHeikemen/lsp-zero.nvim",
     branch = "v2.x",
-    event = "BufReadPre",
-    cmd = { "Mason" },
+    event = { "BufReadPre", "BufNewFile" },
+    cmd = { "LspInfo", "Mason" },
     dependencies = {
       { "nvim-lua/plenary.nvim" },
 
@@ -1047,6 +1079,54 @@ local PLUGINS = {
 
       -- Setup LSP symbols outline.
       require("symbols-outline").setup({})
+    end,
+  },
+
+  -- Configure DAP support.
+  -- TODO: evaluate persistent-breakpoints.nvim, goto-breakpoints.nvim
+  {
+    "mfussenegger/nvim-dap",
+    lazy = true, -- Loaded when require'd
+    dependencies = {
+      "rcarriga/nvim-dap-ui",
+      "theHamsta/nvim-dap-virtual-text",
+      "nvim-telescope/telescope-dap.nvim",
+
+      -- Mason setup
+      "williamboman/mason.nvim",
+      "jay-babu/mason-nvim-dap.nvim",
+    },
+    config = function()
+      local dap = require("dap")
+
+      local dapui = require("dapui")
+      dapui.setup()
+
+      -- TODO: open debug session in new tab: https://github.com/rcarriga/nvim-dap-ui/issues/122
+      dap.listeners.after.event_initialized["dapui_config"] = function()
+        dapui.open()
+      end
+      dap.listeners.before.event_terminated["dapui_config"] = function()
+        dapui.close()
+      end
+      dap.listeners.before.event_exited["dapui_config"] = function()
+        dapui.close()
+      end
+
+      require("nvim-dap-virtual-text").setup({
+        commented = true,
+      })
+
+      require("telescope").load_extension("dap")
+
+      require("mason-nvim-dap").setup({
+        ensure_installed = { "python" },
+        handlers = {
+          function(config)
+            require("mason-nvim-dap").default_setup(config)
+          end,
+        },
+      })
     end,
   },
 
