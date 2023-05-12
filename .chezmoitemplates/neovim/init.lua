@@ -766,7 +766,7 @@ local PLUGINS = {
   -- Add (ys_), change (cs_), remove (ds_) surrounding delimiters (_ss for whole line).
   {
     "kylechui/nvim-surround",
-    keys = { "ys", "cs", "ds" },
+    keys = { "ys", "cs", "ds", { "S", mode = "v" } },
     config = true,
   },
 
