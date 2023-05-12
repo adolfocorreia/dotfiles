@@ -1,4 +1,12 @@
+import REPL
 atreplinit() do repl
+    # Enable IPython-like numbered prompt
+    if !isdefined(repl, :interface)
+        repl.interface = REPL.setup_interface(repl)
+    end
+    REPL.numbered_prompt!(repl)
+
+    # Load OhMyREPL
     try
         @eval import OhMyREPL
 
