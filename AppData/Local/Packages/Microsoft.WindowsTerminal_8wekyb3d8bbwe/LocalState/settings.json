@@ -114,12 +114,7 @@
             "cursorShape": "underscore",
             "font":
             {
-                //"face": "DejaVuSansMono NF",
-                "face": "Hack NF",
-                //"face": "InconsolataGo NF",
-                //"face": "mononoki NF",
-                //"face": "SauceCodePro NF",
-                //"face": "UbuntuMono NF",
+                "face": "Hack Nerd Font",
                 "size": 9
             },
             "opacity": 90,

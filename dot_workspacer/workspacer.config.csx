@@ -51,7 +51,7 @@ Action<IConfigContext> doConfig = (context) => {
     Color teal            = new Color(0x73, 0xda, 0xca);
 
     int barHeight = 16;
-    string fontName = "Hack NF";
+    string fontName = "Hack Nerd Font";
     int fontSize = 9;
 
     KeyModifiers mod   = KeyModifiers.Alt;
@@ -169,9 +169,18 @@ Action<IConfigContext> doConfig = (context) => {
         FontName = fontName,
         /* Icon databases:
          * Nerd Fonts: nerdfonts.com/cheat-sheet
-         * Font Awesome: fontawesome.com */
+         * Font Awesome: fontawesome.com
+         * Used icons:
+         * - nf-md-monitor:    \udb80\udf79
+         * - nf-fa-star:       \uf005
+         * - nf-fa-laptop:     \uf109
+         * - nf-md-sd:         \udb81\udc79
+         * - nf-md-battery_90: \udb80\udc82
+         * - nf-fa-calendar_o: \uf133
+         * - nf-fa-star:       \uf017
+         * */
         LeftWidgets = () => new IBarWidget[] {
-            new TextWidget(" \uf878 "),
+            new TextWidget(" 󰍹 "),
             new WorkspaceWidget() {
                 WorkspaceHasFocusColor = yellow,
                 WorkspaceEmptyColor = gray,
@@ -179,27 +188,27 @@ Action<IConfigContext> doConfig = (context) => {
             new ActiveLayoutWidget() { LeftPadding = "[", RightPadding = "]" },
             new TextWidget(" | "),
             new ColorFocusedMonitorWidget() {
-                FocusedText = "\uf005  ",
+                FocusedText = "  ",
                 ForegroundColor = yellow },
             new TitleWidget() {
                 IsShortTitle = true,
                 WindowHasFocusColor = yellow,
                 NoWindowMessage = "-" },
             new ColorFocusedMonitorWidget() {
-                FocusedText = "  \uf005",
+                FocusedText = "  ",
                 ForegroundColor = yellow },
         },
         RightWidgets = () => new IBarWidget[] {
-            new CpuPerformanceWidget() { Interval = 1000*10, StringFormat = "\uf109{0}%" },
+            new CpuPerformanceWidget() { Interval = 1000*10, StringFormat = "{0}%" },
             new TextWidget(" "),
-            new MemoryPerformanceWidget() { Interval = 1000*10, StringFormat = "\uf978{0}%" },
+            new MemoryPerformanceWidget() { Interval = 1000*10, StringFormat = "󰑹{0}%" },
             /* TODO: Change icon according to battery level */
-            new TextWidget(" \uf581"),
+            new TextWidget(" 󰂂"),
             new BatteryWidget() {
                 LowChargeColor = red,
                 MedChargeColor = yellow,
                 HighChargeColor = green },
-            new TimeWidget(1000, " \uf133 ddd dd.MMM.yyyy  \uf017 HH:mm "),
+            new TimeWidget(1000, "  ddd dd.MMM.yyyy   HH:mm "),
         },
     });
 
