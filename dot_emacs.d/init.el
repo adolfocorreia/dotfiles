@@ -1301,7 +1301,6 @@
 ;; TODO: evaluate packages
 ;; evil-cleverparens
 ;; evil-embrace
-;; evil-markdown
 ;; evil-quick-diff
 ;; evil-replace-with-register
 ;; evil-string-inflection
@@ -1329,6 +1328,8 @@
                '("\\*Flycheck errors\\*"
                  (display-buffer-in-side-window) (side . bottom) (slot . 0) (window-height . 0.3))))
 
+;; TODO: evaluate this better
+;; TODO: evaluate languagetool and proselint
 (use-package flycheck-grammarly
   :after flycheck
   :commands flycheck-grammarly-setup)
@@ -1401,6 +1402,17 @@
   :commands (lsp-treemacs-errors-list lsp-treemacs-symbols))
 
 
+;; DAP
+(use-package dap-mode
+  :after lsp-mode
+  :commands dap-debug
+  :custom
+  (dap-auto-configure-features '(sessions locals controls tooltip))
+  (dap-python-debugger 'debugpy)
+  :config
+  (add-hook 'dap-stopped-hook (lambda (_) (call-interactively #'dap-hydra))))
+
+
 ;; tree-sitter
 (use-package tree-sitter
   :hook
@@ -1464,8 +1476,9 @@
   :config
   (if ON-WINDOWS (setenv "PYTHONIOENCODING" "UTF-8"))
   (general-def
+    :prefix "C-c"
     :major-modes 'python-mode
-    "C-c C-t" '(:ignore t :which-key "python-skeleton"))
+    "C-t" '(:ignore t :which-key "python-skeleton"))
   (add-to-list 'display-buffer-alist
                '("\\*Python\\*"
                  (display-buffer-reuse-window display-buffer-same-window))))
@@ -1487,7 +1500,7 @@
   (python-mode . blacken-mode))
 
 (use-package python-isort
-  :after python
+  :after blacken
   :hook
   (python-mode . python-isort-on-save-mode))
 
@@ -1521,8 +1534,9 @@
   (pytest-project-root-files '(".venv" "setup.py" ".git"))
   :init
   (general-def
+    :prefix "C-c"
     :major-modes 'python-mode
-    "C-c t" '(:ignore t :which-key "pytest"))
+    "t" '(:ignore t :which-key "pytest"))
   :config
   (add-to-list 'display-buffer-alist
                '("\\*pytest\\*"
@@ -1540,12 +1554,13 @@
   (add-hook 'rst-mode-hook #'turn-on-auto-fill)  ; Also use M-q (fill-paragraph) to reset paragraph shape
   (add-hook 'rst-mode-hook #'ws-butler-mode)
   (general-def
+    :prefix "C-c"
     :major-modes 'rst-mode
-    "C-c C-a" '(:ignore t :which-key "adjust")
-    "C-c C-c" '(:ignore t :which-key "compile")
-    "C-c C-l" '(:ignore t :which-key "list")
-    "C-c C-r" '(:ignore t :which-key "region")
-    "C-c C-t" '(:ignore t :which-key "toc")))
+    "C-a" '(:ignore t :which-key "adjust")
+    "C-c" '(:ignore t :which-key "compile")
+    "C-l" '(:ignore t :which-key "list")
+    "C-r" '(:ignore t :which-key "region")
+    "C-t" '(:ignore t :which-key "toc")))
 
 ;; TODO: add mypy backend for flycheck
 ;; TODO: evaluate ein (emacs-ipython-notebook) and emacs-jupyter
@@ -1616,13 +1631,31 @@
     :after (haskell-mode lsp-mode)))
 
 
+;; Markdown
+(use-package markdown-mode
+  :mode
+  ("/README\\(?:\\.md\\)?\\'" . gfm-mode)
+  :custom
+  (markdown-command "pandoc")
+  :config
+  (general-def
+    :prefix "C-c"
+    :major-modes 'markdown-mode
+    "C-a" '(:ignore t :which-key "links")
+    "C-c" '(:ignore t :which-key "commands")
+    "C-s" '(:ignore t :which-key "styling-headings")
+    "C-t" '(:ignore t :which-key "insert-header")
+    "C-x" '(:ignore t :which-key "toggle")))
+
+
 ;; LaTeX
 ;; Useful functions: (repunctuate-sentences)
 (unless ON-WINDOWS
   ;; Documentation: https://www.gnu.org/software/auctex/manual/auctex.index.html
   (use-package tex
     :ensure auctex
-    :mode ("\\.tex\\'" . LaTeX-mode)
+    :mode
+    ("\\.tex\\'" . LaTeX-mode)
     :custom
     (TeX-PDF-mode t)
     (TeX-check-TeX t)
@@ -1688,7 +1721,8 @@
     (LaTeX-mode . evil-tex-mode)))
 
 (use-package pdf-tools
-  :mode ("\\.pdf\\'" . pdf-view-mode)
+  :mode
+  ("\\.pdf\\'" . pdf-view-mode)
   :init
   (setq-default pdf-view-display-size 'fit-page)
   :config
@@ -1730,10 +1764,9 @@
 
 
 ;; XML
-
 (use-package xml-format
   :after nxml-mode
-  :mode "\\.xml\\'")
+  :commands (xml-format-buffer xml-format-region xml-format-on-save-mode))
 
 
 ;; SQL
