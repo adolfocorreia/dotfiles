@@ -364,10 +364,10 @@ Action<IConfigContext> doConfig = (context) => {
         w.ProcessName.Equals("XMind") && w.Class.Equals("Static")
     ));
 
-    context.WindowRouter.RouteProcessName("notes2",  ws_mail);
-    context.WindowRouter.RouteProcessName("OUTLOOK", ws_mail);
-    context.WindowRouter.RouteProcessName("Teams",   ws_chat);
-    context.WindowRouter.RouteTitle("WhatsApp Web",  ws_chat);
+    context.WindowRouter.RouteProcessName("notes2", ws_mail);
+    context.WindowRouter.RouteProcessName("olk",    ws_mail);
+    context.WindowRouter.RouteProcessName("Teams",  ws_chat);
+    context.WindowRouter.RouteTitle("WhatsApp Web", ws_chat);
 
     context.WindowRouter.RouteTitle("Gmail",                     ws_gapps);
     context.WindowRouter.RouteTitle("Google Calendar",           ws_gapps);
