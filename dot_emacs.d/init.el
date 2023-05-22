@@ -906,6 +906,11 @@
     (kbd "C-p") #'comint-previous-input
     (kbd "C-n") #'comint-next-input)
 
+  ;; corfu mode
+  (evil-collection-define-key 'insert 'corfu-map
+    (kbd "C-y") #'corfu-insert
+    (kbd "C-e") #'evil-collection-corfu-quit-and-escape)
+
   ;; custom mode
   (evil-collection-define-key 'normal 'custom-mode-map
     (kbd "C-p") #'evil-previous-line
@@ -1500,7 +1505,9 @@
   (python-mode . blacken-mode))
 
 (use-package python-isort
-  :after blacken
+  :after python
+  :custom
+  (python-isort-arguments ("--stdout" "--atomic" "--profile black" "-"))
   :hook
   (python-mode . python-isort-on-save-mode))
 
