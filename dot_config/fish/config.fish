@@ -37,7 +37,6 @@ if status is-interactive
     alias vi="nvim --clean"
 
     # Sponge plugin settings
-    set sponge_allow_previously_successful false
     set sponge_purge_only_on_exit true
 
     # Load conda
