@@ -1507,7 +1507,7 @@
 (use-package python-isort
   :after python
   :custom
-  (python-isort-arguments ("--stdout" "--atomic" "--profile black" "-"))
+  (python-isort-arguments '("--stdout" "--atomic" "--profile black" "-"))
   :hook
   (python-mode . python-isort-on-save-mode))
 
