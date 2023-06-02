@@ -1,9 +1,33 @@
+function bind_bang
+    switch (commandline -t)[-1]
+        case "!"
+            commandline -t -- $history[1]
+            commandline -f repaint
+        case "*"
+            commandline -i !
+    end
+end
+
+function bind_dollar
+    switch (commandline -t)[-1]
+        case "!"
+            commandline -f backward-delete-char history-token-search-backward
+        case "*"
+            commandline -i '$'
+    end
+end
+
 function fish_user_key_bindings
     # Add emacs bindings to vi insert mode and then load vi-mode without resetting previous bindings
     # Reference: https://fishshell.com/docs/current/interactive.html#vi-mode-commands
     # Note: use Alt+E to open current command line in editor
     fish_default_key_bindings -M insert
     fish_vi_key_bindings --no-erase
+
+    # Bind '!!' and '!$' as bash-style command substitution
+    # Reference: https://github.com/fish-shell/fish-shell/wiki/Bash-Style-Command-Substitution-and-Chaining-(!!-!$)
+    bind -M insert '!' bind_bang
+    bind -M insert '$' bind_dollar
 
     # Key binding references:
     # - https://fishshell.com/docs/current/cmds/bind.html
