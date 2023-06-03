@@ -1,12 +1,8 @@
+#!/bin/bash
 # ~/.bash_profile
 
-# Enable numlock on shell login (tty).
-if [[ "$TERM" == "linux" ]]; then
-  setleds -D +num
-fi
-
 # Add extra directories to PATH.
-[[ -d "$HOME/.local/bin" ]]   && PATH="$HOME/.local/bin:${PATH}"
+[[ -d ~/.local/bin ]] && PATH="${HOME}/.local/bin:${PATH}"
 export PATH
 
 # Init pyenv by adding it to PATH.
@@ -21,9 +17,6 @@ export TIME_STYLE=long-iso
 export EDITOR=nvim
 export OPENER=mimeopen
 
-# Set aliases.
-alias open="handlr open"
-
-
+# Run .bashrc
 [[ -r ~/.bashrc ]] && . ~/.bashrc
 

@@ -1,3 +1,4 @@
+#!/bin/bash
 # ~/.bashrc
 
 # If not running interactively, don't do anything.
@@ -27,7 +28,15 @@ alias lynx='lynx -vikeys'
 
 alias vi='nvim --clean'
 
+alias open="handlr open"
+
+
+# Enable numlock on shell login (tty).
+if [[ "${TERM}" == 'linux' ]]; then
+  setleds -D +num
+fi
+
 
 # Find packages that provide unavailable commands.
-[ -r /usr/share/doc/pkgfile/command-not-found.bash ] && . /usr/share/doc/pkgfile/command-not-found.bash
+[[ -r /usr/share/doc/pkgfile/command-not-found.bash ]] && . /usr/share/doc/pkgfile/command-not-found.bash
 
