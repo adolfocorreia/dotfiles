@@ -61,10 +61,10 @@ Action<IConfigContext> doConfig = (context) => {
 
     string ws_mail   = "mail";
     string ws_chat   = "chat";
-    string ws_gapps  = "gapps";
+    string ws_apps   = "apps";
     int ws_mail_num  = 10;
     int ws_chat_num  = 11;
-    int ws_gapps_num = 12;
+    int ws_apps_num  = 12;
 
     /* Disable auto-updates */
     context.Branch = Branch.None;
@@ -72,6 +72,7 @@ Action<IConfigContext> doConfig = (context) => {
     context.CanMinimizeWindows = true;
 
     /* Keybindings */
+    /* Reference: https://workspacer.org/keybindings */
     Action setKeybindings = () => {
         IKeybindManager k = context.Keybinds;
         IWorkspaceManager w = context.Workspaces;
@@ -87,8 +88,8 @@ Action<IConfigContext> doConfig = (context) => {
 
         /* Action keybindings */
         k.Subscribe(modS,  Keys.Enter, () => System.Diagnostics.Process.Start("wt.exe"), "launch terminal");
-        k.Subscribe(modS,  Keys.Q,     () => w.FocusedWorkspace.CloseFocusedWindow(),    "close focused window");
-        k.Subscribe(modCS, Keys.Q,     () => context.Restart(),                          "quit workspacer");
+        k.Subscribe(modS,  Keys.C,     () => w.FocusedWorkspace.CloseFocusedWindow(),    "close focused window");
+        k.Subscribe(modS,  Keys.Q,     () => context.Restart(),                          "restart workspacer");
 
         /* Window keybindings */
         // k.Subscribe(mod,  Keys.J,         () => w.FocusedWorkspace.FocusNextWindow(),                 "focus next window");
@@ -136,6 +137,11 @@ Action<IConfigContext> doConfig = (context) => {
         k.Subscribe(modS, Keys.OemMinus, () => w.MoveFocusedWindowToWorkspace(8), "move focused window to workspace 9");
         k.Subscribe(modS, Keys.Oemplus,  () => w.MoveFocusedWindowToWorkspace(9), "move focused window to workspace 10");
 
+        k.Subscribe(mod,  Keys.D6,       () => w.SwitchToWorkspace(ws_mail_num),            "switch to workspace mail");
+        k.Subscribe(modS, Keys.D6,       () => w.MoveFocusedWindowToWorkspace(ws_mail_num), "move focused window to workspace mail");
+        k.Subscribe(mod,  Keys.D7,       () => w.SwitchToWorkspace(ws_chat_num),            "switch to workspace chat");
+        k.Subscribe(modS, Keys.D7,       () => w.MoveFocusedWindowToWorkspace(ws_chat_num), "move focused window to workspace chat");
+
         k.Subscribe(mod,  Keys.W, () => w.SwitchFocusedMonitor(2),              "switch to monitor 1");
         k.Subscribe(mod,  Keys.E, () => w.SwitchFocusedMonitor(0),              "switch to monitor 2");
         k.Subscribe(mod,  Keys.R, () => w.SwitchFocusedMonitor(1),              "switch to monitor 3");
@@ -151,9 +157,9 @@ Action<IConfigContext> doConfig = (context) => {
         k.Subscribe(modS, Keys.Right, () => w.MoveFocusedWindowToNextMonitor(),     "move focused window to next monitor");
 
         /* Debug keybindings */
-        // k.Subscribe(mod,  Keys.O, () => context.Windows.DumpWindowDebugOutput(),            "dump debug info to console for all windows");
-        // k.Subscribe(modS, Keys.O, () => context.Windows.DumpWindowUnderCursorDebugOutput(), "dump debug info to console for window under cursor");
-        // k.Subscribe(modS, Keys.I, () => context.ToggleConsoleWindow(),                      "toggle debug console");
+        k.Subscribe(mod,  Keys.O, () => context.Windows.DumpWindowDebugOutput(),            "dump debug info to console for all windows");
+        k.Subscribe(modS, Keys.O, () => context.Windows.DumpWindowUnderCursorDebugOutput(), "dump debug info to console for window under cursor");
+        k.Subscribe(modS, Keys.I, () => context.ToggleConsoleWindow(),                      "toggle debug console");
         // k.Subscribe(modS, Keys.OemQuestion, () => k.ShowKeybindDialog(),                    "open keybind window");
     };
     setKeybindings();
@@ -275,7 +281,7 @@ Action<IConfigContext> doConfig = (context) => {
         ("10th",   defaultLayouts()),
         (ws_mail,  defaultLayouts()),
         (ws_chat,  defaultLayouts()),
-        (ws_gapps, new ILayoutEngine[] { new VertLayoutEngine(), new FullLayoutEngine() }),
+        (ws_apps,  new ILayoutEngine[] { new VertLayoutEngine(), new FullLayoutEngine() }),
     };
     foreach ((string name, ILayoutEngine[] layouts) in workspaces)  {
         context.WorkspaceContainer.CreateWorkspace(name, layouts);
@@ -294,18 +300,10 @@ Action<IConfigContext> doConfig = (context) => {
     // 7zip
     context.WindowRouter.IgnoreWindowClass("#32770");
     // AHK
-    context.WindowRouter.IgnoreProcessName("AutoHotkeyU64");
+    context.WindowRouter.IgnoreProcessName("AutoHotkey64");
+    context.WindowRouter.IgnoreProcessName("AutoHotkeyUX");
     // Ant Renamer
     context.WindowRouter.IgnoreProcessName("Renamer");
-    // AppRV
-    context.WindowRouter.IgnoreTitle("Aplicativos RV");
-    context.WindowRouter.AddFilter((w) => !(
-        w.Title.Equals("pythonw") && w.Class.Equals("Qt5152QWindowIcon")
-    ));
-    // ARC
-    context.WindowRouter.AddFilter((w) => !(
-        w.ProcessName.Equals("RiskControl") && w.Title.EndsWith("Risk Control Software")
-    ));
     // BIG-IP
     context.WindowRouter.IgnoreProcessName("f5fpclientW");
     // Bloomberg
@@ -325,8 +323,6 @@ Action<IConfigContext> doConfig = (context) => {
     context.WindowRouter.IgnoreWindowClass("OperationStatusWindow");
     // git credential helper
     context.WindowRouter.IgnoreWindowClass("CredentialHelperSelector");
-    // GWSL
-    context.WindowRouter.IgnoreProcessName("GWSL");
     // Jitsi (sharing window)
     context.WindowRouter.AddFilter((w) => !(
         w.Class.Equals("Chrome_WidgetWin_1") && (
@@ -347,8 +343,6 @@ Action<IConfigContext> doConfig = (context) => {
     context.WindowRouter.IgnoreWindowClass("TkTopLevel");
     // R
     context.WindowRouter.IgnoreWindowClass("Rterm");
-    // SIGA
-    context.WindowRouter.IgnoreProcessName("Siga");
     // SpeedCrunch
     context.WindowRouter.IgnoreProcessName("speedcrunch");
     // Sublime Text
@@ -369,10 +363,10 @@ Action<IConfigContext> doConfig = (context) => {
     context.WindowRouter.RouteProcessName("Teams",  ws_chat);
     context.WindowRouter.RouteTitle("WhatsApp Web", ws_chat);
 
-    context.WindowRouter.RouteTitle("Gmail",                     ws_gapps);
-    context.WindowRouter.RouteTitle("Google Calendar",           ws_gapps);
-    context.WindowRouter.RouteTitleMatch(".*gmail.com - Gmail",  ws_gapps);
-    context.WindowRouter.RouteTitleMatch("Google Calendar - .*", ws_gapps);
+    context.WindowRouter.RouteTitle("Gmail",                     ws_apps);
+    context.WindowRouter.RouteTitle("Google Calendar",           ws_apps);
+    context.WindowRouter.RouteTitleMatch(".*gmail.com - Gmail",  ws_apps);
+    context.WindowRouter.RouteTitleMatch("Google Calendar - .*", ws_apps);
 
     context.WindowRouter.RouteProcessName("Amazon Music", "10th");
     context.WindowRouter.RouteProcessName("Spotify",      "10th");
