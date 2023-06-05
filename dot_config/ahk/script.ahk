@@ -23,8 +23,14 @@ SC073::RCtrl
 
 
 ; Swallow Insert on Outlook.
-#HotIf WinActive("ahk_exe OUTLOOK.EXE")
+#HotIf WinActive("ahk_exe olk.exe")
   Insert::return
+#HotIf
+
+
+; Remap Ctrl-W to Ctrl-Q for JupyterLab tabs in Chrome.
+#HotIf WinActive("JupyterLab ahk_exe chrome.exe")
+  ^w::SendInput "^q"
 #HotIf
 
 
