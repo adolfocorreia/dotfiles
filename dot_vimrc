@@ -13,9 +13,9 @@ let loaded_ruby_provider    = 0
 let loaded_node_provider    = 0
 let loaded_perl_provider    = 0
 
-let loaded_netrw = 1
-let loaded_netrwPlugin = 1
-let loaded_netrwSettings = 1
+let loaded_netrw             = 1
+let loaded_netrwPlugin       = 1
+let loaded_netrwSettings     = 1
 let loaded_netrwFileHandlers = 1
 
 
@@ -50,31 +50,35 @@ Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'unblevable/quick-scope'
-Plug 'vim-airline/vim-airline'
 Plug 'wellle/targets.vim'
 
-" Plug 'arcticicestudio/nord-vim'
+if $TERM != 'linux'
+  Plug 'vim-airline/vim-airline'
+endif
+
 Plug 'catppuccin/vim',  { 'as': 'catppuccin' }
-" Plug 'cocopon/iceberg.vim'
-" Plug 'drewtempelmeyer/palenight.vim'
-" Plug 'ghifarit53/tokyonight-vim'
+Plug 'jeffkreeftmeijer/vim-dim'
 
 call plug#end()
 
 
 """"" Theme configuration """""
 
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts = 1
 set background=dark
-set termguicolors
-colorscheme catppuccin_frappe
+if $TERM != 'linux'
+  let g:airline_powerline_fonts = 1
+  let g:airline#extensions#tabline#enabled = 1
+  set termguicolors
+  colorscheme catppuccin_frappe
+else
+  colorscheme dim
+endif
 
 
 """"" Plugin configuration """""
 
-nmap gl <Plug>(EasyAlign)
-xmap gl <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
+xmap ga <Plug>(EasyAlign)
 
 nmap <BS> <Plug>(dirvish_up)
 
@@ -146,8 +150,12 @@ autocmd vimrc TerminalOpen * setlocal nonumber norelativenumber nocursorline noc
 autocmd vimrc VimResized * tabdo wincmd =
 
 " Set compilers/linters (run with :make %)
-autocmd FileType python compiler pylint
-autocmd FileType sh     compiler shellcheck
+if executable('pylint')
+  autocmd FileType python compiler pylint
+endif
+if executable('shellcheck')
+  autocmd FileType sh compiler shellcheck
+endif
 
 
 """"" Key mappings """""
@@ -185,3 +193,4 @@ nnoremap <C-w><Tab>2 2gt
 nnoremap <C-w><Tab>3 3gt
 nnoremap <C-w><Tab>4 4gt
 nnoremap <C-w><Tab>5 5gt
+
