@@ -2,13 +2,13 @@
 # ~/.bash_profile
 
 # Add extra directories to PATH.
-[[ -d ~/.local/bin ]] && PATH="${HOME}/.local/bin:${PATH}"
-export PATH
+[[ -d ~/.local/bin ]] && export PATH="${HOME}/.local/bin:${PATH}"
 
 # Init pyenv by adding it to PATH.
 if [[ -x /usr/bin/pyenv ]]; then
   eval "$(pyenv init --path)"
 fi
+
 
 # Set other environment variables.
 export LC_TIME=en_DK.UTF-8
@@ -16,6 +16,7 @@ export TIME_STYLE=long-iso
 
 export EDITOR=nvim
 export OPENER=mimeopen
+
 
 # Run .bashrc
 [[ -r ~/.bashrc ]] && . ~/.bashrc

@@ -24,11 +24,15 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias rm='rm -i'
 
-alias lynx='lynx -vikeys'
+if command -v nvim &> /dev/null; then
+  alias vi='nvim --clean'
+else
+  alias vi='vim -u NONE'
+fi
 
-alias vi='nvim --clean'
-
-alias open="handlr open"
+if command -v lynx &> /dev/null; then
+  alias lynx='lynx -vikeys'
+fi
 
 
 # Enable numlock on shell login (tty).
