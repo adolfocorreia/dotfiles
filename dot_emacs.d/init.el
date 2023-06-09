@@ -1725,39 +1725,39 @@
   (use-package evil-tex
     :after (evil tex)
     :hook
-    (LaTeX-mode . evil-tex-mode)))
+    (LaTeX-mode . evil-tex-mode))
 
-(use-package pdf-tools
-  :mode
-  ("\\.pdf\\'" . pdf-view-mode)
-  :init
-  (setq-default pdf-view-display-size 'fit-page)
-  :config
-  ;; On Windows, build in mingw64 with command build/server/autobuild
-  (pdf-tools-install)
-  (add-hook 'pdf-tools-enabled-hook #'pdf-view-themed-minor-mode)
-  (general-def
-    :prefix "C-c"
-    :major-modes 'pdf-view-mode
-    "C-a" '(:ignore t :which-key "pdf-annot")
-    "C-r" '(:ignore t :which-key "pdf-view"))
-  ;; Fix blinkg cursor arounf PDF in evil-mode
-  ;; Reference: https://github.com/doomemacs/doomemacs/pull/1107
-  (add-hook 'pdf-view-mode-hook (lambda () (set (make-local-variable 'evil-normal-state-cursor) (list nil))))
-  :mode-hydra
-  (pdf-view-mode (:title "PDF View")
-                 ("Zoom"
-                  (("=" pdf-view-enlarge              :exit nil)
-                   ("-" pdf-view-shrink               :exit nil)
-                   ("0" pdf-view-scale-reset          :exit nil)
-                   ("H" pdf-view-fit-height-to-window :exit nil)
-                   ("P" pdf-view-fit-page-to-window   :exit nil)
-                   ("W" pdf-view-fit-width-to-window  :exit nil))
-                  "Color modes"
-                  (("d" pdf-view-dark-minor-mode      :exit nil)
-                   ("m" pdf-view-midnight-minor-mode  :exit nil)
-                   ("p" pdf-view-printer-minor-mode   :exit nil)
-                   ("t" pdf-view-themed-minor-mode    :exit nil)))))
+  (use-package pdf-tools
+    :mode
+    ("\\.pdf\\'" . pdf-view-mode)
+    :init
+    (setq-default pdf-view-display-size 'fit-page)
+    :config
+    ;; On Windows, build in mingw64 with command build/server/autobuild
+    (pdf-tools-install)
+    (add-hook 'pdf-tools-enabled-hook #'pdf-view-themed-minor-mode)
+    (general-def
+      :prefix "C-c"
+      :major-modes 'pdf-view-mode
+      "C-a" '(:ignore t :which-key "pdf-annot")
+      "C-r" '(:ignore t :which-key "pdf-view"))
+    ;; Fix blinkg cursor arounf PDF in evil-mode
+    ;; Reference: https://github.com/doomemacs/doomemacs/pull/1107
+    (add-hook 'pdf-view-mode-hook (lambda () (set (make-local-variable 'evil-normal-state-cursor) (list nil))))
+    :mode-hydra
+    (pdf-view-mode (:title "PDF View")
+                   ("Zoom"
+                    (("=" pdf-view-enlarge              :exit nil)
+                     ("-" pdf-view-shrink               :exit nil)
+                     ("0" pdf-view-scale-reset          :exit nil)
+                     ("H" pdf-view-fit-height-to-window :exit nil)
+                     ("P" pdf-view-fit-page-to-window   :exit nil)
+                     ("W" pdf-view-fit-width-to-window  :exit nil))
+                    "Color modes"
+                    (("d" pdf-view-dark-minor-mode      :exit nil)
+                     ("m" pdf-view-midnight-minor-mode  :exit nil)
+                     ("p" pdf-view-printer-minor-mode   :exit nil)
+                     ("t" pdf-view-themed-minor-mode    :exit nil))))))
 
 
 ;; TODO: evaluate latex related packages
