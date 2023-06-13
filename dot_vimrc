@@ -1,5 +1,9 @@
 """"" Light Vim config """""
 
+" References:
+" - https://codeinthehole.com/tips/vim-lists
+" - https://nosarthur.github.io/productivity/2021/08/27/ex-vim.html
+
 augroup vimrc
   autocmd!
 augroup END
@@ -40,6 +44,7 @@ Plug 'justinmk/vim-sneak'
 Plug 'kana/vim-textobj-user'
 Plug 'mg979/vim-visual-multi',   { 'on': '<Plug>(VM-Find-Under)' }
 Plug 'michaeljsmith/vim-indent-object'
+Plug 'romainl/vim-qf'
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-eunuch',         { 'on': ['Delete','Move','Rename','Mkdir'] }
