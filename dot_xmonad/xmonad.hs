@@ -221,8 +221,8 @@ myAdditionalKeys =
     ("M-S-<Left>", shiftPrevScreen >> prevScreen),
     ("M-S-<Right>", shiftNextScreen >> nextScreen),
     -- Cycle through visible windows
-    ("M-<Tab>", nextMatch Forward isOnAnyVisibleWS),
-    ("M-S-<Tab>", nextMatch Backward isOnAnyVisibleWS),
+    ("M1-<Tab>", nextMatch Forward isOnAnyVisibleWS),
+    ("M1-S-<Tab>", nextMatch Backward isOnAnyVisibleWS),
     -- Volume controls
     ("<XF86AudioLowerVolume>", spawn "pamixer --decrease 5 --unmute"),
     ("<XF86AudioRaiseVolume>", spawn "pamixer --increase 5 --unmute"),
