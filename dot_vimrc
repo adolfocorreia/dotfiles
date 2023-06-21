@@ -35,6 +35,7 @@ endif
 
 call plug#begin()
 
+Plug 'farmergreg/vim-lastplace'
 Plug 'Julian/vim-textobj-variable-segment'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim',         { 'on': ['Files','GFiles','Buffers','Rg','Lines','Locate','History','Commits','BCommits','Commands','Helptags'] }
@@ -122,6 +123,7 @@ set number
 set omnifunc=syntaxcomplete#Complete
 set relativenumber
 set scrolloff=2
+set showcmd
 set sidescrolloff=5
 set smartcase
 set splitbelow
