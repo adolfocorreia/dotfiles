@@ -464,7 +464,7 @@ local LEADER_MAPPINGS = {
     ["s"] = { "<Cmd>vsplit<Bar>terminal<CR>", "Open system shell" },
     ["j"] = { "<Cmd>vsplit<Bar>terminal julia<CR>", "Open Julia REPL" },
     ["r"] = { "<Cmd>vsplit<Bar>terminal R<CR>", "Open R REPL" },
-    ["p"] = { "<Cmd>vsplit<Bar>terminal ipython --profile=vi<CR>", "Open Python REPL" },
+    ["p"] = { "<Cmd>vsplit<Bar>terminal python -m IPython --profile=vi<CR>", "Open Python REPL" },
   },
 
   c = {
