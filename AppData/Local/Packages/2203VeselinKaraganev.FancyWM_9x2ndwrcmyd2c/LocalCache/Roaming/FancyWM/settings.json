@@ -1,0 +1,368 @@
+{
+  "ActivationHotkey": "LWin_LShiftKey",
+  "ShowStartupWindow": false,
+  "AllocateNewPanelSpace": false,
+  "AutoCollapsePanels": false,
+  "AnimateWindowMovement": false,
+  "ModifierMoveWindow": true,
+  "ModifierMoveWindowAutoFocus": false,
+  "WindowPadding": 8,
+  "PanelHeight": 18,
+  "PanelFontSize": 12,
+  "ShowFocusDuringAction": true,
+  "OverrideAccentColor": false,
+  "CustomAccentColor": "#5E81ACFF",
+  "Keybindings": {
+    "ToggleManager": {
+      "IsDirectMode": false,
+      "Keys": [
+        "F12"
+      ]
+    },
+    "RefreshWorkspace": {
+      "IsDirectMode": false,
+      "Keys": [
+        "F5"
+      ]
+    },
+    "Cancel": {
+      "IsDirectMode": false,
+      "Keys": [
+        "Escape"
+      ]
+    },
+    "MoveFocusLeft": {
+      "IsDirectMode": false,
+      "Keys": [
+        "Left"
+      ]
+    },
+    "MoveFocusUp": {
+      "IsDirectMode": false,
+      "Keys": [
+        "Up"
+      ]
+    },
+    "MoveFocusRight": {
+      "IsDirectMode": false,
+      "Keys": [
+        "Right"
+      ]
+    },
+    "MoveFocusDown": {
+      "IsDirectMode": false,
+      "Keys": [
+        "Down"
+      ]
+    },
+    "ShowDesktop": {
+      "IsDirectMode": false,
+      "Keys": [
+        "D"
+      ]
+    },
+    "CreateHorizontalPanel": {
+      "IsDirectMode": false,
+      "Keys": [
+        "LeftShift",
+        "V"
+      ]
+    },
+    "CreateVerticalPanel": {
+      "IsDirectMode": false,
+      "Keys": [
+        "V"
+      ]
+    },
+    "CreateStackPanel": {
+      "IsDirectMode": false,
+      "Keys": [
+        "S"
+      ]
+    },
+    "PullWindowUp": {
+      "IsDirectMode": false,
+      "Keys": [
+        "Return"
+      ]
+    },
+    "ToggleFloatingMode": {
+      "IsDirectMode": false,
+      "Keys": [
+        "F"
+      ]
+    },
+    "MoveLeft": {
+      "IsDirectMode": false,
+      "Keys": [
+        "LeftCtrl",
+        "Left"
+      ]
+    },
+    "MoveUp": {
+      "IsDirectMode": false,
+      "Keys": [
+        "LeftCtrl",
+        "Up"
+      ]
+    },
+    "MoveRight": {
+      "IsDirectMode": false,
+      "Keys": [
+        "LeftCtrl",
+        "Right"
+      ]
+    },
+    "MoveDown": {
+      "IsDirectMode": false,
+      "Keys": [
+        "LeftCtrl",
+        "Down"
+      ]
+    },
+    "SwapLeft": {
+      "IsDirectMode": false,
+      "Keys": [
+        "LeftShift",
+        "Left"
+      ]
+    },
+    "SwapUp": {
+      "IsDirectMode": false,
+      "Keys": [
+        "LeftShift",
+        "Up"
+      ]
+    },
+    "SwapRight": {
+      "IsDirectMode": false,
+      "Keys": [
+        "LeftShift",
+        "Right"
+      ]
+    },
+    "SwapDown": {
+      "IsDirectMode": false,
+      "Keys": [
+        "LeftShift",
+        "Down"
+      ]
+    },
+    "IncreaseWidth": {
+      "IsDirectMode": false,
+      "Keys": [
+        "Oem6"
+      ]
+    },
+    "IncreaseHeight": {
+      "IsDirectMode": false,
+      "Keys": [
+        "OemQuotes"
+      ]
+    },
+    "DecreaseWidth": {
+      "IsDirectMode": false,
+      "Keys": [
+        "OemOpenBrackets"
+      ]
+    },
+    "DecreaseHeight": {
+      "IsDirectMode": false,
+      "Keys": [
+        "Oem1"
+      ]
+    },
+    "SwitchToPreviousDesktop": {
+      "IsDirectMode": false,
+      "Keys": [
+        "Back"
+      ]
+    },
+    "SwitchToDesktop1": {
+      "IsDirectMode": false,
+      "Keys": [
+        "D1"
+      ]
+    },
+    "SwitchToDesktop2": {
+      "IsDirectMode": false,
+      "Keys": [
+        "D2"
+      ]
+    },
+    "SwitchToDesktop3": {
+      "IsDirectMode": false,
+      "Keys": [
+        "D3"
+      ]
+    },
+    "SwitchToDesktop4": {
+      "IsDirectMode": false,
+      "Keys": [
+        "D4"
+      ]
+    },
+    "SwitchToDesktop5": {
+      "IsDirectMode": false,
+      "Keys": [
+        "D5"
+      ]
+    },
+    "SwitchToDesktop6": {
+      "IsDirectMode": false,
+      "Keys": [
+        "D6"
+      ]
+    },
+    "SwitchToDesktop7": {
+      "IsDirectMode": false,
+      "Keys": [
+        "D7"
+      ]
+    },
+    "SwitchToDesktop8": {
+      "IsDirectMode": false,
+      "Keys": [
+        "D8"
+      ]
+    },
+    "SwitchToDesktop9": {
+      "IsDirectMode": false,
+      "Keys": [
+        "D9"
+      ]
+    },
+    "MoveToPreviousDesktop": {
+      "IsDirectMode": false,
+      "Keys": [
+        "LeftShift",
+        "Back"
+      ]
+    },
+    "MoveToDesktop1": {
+      "IsDirectMode": false,
+      "Keys": [
+        "LeftShift",
+        "D1"
+      ]
+    },
+    "MoveToDesktop2": {
+      "IsDirectMode": false,
+      "Keys": [
+        "LeftShift",
+        "D2"
+      ]
+    },
+    "MoveToDesktop3": {
+      "IsDirectMode": false,
+      "Keys": [
+        "LeftShift",
+        "D3"
+      ]
+    },
+    "MoveToDesktop4": {
+      "IsDirectMode": false,
+      "Keys": [
+        "LeftShift",
+        "D4"
+      ]
+    },
+    "MoveToDesktop5": {
+      "IsDirectMode": false,
+      "Keys": [
+        "LeftShift",
+        "D5"
+      ]
+    },
+    "MoveToDesktop6": {
+      "IsDirectMode": false,
+      "Keys": [
+        "LeftShift",
+        "D6"
+      ]
+    },
+    "MoveToDesktop7": {
+      "IsDirectMode": false,
+      "Keys": [
+        "LeftShift",
+        "D7"
+      ]
+    },
+    "MoveToDesktop8": {
+      "IsDirectMode": false,
+      "Keys": [
+        "LeftShift",
+        "D8"
+      ]
+    },
+    "MoveToDesktop9": {
+      "IsDirectMode": false,
+      "Keys": [
+        "LeftShift",
+        "D9"
+      ]
+    },
+    "SwitchToPreviousDisplay": null,
+    "SwitchToDisplay1": {
+      "IsDirectMode": false,
+      "Keys": [
+        "R"
+      ]
+    },
+    "SwitchToDisplay2": {
+      "IsDirectMode": false,
+      "Keys": [
+        "W"
+      ]
+    },
+    "SwitchToDisplay3": {
+      "IsDirectMode": false,
+      "Keys": [
+        "E"
+      ]
+    },
+    "SwitchToDisplay4": null,
+    "SwitchToDisplay5": null,
+    "SwitchToDisplay6": null,
+    "SwitchToDisplay7": null,
+    "SwitchToDisplay8": null,
+    "SwitchToDisplay9": null,
+    "MoveToPreviousDisplay": null,
+    "MoveToDisplay1": {
+      "IsDirectMode": false,
+      "Keys": [
+        "LeftShift",
+        "R"
+      ]
+    },
+    "MoveToDisplay2": {
+      "IsDirectMode": false,
+      "Keys": [
+        "LeftShift",
+        "W"
+      ]
+    },
+    "MoveToDisplay3": {
+      "IsDirectMode": false,
+      "Keys": [
+        "LeftShift",
+        "E"
+      ]
+    },
+    "MoveToDisplay4": null,
+    "MoveToDisplay5": null,
+    "MoveToDisplay6": null,
+    "MoveToDisplay7": null,
+    "MoveToDisplay8": null,
+    "MoveToDisplay9": null
+  },
+  "ProcessIgnoreList": [
+    "Taskmgr",
+    "7zFM"
+  ],
+  "ClassIgnoreList": [],
+  "RemindToRateReview": false,
+  "ShowContextHints": true,
+  "MultiMonitorSupport": true,
+  "SoundOnFailure": true
+}

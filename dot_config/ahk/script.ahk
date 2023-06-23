@@ -19,6 +19,7 @@ SC073::RCtrl
   ^k::SendInput "{Blind^}{Up}"
   ^n::SendInput "{Blind^}{Down}"
   ^p::SendInput "{Blind^}{Up}"
+  ^m::SendInput "{Enter}"
 #HotIf
 
 
@@ -54,3 +55,5 @@ SC073::RCtrl
 ; Ctrl+Shift+Esc
 ; Launch_App2
 
+
+#Include "fancywm.ahk"
