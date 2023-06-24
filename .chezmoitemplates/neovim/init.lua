@@ -120,6 +120,12 @@ vim.opt.smartcase = true
 -- Disable line wrapping.
 vim.opt.wrap = false
 
+-- Allow virtual editing (e.g. past end of line) in visual block mode.
+vim.opt.virtualedit = "block"
+
+-- Round indent to multiples of 'shiftwidth' when using < or >.
+vim.opt.shiftround = true
+
 -- Always open diff windows vertically
 vim.opt.diffopt:append({ "vertical" })
 
@@ -1682,5 +1688,8 @@ local PLUGINS = {
 require("lazy").setup(PLUGINS, {
   install = {
     colorscheme = { "tokyonight" },
+  },
+  checker = {
+    enabled = true,
   },
 })

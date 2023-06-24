@@ -43,6 +43,7 @@ Plug 'junegunn/vim-easy-align',  { 'on': '<Plug>(EasyAlign)' }
 Plug 'justinmk/vim-dirvish',     { 'on': '<Plug>(dirvish_up)' }
 Plug 'justinmk/vim-sneak'
 Plug 'kana/vim-textobj-user'
+Plug 'ludovicchabant/vim-gutentags'
 Plug 'mg979/vim-visual-multi',   { 'on': '<Plug>(VM-Find-Under)' }
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'romainl/vim-qf'
@@ -101,6 +102,7 @@ let g:qs_buftype_blacklist = ['help', 'nofile', 'nowrite', 'terminal']
 """"" Vim options """""
 
 set clipboard=unnamed,unnamedplus
+set completefunc=syntaxcomplete#Complete
 set completeopt=menu,menuone,noselect
 set confirm
 set cursorline
@@ -115,6 +117,7 @@ set guioptions-=T
 set hidden
 set hlsearch
 set ignorecase
+set lazyredraw
 set mouse=a
 set noshowmode
 set nowrap
@@ -123,11 +126,14 @@ set number
 set omnifunc=syntaxcomplete#Complete
 set relativenumber
 set scrolloff=2
+set shiftround
 set showcmd
+set showmatch
 set sidescrolloff=5
 set smartcase
 set splitbelow
 set splitright
+set virtualedit=block
 set wildignore+=*.doc,*.docx,*.xls,*.xslx,*.ppt,*.pptx
 set wildignore+=*.pdf
 set wildignore+=*.png,*.jpg,*.gif
