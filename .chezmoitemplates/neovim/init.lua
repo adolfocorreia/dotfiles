@@ -481,14 +481,6 @@ local LEADER_MAPPINGS = {
     ["l"] = { "<Cmd>!stylua --indent-type Spaces --indent-width 2 %<CR>", "Format with stylua" },
     ["w"] = { "<Cmd>StripWhitespace<CR>", "Strip whitespace" },
     ["s"] = { "<Cmd>Telescope spell_suggest<CR>", "Spell suggest" },
-    c = {
-      name = "codeium",
-      ["e"] = { "<Cmd>Codeium Enable<CR>", "Enable Codeium" },
-      ["E"] = { "<Cmd>Codeium EnableBuffer<CR>", "Enable Codeium in buffer" },
-      ["d"] = { "<Cmd>Codeium Disable<CR>", "Disable Codeium" },
-      ["D"] = { "<Cmd>Codeium DisableBuffer<CR>", "Disable Codeium in buffer" },
-      ["a"] = { "<Cmd>Codeium Auth<CR>", "Authenticate Codeium" },
-    },
   },
 
   d = {
@@ -1229,26 +1221,6 @@ local PLUGINS = {
   {
     "vim-test/vim-test",
     cmd = { "TestNearest", "TestFile", "TestSuite" },
-  },
-
-  -- AI powered code suggestions.
-  {
-    "Exafunction/codeium.vim",
-    cmd = "Codeium",
-    init = function()
-      vim.g.codeium_disable_bindings = 1
-    end,
-    config = function()
-      vim.keymap.set("i", "<M-;>", function()
-        return vim.fn["codeium#Accept"]()
-      end, { expr = true, desc = "Accept completion" })
-      vim.keymap.set("i", "<M-]>", function()
-        return vim.fn["codeium#CycleCompletions"](1)
-      end, { expr = true, desc = "Next completion" })
-      vim.keymap.set("i", "<M-[>", function()
-        return vim.fn["codeium#CycleCompletions"](-1)
-      end, { expr = true, desc = "Previous completion" })
-    end,
   },
 
   --- Language plugins ---
