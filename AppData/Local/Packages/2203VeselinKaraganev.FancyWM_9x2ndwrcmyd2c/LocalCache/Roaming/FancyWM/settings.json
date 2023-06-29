@@ -358,9 +358,12 @@
   },
   "ProcessIgnoreList": [
     "Taskmgr",
-    "7zFM"
+    "7zFM",
+    "PomoDoneApp"
   ],
-  "ClassIgnoreList": [],
+  "ClassIgnoreList": [
+    "#32770"
+  ],
   "RemindToRateReview": false,
   "ShowContextHints": true,
   "MultiMonitorSupport": true,
