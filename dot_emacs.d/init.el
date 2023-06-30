@@ -15,7 +15,6 @@
 ;; TODO: check if :hook declarations are only being used to load the package at hand, since :hook implies :defer t (e.g. :hook (some-other-mode . this-package-mode))
 ;; TODO: open Emacs as server
 ;; TODO: evaluate all packages for lazy loading and :defer declarations (e.g. evil extension packages)
-;; TODO: evaluate Flycheck warnings
 ;; TODO: check if :after declarations are necessary/useful
 ;; TODO: evaluate project-rootfile
 
@@ -229,7 +228,7 @@
 
 
 ;; TODO: evaluate replacing general for something else
-;; TODO: find best way to replace +prefix with appropriate name for all minor and major modes (e.g. flycheck, pytest, pyenv, parinfer)
+;; TODO: find best way to replace +prefix with appropriate name for all minor and major modes (e.g. pytest, pyenv, parinfer)
 (use-package general
   :demand t
   :config
@@ -323,9 +322,11 @@
   (popper-reference-buffers
         '("\\*Messages\\*"
           "\\*Warnings\\*"
+          "\\*Backtrace\\*"
           "\\*Compile-Log\\*"
           "Output\\*"
           "\\*package update results\\*"
+          "\\*Anaconda\\*"
           help-mode
           helpful-mode
           apropos-mode
@@ -335,6 +336,7 @@
           dictionary-mode
           compilation-mode
           emacs-lisp-compilation-mode
+          flymake-diagnostics-buffer-mode
           occur-mode
           xref--xref-buffer-mode))
   :config
@@ -353,6 +355,7 @@
 ;; References:
 ;; - https://www.gnu.org/software/emacs/manual/html_node/elisp/Displaying-Buffers.html
 ;; - https://www.gnu.org/software/emacs/manual/html_node/elisp/Side-Windows.html
+;; TODO: organize display-buffer-alist usage
 (use-package window
   :ensure nil
   :demand t
@@ -465,6 +468,20 @@
   :ensure nil
   :custom
   (browse-url-browser-function 'eww-browse-url))
+
+;; TODO: evaluate grammarly, languagetool and proselint
+(use-package flymake
+  :ensure nil
+  :after popper
+  :hook
+  (conf-mode . flymake-mode)
+  (prog-mode . flymake-mode)
+  (text-mode . flymake-mode)
+  :config
+  (remove-hook 'flymake-diagnostic-functions #'flymake-proc-legacy-flymake)
+  (add-to-list 'display-buffer-alist
+               '("\\*Flymake diagnostics"
+                 (display-buffer-in-side-window) (side . bottom) (slot . 0) (window-height . 0.3))))
 
 (use-package help
   :ensure nil
@@ -898,8 +915,8 @@
   (evil-collection-define-key 'normal 'evil-collection-unimpaired-mode-map
     "[h" #'diff-hl-previous-hunk
     "]h" #'diff-hl-next-hunk
-    "[d" #'flycheck-previous-error
-    "]d" #'flycheck-next-error)
+    "[d" #'flymake-goto-prev-error
+    "]d" #'flymake-goto-next-error)
 
   ;; comint mode
   (evil-collection-define-key 'insert 'comint-mode-map
@@ -1321,24 +1338,6 @@
   :bind
   ("C-=" . er/expand-region))
 
-(use-package flycheck
-  :after popper
-  :demand t
-  :config
-  (general-def
-    :prefix "C-c"
-    "!" '(:ignore t :which-key "flycheck"))
-  (global-flycheck-mode)
-  (add-to-list 'display-buffer-alist
-               '("\\*Flycheck errors\\*"
-                 (display-buffer-in-side-window) (side . bottom) (slot . 0) (window-height . 0.3))))
-
-;; TODO: evaluate this better
-;; TODO: evaluate languagetool and proselint
-(use-package flycheck-grammarly
-  :after flycheck
-  :commands flycheck-grammarly-setup)
-
 (use-package string-inflection
   :commands (string-inflection-camelcase-function
              string-inflection-kebabcase-function
@@ -1379,43 +1378,28 @@
 ;;; Language support
 
 ;; LSP
-;; TODO: use dir-locals flag to autoload LSP on prog-mode (e.g. python) buffers
-(use-package lsp-mode
-  :commands (lsp lsp-deferred)
-  :custom
-  (lsp-completion-provider :none)  ; avoid using company
-  (lsp-enable-snippet nil)
-  (lsp-keymap-prefix "C-c l")
+;; TODO: add LSP evil-mode mappings (e.g. from lsp-zero.nvim)
+(use-package eglot
+  :commands eglot
   :config
-  (lsp-enable-which-key-integration t)
-  (defun my/lsp-mode-setup-completion ()
-    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-          '(orderless)))
-  (add-hook 'lsp-completion-mode-hook #'my/lsp-mode-setup-completion))
+  (general-def
+    :prefix "C-c"
+    "l" '(:ignore t :which-key "eglot"))
+  (bind-keys
+    :prefix "C-c l"
+    :prefix-map eglot-mode-map
+    ("a" . eglot-code-actions)
+    ("d" . xref-find-definitions)
+    ("D" . xref-find-definitions-other-window)
+    ("f" . eglot-format)
+    ("r" . eglot-rename)
+    ("R" . xref-find-references)
+    ("s" . consult-eglot-symbols)
+    ("S" . eglot-shutdown)))
 
-(use-package lsp-ui
-  :hook
-  (lsp-mode . lsp-ui-mode)
-  :custom
-  (lsp-ui-doc-position 'at-point)
-  :config
-  ;; TODO: add more LSP evil-mode mappings (e.g. from lsp-zero.nvim)
-  (define-key lsp-ui-mode-map [remap evil-lookup] #'lsp-ui-doc-glance))  ; "K"
-
-(use-package lsp-treemacs
-  :after lsp-mode
-  :commands (lsp-treemacs-errors-list lsp-treemacs-symbols))
-
-
-;; DAP
-(use-package dap-mode
-  :after lsp-mode
-  :commands dap-debug
-  :custom
-  (dap-auto-configure-features '(sessions locals controls tooltip))
-  (dap-python-debugger 'debugpy)
-  :config
-  (add-hook 'dap-stopped-hook (lambda (_) (call-interactively #'dap-hydra))))
+(use-package consult-eglot
+  :after (eglot consult)
+  :commands consult-eglot-symbols)
 
 
 ;; tree-sitter
@@ -1453,10 +1437,6 @@
   :custom
   (parinfer-rust-auto-download t))
 
-(use-package flycheck-package
-  :after (flycheck popper)
-  :commands flycheck-package-setup)
-
 
 ;; Python
 
@@ -1492,12 +1472,12 @@
   :after python
   :hook
   (python-mode . anaconda-mode)
-  (python-mode . anaconda-eldoc-mode))
-
-(use-package pet
-  :after python
-  :hook
-  (python-mode . pet-mode))
+  (python-mode . anaconda-eldoc-mode)
+  :config
+  (define-key python-mode-map [remap evil-lookup] #'anaconda-mode-show-doc)  ; "K"
+  (add-to-list 'display-buffer-alist
+          '("\\*Anaconda\\*"
+            (display-buffer-in-side-window) (side . right) (slot . 0) (window-width . 0.35))))
 
 (use-package blacken
   :after python
@@ -1549,9 +1529,6 @@
                '("\\*pytest\\*"
                  (display-buffer-in-side-window) (side . right) (slot . 1) (window-width . 0.35))))
 
-(use-package lsp-pyright
-  :after (python lsp-mode))
-
 (use-package rst
   :ensure nil
   :mode
@@ -1569,7 +1546,7 @@
     "C-r" '(:ignore t :which-key "region")
     "C-t" '(:ignore t :which-key "toc")))
 
-;; TODO: add mypy backend for flycheck
+;; TODO: add mypy backend for flymake?
 ;; TODO: evaluate ein (emacs-ipython-notebook) and emacs-jupyter
 ;; TODO: evaluate lpy
 ;; TODO: evaluate python-x
@@ -1581,6 +1558,16 @@
 (use-package julia-mode
   :mode "\\.jl\\'"
   :interpreter "julia")
+
+(use-package eglot-jl
+  :after julia-mode
+  :hook
+  (julia-mode . eglot-jl-init)
+  :init
+  (defun my/eglot-jl-format-buffer ()
+    (if (eglot-managed-p) (eglot-format-buffer)))
+  :config
+  (add-hook 'before-save-hook #'my/eglot-jl-format-buffer))
 
 ;; Julia REPL usage: C-c C-z (raise REPL), C-c C-a (activate project),
 ;; C-c C-b (send buffer), C-c C-c (send region or line), C-c C-d (invoke @doc))
@@ -1596,12 +1583,6 @@
                    (display-buffer-reuse-window display-buffer-same-window)))
     (julia-repl-set-terminal-backend 'vterm)))
 
-(use-package lsp-julia
-  :after (julia-mode lsp-mode)
-  :demand t
-  :config
-  (add-hook 'before-save-hook #'lsp-format-buffer))
-
 ;; TODO: evaluate julia-snail
 
 
@@ -1611,7 +1592,6 @@
   ("\\.[rR]\\'" . R-mode)
   ("\\.[rR]nw\\'" . Rnw-mode)
   :custom
-  (ess-use-flymake nil)
   (ess-use-toolbar nil)
   :config
   (require 'ess-site))
@@ -1627,15 +1607,18 @@
   ("\\.lua\\'" . lua-mode))
 
 
+;; Fish
+(use-package fish-mode
+  :mode
+  ("\\.fish\\'" . fish-mode))
+
+
 ;; Haskell
 (unless ON-WINDOWS
   (use-package haskell-mode
     :custom
     (haskell-process-suggest-remove-import-lines t)
-    :mode "\\.hs\\'")
-
-  (use-package lsp-haskell
-    :after (haskell-mode lsp-mode)))
+    :mode "\\.hs\\'"))
 
 
 ;; Markdown
@@ -1719,9 +1702,6 @@
     :custom
     (reftex-plug-into-AUCTeX t))
 
-  (use-package lsp-latex
-    :after (tex lsp-mode))
-
   (use-package evil-tex
     :after (evil tex)
     :hook
@@ -1764,7 +1744,7 @@
 ;; reftex/bibtex (https://www.gnu.org/software/auctex/manual/reftex.index.html)
 ;; latex-lsp/texlab
 ;; company-auctex/company-reftex/company-math
-;; latex + flycheck/flymake
+;; latex + flymake
 ;; magic-latex-buffer
 ;; adaptive-wrap
 ;; prettify-symbols-mode for custom commands (e.g. \R)
@@ -1812,7 +1792,6 @@
 ;; TODO: evaluate ejc-sql (JDBC client)
 
 ;; TODO: evaluate packages
-;; dap-mode
 ;; realgud
 
 
@@ -1932,14 +1911,10 @@
     ("L" . consult-line-multi)          ; search for lines in all buffer
     ("m" . consult-mark)                ; search for mark
     ("y" . consult-yank-from-kill-ring) ; search for previous yanks
-    ("F" . consult-flycheck)
+    ("F" . consult-flymake)
     ("C" . consult-complex-command)     ; find commands in command-history
     ("H" . consult-history)             ; find commands in current buffer history (e.g. eshell or comint)
     ("I" . consult-info)))              ; search info pages (full text search)
-
-(use-package consult-flycheck
-  :after (consult flycheck)
-  :demand t)
 
 (use-package embark
   :demand t
@@ -1950,10 +1925,7 @@
   :config
   (add-to-list 'display-buffer-alist
                '("\\*Embark Actions\\*"
-                 (display-buffer-in-side-window) (side . left) (slot . 1) (window-width . 0.4)))
-  (add-to-list 'display-buffer-alist
-               '("\\*Embark Collect"
-                 (display-buffer-below-selected) (inhibit-same-window . t) (window-height . 0.25))))
+                 (display-buffer-in-side-window) (side . left) (slot . 1) (window-width . 0.4))))
 
 (use-package embark-consult
   :after (embark consult)
