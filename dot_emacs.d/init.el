@@ -2,10 +2,25 @@
 
 ;; Comments best practice: same line with code (;), comment-only line (;;), headlines in outline mode (;;;)
 
+;; Suppress annoying messages
+(defun suppress-messages (func &rest args)
+  "Suppress message output from (FUNC ARGS)."  ; Reference: https://superuser.com/questions/669701/emacs-disable-some-minibuffer-messages
+  (cl-flet ((silence (&rest _) (ignore)))
+    (advice-add 'message :around #'silence)
+    (unwind-protect
+        (apply func args)
+      (advice-remove 'message #'silence))))
+
+(defadvice load (before quiet-load (file &optional noerror nomessage nosuffix must-suffix) activate)
+  "Suppress file loading messages."  ; Reference: https://stackoverflow.com/questions/11498108/elisp-silence-loading-messages-in-batch-mode
+  (setq nomessage t))
+
+
 ;; Custom settings
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (if (file-exists-p custom-file)
     (load custom-file))
+
 
 ;; TODO: evaluate (setq debug-on-error t)
 ;; TODO: evaluate bug-hunter (ELPA)
@@ -252,7 +267,7 @@
     "vM"  '(:ignore t :which-key "merge")
     "w"   '(:ignore t :which-key "winum")
     "x"   '(:ignore t :which-key "buffer")
-    "C-a" '(:ignore t :which-key "edebug"))
+    "C-a" '(:ignore t :which-key "gud"))
 
   (dolist (prefix '("C-h" "<f1>"))
     (general-def
@@ -541,7 +556,9 @@
   :custom
   (recentf-max-saved-items 20)
   :config
-  (recentf-mode +1))
+  (advice-add 'recentf-cleanup :around #'suppress-messages)
+  (recentf-mode +1)
+  (advice-remove 'recentf-cleanup #'suppress-messages))
 
 (use-package replace
   :ensure nil
@@ -1381,6 +1398,9 @@
 ;; TODO: add LSP evil-mode mappings (e.g. from lsp-zero.nvim)
 (use-package eglot
   :commands eglot
+  :init
+  ;; Reference: https://github.com/noctuid/evil-guide/blob/master/README.org#why-dont-keys-defined-with-evil-define-key-work-immediately
+  (add-hook 'eglot-managed-mode-hook #'evil-normalize-keymaps)
   :config
   (general-def
     :prefix "C-c"
@@ -1403,6 +1423,7 @@
 
 
 ;; tree-sitter
+;; TODO: prevent writing on Messages buffer during initialization
 (use-package tree-sitter
   :hook
   (haskell-mode . tree-sitter-mode)
@@ -1427,6 +1448,57 @@
   (add-to-list 'display-buffer-alist
                '("\\*devdocs\\*"
                  (display-buffer-in-side-window) (side . right) (slot . 0) (window-width . 0.35))))
+
+
+;; CLI Debugger
+;; Emacs bindings:
+;; - C-x C-q  realgud-short-key-mode
+;; - F10      step over (next)
+;; - F11      step into
+;; - S-F11    step out
+;; - F5       continue execution
+;; - S-F5     quit
+;; - F9       set breakpoint
+;; - M-up     older history
+;; - M-down   newer history
+;; Evil bindings:
+;; - n       step over (Next)
+;; - s,i     Step Into
+;; - f,o     step Out (Finish)
+;; - c       Continue
+;; - q       Quit debugger
+;; - Q       kill debugger
+;; - r,R,gr  Restart execution
+;; - b       set Breakpoint
+;; - X       clear breakpoint (at current line)
+;; - D       Delete breakpoint (by number)
+;; - +,-     enable/disable breakpoint
+;; - U       continue Until a posterior line is reached
+;; - H       continue until Here
+;; - J       Jump here
+;; - <,>     move to older/newer frame
+;; - u,d     move to older/newer frame
+;; - 1-9     go to position #
+;; - e,E     Evaluate expression (dwim/at-point)
+;; - T       show current call stack (Trace)
+;; - g?      show debugger information
+;; - gR      Recenter window around arrow
+(use-package realgud
+  :after evil-collection
+  :custom
+  (realgud-window-split-orientation 'horizontal)
+  :commands realgud:pdb
+  :init
+  ;; TODO: lazy load this package
+  (evil-collection-realgud-setup)
+  ;; Display realgud in new tab
+  (advice-add #'realgud:run-debugger :before
+              (lambda (debugger-name &rest args)
+                (switch-to-buffer-other-tab (current-buffer))
+                (tab-rename debugger-name)))
+  :config
+  (evil-collection-define-key 'normal 'realgud:shortkey-mode-map "o" 'realgud:cmd-finish))
+;; TODO: evaluate realgud-ipdb, realgud-lldb, trepan3k, ipdb, pdbpp
 
 
 ;; Emacs Lisp
@@ -1474,7 +1546,6 @@
   (python-mode . anaconda-mode)
   (python-mode . anaconda-eldoc-mode)
   :config
-  (define-key python-mode-map [remap evil-lookup] #'anaconda-mode-show-doc)  ; "K"
   (add-to-list 'display-buffer-alist
           '("\\*Anaconda\\*"
             (display-buffer-in-side-window) (side . right) (slot . 0) (window-width . 0.35))))
@@ -1790,9 +1861,6 @@
   :commands (sqlformat sqlformat-buffer))
 
 ;; TODO: evaluate ejc-sql (JDBC client)
-
-;; TODO: evaluate packages
-;; realgud
 
 
 
