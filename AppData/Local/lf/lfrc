@@ -24,6 +24,9 @@ set icons true
 # Number of lines shown in the top and the bottom of the screen when scrolling.
 set scrolloff 2
 
+# File separator used in variables 'fs' and 'fx'.
+set filesep " "
+
 
 ## Custom commands ##
 
@@ -39,17 +42,16 @@ set scrolloff 2
 # !  shell-wait      shell command waiting for key press
 # &  shell-async     shell command running asynchronously
 
-# Change 'doc' command to use a different pager
+# Change 'doc' command to use a different pager.
 cmd doc $lf -doc | bat --plain
 
-# Create directory
+# Create directory.
 cmd mkdir %pwsh -NoProfile %LOCALAPPDATA%\lf\mkdir.ps1
 
-# Create empty file
+# Create empty file.
 cmd mkfile %pwsh -NoProfile %LOCALAPPDATA%\lf\mkfile.ps1
 
 # Send selected files to system trash.
-# TODO: check trash two or more file and files with spaces in the name
 cmd trash %recycle-bin %fx%
 
 
