@@ -17,9 +17,7 @@
 
 
 ;; Custom settings
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(if (file-exists-p custom-file)
-    (load custom-file))
+(setq custom-file (make-temp-file "custom_" nil ".el"))
 
 
 ;; TODO: evaluate (setq debug-on-error t)
@@ -1489,15 +1487,22 @@
   (realgud-window-split-orientation 'horizontal)
   :commands realgud:pdb
   :init
-  ;; TODO: lazy load this package
-  (evil-collection-realgud-setup)
+  ;; For some reason, the evil-collection realgud bindings are not working on normal mode.
+  ;; As a workaround, use Emacs mode instead (C-z).
+  ;; TODO: fix this
+  (advice-add #'realgud-short-key-mode-setup :before
+              (lambda (modeon) (if modeon (evil-emacs-state) (evil-normal-state))))
   ;; Display realgud in new tab
   (advice-add #'realgud:run-debugger :before
               (lambda (debugger-name &rest args)
-                (switch-to-buffer-other-tab (current-buffer))
-                (tab-rename debugger-name)))
+                (let ((tab-index (tab-bar--tab-index-by-name debugger-name)))
+                  (if tab-index
+                      (tab-bar-select-tab (1+ tab-index))
+                    (tab-bar-new-tab)
+                    (tab-bar-rename-tab debugger-name)))))
   :config
-  (evil-collection-define-key 'normal 'realgud:shortkey-mode-map "o" 'realgud:cmd-finish))
+  ;; TODO: "o" not working fix this
+  (evil-collection-define-key 'emacs 'realgud:shortkey-mode-map "o" 'realgud:cmd-finish))
 ;; TODO: evaluate realgud-ipdb, realgud-lldb, trepan3k, ipdb, pdbpp
 
 
