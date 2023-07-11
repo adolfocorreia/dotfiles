@@ -21,10 +21,21 @@ SC073::RCtrl
   ^p::SendInput "{Blind^}{Up}"
   ^m::SendInput "{Enter}"
 #HotIf
+; PowerLauncher key bindings.
+#HotIf WinActive("ahk_exe PowerToys.PowerLauncher.exe")
+  ^j::SendInput "{Blind^}{Down}"
+  ^k::SendInput "{Blind^}{Up}"
+  ^n::SendInput "{Blind^}{Down}"
+  ^p::SendInput "{Blind^}{Up}"
+  ^m::SendInput "{Enter}"
+#HotIf
 
 
 ; Swallow Insert on Outlook.
 #HotIf WinActive("ahk_exe olk.exe")
+  Insert::return
+#HotIf
+#HotIf WinActive("ahk_exe OUTLOOK.EXE")
   Insert::return
 #HotIf
 
