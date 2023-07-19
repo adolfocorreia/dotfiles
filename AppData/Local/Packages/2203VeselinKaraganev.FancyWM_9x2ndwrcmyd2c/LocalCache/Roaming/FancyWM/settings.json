@@ -358,14 +358,16 @@
   },
   "ProcessIgnoreList": [
     "Taskmgr",
-    "7zFM",
     "PomoDoneApp",
     "PowerToys.Peek.UI",
     "speedcrunch"
   ],
   "ClassIgnoreList": [
     "#32770",
-    "bosa_sdm_XL9"
+    "bosa_sdm_XL9",
+    "CredentialHelperSelector",
+    "EditShortcutsWindow",
+    "OperationStatusWindow"
   ],
   "RemindToRateReview": false,
   "ShowContextHints": true,
