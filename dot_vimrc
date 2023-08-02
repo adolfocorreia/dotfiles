@@ -33,6 +33,10 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
   autocmd vimrc VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
+if $TERM == 'linux'
+  let g:plug_threads = 1
+endif
+
 call plug#begin()
 
 Plug 'farmergreg/vim-lastplace'
