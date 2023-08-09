@@ -40,9 +40,12 @@ SC073::RCtrl
 #HotIf
 
 
-; Remap Ctrl-W to Ctrl-Q for JupyterLab tabs in Chrome.
+; Remap Ctrl-W to Ctrl-K for JupyterLab tabs in Chrome and Edge.
 #HotIf WinActive("JupyterLab ahk_exe chrome.exe")
-  ^w::SendInput "^q"
+  ^w::SendInput "^k"
+#HotIf
+#HotIf WinActive("JupyterLab ahk_exe msedge.exe")
+  ^w::SendInput "^k"
 #HotIf
 
 
