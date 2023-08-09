@@ -178,9 +178,12 @@ map <Leader>bu <Action>(ReopenClosedTab)
 map <Leader>bx <Action>(CloseAllEditors)
 
 " Code
-map <Leader>cr <Action>(RenameElement)
-map <Leader>ch <Action>(HighlightUsagesInFile)
+map <Leader>ca <Action>(ShowIntentionActions)
+map <Leader>cc <Action>(ShowIntentionActions)
 map <Leader>cf <Action>(ReformatCode)
+map <Leader>ch <Action>(HighlightUsagesInFile)
+map <Leader>ci <Action>(OptimizeImports)
+map <Leader>cr <Action>(RenameElement)
 
 " Files
 map <Leader>ff <Action>(GotoFile)
