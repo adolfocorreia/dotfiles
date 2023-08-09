@@ -161,6 +161,7 @@ let &t_EI .= "\e[1 q"
 """"" Autocommands """""
 
 autocmd vimrc BufRead * normal zR
+autocmd vimrc FileType fugitive nmap <buffer> <Tab> =
 autocmd vimrc FileType help setlocal bufhidden=unload | wincmd L
 autocmd vimrc FileType help,qf nnoremap <silent> <buffer> q :close<CR>
 autocmd vimrc TerminalOpen * setlocal nonumber norelativenumber nocursorline nocursorcolumn
