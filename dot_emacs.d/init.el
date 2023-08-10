@@ -44,9 +44,6 @@
                          ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
 (package-initialize)
 
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
 (eval-when-compile
   (require 'use-package))
 (use-package use-package
@@ -586,6 +583,7 @@
   (tab-bar-tab ((t :underline t)))
   :custom
   (tab-bar-format '(my/tab-bar-format-menu-bar tab-bar-format-align-right tab-bar-format-tabs-groups tab-bar-separator))
+  (tab-bar-auto-width nil)
   (tab-bar-close-button-show nil)
   (tab-bar-new-tab-choice "*scratch*")
   (tab-bar-separator "   ")
@@ -744,9 +742,6 @@
 ;; TODO: evaluate dired-hacks
 (use-package ranger
   :commands (deer ranger))
-
-(use-package restart-emacs
-  :commands restart-emacs)
 
 (use-package rg
   :commands (rg rg-menu rg-project))
@@ -1395,6 +1390,7 @@
 ;; LSP
 ;; TODO: add LSP evil-mode mappings (e.g. from lsp-zero.nvim)
 (use-package eglot
+  :ensure nil
   :commands eglot
   :init
   ;; Reference: https://github.com/noctuid/evil-guide/blob/master/README.org#why-dont-keys-defined-with-evil-define-key-work-immediately
