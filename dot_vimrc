@@ -39,8 +39,8 @@ endif
 
 call plug#begin()
 
-Plug 'farmergreg/vim-lastplace'
 Plug 'Julian/vim-textobj-variable-segment'
+Plug 'farmergreg/vim-lastplace'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim',         { 'on': ['Files','GFiles','Buffers','Rg','Lines','Locate','History','Commits','BCommits','Commands','Helptags'] }
 Plug 'junegunn/vim-easy-align',  { 'on': '<Plug>(EasyAlign)' }
@@ -61,6 +61,7 @@ Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'unblevable/quick-scope'
+Plug 'vim-test/vim-test'
 Plug 'wellle/targets.vim'
 
 if $TERM != 'linux'
@@ -101,6 +102,8 @@ let g:VM_maps['Find Subword Under'] = '<M-d>'
 nmap <M-d> <Plug>(VM-Find-Under)
 
 let g:qs_buftype_blacklist = ['help', 'nofile', 'nowrite', 'terminal']
+
+let test#strategy = 'vimterminal'
 
 
 """"" Vim options """""
