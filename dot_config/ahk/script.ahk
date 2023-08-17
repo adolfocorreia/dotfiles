@@ -40,12 +40,16 @@ SC073::RCtrl
 #HotIf
 
 
-; Remap Ctrl-W to Ctrl-K for JupyterLab tabs in Chrome and Edge.
+; JupyterLab remaps (override Chrome/Edge default bindings).
+; - Ctrl-W to Ctrl-K (vim)
+; - Ctrl-P to Up (readline)
 #HotIf WinActive("JupyterLab ahk_exe chrome.exe")
   ^w::SendInput "^k"
+  ^p::SendInput "{Up}"
 #HotIf
 #HotIf WinActive("JupyterLab ahk_exe msedge.exe")
   ^w::SendInput "^k"
+  ^p::SendInput "{Up}"
 #HotIf
 
 
