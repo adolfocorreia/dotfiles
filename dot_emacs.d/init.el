@@ -107,6 +107,8 @@
   (setq-default indent-tabs-mode nil
                 truncate-lines t)
   :custom
+  (completion-auto-help 'visible)
+  (completion-auto-select 'second-tab)
   (completion-cycle-threshold 3)
   (display-line-numbers-type 'relative)
   (scroll-conservatively 2)
