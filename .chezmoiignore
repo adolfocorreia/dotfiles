@@ -3,6 +3,7 @@
 
 # General ignore rules
 README.md
+tags
 
 # Linux-only files
 {{ if ne .chezmoi.os "linux" }}
