@@ -211,8 +211,6 @@ myAdditionalKeys =
     ("M-S-.", sendMessage (IncMasterN 1)),
     ("M-S-,", sendMessage (IncMasterN (-1))),
     -- Switch focus to next monitor
-    ("M-C-h", prevScreen),
-    ("M-C-l", nextScreen),
     ("M-C-<Left>", prevScreen),
     ("M-C-<Right>", nextScreen),
     -- Shift window to next monitor

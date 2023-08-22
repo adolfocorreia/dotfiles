@@ -60,6 +60,14 @@ if status is-interactive
     alias emacs="emacs -nw"
     alias vi="nvim --clean"
 
+    # fzf plugin bindings (Ctrl+Alt)
+    # - Files: relative path
+    # - git Log: commit hash
+    # - git Status: relative path
+    # - Processes: PID
+    # - environment Variables: variable name
+    fzf_configure_bindings --variables=\e\cv
+
     # Sponge plugin settings
     set sponge_purge_only_on_exit true
 
