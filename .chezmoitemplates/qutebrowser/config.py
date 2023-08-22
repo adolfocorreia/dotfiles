@@ -28,7 +28,7 @@ config.unbind("<Ctrl+w>", mode="normal")
 
 # Bind Shift-Insert to clipboard selection.
 config.bind("<Shift-Ins>", "insert-text -- {clipboard}",  mode="insert")
-config.bind("<Shift-Ins>", "set-cmd-text -a {clipboard}", mode="command")
+config.bind("<Shift-Ins>", "cmd-set-text -a {clipboard}", mode="command")
 
 # Normal mode key bindings
 config.bind("<Ctrl+Shift+Tab>", "tab-prev")
