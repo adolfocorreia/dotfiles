@@ -45,11 +45,11 @@ SC073::RCtrl
 ; - Ctrl-P to Up (readline)
 #HotIf WinActive("JupyterLab ahk_exe chrome.exe")
   ^w::SendInput "^k"
-  ^p::SendInput "{Up}"
+  ^p::SendInput "{Blind^}{Up}"
 #HotIf
 #HotIf WinActive("JupyterLab ahk_exe msedge.exe")
   ^w::SendInput "^k"
-  ^p::SendInput "{Up}"
+  ^p::SendInput "{Blind^}{Up}"
 #HotIf
 
 
