@@ -30,10 +30,6 @@ else
   alias vi='vim -u NONE'
 fi
 
-if command -v lynx &> /dev/null; then
-  alias lynx='lynx -vikeys'
-fi
-
 
 # Enable numlock on shell login (tty).
 if [[ "${TERM}" == 'linux' ]]; then
