@@ -183,6 +183,7 @@ map <Leader>cc <Action>(ShowIntentionActions)
 map <Leader>cf <Action>(ReformatCode)
 map <Leader>ch <Action>(HighlightUsagesInFile)
 map <Leader>ci <Action>(OptimizeImports)
+map <Leader>cR <Action>(RefactoringMenu)
 map <Leader>cr <Action>(RenameElement)
 
 " Files
