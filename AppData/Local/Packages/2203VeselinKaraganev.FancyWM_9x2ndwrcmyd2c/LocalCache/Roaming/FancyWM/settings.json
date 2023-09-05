@@ -4,7 +4,7 @@
   "AllocateNewPanelSpace": false,
   "AutoCollapsePanels": false,
   "AnimateWindowMovement": false,
-  "ModifierMoveWindow": true,
+  "ModifierMoveWindow": false,
   "ModifierMoveWindowAutoFocus": false,
   "WindowPadding": 8,
   "PanelHeight": 18,
