@@ -53,9 +53,9 @@ if status is-interactive
     end
 
     # Set aliases
-    alias ls=exa
-    alias ll="exa -l"
-    alias la="exa -la"
+    alias ls=eza
+    alias ll="eza -l"
+    alias la="eza -la"
 
     alias emacs="emacs -nw"
     alias vi="nvim --clean"
