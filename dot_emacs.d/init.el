@@ -355,7 +355,7 @@
   (popper-mode +1)
   (popper-echo-mode +1)
   (bind-key "C-`"   #'popper-cycle)
-  (bind-key "M-`"   #'popper-toggle-latest)
+  (bind-key "M-`"   #'popper-toggle)
   (bind-key "C-M-`" #'popper-toggle-type))
 
 (use-package which-key
