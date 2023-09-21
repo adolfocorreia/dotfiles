@@ -101,7 +101,7 @@
         { "command": { "action": "commandPalette" }, "keys": "ctrl+shift+space" }  // Toggle command palette
     ],
 
-    "defaultProfile": "{bfb3dd1d-ccbc-4fc8-8c09-c6d7199ec0ba}",
+    "defaultProfile": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
     "disabledProfileSources":
     [
         "Windows.Terminal.Azure"
@@ -125,11 +125,11 @@
         [
             {
                 "name": "PowerShell Core",
-                "guid": "{bfb3dd1d-ccbc-4fc8-8c09-c6d7199ec0ba}",
+                "guid": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
+                "source": "Windows.Terminal.PowershellCore",
                 "commandline": "pwsh.exe -NoLogo",
                 "startingDirectory": "%USERPROFILE%",
                 "colorScheme": "Tokyo Night Storm",
-                "icon": "%SCOOP%/apps/pwsh/current/assets/Square44x44Logo.png",
                 "hidden": false
             },
             {
@@ -142,24 +142,6 @@
                 "name": "Command Prompt",
                 "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
                 "colorScheme": "Campbell",
-                "hidden": false
-            },
-            {
-                "name": "mingw64 (MSYS2)",
-                "guid": "{b66acca9-afbc-4677-bf5b-6f3a6cbbd86f}",
-                "commandline": "mingw64.cmd",
-                "startingDirectory": "%USERPROFILE%",
-                "colorScheme": "One Half Dark",
-                "icon": "%SCOOP%/apps/msys2/current/mingw64.ico",
-                "hidden": false
-            },
-            {
-                "name": "msys (MSYS2)",
-                "guid": "{1c0ab1d2-3385-465a-bb01-545d53f7f4cc}",
-                "commandline": "msys2.cmd",
-                "startingDirectory": "%USERPROFILE%",
-                "colorScheme": "One Half Dark",
-                "icon": "%SCOOP%/apps/msys2/current/msys2.ico",
                 "hidden": false
             }
         ]

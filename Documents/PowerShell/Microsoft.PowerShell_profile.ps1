@@ -15,7 +15,7 @@ Function Refresh-Path {
 }
 Refresh-Path
 
-# Load PSFzf module (https://github.com/kelleyma49/PSFzf)
+# Install the PSFzf module (https://github.com/kelleyma49/PSFzf) using the command "Install-Module PSFzf"
 Import-Module PSFzf
 
 
