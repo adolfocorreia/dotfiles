@@ -115,12 +115,18 @@ Set-PsFzfOption -EnableFd
 "cat",
 "cp",
 "diff",
+"echo",
+"kill",
 "ls",
+"man",
+"mount",
 "mv",
+"ps",
 "pwd",
 "r",
 "rm",
 "rmdir",
+"sleep",
 "sort",
 "tee"
 ) | ForEach-Object { if (Test-Path Alias:$_) { Remove-Alias -Force $_ } }
