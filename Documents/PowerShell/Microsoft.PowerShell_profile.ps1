@@ -132,9 +132,9 @@ Set-PsFzfOption -EnableFd
 ) | ForEach-Object { if (Test-Path Alias:$_) { Remove-Alias -Force $_ } }
 
 
-Function ls { & coreutils ls     --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* @args }
-Function ll { & coreutils ls -l  --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* @args }
-Function la { & coreutils ls -la --show-control-chars -F --color --ignore=NTUSER.DAT* --ignore=ntuser.dat* @args }
+Function ls { & eza     @args }
+Function ll { & eza -l  @args }
+Function la { & eza -la @args }
 
 Function mkdir { & coreutils mkdir $args }
 
