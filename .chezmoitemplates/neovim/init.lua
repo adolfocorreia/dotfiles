@@ -1555,22 +1555,14 @@ local PLUGINS = {
   {
     "lukas-reineke/indent-blankline.nvim",
     event = "BufReadPre",
+    main = "ibl",
     config = function()
-      require("indent_blankline").setup({
-        show_current_context = true,
-        use_treesitter = true,
-        buftype_exclude = BUFTYPE_BL,
-        filetype_exclude = FILETYPE_BL,
+      require("ibl").setup({
+        exclude = {
+          buftypes = BUFTYPE_BL,
+          filetypes = FILETYPE_BL,
+        },
       })
-      -- Refresh screen after fold commands
-      for _, key in pairs({ "o", "O", "c", "C", "a", "A", "v", "x", "X", "m", "M", "r", "R" }) do
-        vim.api.nvim_set_keymap(
-          "n",
-          "z" .. key,
-          "z" .. key .. "<Cmd>IndentBlanklineRefresh<CR>",
-          { noremap = true, silent = true }
-        )
-      end
     end,
   },
 
