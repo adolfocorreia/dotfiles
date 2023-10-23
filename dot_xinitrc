@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 sysresources=/etc/X11/xinit/.Xresources
 sysmodmap=/etc/X11/xinit/.Xmodmap
@@ -63,6 +63,8 @@ numlockx
 
 # Screen locking
 # Reference: https://wiki.archlinux.org/title/Session_lock
+readarray -t WP < <(ls ~/Pictures/Wallpapers/variety/**/*.jpg | shuf -n 2)
+betterlockscreen --update ${WP[0]} --update ${WP[1]} &
 xset s 300
 xss-lock -- betterlockscreen --lock --quiet --time-format "%H:%M" &
 
