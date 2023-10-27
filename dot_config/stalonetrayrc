@@ -1,0 +1,17 @@
+# vim:filetype=config:tw=80:et
+
+# Reference: /etc/stalonetrayrc
+
+background "#292e42"
+
+grow_gravity E
+icon_gravity E
+
+icon_size 18
+slot_size 20
+
+# x = monitorA_width + monitorB_width - icon_size - 4
+# y = (monitorA_height - monitorB_height) / 2 + 1
+# monitorA_width = monitorB_width = 2560
+# monitorA_height = monitorB_height = 1440
+geometry 1x1+5098+1

@@ -12,8 +12,10 @@ tags
 .config/dunst
 .config/fish
 .config/gtk-3.0
+.config/keepassxc
 .config/Kvantum
 .config/lf
+.config/lxsession
 .config/mimeapps.list
 .config/mpv
 .config/nvim
@@ -22,7 +24,9 @@ tags
 .config/pypoetry
 .config/qt5ct
 .config/qutebrowser
+.config/redshift
 .config/rofi
+.config/stalonetrayrc
 .config/sublime-text
 .config/systemd
 .config/tealdeer

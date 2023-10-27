@@ -221,10 +221,13 @@ myAdditionalKeys =
     -- Cycle through visible windows
     ("M1-<Tab>", nextMatch Forward isOnAnyVisibleWS),
     ("M1-S-<Tab>", nextMatch Backward isOnAnyVisibleWS),
-    -- Volume controls
+    -- Volume and media controls
     ("<XF86AudioLowerVolume>", spawn "pamixer --decrease 5 --unmute"),
     ("<XF86AudioRaiseVolume>", spawn "pamixer --increase 5 --unmute"),
-    ("<XF86AudioMute>", spawn "pamixer --toggle-mute")
+    ("<XF86AudioMute>", spawn "pamixer --toggle-mute"),
+    ("<XF86AudioPlay>", spawn "playerctl play-pause"),
+    ("<XF86AudioPrev>", spawn "playerctl previous"),
+    ("<XF86AudioNext>", spawn "playerctl next")
     -- TODO: add key bindings description (see DescriptiveKeys and NamedActions packages)
   ]
   where
@@ -253,47 +256,13 @@ myRemoveKeys =
     "M-?"
   ]
 
--- System tray
--- TODO: move config to .stalonetrayrc
-mySystemTrayCommand :: String
-mySystemTrayCommand = unwords ["stalonetray", arguments, "&"]
-  where
-    arguments = unwords [backgroundArg, geometryArg, growGravityArg, iconGravityArg, iconSizeArg, slotSizeArg]
-    backgroundArg = "--background '" ++ myBarBackgroundColor ++ "'"
-    geometryArg = "--geometry 1x1+" ++ show x ++ "+" ++ show y
-    growGravityArg = "--grow-gravity E"
-    iconGravityArg = "--icon-gravity E"
-    iconSizeArg = "--icon-size " ++ show iconSize
-    slotSizeArg = "--slot-size " ++ show (iconSize + 2)
-    iconSize = 18
-    x = monitor1w + monitor2w - iconSize - 4
-    y = (monitor1h - monitor2h) `div` 2 + 1
-    monitor1w = 2560
-    monitor1h = 1440
-    monitor2w = 2560
-    monitor2h = 1440
-
 -- Startup processes
 myStartupHook :: X ()
 myStartupHook = do
-  -- TODO: evaluate moving these processes to a lxsession (e.g. to handle autostart on crashes)
-  -- - https://wiki.lxde.org/en/index.php?title=LXSession
-  -- - https://github.com/lxde/lxsession/blob/master/data/desktop.conf.example
-  -- Session manager / polkit authentication agent
-  spawnOnce "lxsession --session XMonad &"
-  -- Desktop compositor
-  spawnOnce "picom &"
-  -- Notification manager
-  spawnOnce "dunst &"
-  -- Icon tray
-  spawnOnce mySystemTrayCommand
-  -- Desktop background
-  spawnOnce "feh --randomize --bg-fill /usr/share/backgrounds/**/*.jpg &"
-  spawnOnce "variety &"
-  -- Clipboard manager
-  spawnOnce "copyq &"
-  -- Removable media manager
-  spawnOnce "udiskie --tray &"
+  -- Reload last wallpapers
+  spawnOnce "~/.fehbg &"
+  -- Session manager / polkit authentication manager
+  spawnOnce "lxsession --session xmonad &"
 
 -- Layout configuration
 myLayoutHook :: ModifiedLayout _ _ _
@@ -342,13 +311,18 @@ myManageHook =
       [ "copyq",
         "Gscreenshot",
         "SpeedCrunch",
-        "Variety"
+        "Variety",
+        "Xarchiver"
       ]
     myClassCenterFloats =
-      [ "Hdajackretask",
+      [ "Btrfs Assistant",
+        "feh",
+        "Gpicview",
+        "Gsmartcontrol",
+        "Hdajackretask",
         "Pavucontrol",
+        "Systemadm",
         "Vorta",
-        "Xarchiver",
         "Xdg-desktop-portal-gtk"
       ]
     myClassResizeFloats =
