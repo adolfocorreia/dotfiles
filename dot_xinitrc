@@ -70,6 +70,30 @@ xss-lock --notifier=/usr/lib/xsecurelock/dimmer -- betterlockscreen --lock --qui
 readarray -t WP < <(ls ~/Pictures/Wallpapers/variety/**/*.jpg | shuf -n 2)
 betterlockscreen --update ${WP[0]} --update ${WP[1]} &
 
+# Autostart desktop apps
+# Polkit authentication agent
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+# Xorg compositor
+picom &
+# Notification daemon
+dunst &
+# System tray
+stalonetray &
+# Storage devices automounter
+udiskie --tray &
+# Password manager
+keepassxc &
+# Clipboard manager
+copyq &
+# Media player controller
+playerctld daemon &
+# Wallpaper setter
+~/.fehbg &
+variety &
+# Color temperature shifter
+redshift &
+
+
 # Execute Xmonad
 # X logs available at /var/log
 exec xmonad

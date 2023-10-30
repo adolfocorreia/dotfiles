@@ -252,10 +252,8 @@ myRemoveKeys =
 -- Startup processes
 myStartupHook :: X ()
 myStartupHook = do
-  -- Reload last wallpapers
-  spawnOnce "~/.fehbg &"
-  -- Session manager / polkit authentication manager
-  spawnOnce "lxsession --session xmonad &"
+  -- Open terminal on startup
+  spawnOnce $ myTerminal ++ " &"
 
 -- Layout configuration
 myLayoutHook :: ModifiedLayout _ _ _
