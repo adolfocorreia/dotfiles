@@ -63,10 +63,10 @@ numlockx
 
 # Screen locking
 # Reference: https://wiki.archlinux.org/title/Session_lock
+xset s 300 3
+xss-lock --notifier=/usr/lib/xsecurelock/dimmer -- betterlockscreen --lock --quiet --time-format "%H:%M" &
 readarray -t WP < <(ls ~/Pictures/Wallpapers/variety/**/*.jpg | shuf -n 2)
 betterlockscreen --update ${WP[0]} --update ${WP[1]} &
-xset s 300
-xss-lock -- betterlockscreen --lock --quiet --time-format "%H:%M" &
 
 # Execute Xmonad
 # X logs available at /var/log
