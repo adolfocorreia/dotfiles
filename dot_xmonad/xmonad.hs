@@ -220,14 +220,7 @@ myAdditionalKeys =
     ("M-S-<Right>", shiftNextScreen >> nextScreen),
     -- Cycle through visible windows
     ("M1-<Tab>", nextMatch Forward isOnAnyVisibleWS),
-    ("M1-S-<Tab>", nextMatch Backward isOnAnyVisibleWS),
-    -- Volume and media controls
-    ("<XF86AudioLowerVolume>", spawn "pamixer --decrease 5 --unmute"),
-    ("<XF86AudioRaiseVolume>", spawn "pamixer --increase 5 --unmute"),
-    ("<XF86AudioMute>", spawn "pamixer --toggle-mute"),
-    ("<XF86AudioPlay>", spawn "playerctl play-pause"),
-    ("<XF86AudioPrev>", spawn "playerctl previous"),
-    ("<XF86AudioNext>", spawn "playerctl next")
+    ("M1-S-<Tab>", nextMatch Backward isOnAnyVisibleWS)
     -- TODO: add key bindings description (see DescriptiveKeys and NamedActions packages)
   ]
   where

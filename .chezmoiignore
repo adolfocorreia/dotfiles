@@ -45,6 +45,7 @@ tags
 .lyx
 
 .imwheelrc
+.xbindkeysrc
 .xinitrc
 .xmonad
 .Xresources

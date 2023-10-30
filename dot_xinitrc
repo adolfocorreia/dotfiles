@@ -60,6 +60,8 @@ setxkbmap -layout 'us,us(intl)' -option grp:win_space_toggle
 setxkbmap -option compose:menu
 # Enable numlock in X
 numlockx
+# Bind special keys
+xbindkeys
 
 # Screen locking
 # Reference: https://wiki.archlinux.org/title/Session_lock
