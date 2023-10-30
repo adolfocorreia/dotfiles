@@ -60,6 +60,8 @@ if status is-interactive
     alias emacs="emacs -nw"
     alias vi="nvim --clean"
 
+    alias extract=aunpack
+
     # fzf plugin bindings (Ctrl+Alt)
     # - Files: relative path
     # - git Log: commit hash
