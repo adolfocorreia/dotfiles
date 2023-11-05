@@ -1,0 +1,6 @@
+[Context]
+sockets=!wayland
+filesystems=xdg-data/themes
+
+[Environment]
+GTK_THEME=Arc-Dark
