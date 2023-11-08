@@ -162,12 +162,7 @@ Function Create-Link (
 
 
 
-# Echo selected path
-$env:_ZO_ECHO=1
-# Load zoxide
-Invoke-Expression (& { (zoxide init --hook pwd powershell) -join "`n" } )
-
-
+# Load Starship
 
 Function Invoke-Starship-PreCommand {
   # Make Starship change terminal window title
@@ -183,6 +178,14 @@ Function Invoke-Starship-PreCommand {
   $Host.UI.Write("`e]9;9;$pwd`a")
 }
 
-# Load Starship
 Invoke-Expression $(& starship init powershell)
+
+
+
+# Load zoxide
+
+# Echo selected path
+$env:_ZO_ECHO = 1
+
+Invoke-Expression (& { (zoxide init --hook pwd powershell | Out-String) } )
 
