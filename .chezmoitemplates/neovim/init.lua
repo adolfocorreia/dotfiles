@@ -1002,7 +1002,7 @@ local PLUGINS = {
       { "neovim/nvim-lspconfig" },
       { "williamboman/mason.nvim" },
       { "williamboman/mason-lspconfig.nvim" },
-      { "jose-elias-alvarez/null-ls.nvim" },
+      { "nvimtools/none-ls.nvim" },
       { "jay-babu/mason-null-ls.nvim" },
 
       -- LSP helpers
@@ -1261,7 +1261,7 @@ local PLUGINS = {
             " Using %paste (as done in neoterm), since %cpaste does not seem to work
             " in neovim's terminal on Windows.
             call setreg('+', a:text, 'l')
-            return ['%paste', g:slime_dispatch_ipython_pause, "\n"]
+            return ['%paste', slime#config#resolve("dispatch_ipython_pause"), "\n"]
           endfunction
         ]])
       end
