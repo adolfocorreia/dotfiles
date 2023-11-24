@@ -1,6 +1,7 @@
 # References:
 # - https://git-scm.com/docs
 # - https://git-scm.com/docs/git-config
+# - https://github.com/git-ecosystem/git-credential-manager/blob/release/docs/README.md
 
 [user]
 	name = Adolfo Correia
@@ -9,13 +10,12 @@
 [init]
 	defaultBranch = master
 
-{{ if eq .chezmoi.os "linux" -}}
+{{ if eq .chezmoi.os "windows" -}}
+[web]
+	browser = links
+
+{{ else if eq .chezmoi.os "linux" -}}
 [credential]
 	helper = /usr/lib/git-core/git-credential-libsecret
-{{ else if eq .chezmoi.os "windows" -}}
-[credential]
-	helper = manager-core
 
-[credential "helperselector"]
-	selected = manager-core
 {{ end -}}
