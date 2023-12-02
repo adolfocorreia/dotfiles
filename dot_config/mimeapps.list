@@ -33,6 +33,7 @@
 
 [Default Applications]
 application/djvu=org.pwmt.zathura.desktop
+application/epub+zip=org.pwmt.zathura.desktop
 application/pdf=org.pwmt.zathura.desktop
 image/gif=feh.desktop
 image/jpeg=feh.desktop
@@ -45,4 +46,3 @@ x-scheme-handler/about=librewolf.desktop
 x-scheme-handler/http=librewolf.desktop
 x-scheme-handler/https=librewolf.desktop
 x-scheme-handler/unknown=librewolf.desktop
-
