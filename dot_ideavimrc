@@ -39,6 +39,7 @@ sethandler <C-Y> a:vim
 sethandler <C-Z> a:ide " Used to toggle IdeaVim on/off
 sethandler <C-[> a:vim
 sethandler <C-]> a:vim
+sethandler <C-\> a:vim
 sethandler <M-b> a:vim
 sethandler <M-f> a:vim
 
