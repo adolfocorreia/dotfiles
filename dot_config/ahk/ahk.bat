@@ -1,1 +1,1 @@
-start /MIN /ABOVENORMAL /B autohotkey.exe %USERPROFILE%\.config\ahk\script.ahk
+start /MIN /ABOVENORMAL /B autohotkey32.exe %USERPROFILE%\.config\ahk\script.ahk
