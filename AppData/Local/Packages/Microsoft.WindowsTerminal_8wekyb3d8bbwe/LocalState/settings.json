@@ -126,7 +126,6 @@
             {
                 "name": "PowerShell Core",
                 "guid": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
-                "source": "Windows.Terminal.PowershellCore",
                 "commandline": "pwsh.exe -NoLogo",
                 "startingDirectory": "%USERPROFILE%",
                 "colorScheme": "Tokyo Night Storm",

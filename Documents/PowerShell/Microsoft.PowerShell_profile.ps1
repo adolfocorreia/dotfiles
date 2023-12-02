@@ -1,3 +1,10 @@
+# Warn about LanguageMode (e.g. audit mode in version 7.4.0)
+# Reference: https://github.com/PowerShell/PowerShell/issues/20768
+if ($ExecutionContext.SessionState.LanguageMode -ne "FullLanguage") {
+  Write-Warning "PowerShell language mode is not set to FullLanguage!"
+  $ExecutionContext.SessionState.LanguageMode = "FullLanguage"
+}
+
 # My TMP path
 $tmp = "$env:TMP\tmp"
 if (-Not (Test-Path $tmp)) { New-Item -ItemType Directory $tmp }
