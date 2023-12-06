@@ -300,6 +300,8 @@
 
 (use-package doom-themes
   :demand t
+  :custom
+  (doom-tokyo-night-comment-bg t)
   :config
   (load-theme 'doom-tokyo-night t))
 
@@ -1836,6 +1838,16 @@
 (use-package xml-format
   :after nxml-mode
   :commands (xml-format-buffer xml-format-region xml-format-on-save-mode))
+
+
+;; CSV
+(use-package csv-mode
+  :mode
+  ("\\.csv\\'" . csv-mode)
+  :custom
+  (csv-separators '("," ";" "\t"))
+  :config
+  (add-hook 'csv-mode-hook #'csv-guess-set-separator))
 
 
 ;; SQL
