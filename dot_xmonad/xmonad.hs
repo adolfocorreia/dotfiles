@@ -328,10 +328,6 @@ myManageHook =
         ("dev", "Emacs"),
         -- Visual Studio Code
         ("dev", "code"),
-        -- Lyx
-        ("doc", "lyx"),
-        -- Chromium
-        ("mail", "Chromium"),
         -- Whatsapp (nativefier)
         ("chat", "whatsapp-nativefier-d40211"),
         -- Zoom
