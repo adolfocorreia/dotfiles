@@ -17,6 +17,7 @@
 
 
 (defcfg
+  log-layer-changes no
   linux-dev /dev/input/by-id/usb-HyperX_Alloy_Elite_RGB_HyperX_Alloy_Elite_RGB-event-kbd)
 
 
@@ -50,11 +51,14 @@ Default layer:
 |#
 (deflayer qwerty
   esc  @f1m f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12        ssrq caps pause
-  grv  1    2    3    4    5    -    =    6    7    8    9    0    bspc  ins  home pgup  nlck kp/  kp*  kp-
-  @syt q    w    e    r    t    [    ]    y    u    i    o    p    @sy\  del  end  pgdn  kp7  kp8  kp9  kp+
-  lctl a    s    d    f    g    /    ;    h    j    k    l    ret                        kp4  kp5  kp6
-  lsft z    x    c    v    ,    .    b    n    m    '    rsft                 up         kp1  kp2  kp3  kprt
+  grv  1    2    3    4    5    [    ]    6    7    8    9    0    bspc  ins  home pgup  nlck kp/  kp*  kp-
+  @syt q    w    e    r    t    -    =    y    u    i    o    p    @sy\  del  end  pgdn  kp7  kp8  kp9  kp+
+  lctl a    s    d    f    g    '    ;    h    j    k    l    ret                        kp4  kp5  kp6
+  lsft z    x    c    v    ,    .    b    n    m    /    rsft                 up         kp1  kp2  kp3  kprt
   lctl lmet lalt           @ext           ralt rmet cmp  rctl            left down rght  kp0  kp.)
+
+(defalias
+  cw (caps-word 2000))
 
 
 #|
@@ -68,8 +72,8 @@ Extend layer:
 (deflayer extend
   _    _    _    _    _    _    _    _    _    _    _    _    _          _    slck _
   _    _    _    _    _    _    _    _    _    _    _    _    _    _     _    _    _    _    _    _    _
-  _    _    ins  esc  _    _    _    _    pgup home end  _    _    _     _    _    _    _    _    _    _
-  _    lalt lmet lctl lsft _    _    pgdn left down up   rght _                         _    _    _
+  _    _    _    _    _    _    _    _    home pgdn pgup end  ins  _     _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    esc  left down up   rght _                         _    _    _
   _    _    _    _    _    _    spc  bspc del  ret  spc  _                    _         _    _    _    _
   _    _    _              _              _    _    _    _               _    _    _    _    _)
 
