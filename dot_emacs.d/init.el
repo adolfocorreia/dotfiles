@@ -549,6 +549,11 @@
     :prefix "C-c"
     "@" '(:ignore t :which-key "outline")))
 
+(use-package project
+  :ensure nil
+  :custom
+  (project-vc-extra-root-markers '(".project")))
+
 (use-package recentf
   :ensure nil
   :demand t
