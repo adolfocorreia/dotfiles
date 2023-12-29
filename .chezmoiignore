@@ -13,6 +13,7 @@ tags
 .config/fish
 .config/gtk-3.0
 .config/keepassxc
+.config/kitty
 .config/Kvantum
 .config/lf
 .config/lxsession
