@@ -5,33 +5,40 @@
 README.md
 tags
 
+
+# Files common to Linux and macOS
+{{ if and (ne .chezmoi.os "linux") (ne .chezmoi.os "darwin") }}
+.config/Code
+.config/fish
+.config/lf
+.config/nvim
+.config/pypoetry
+.config/qutebrowser
+.config/tealdeer
+.config/tmux
+{{ end }}
+
+
 # Linux-only files
 {{ if ne .chezmoi.os "linux" }}
+.config/Kvantum
 .config/alacritty
-.config/Code
 .config/dunst
-.config/fish
 .config/gtk-3.0
+.config/kanata
 .config/keepassxc
 .config/kitty
-.config/Kvantum
-.config/lf
 .config/lxsession
 .config/mimeapps.list
 .config/mpv
-.config/nvim
 .config/paru
 .config/picom
-.config/pypoetry
 .config/qt5ct
-.config/qutebrowser
 .config/redshift
 .config/rofi
 .config/stalonetrayrc
 .config/sublime-text
 .config/systemd
-.config/tealdeer
-.config/tmux
 .config/variety
 .config/xdg-desktop-portal
 .config/xmobar
@@ -55,6 +62,14 @@ tags
 .Xresources
 {{ end }}
 
+
+# macOS-only files
+{{ if ne .chezmoi.os "darwin" }}
+.zprofile
+.zshrc
+{{ end }}
+
+
 # Windows-only files
 {{ if ne .chezmoi.os "windows" }}
 AppData
@@ -62,6 +77,4 @@ Documents
 
 .config/ahk
 .config/scoop
-
-.workspacer
 {{ end }}
