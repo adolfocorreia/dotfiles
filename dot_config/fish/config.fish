@@ -62,6 +62,9 @@ if status is-interactive
 
     alias extract=aunpack
 
+    # fzf plugin settings
+    set fzf_fd_opts --hidden --exclude .git --exclude .cache
+
     # fzf plugin bindings (Ctrl+Alt)
     # - Files: relative path
     # - git Log: commit hash
@@ -75,8 +78,8 @@ if status is-interactive
 
     # Load conda
     # Reference: https://stackoverflow.com/questions/34280113/add-conda-to-path-in-fish
-    if type -q /opt/miniconda3/bin/conda
-        /opt/miniconda3/bin/conda "shell.fish" "hook" $argv | source
+    if type -q conda
+        conda "shell.fish" "hook" $argv | source
     end
 
     # Load pyenv
