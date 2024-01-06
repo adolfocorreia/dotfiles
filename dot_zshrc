@@ -1,3 +1,8 @@
 alias ll='ls -l'
 alias la='ls -la'
 
+LFCD="/opt/local/share/lf/lfcd.sh"
+if [ -f "$LFCD" ]; then
+  source "$LFCD"
+fi
+
