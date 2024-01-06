@@ -6,3 +6,5 @@ if [ -f "$LFCD" ]; then
   source "$LFCD"
 fi
 
+eval "$(zoxide init zsh)"
+
