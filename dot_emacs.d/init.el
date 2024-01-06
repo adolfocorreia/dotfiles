@@ -158,6 +158,19 @@
   (scroll-bar-mode +1)
   (tool-bar-mode -1))
 
+;; macOS
+(use-package emacs
+  :ensure nil
+  :demand ON-MAC
+  :if ON-MAC
+  :custom-face
+  (default ((t :family "Iosevka Fixed" :height 150)))
+  (variable-pitch ((t :family "Iosevka Aile" :height 145)))
+  :config
+  (menu-bar-mode +1)
+  (scroll-bar-mode -1)
+  (tool-bar-mode -1))
+
 ;; Windows
 (use-package emacs
   :ensure nil
@@ -1520,6 +1533,15 @@
 
 
 ;; Emacs Lisp
+(when ON-MAC
+  ;; Compile parinfer manually and copy it to Emacs home:
+  ;;   git clone https://github.com/eraserhd/parinfer-rust.git
+  ;;   cd parinfer-rust
+  ;;   cargo build --release --features emacs
+  ;;   cp ./target/release/libparinfer_rust.dylib ~/.emacs.d/parinfer-rust
+  ;; Reference: https://github.com/justinbarclay/parinfer-rust-mode/issues/41#issuecomment-1496907286
+  ;; TODO: automate this
+  (setq parinfer-rust-library "~/.emacs.d/parinfer-rust/libparinfer_rust.dylib"))
 (use-package parinfer-rust-mode
   :hook
   (emacs-lisp-mode . parinfer-rust-mode)
@@ -1729,7 +1751,7 @@
 
 ;; LaTeX
 ;; Useful functions: (repunctuate-sentences)
-(unless ON-WINDOWS
+(when ON-LINUX
   ;; Documentation: https://www.gnu.org/software/auctex/manual/auctex.index.html
   (use-package tex
     :ensure auctex

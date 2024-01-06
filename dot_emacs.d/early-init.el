@@ -12,17 +12,21 @@
 (setq load-prefer-newer t)
 
 ;; Change location of the native compilation cache (Emacs 29+)
-(when (fboundp 'startup-redirect-eln-cache)
+(when (native-comp-available-p)
   (startup-redirect-eln-cache (convert-standard-filename (expand-file-name "var/eln-cache/" user-emacs-directory))))
 
 ;; Set title template for visible frames
 (setq-default frame-title-format '(multiple-frames "%b" ("" "%b - GNU Emacs")))
 
 ;; Start frames maximized and with no window decorations (including title bar)
-(unless ON-WINDOWS
-   (add-to-list 'default-frame-alist '(undecorated . t)))
-(add-to-list 'default-frame-alist '(height . 50))
-(add-to-list 'default-frame-alist '(width . 200))
+(when ON-LINUX
+  (add-to-list 'default-frame-alist '(undecorated . t)))
+(when ON-MAC
+  (add-to-list 'default-frame-alist '(height . 60))
+  (add-to-list 'default-frame-alist '(width . 240)))
+(when ON-WINDOWS
+  (add-to-list 'default-frame-alist '(height . 50))
+  (add-to-list 'default-frame-alist '(width . 200)))
 (setq frame-inhibit-implied-resize t)
 
 ;; Avoid black screen at startup (bg/fg colors taken from doom-tokyo-night theme)
