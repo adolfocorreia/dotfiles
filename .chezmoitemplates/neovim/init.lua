@@ -1068,6 +1068,7 @@ local PLUGINS = {
         ensure_installed = {
           "black",
           "isort",
+          "lua-language-server",
           "selene",
           "stylua",
         },
