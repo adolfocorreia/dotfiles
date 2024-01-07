@@ -11,6 +11,7 @@ tags
 .config/Code
 .config/fish
 .config/lf
+.config/mpv
 .config/nvim
 .config/pypoetry
 .config/qutebrowser
@@ -30,7 +31,6 @@ tags
 .config/kitty
 .config/lxsession
 .config/mimeapps.list
-.config/mpv
 .config/paru
 .config/picom
 .config/qt5ct
