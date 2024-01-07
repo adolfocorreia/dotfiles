@@ -22,13 +22,14 @@ tags
 
 # Linux-only files
 {{ if ne .chezmoi.os "linux" }}
-.config/Kvantum
+.config/aconfmgr
 .config/alacritty
 .config/dunst
 .config/gtk-3.0
 .config/kanata
 .config/keepassxc
 .config/kitty
+.config/Kvantum
 .config/lxsession
 .config/mimeapps.list
 .config/paru
