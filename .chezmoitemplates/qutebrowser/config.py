@@ -132,8 +132,13 @@ c.url.searchengines[",aa"]     = "https://aur.archlinux.org/packages/?K={}"
 
 # Fonts
 c.fonts.default_family = "Iosevka Aile"
-c.fonts.default_size = "10pt"
-c.fonts.hints = "bold 9pt default_family"
+if platform.system() == "Darwin":
+    c.fonts.default_size = "14pt"
+    c.fonts.hints = "bold 12pt default_family"
+else:
+    c.fonts.default_size = "10pt"
+    c.fonts.hints = "bold 9pt default_family"
+
 
 
 # Platform specific configuration
@@ -149,9 +154,9 @@ if http_proxy is not None:
 config.source("base16-tokyonight.config.py")
 
 # External video player keybinding
-if platform.system() == "Linux":
-    cmd = "mpv --profile=qutebrowser"
-elif platform.system() == "Windows":
+if platform.system() == "Windows":
     cmd = "vlc"
+else:
+    cmd = "mpv --profile=qutebrowser"
 config.bind(",V", "hint links spawn %s {hint-url}" % cmd)
 config.bind(",v", "spawn %s {url}" % cmd)

@@ -69,6 +69,8 @@ Library
 
 .config/fish/functions/lfcd.fish
 
+.qutebrowser
+
 .zprofile
 .zshrc
 {{ end }}
