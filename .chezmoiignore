@@ -65,6 +65,8 @@ tags
 
 # macOS-only files
 {{ if ne .chezmoi.os "darwin" }}
+Library
+
 .config/fish/functions/lfcd.fish
 
 .zprofile
