@@ -164,8 +164,8 @@
   :demand ON-MAC
   :if ON-MAC
   :custom-face
-  (default ((t :family "Iosevka Fixed" :height 150)))
-  (variable-pitch ((t :family "Iosevka Aile" :height 145)))
+  (default ((t :family "Iosevka Fixed" :height 160)))
+  (variable-pitch ((t :family "Iosevka Aile" :height 155)))
   :config
   (menu-bar-mode +1)
   (scroll-bar-mode -1)
