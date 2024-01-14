@@ -40,3 +40,11 @@ fi
 # Find packages that provide unavailable commands.
 [[ -r /usr/share/doc/pkgfile/command-not-found.bash ]] && . /usr/share/doc/pkgfile/command-not-found.bash
 
+
+# fzf keybindings and completion
+# Ctrl+r: search shell command history
+# Ctrl+t: list files in current directory
+# Alt+c:  change directory
+[[ -r /usr/share/fzf/key-bindings.bash ]] && . /usr/share/fzf/key-bindings.bash
+[[ -r /usr/share/fzf/completion.bash ]] && . /usr/share/fzf/completion.bash
+

@@ -33,6 +33,12 @@ function fish_user_key_bindings
     # - https://fishshell.com/docs/current/cmds/bind.html
     # - https://fishshell.com/docs/current/cmds/fish_key_reader.html
     # - https://fishshell.com/docs/current/interactive.html#autosuggestions
+
+    # fzf default keybindings
+    # Ctrl+r: search shell command history
+    # Ctrl+t: list files in current directory
+    # Alt+c:  change directory
+    fzf_key_bindings
 end
 
 # Commands to run in interactive sessions can go here
@@ -66,12 +72,13 @@ if status is-interactive
     set fzf_fd_opts --hidden --exclude .git --exclude .cache
 
     # fzf plugin bindings (Ctrl+Alt)
+    # - Reverse command history: command
     # - Files: relative path
     # - git Log: commit hash
     # - git Status: relative path
     # - Processes: PID
     # - environment Variables: variable name
-    fzf_configure_bindings --variables=\e\cv
+    fzf_configure_bindings --history=\e\cr --variables=\e\cv
 
     # Sponge plugin settings
     set sponge_purge_only_on_exit true
