@@ -1667,7 +1667,8 @@
 
 ;; Julia
 (use-package julia-mode
-  :mode "\\.jl\\'"
+  :mode
+  ("\\.jl\\'" . julia-mode)
   :interpreter "julia")
 
 (use-package eglot-jl
@@ -1724,12 +1725,19 @@
   ("\\.fish\\'" . fish-mode))
 
 
+;; JavaScript
+(use-package js2-mode
+  :mode
+  ("\\.js\\'" . js2-mode))
+
+
 ;; Haskell
 (unless ON-WINDOWS
   (use-package haskell-mode
     :custom
     (haskell-process-suggest-remove-import-lines t)
-    :mode "\\.hs\\'"))
+    :mode
+    ("\\.hs\\'" . haskell-mode)))
 
 
 ;; Markdown
