@@ -99,8 +99,13 @@ Set-PSReadLineOption -ViModeIndicator Script -ViModeChangeHandler $Function:OnVi
 Set-PsFzfOption -PSReadlineChordProvider Ctrl+t
 # Search command history
 Set-PsFzfOption -PSReadlineChordReverseHistory Ctrl+r
-# fzf Ctrl-R options
-$env:FZF_CTRL_R_OPTS = "--scheme=history"
+# Search directories and set location
+Set-PsFzfOption -PSReadlineChordSetLocation Alt+c
+# Search arguments in command history
+Set-PsFzfOption -PSReadlineChordReverseHistoryArgs Alt+a
+# fzf options
+$env:FZF_DEFAULT_OPTS = "--cycle --layout=reverse --border --height=90% --preview-window=wrap --marker='*'"
+$env:FZF_CTRL_R_OPTS  = "--scheme=history"
 # Enable 'fkill' alias for Invoke-FuzzyKillProcess
 Set-PsFzfOption -EnableAliasFuzzyKillProcess
 # Uses the fd command instead of OS specific file and directory commands
