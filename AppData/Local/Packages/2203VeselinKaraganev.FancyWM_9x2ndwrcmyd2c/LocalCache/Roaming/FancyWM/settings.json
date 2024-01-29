@@ -360,7 +360,8 @@
     "Taskmgr",
     "PomoDoneApp",
     "PowerToys.Peek.UI",
-    "speedcrunch"
+    "speedcrunch",
+    "CalculatorApp"
   ],
   "ClassIgnoreList": [
     "#32770",
