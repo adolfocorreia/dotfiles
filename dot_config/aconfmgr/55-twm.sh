@@ -46,6 +46,8 @@ AddPackage --foreign findimagedupes # Tool to find visually similar or duplicate
 AddPackage --foreign vimiv-qt # An image viewer with vim-like keybindings
 AddPackage --foreign python-exiv2 # A Python 3 binding to exiv2, the C++ library for manipulation of EXIF, IPTC and XMP image metadata.
 
+IgnorePath '/usr/lib/vlc/plugins/plugins.dat'
+
 # Document viewers
 AddPackage xchm # Viewer for CHM files (GUI front-end to chmlib)
 AddPackage xreader # Document viewer for files like PDF and Postscript. X-Apps Project.

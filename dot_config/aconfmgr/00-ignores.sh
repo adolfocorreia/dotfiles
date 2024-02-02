@@ -1,5 +1,6 @@
 # Boot partition
 IgnorePath '/boot'
+IgnorePath '/boot/intel-ucode.img'
 
 # Mount files
 IgnorePath '/lost+found'
@@ -13,6 +14,7 @@ IgnorePath '/usr/share/*.cache'
 
 # Desktop environment resources
 IgnorePath '/etc/fonts'
+IgnorePath '/usr/share/fonts'
 IgnorePath '/usr/share/icons'
 IgnorePath '/usr/share/mime'
 
@@ -52,3 +54,6 @@ IgnorePath '/etc/.pwd.lock'
 IgnorePath '/etc/.updated'
 IgnorePath '/var/.updated'
 
+IgnorePath '/usr/share/glib-2.0/schemas/gschemas.compiled'
+IgnorePath '/usr/share/info/dir'
+IgnorePath '/usr/share/perl5/vendor_perl/XML/SAX/ParserDetails.ini'

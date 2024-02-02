@@ -10,11 +10,13 @@ AddPackage fisher # A package manager for the fish shell
 AddPackage fish # Smart and user friendly shell intended mostly for interactive use
 AddPackage fortune-mod # The Fortune Cookie Program from BSD games
 AddPackage fzf # Command-line fuzzy finder
+AddPackage git-delta # Syntax-highlighting pager for git and diff output
 AddPackage lf # A terminal file manager inspired by ranger
 AddPackage lynx # A text browser for the World Wide Web
 AddPackage magic-wormhole # Securely transfer data between computers
 AddPackage ncdu # Disk usage analyzer with an ncurses interface
 AddPackage parallel # A shell tool for executing jobs in parallel
+AddPackage progress # Shows running coreutils basic commands and displays stats
 AddPackage pv # A terminal-based tool for monitoring the progress of data through a pipeline
 AddPackage ripgrep # A search tool that combines the usability of ag with the raw speed of grep
 AddPackage starship # The cross-shell prompt for astronauts

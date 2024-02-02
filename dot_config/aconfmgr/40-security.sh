@@ -8,6 +8,7 @@ AddPackage yubikey-manager # Python library and command line tool for configurin
 AddPackage --foreign warsaw-bin # Banking security tool developed by GAS Tecnologia
 
 IgnorePath '/usr/local/etc/warsaw'
+IgnorePath '/usr/local/etc/warsaw/gas.dbd'
 
 # SSH keys
 IgnorePath '/etc/ssh/*key*'

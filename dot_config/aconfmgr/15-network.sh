@@ -1,4 +1,5 @@
 # Network tools
+AddPackage bind # A complete, highly portable implementation of the DNS protocol
 AddPackage inetutils # A collection of common network programs
 AddPackage net-tools # Configuration tools for Linux networking
 AddPackage nmap # Utility for network discovery and security auditing
@@ -11,4 +12,4 @@ AddPackage wol # Wake On LAN functionality in a small program. It wakes up hardw
 AddPackage cifs-utils # CIFS filesystem user-space tools
 AddPackage nfs-utils # Support programs for Network File Systems
 
-IgnorePath '/etc/resolv.conf'
+CreateFile /etc/samba/smb.conf > /dev/null
