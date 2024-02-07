@@ -105,6 +105,10 @@ let g:qs_buftype_blacklist = ['help', 'nofile', 'nowrite', 'terminal']
 
 let test#strategy = 'vimterminal'
 
+if has('mac')
+  let g:gutentags_ctags_executable = 'uctags'
+endif
+
 
 """"" Vim options """""
 
