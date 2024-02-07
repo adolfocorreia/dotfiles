@@ -68,6 +68,7 @@ tags
 {{ if ne .chezmoi.os "darwin" }}
 Library
 
+.config/fish/functions/fzf_key_bindings.fish
 .config/fish/functions/lfcd.fish
 
 .qutebrowser
