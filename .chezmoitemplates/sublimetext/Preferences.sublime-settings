@@ -20,6 +20,13 @@
 
 
 	//
+	// Application Behavior Settings
+	//
+	"index_files": true,
+	"index_exclude_patterns": ["*.log", "*.csv", "*.txt"],
+
+
+	//
 	// NeoVintageous (vi emulation) settings
 	//
 
