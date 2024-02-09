@@ -30,6 +30,7 @@ AddPackage xdg-desktop-portal-gtk # A backend implementation for xdg-desktop-por
 
 # Miscelaneous apps and tools
 AddPackage bibletime # Bible study tool
+AddPackage handbrake # Multithreaded video transcoder
 AddPackage pandoc-cli # Conversion between documentation formats
 AddPackage transmission-gtk # Fast, easy, and free BitTorrent client (GTK+ GUI)
 AddPackage yt-dlp # A youtube-dl fork with additional features and fixes
