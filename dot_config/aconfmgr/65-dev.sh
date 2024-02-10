@@ -39,7 +39,6 @@ AddPackage python-rope # Refactoring library
 AddPackage python-whatthepatch # A Python patch parsing library
 AddPackage tk # A windowing toolkit for use with tcl
 AddPackage yapf # Python style guide checker
-AddPackage --foreign miniconda3 # Mini version of Anaconda Python distribution
 
 # Julia
 AddPackage --foreign julia-bin # High-level, high-performance, dynamic programming language - official binaries
