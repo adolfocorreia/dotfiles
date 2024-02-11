@@ -50,3 +50,6 @@ AddPackage r # Language and environment for statistical computing and graphics
 
 # Haskell
 AddPackage haskell-language-server # LSP server for GHC
+
+# Rust
+AddPackage rustup # The Rust toolchain installer

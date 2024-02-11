@@ -19,3 +19,38 @@
 	helper = /usr/lib/git-core/git-credential-libsecret
 
 {{ end -}}
+
+# Delta configuration
+# - https://github.com/dandavison/delta
+# - https://github.com/folke/tokyonight.nvim/blob/main/extras/delta/tokyonight_storm.gitconfig
+
+[core]
+	pager = delta --diff-so-fancy
+
+[interactive]
+	diffFilter = delta --color-only --diff-so-fancy
+
+[diff]
+	colorMoved = default    # Moved lines of code are colored differently
+
+[merge]
+        conflictstyle = diff3   # Display diffs between the ancestral commit and each of the two merge parents
+
+[delta]
+        dark = true             # Use default colors appropriate for a dark terminal background
+        line-numbers = true     # Display line numbers next to the diff
+	navigate = true         # Use n to jump forwards and N to jump backwards
+        features = tokyo-night
+
+[delta "tokyo-night"]  # Tokyo Night Storm color scheme
+	minus-style                   = syntax "#3f2d3d"
+	minus-non-emph-style          = syntax "#3f2d3d"
+	minus-emph-style              = syntax "#763842"
+	minus-empty-line-marker-style = syntax "#3f2d3d"
+	line-numbers-minus-style      = "#b2555b"
+	plus-style                    = syntax "#283b4d"
+	plus-non-emph-style           = syntax "#283b4d"
+	plus-emph-style               = syntax "#316172"
+	plus-empty-line-marker-style  = syntax "#283b4d"
+	line-numbers-plus-style       = "#266d6a"
+	line-numbers-zero-style       = "#3b4261"

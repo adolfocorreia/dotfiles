@@ -3,6 +3,7 @@ AddPackage atool # A script for managing file archives of various types
 AddPackage bat # Cat clone with syntax highlighting and git integration
 AddPackage chezmoi # Manage your dotfiles across multiple machines
 AddPackage cowsay # Configurable talking cow (and a few other creatures)
+AddPackage difftastic # An experimental diff tool that compares files based on their syntax
 AddPackage dos2unix # Text file format converter
 AddPackage eza # A modern replacement for ls (community fork of exa)
 AddPackage fd # Simple, fast and user-friendly alternative to find
