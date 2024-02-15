@@ -5,6 +5,7 @@ AddPackage chezmoi # Manage your dotfiles across multiple machines
 AddPackage cowsay # Configurable talking cow (and a few other creatures)
 AddPackage difftastic # An experimental diff tool that compares files based on their syntax
 AddPackage dos2unix # Text file format converter
+AddPackage dust # A more intuitive version of du in rust
 AddPackage eza # A modern replacement for ls (community fork of exa)
 AddPackage fd # Simple, fast and user-friendly alternative to find
 AddPackage fisher # A package manager for the fish shell
@@ -15,8 +16,10 @@ AddPackage git-delta # Syntax-highlighting pager for git and diff output
 AddPackage lf # A terminal file manager inspired by ranger
 AddPackage lynx # A text browser for the World Wide Web
 AddPackage magic-wormhole # Securely transfer data between computers
+AddPackage moreutils # A growing collection of the unix tools that nobody thought to write thirty years ago
 AddPackage ncdu # Disk usage analyzer with an ncurses interface
 AddPackage parallel # A shell tool for executing jobs in parallel
+AddPackage pdfgrep # A tool to search text in PDF files
 AddPackage progress # Shows running coreutils basic commands and displays stats
 AddPackage pv # A terminal-based tool for monitoring the progress of data through a pipeline
 AddPackage ripgrep # A search tool that combines the usability of ag with the raw speed of grep

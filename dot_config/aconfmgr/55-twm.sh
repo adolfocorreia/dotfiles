@@ -8,8 +8,6 @@ AddPackage xmonad-contrib # Community-maintained extensions for xmonad
 AddPackage xmonad # Lightweight X11 tiled window manager written in Haskell
 AddPackage rofi # A window switcher, application launcher and dmenu replacement
 
-# CopyFile /etc/pacman.d/hooks/xmonad.hook
-
 # Desktop services
 AddPackage copyq # Clipboard manager with searchable and editable history
 AddPackage dex # Program to generate and execute DesktopEntry files of type Application

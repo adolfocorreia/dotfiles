@@ -53,3 +53,6 @@ AddPackage haskell-language-server # LSP server for GHC
 
 # Rust
 AddPackage rustup # The Rust toolchain installer
+
+# Go
+AddPackage go # Core compiler tools for the Go programming language
