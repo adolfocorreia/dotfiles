@@ -1934,12 +1934,31 @@
     "C-v" '(:ignore t :which-key "babel")
     "C-x" '(:ignore t :which-key "org")))
 
-(use-package org-inline-pdf
-  :hook
-  (org-mode . org-inline-pdf-mode))
+(when ON-LINUX
+  (use-package org-inline-pdf
+    :hook
+    (org-mode . org-inline-pdf-mode)))
 
 ;; TODO: evaluate packages
 ;; denote
+
+
+
+;;; Obsidian
+
+(unless ON-WINDOWS
+  (use-package obsidian
+    :demand t
+    :bind
+    (:map obsidian-mode-map
+      ("C-c C-o" . obsidian-follow-link-at-point)
+      ("C-c C-b" . obsidian-backlink-jump)
+      ("C-c C-l" . obsidian-insert-wikilink))
+    :custom
+    (obsidian-directory (file-truename "~/Obsidian"))
+    (obsidian-inbox-directory "Inbox")
+    :config
+    (global-obsidian-mode +1)))
 
 
 
