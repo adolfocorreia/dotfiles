@@ -124,9 +124,9 @@ set diffopt+=vertical
 set encoding=utf-8
 set foldmethod=indent
 set guioptions-=L
+set guioptions-=T
 set guioptions-=r
 set guioptions-=t
-set guioptions-=T
 set hidden
 set hlsearch
 set ignorecase
@@ -146,6 +146,7 @@ set sidescrolloff=5
 set smartcase
 set splitbelow
 set splitright
+set tabstop=4
 set virtualedit=block
 set wildignore+=*.doc,*.docx,*.xls,*.xslx,*.ppt,*.pptx
 set wildignore+=*.pdf

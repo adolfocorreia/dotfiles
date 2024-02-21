@@ -126,6 +126,9 @@ vim.opt.virtualedit = "block"
 -- Round indent to multiples of 'shiftwidth' when using < or >.
 vim.opt.shiftround = true
 
+-- Number of spaces that a <Tab> in the file counts for.
+vim.opt.tabstop = 4
+
 -- Always open diff windows vertically
 vim.opt.diffopt:append({ "vertical" })
 
