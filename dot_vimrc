@@ -122,7 +122,6 @@ set confirm
 set cursorline
 set diffopt+=vertical
 set encoding=utf-8
-set foldmethod=indent
 set guioptions-=L
 set guioptions-=T
 set guioptions-=r
@@ -160,6 +159,10 @@ if has('win32')
   set guifont=Iosevka_Extended:h11
 else
   set guifont=Iosevka\ Term\ Expanded\ 11
+endif
+
+if executable('rg')
+  set grepprg=rg\ --vimgrep\ --smart-case\ --no-heading
 endif
 
 let &t_ti .= "\e[1 q"
