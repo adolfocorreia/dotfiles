@@ -13,11 +13,7 @@
 -- Define vimrc autocommand group removing all previously set vimrc autocommands
 -- when (re)sourcing this file.
 -- Reference: https://learnvimscriptthehardway.stevelosh.com/chapters/14.html
-vim.cmd([[
-  augroup vimrc
-    autocmd!
-  augroup END
-]])
+vim.api.nvim_create_augroup("vimrc", { clear = true })
 
 -- Select Leader keys.
 vim.g.mapleader = " "
@@ -181,22 +177,6 @@ vim.cmd([[autocmd vimrc TermOpen * set filetype=terminal]])
 -- Avoid cursor movement when yanking text.
 -- Save view on CursorMoved and restore after yank operation.
 -- Reference: https://github.com/svban/YankAssassin.vim
--- TODO: convert these functions to Lua!
-vim.cmd([[
-  function! SaveViewOnCursorMove() abort
-    let w:pre_yank_view = winsaveview()
-  endfunction
-  function! RestoreViewAfterYank() abort
-    if v:event.operator=='y' && exists('w:pre_yank_view')
-      call winrestview(w:pre_yank_view)
-    endif
-  endfunction
-  augroup YankSteadyView
-    autocmd!
-    autocmd CursorMoved * call SaveViewOnCursorMove()
-    autocmd TextYankPost * call RestoreViewAfterYank()
-  augroup END
-]])
 
 -- Disable nvim-autopairs when entering in Visual Multi mode, since both plugins map
 --the <BS> key.
@@ -227,6 +207,24 @@ vim.cmd([[
   autocmd vimrc User visual_multi_start call DisableAutopairsMappings()
   autocmd vimrc User visual_multi_exit  call EnableAutopairsMappings()
 ]])
+local pre_yank_view = nil
+vim.api.nvim_create_augroup("YankSteadyView", { clear = true })
+vim.api.nvim_create_autocmd({ "VimEnter", "CursorMoved" }, {
+  group = "YankSteadyView",
+  pattern = "*",
+  callback = function()
+    pre_yank_view = vim.fn.winsaveview()
+  end,
+})
+vim.api.nvim_create_autocmd("TextYankPost", {
+  group = "YankSteadyView",
+  pattern = "*",
+  callback = function()
+    if vim.v.event.operator == "y" and pre_yank_view ~= nil then
+      vim.fn.winrestview(pre_yank_view)
+    end
+  end,
+})
 
 ------------------------
 ----- Key mappings -----
@@ -392,7 +390,6 @@ local LEADER_MAPPINGS = {
     ["e"] = { "<Cmd>enew<CR>", "Edit new buffer" },
     ["W"] = { "<Cmd>wall<CR>", "Write all buffers" },
     ["r"] = { "<Cmd>edit %<CR>", "Reload current buffer" },
-    -- TODO: evaluate this
     ["R"] = { "<Cmd>checktime<CR>", "Reload all buffers" },
   },
 
