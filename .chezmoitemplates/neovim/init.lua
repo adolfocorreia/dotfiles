@@ -20,12 +20,9 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
 -- Set vim.g.os variable with current OS.
-if vim.fn.exists("g:os") == 0 then
-  if vim.fn.has("win64") then
-    vim.g.os = "Windows"
-  else
-    vim.g.os = vim.fn.substitute(vim.fn.system("uname"), "\n", "", "")
-  end
+vim.g.os = vim.loop.os_uname().sysname
+if string.find(vim.g.os, "Windows") then
+  vim.g.os = "Windows"
 end
 
 -- Disable external providers support to improve startup time.
@@ -683,14 +680,13 @@ local PLUGINS = {
     end,
   },
 
-  -- TODO: evaluate this better
   -- Project management.
   {
     "ahmedkhalf/project.nvim",
     event = "VeryLazy",
     config = function()
       require("project_nvim").setup({
-        detection_methods = { "pattern", "lsp" },
+        patterns = { "pyproject.toml", "Project.toml", "Makefile", ".git" },
       })
     end,
   },
@@ -787,20 +783,6 @@ local PLUGINS = {
   {
     "tpope/vim-rsi",
     event = "VeryLazy",
-  },
-
-  -- TODO: evaluate monaqa/dial.nvim
-  -- Use C-a/C-x to increment/decrement dates, times, roman numerals and ordinals
-  -- (e.g. 1st, 2nd, 3rd). For letters of the alphabet, use linewise visual
-  -- selection on empty lines.
-  {
-    "tpope/vim-speeddating",
-    keys = { "<C-a>", "<C-x>" },
-    cmd = { "SpeedDatingFormat" },
-    config = function()
-      -- Remove format for non-capital roman numerals.
-      vim.cmd([[SpeedDatingFormat! %v]])
-    end,
   },
 
   --- Editing helps ---
@@ -1160,8 +1142,6 @@ local PLUGINS = {
 
   -- Reference: https://github.com/sheerun/vim-polyglot#language-packs
 
-  -- TODO: Evaluate zeavim.vim, vim-dasht and vim-devdocs
-
   -- Julia. LaTeX to Unicode substitutions.
   {
     "JuliaEditorSupport/julia-vim",
@@ -1169,8 +1149,6 @@ local PLUGINS = {
   },
 
   --- Terminal and file management support ---
-
-  -- TODO: Evaluate 'Olical/conjure'
 
   -- Send code to REPL: send motion in normal mode (gy_) or visual mode (gy),
   -- send line (gyy) and send paragraph (gyY).
