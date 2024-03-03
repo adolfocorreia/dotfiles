@@ -177,36 +177,6 @@ vim.cmd([[autocmd vimrc TermOpen * set filetype=terminal]])
 -- Avoid cursor movement when yanking text.
 -- Save view on CursorMoved and restore after yank operation.
 -- Reference: https://github.com/svban/YankAssassin.vim
-
--- Disable nvim-autopairs when entering in Visual Multi mode, since both plugins map
---the <BS> key.
--- References:
--- - *vm-functions*
--- - https://github.com/windwp/nvim-autopairs/blob/master/lua/nvim-autopairs.lua
--- - https://vi.stackexchange.com/questions/7734/how-to-save-and-restore-a-mapping
--- TODO: convert these functions to Lua!
-vim.cmd([[
-  let g:VM_bs_map = {}
-  function! DisableAutopairsMappings() abort
-    if mapcheck('<BS>', 'i') !=# ''
-      let g:VM_bs_map = maparg('<BS>', 'i', 0 , 1)
-      if g:VM_bs_map.buffer == 0 || g:VM_bs_map.expr == 0
-        throw 'Unexpected mapping options!'
-      endif
-      lua require('nvim-autopairs').disable()
-      iunmap <buffer> <expr> <BS>
-    endif
-  endfunction
-  function! EnableAutopairsMappings() abort
-    if g:VM_bs_map != {}
-      execute 'inoremap <buffer> <expr> <BS> ' . g:VM_bs_map.rhs
-      lua require('nvim-autopairs').enable()
-      let g:VM_bs_map = {}
-    endif
-  endfunction
-  autocmd vimrc User visual_multi_start call DisableAutopairsMappings()
-  autocmd vimrc User visual_multi_exit  call EnableAutopairsMappings()
-]])
 local pre_yank_view = nil
 vim.api.nvim_create_augroup("YankSteadyView", { clear = true })
 vim.api.nvim_create_autocmd({ "VimEnter", "CursorMoved" }, {
@@ -819,25 +789,6 @@ local PLUGINS = {
     event = "VeryLazy",
   },
 
-  -- TODO: evaluate this and svermeulen/vim-subversive better
-  -- TODO: https://vim.fandom.com/wiki/Replace_a_word_with_yanked_text
-  -- Replace text object (<M-s>), line (<M-s><M-s>) or to end of line (<M-S>) with
-  -- contents of the unnamed register "" (e.g. <M-s>iw replaces the word under
-  -- the cursor with the current yank).
-  {
-    "gbprod/substitute.nvim",
-    keys = { "<M-s>", "<M-S>" },
-    config = function()
-      require("substitute").setup({})
-
-      local opts = { noremap = true }
-      vim.api.nvim_set_keymap("n", "<M-s>", "<Cmd>lua require('substitute').operator()<CR>", opts)
-      vim.api.nvim_set_keymap("n", "<M-s><M-s>", "<Cmd>lua require('substitute').line()<CR>", opts)
-      vim.api.nvim_set_keymap("n", "<M-S>", "<Cmd>lua require('substitute').eol()<CR>", opts)
-      vim.api.nvim_set_keymap("x", "<M-s>", "<Cmd>lua require('substitute').visual()<CR>", opts)
-    end,
-  },
-
   -- TODO: evaluate monaqa/dial.nvim
   -- Use C-a/C-x to increment/decrement dates, times, roman numerals and ordinals
   -- (e.g. 1st, 2nd, 3rd). For letters of the alphabet, use linewise visual
@@ -853,24 +804,6 @@ local PLUGINS = {
   },
 
   --- Editing helps ---
-
-  -- Sublime Text-like multiple cursor editing.
-  -- To activate, select words with M-d or create cursors vertically with C-j/C-k.
-  -- Use C-h/C-l to add characters to the selection and o to go to the other side
-  -- of the selection. Use n/N to get more occurrences and [/] to navigate
-  -- between selections. Press q to skip current occurrence and get the next one
-  -- and Q to remove current selection. Start insert mode with i, a or c.
-  {
-    "mg979/vim-visual-multi",
-    keys = { "<M-d>", "<C-j>", "<C-k>", "<C-h>", "<C-l>" },
-    init = function()
-      -- Visual Multi plugin key mappings.
-      vim.g.VM_maps = {
-        ["Find Under"] = "<M-d>",
-        ["Find Subword Under"] = "<M-d>",
-      }
-    end,
-  },
 
   -- TODO: evaluate mini.align
   -- Align text by some character or regex adding spaces to the left and/or right.
@@ -894,7 +827,6 @@ local PLUGINS = {
     end,
   },
 
-  -- TODO: evaluate 'LunarWatcher/auto-pairs' since it might be compatible with vim-visual-multi
   -- TODO: evaluate mini.pairs
   -- Insert and delete brackets, parenthesis and quotes in pairs.
   {
@@ -902,7 +834,7 @@ local PLUGINS = {
     keys = { { "(", "[", "{", '"', "'", "`", mode = "i" } },
     config = function()
       require("nvim-autopairs").setup({
-        map_bs = true, -- conflicts with vim-visual-multi - check autocmd workaround
+        map_bs = true,
         map_c_h = true,
         map_c_w = false,
       })
