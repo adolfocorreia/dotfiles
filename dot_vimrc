@@ -51,10 +51,10 @@ Plug 'justinmk/vim-dirvish',     { 'on': '<Plug>(dirvish_up)' }
 Plug 'justinmk/vim-sneak'
 Plug 'kana/vim-textobj-user'
 Plug 'ludovicchabant/vim-gutentags'
-Plug 'mg979/vim-visual-multi',   { 'on': '<Plug>(VM-Find-Under)' }
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'romainl/vim-qf'
 Plug 'sheerun/vim-polyglot'
+Plug 'svban/YankAssassin.vim'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-eunuch',         { 'on': ['Delete','Move','Rename','Mkdir'] }
 Plug 'tpope/vim-fugitive',       { 'on': 'Git' }
@@ -98,11 +98,6 @@ xmap ga <Plug>(EasyAlign)
 nmap <BS> <Plug>(dirvish_up)
 
 let g:sneak#label = 1
-
-let g:VM_maps = {}
-let g:VM_maps['Find Under']         = '<M-d>'
-let g:VM_maps['Find Subword Under'] = '<M-d>'
-nmap <M-d> <Plug>(VM-Find-Under)
 
 let g:qs_buftype_blacklist = ['help', 'nofile', 'nowrite', 'terminal']
 
