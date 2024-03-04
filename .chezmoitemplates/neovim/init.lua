@@ -5,7 +5,8 @@
 -- Neovim tips:
 -- - https://github.com/wincent/vim-university
 -- - https://github.com/nanotee/nvim-lua-guide
--- - Use :lua print(vim.inspect(<table>)) to display table contents.
+-- - Use :lua vim.print(<table>) to display table contents.
+-- - See kickstart.nvim and lsp-zero as references for overall configuration.
 
 -- TODO: evaluate and replace all vim.cmd statements
 -- TODO: convert code to new APIs (e.g. autocmds, key maps, highlight)
@@ -95,12 +96,15 @@ vim.opt.cursorline = true
 vim.opt.cursorcolumn = true
 
 -- Highlight column 90. It helps identifying long lines.
-vim.opt.colorcolumn = "90"
+vim.opt.colorcolumn = "100"
 
 -- Show the line number relative to the cursor in front of each line and the
 -- absolute line number for the one with the cursor.
 vim.opt.number = true
 vim.opt.relativenumber = true
+
+-- Display signs in the 'number' column.
+vim.opt.signcolumn = "number"
 
 -- Open new split panes to right and bottom.
 vim.opt.splitbelow = true
@@ -142,9 +146,6 @@ vim.opt.wildignore:append({ "*.pyc,*.pyo,*.pyd" })
 
 --- General autocommands ---
 
--- Highlight yanked region.
-vim.cmd([[autocmd vimrc TextYankPost * silent! lua vim.highlight.on_yank{timeout=500}]])
-
 -- Autobalance windows in each tab on Neovim resize.
 vim.cmd([[autocmd vimrc VimResized * tabdo wincmd =]])
 
@@ -171,21 +172,30 @@ vim.cmd([[autocmd vimrc TermOpen * wincmd L]])
 -- Set terminal filetype.
 vim.cmd([[autocmd vimrc TermOpen * set filetype=terminal]])
 
--- Avoid cursor movement when yanking text.
+--- Yank autocmds
+
+-- Highlight yanked region and avoid cursor movement when yanking text.
 -- Save view on CursorMoved and restore after yank operation.
 -- Reference: https://github.com/svban/YankAssassin.vim
-local pre_yank_view = nil
 vim.api.nvim_create_augroup("YankSteadyView", { clear = true })
+vim.api.nvim_create_autocmd("TextYankPost", {
+  group = "YankSteadyView",
+  desc = "Highlight when yanking text",
+  callback = function()
+    vim.highlight.on_yank({ timeout = 500 })
+  end,
+})
+local pre_yank_view = nil
 vim.api.nvim_create_autocmd({ "VimEnter", "CursorMoved" }, {
   group = "YankSteadyView",
-  pattern = "*",
+  desc = "Save window view on cursor move",
   callback = function()
     pre_yank_view = vim.fn.winsaveview()
   end,
 })
 vim.api.nvim_create_autocmd("TextYankPost", {
   group = "YankSteadyView",
-  pattern = "*",
+  desc = "Restore window view after yanking text",
   callback = function()
     if vim.v.event.operator == "y" and pre_yank_view ~= nil then
       vim.fn.winrestview(pre_yank_view)
@@ -266,6 +276,13 @@ vim.cmd([[
   nnoremap <C-w><Tab>4 4gt
   nnoremap <C-w><Tab>5 5gt
 ]])
+
+-- TODO: check all these mapping for conflicts
+-- TODO: test all these mapping
+-- Diagnostics mappings.
+vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
+vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
+vim.keymap.set("n", "gl", vim.diagnostic.open_float, { desc = "Show line diagnostic" })
 
 -----------------------------
 ----- WhichKey mappings -----
@@ -631,6 +648,7 @@ local FILETYPE_BL = {
   "lspinfo",
 }
 
+-- See plugin specification at `:help lazy.nvim-lazy.nvim-plugin-spec`
 local PLUGINS = {
 
   --- Neovim management and fixes ---
@@ -794,7 +812,7 @@ local PLUGINS = {
   -- 2. Optionally enter keys to cycle between alignment options (e.g. <C-d> to
   --    cycle between left, right or center alignment).
   -- 3. Optionally enter keys to define delimiter occurrences to consider (e.g.
-  --    2: second occurence, *: all occurences, -: last ocurrence).
+  --    2: second occurrence, *: all occurrences, -: last occurrence).
   -- 4. Type delimiter key (one of " =:.|&#,", which have predefined rules) or an
   --    arbitrary regex followed by <C-x>.
   -- 5. Alternatively, use the :EasyAlign command.
@@ -1034,6 +1052,7 @@ local PLUGINS = {
 
       require("mason-nvim-dap").setup({
         ensure_installed = { "python" },
+        automatic_installation = false,
         handlers = {
           function(config)
             require("mason-nvim-dap").default_setup(config)
