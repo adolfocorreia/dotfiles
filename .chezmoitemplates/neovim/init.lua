@@ -117,6 +117,9 @@ vim.opt.smartcase = true
 -- Disable line wrapping.
 vim.opt.wrap = false
 
+-- Insert two spaces after a '.', '?' and '!' with a join command.
+vim.opt.joinspaces = true
+
 -- Allow virtual editing (e.g. past end of line) in visual block mode.
 vim.opt.virtualedit = "block"
 
@@ -1714,11 +1717,9 @@ local PLUGINS = {
     config = true,
   },
 
-  --[[
-  Treesitter supported colorschemes:
-  - https://github.com/nvim-treesitter/nvim-treesitter/wiki/Colorschemes
-  - https://github.com/rockerBOO/awesome-neovim#tree-sitter-supported-colorscheme
-  --]]
+  -- Treesitter supported colorschemes:
+  -- - https://github.com/nvim-treesitter/nvim-treesitter/wiki/Colorschemes
+  -- - https://github.com/rockerBOO/awesome-neovim#tree-sitter-supported-colorscheme
 
   -- Tokyo Night theme.
   {
@@ -1748,3 +1749,5 @@ require("lazy").setup(PLUGINS, {
     enabled = true,
   },
 })
+
+-- vim: tabstop=4
