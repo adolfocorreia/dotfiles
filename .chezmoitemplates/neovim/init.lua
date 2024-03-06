@@ -445,7 +445,6 @@ local LEADER_MAPPINGS = {
     ["q"] = { "<Cmd>TroubleToggle quickfix<CR>", "Quickfix items" },
     ["l"] = { "<Cmd>TroubleToggle loclist<CR>", "Loclist items" },
     ["r"] = { "<Cmd>TroubleToggle lsp_references<CR>", "LSP references" },
-    ["s"] = { "<Cmd>SymbolsOutline<CR>", "Symbols outline" },
   },
 
   r = {
@@ -459,10 +458,8 @@ local LEADER_MAPPINGS = {
 
   c = {
     name = "code",
-    ["f"] = { format_buffer, "Format buffer" },
-    ["b"] = { "<Cmd>!black %<CR>", "Format with black" },
-    ["i"] = { "<Cmd>!isort %<CR>", "Format with isort" },
-    ["l"] = { "<Cmd>!stylua --indent-type Spaces --indent-width 2 %<CR>", "Format with stylua" },
+    ["c"] = { "<Cmd>Format<CR>", "Format buffer" },
+    ["C"] = { format_buffer, "Format buffer (LSP)" },
     ["w"] = { "<Cmd>StripWhitespace<CR>", "Strip whitespace" },
     ["s"] = { "<Cmd>Telescope spell_suggest<CR>", "Spell suggest" },
   },
@@ -486,8 +483,12 @@ local LEADER_MAPPINGS = {
 
   l = {
     name = "lsp",
+    ["l"] = { "<Cmd>LspInfo<CR>", "LSP information" },
+    ["L"] = { "<Cmd>LspLog<CR>", "LSP log" },
     ["d"] = { "<Cmd>Telescope diagnostics bufnr=0<CR>", "List diagnostics" },
     ["r"] = { "<Cmd>Telescope lsp_references<CR>", "References for word under cursor" },
+    ["I"] = { "<Cmd>Telescope lsp_implementations<CR>", "List implementations" },
+    ["t"] = { "<Cmd>Telescope lsp_type_definitions<CR>", "List type definitions" },
     ["s"] = { "<Cmd>Telescope lsp_document_symbols<CR>", "Document symbols" },
     ["S"] = { "<Cmd>Telescope lsp_workspace_symbols<CR>", "Workspace symbols" },
     ["D"] = { "<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>", "Dynamically lists workspace symbols" },
@@ -496,7 +497,6 @@ local LEADER_MAPPINGS = {
     ["h"] = { "<Cmd>lua vim.lsp.buf.hover()<CR>", "Hover help" },
     ["H"] = { "<Cmd>lua vim.lsp.buf.signature_help()<CR>", "Signature help" },
     ["R"] = { "<Cmd>lua vim.lsp.buf.rename()<CR>", "Rename" },
-    ["I"] = { "<Cmd>LspInfo<CR>", "LSP information" },
     p = {
       name = "peek",
       ["f"] = { "Peek function definition" },
@@ -921,95 +921,256 @@ local PLUGINS = {
     event = "BufReadPre",
   },
 
-  -- Auto setup nvim-lspconfig, nvim-cmp, mason.nvim and dependencies.
+  -- Autoformat code.
+  -- TODO: evaluate this better
+  -- TODO: fix leader mappings
   {
-    "VonHeikemen/lsp-zero.nvim",
-    branch = "v2.x",
-    event = { "BufReadPre", "BufNewFile" },
-    cmd = { "LspInfo", "Mason" },
-    dependencies = {
-      { "nvim-lua/plenary.nvim" },
+    "stevearc/conform.nvim",
+    event = "BufWritePre",
+    cmd = "ConformInfo",
 
-      -- LSP Support
-      { "neovim/nvim-lspconfig" },
+    init = function()
+      -- TODO: evaluate this better
+      -- Format with gq
+      vim.o.formatexpr = "v:lua.require('conform').formatexpr()"
+
+      -- Define :Format command
+      vim.api.nvim_create_user_command("Format", function(args)
+        local range = nil
+        if args.count ~= -1 then
+          local end_line = vim.api.nvim_buf_get_lines(0, args.line2 - 1, args.line2, true)[1]
+          range = {
+            start = { args.line1, 0 },
+            ["end"] = { args.line2, end_line:len() },
+          }
+        end
+        require("conform").format({ async = false, range = range })
+      end, { range = true })
+    end,
+
+    -- TODO: toggle format on save
+    config = function()
+      require("conform").setup({
+        formatters_by_ft = {
+          fish = { "fish_indent" },
+          lua = { "stylua" },
+          python = { "isort", "black" },
+          sh = { "shfmt" },
+        },
+        format_after_save = {
+          lsp_fallback = true,
+        },
+      })
+    end,
+  },
+
+  -- Lint code.
+  -- TODO: evaluate this better
+  -- TODO: fix leader mappings
+  {
+    "mfussenegger/nvim-lint",
+    event = { "BufWritePost", "BufReadPost", "InsertLeave" },
+    config = function()
+      require("lint")
+    end,
+  },
+
+  -- Configure LSP and Mason.
+  -- See :help lspconfig-all for a list of all pre-configured servers.
+  -- Attention: do not try to lazy load this!
+  {
+    "neovim/nvim-lspconfig",
+    dependencies = {
+      -- neodev
+      -- TODO: evaluate this better
+      { "folke/neodev.nvim" },
+
+      -- Mason
       { "williamboman/mason.nvim" },
       { "williamboman/mason-lspconfig.nvim" },
-      { "nvimtools/none-ls.nvim" },
-      { "jay-babu/mason-null-ls.nvim" },
+      { "WhoIsSethDaniel/mason-tool-installer.nvim" },
 
-      -- LSP helpers
-      { "simrat39/symbols-outline.nvim" },
-      { "folke/neodev.nvim" }, -- neovim lua API support
-
-      -- Autocompletion
-      { "hrsh7th/nvim-cmp" },
-      { "hrsh7th/cmp-buffer" },
-      { "hrsh7th/cmp-nvim-lsp" },
-      { "hrsh7th/cmp-nvim-lua" },
-      { "hrsh7th/cmp-path" },
-      { "lukas-reineke/cmp-rg" },
-      { "saadparwaiz1/cmp_luasnip" },
-
-      -- Snippets
-      { "L3MON4D3/LuaSnip" },
-      { "rafamadriz/friendly-snippets" },
+      -- Fidget
+      { "j-hui/fidget.nvim" },
     },
 
     config = function()
       -- Setup neovim with signature help, docs and completion for the nvim Lua API.
-      require("neodev").setup({})
+      require("neodev").setup()
 
-      -- Load lsp-zero with recommended settings.
-      -- Check keybindings at :help lsp-zero-keybindings / lsp-zero-completion-keybindings.
-      local lsp_zero = require("lsp-zero")
-      lsp_zero.preset({ name = "recommended" })
-      lsp_zero.on_attach(function(_, bufnr)
-        lsp_zero.default_keymaps({ buffer = bufnr })
-      end)
+      -- Setup Mason.
+      require("mason").setup()
 
-      -- Configure lua language server for neovim.
-      require("lspconfig").lua_ls.setup(lsp_zero.nvim_lua_ls())
+      -- Language servers to enable.
+      -- Use the lsp_servers table below to override the default configuration. Available keys are:
+      -- cmd, filetypes, capabilities and settings.
+      local lsp_servers = {
+        -- Neovim specific setup for Lua.
+        -- TODO: evaluate this better (lspconfig, kickstarter, lspzero)
+        lua_ls = {
+          settings = {
+            Lua = {
+              telemetry = { enable = false },
+            },
+          },
+        },
+        -- TODO: evaluate this better
+        typos_lsp = {
+          filetypes = {
+            "awk",
+            "bash",
+            "c",
+            "cpp",
+            "fish",
+            "gitcommit",
+            "gitconfig",
+            "gitignore",
+            "go",
+            "haskell",
+            "java",
+            "javascript",
+            "julia",
+            "lisp",
+            "lua",
+            "ps1",
+            "python",
+            "r",
+            "rst",
+            "rust",
+            "sh",
+            "sql",
+            "text",
+            "tmux",
+            "vim",
+          },
+        },
+      }
 
-      -- Setup lsp-zero.
-      lsp_zero.setup()
+      -- Add complete capabilities provided by cmp and broadcast them to the servers.
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      -- TODO: evaluate this (dependency between lsp and cmp)
+      capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
-      -- Adjust cmp sources.
-      require("cmp").setup({
+      require("mason-lspconfig").setup({
+        ensure_installed = vim.tbl_keys(lsp_servers),
+        handlers = {
+          function(server_name)
+            local config = lsp_servers[server_name] or {}
+            config.capabilities = vim.tbl_deep_extend("force", {}, capabilities, config.capabilities or {})
+            require("lspconfig")[server_name].setup(config)
+          end,
+        },
+      })
+
+      -- Auto update installed servers and tools.
+      require("mason-tool-installer").setup({
+        auto_update = true,
+        run_on_start = true,
+        start_delay = 10000,
+        debounce_hours = 12,
+      })
+
+      -- Create autocmd that is run when a LSP attaches to a particular buffer.
+      vim.api.nvim_create_autocmd("LspAttach", {
+        group = "vimrc",
+        desc = "Setup buffer for LSP",
+
+        callback = function(event)
+          -- TODO: evaluate this better
+          -- Enable completion triggered by <C-x><C-o>
+          vim.bo[event.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
+
+          -- Set LSP buffer local key maps
+          local map = function(mode, keys, func, desc)
+            vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP " .. desc })
+          end
+          -- TODO: check all these mapping for conflicts
+          -- TODO: test all these mapping
+          -- TODO: fix K on lua
+          -- stylua: ignore start
+          map("n", "gK",   vim.lsp.buf.hover,           "hover documentation")
+          map("n", "gd",   vim.lsp.buf.definition,      "goto definition")
+          map("n", "gD",   vim.lsp.buf.declaration,     "goto declaration")
+          map("n", "gI",   vim.lsp.buf.implementation,  "goto implementation")
+          map("n", "go",   vim.lsp.buf.type_definition, "goto type definition")
+          map("n", "gr",   vim.lsp.buf.references,      "goto references")
+          map("n", "gs",   vim.lsp.buf.signature_help,  "display signature help")
+          map("n", "<F2>", vim.lsp.buf.rename,          "rename")
+          map("n", "<F3>", vim.lsp.buf.format,          "format")
+          map("x", "<F3>", vim.lsp.buf.format,          "format")
+          map("n", "<F4>", vim.lsp.buf.code_action,     "code action")
+          map("x", "<F4>", vim.lsp.buf.code_action,     "code action")
+          -- stylua: ignore end
+        end,
+      })
+
+      -- Setup Fidget
+      -- TODO: evaluate this better
+      require("fidget").setup({})
+    end,
+  },
+
+  -- Autocompletion.
+  -- See `:help cmp` and `:help ins-completion`
+  {
+    "hrsh7th/nvim-cmp",
+    event = { "InsertEnter" },
+    dependencies = {
+      -- Snippets
+      { "L3MON4D3/LuaSnip", build = "make install_jsregexp" },
+      -- TODO: evaluate this better
+      { "rafamadriz/friendly-snippets" },
+
+      -- Autocompletion
+      { "hrsh7th/cmp-buffer" },
+      { "hrsh7th/cmp-nvim-lsp" },
+      { "hrsh7th/cmp-nvim-lua" },
+      { "hrsh7th/cmp-path" },
+      { "saadparwaiz1/cmp_luasnip" },
+    },
+
+    config = function()
+      local cmp = require("cmp")
+      local luasnip = require("luasnip")
+      luasnip.config.setup()
+
+      cmp.setup({
+        snippet = {
+          expand = function(args)
+            luasnip.lsp_expand(args.body)
+          end,
+        },
+
+        completion = { completeopt = "menu,menuone,noinsert" },
+
+        mapping = cmp.mapping.preset.insert({
+          -- Select next/previous item.
+          ["<C-n>"] = cmp.mapping.select_next_item(),
+          ["<C-p>"] = cmp.mapping.select_prev_item(),
+
+          -- Accept (yes) the completion.
+          ["<C-y>"] = cmp.mapping.confirm({ select = true }),
+
+          -- Move right/left in the snippet expansion.
+          ["<C-l>"] = cmp.mapping(function()
+            if luasnip.expand_or_locally_jumpable() then
+              luasnip.expand_or_jump()
+            end
+          end, { "i", "s" }),
+          ["<C-h>"] = cmp.mapping(function()
+            if luasnip.locally_jumpable(-1) then
+              luasnip.jump(-1)
+            end
+          end, { "i", "s" }),
+        }),
+
         sources = {
           { name = "path" },
           { name = "nvim_lsp", keyword_length = 2 },
           { name = "buffer", keyword_length = 3 },
           { name = "luasnip", keyword_length = 2 },
-          { name = "rg", keyword_length = 4 },
         },
       })
-
-      -- Setup null-ls and mason-null-ls.
-      local null_ls = require("null-ls")
-      null_ls.setup({
-        sources = {
-          -- pylint should be explicitly installed on the venv so as to find imported packages
-          null_ls.builtins.diagnostics.pylint,
-          null_ls.builtins.diagnostics.selene,
-          null_ls.builtins.formatting.black,
-          null_ls.builtins.formatting.isort,
-          null_ls.builtins.formatting.stylua,
-        },
-      })
-      require("mason-null-ls").setup({
-        ensure_installed = {
-          "black",
-          "isort",
-          "lua-language-server",
-          "selene",
-          "stylua",
-        },
-        automatic_installation = false,
-        automatic_setup = true,
-      })
-
-      -- Setup LSP symbols outline.
-      require("symbols-outline").setup({})
     end,
   },
 
