@@ -933,7 +933,6 @@ local PLUGINS = {
     cmd = "ConformInfo",
 
     init = function()
-      -- TODO: evaluate this better
       -- Format with gq
       vim.o.formatexpr = "v:lua.require('conform').formatexpr()"
 
@@ -947,8 +946,25 @@ local PLUGINS = {
             ["end"] = { args.line2, end_line:len() },
           }
         end
-        require("conform").format({ async = false, range = range })
+        require("conform").format({ async = false, lsp_fallback = true, range = range })
       end, { range = true })
+
+      -- Define :FormatEnable and FormatDisable commands
+      vim.api.nvim_create_user_command("FormatEnable", function(args)
+        -- Use ! for buffer-local setup
+        if args.bang then
+          vim.b.enable_autoformat = true
+        else
+          vim.g.enable_autoformat = true
+        end
+      end, {
+        desc = "Enable autoformat-on-save",
+        bang = true,
+      })
+      vim.api.nvim_create_user_command("FormatDisable", function()
+        vim.b.enable_autoformat = false
+        vim.g.enable_autoformat = false
+      end, { desc = "Disable autoformat-on-save" })
     end,
 
     -- TODO: toggle format on save
@@ -960,9 +976,13 @@ local PLUGINS = {
           python = { "isort", "black" },
           sh = { "shfmt" },
         },
-        format_after_save = {
-          lsp_fallback = true,
-        },
+        format_on_save = function(bufnr)
+          if vim.g.enable_autoformat or vim.b[bufnr].enable_autoformat then
+            return { timeout_ms = 500, lsp_fallback = true }
+          else
+            return nil
+          end
+        end,
       })
     end,
   },
@@ -974,7 +994,16 @@ local PLUGINS = {
     "mfussenegger/nvim-lint",
     event = { "BufWritePost", "BufReadPost", "InsertLeave" },
     config = function()
-      require("lint")
+      require("lint").linters_by_ft = {
+        python = { "ruff" },
+      }
+      vim.api.nvim_create_autocmd("BufWritePost", {
+        group = "vimrc",
+        desc = "Run linters",
+        callback = function()
+          require("lint").try_lint()
+        end,
+      })
     end,
   },
 
