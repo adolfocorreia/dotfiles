@@ -52,7 +52,7 @@ vim.g.loaded_netrwFileHandlers = 1
 --   mousemodel = "popup"
 --   keymodel   = "startsel,stopsel"
 --   selection  = "exclusive"
-vim.cmd([[behave mswin]])
+vim.cmd.behave("mswin")
 
 -- Enable 24-bit RGB colors in terminal mode.
 vim.opt.termguicolors = true
@@ -80,7 +80,7 @@ vim.opt.mouse = "a"
 -- Use * and/or + clipboard registers for yank and put operations.
 -- Primary selection: "* register / unnamed
 -- System clipboard:  "+ register / unnamedplus
-vim.opt.clipboard = "unnamed,unnamedplus"
+vim.opt.clipboard = "unnamed"
 
 -- Do not redraw screen while executing macros.
 vim.opt.lazyredraw = true
@@ -113,6 +113,11 @@ vim.opt.splitright = true
 -- Ignore case in patterns (unless upper case characters are used).
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
+
+-- Show tabs, trailing and non-breakable spaces characters.
+vim.opt.list = true
+vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
+-- vim.opt.listchars:append({ eol = "↵" })
 
 -- Disable line wrapping.
 vim.opt.wrap = false
@@ -217,6 +222,12 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- - Prefer non recursive maps (_noremap)
 -- - Plugin maps (<Plug>) must be recursive
 
+-- Center screen when browsing through search results.
+vim.cmd([[
+  nnoremap n nzzzv
+  nnoremap N Nzzzv
+]])
+
 -- Keep selection when indenting in visual mode.
 vim.cmd([[
   vnoremap > >gv
@@ -306,9 +317,9 @@ end
 -- Go to next tab, creating a second one if only one exists
 local function new_or_next_tab()
   if vim.fn.tabpagenr("$") == 1 then
-    vim.cmd("tabedit")
+    vim.cmd.tabedit()
   else
-    vim.cmd("tabnext")
+    vim.cmd.tabnext()
   end
 end
 
@@ -374,7 +385,7 @@ local LEADER_MAPPINGS = {
     ["p"] = { "<Cmd>bprevious<CR>", "Previous buffer" },
     ["#"] = { "<Cmd>buffer #<CR>", "Alternate buffer" },
     ["d"] = { "<Cmd>lua MiniBufremove.delete()<CR>", "Delete buffer" },
-    ["e"] = { "<Cmd>enew<CR>", "Edit new buffer" },
+    ["e"] = { "<Cmd>ene<CR>", "Edit new buffer" },
     ["W"] = { "<Cmd>wall<CR>", "Write all buffers" },
     ["r"] = { "<Cmd>edit %<CR>", "Reload current buffer" },
     ["R"] = { "<Cmd>checktime<CR>", "Reload all buffers" },
@@ -410,7 +421,7 @@ local LEADER_MAPPINGS = {
     ["r"] = { "<Cmd>Telescope oldfiles<CR>", "Recent files" },
     ["g"] = { "<Cmd>Telescope git_files<CR>", "Find git files" },
     ["p"] = { "<Cmd>Telescope projects<CR>", "Find projects" },
-    ["n"] = { "<Cmd>enew<CR>", "New file" },
+    ["n"] = { "<Cmd>ene<CR>", "New file" },
     ["D"] = { "<Cmd>Delete<CR>", "Delete file" },
     ["R"] = {
       function()
@@ -443,11 +454,13 @@ local LEADER_MAPPINGS = {
   t = {
     name = "trouble",
     ["t"] = { "<Cmd>TroubleToggle<CR>", "Toggle Trouble" },
+    ["T"] = { "<Cmd>TodoTrouble<CR>", "Toggle TODO Trouble" },
     ["w"] = { "<Cmd>TroubleToggle workspace_diagnostics<CR>", "Workspace diagnostics" },
     ["d"] = { "<Cmd>TroubleToggle document_diagnostics<CR>", "Document diagnostics" },
     ["q"] = { "<Cmd>TroubleToggle quickfix<CR>", "Quickfix items" },
     ["l"] = { "<Cmd>TroubleToggle loclist<CR>", "Loclist items" },
     ["r"] = { "<Cmd>TroubleToggle lsp_references<CR>", "LSP references" },
+    ["s"] = { "<Cmd>TodoTelescope<CR>", "Search TODOs" },
   },
 
   r = {
@@ -463,7 +476,9 @@ local LEADER_MAPPINGS = {
     name = "code",
     ["c"] = { "<Cmd>Format<CR>", "Format buffer" },
     ["C"] = { format_buffer, "Format buffer (LSP)" },
-    ["w"] = { "<Cmd>StripWhitespace<CR>", "Strip whitespace" },
+    ["a"] = { "<Cmd>FormatEnable<CR>", "Enable autoformatting" },
+    ["A"] = { "<Cmd>FormatDisable<CR>", "Disable autoformatting" },
+    ["w"] = { "<Cmd>lua MiniTrailspace.trim()<CR>", "Strip whitespace" },
     ["s"] = { "<Cmd>Telescope spell_suggest<CR>", "Spell suggest" },
   },
 
@@ -598,16 +613,16 @@ local LEADER_MAPPINGS = {
 
   h = {
     name = "harpoon",
-    ["h"] = { '<Cmd>lua require("harpoon.ui").toggle_quick_menu()<CR>', "Toggle quick menu" },
-    ["a"] = { '<Cmd>lua require("harpoon.mark").add_file()<CR>', "Add file" },
-    ["1"] = { '<Cmd>lua require("harpoon.ui").nav_file(1)<CR>', "Go to file 1" },
-    ["2"] = { '<Cmd>lua require("harpoon.ui").nav_file(2)<CR>', "Go to file 2" },
-    ["3"] = { '<Cmd>lua require("harpoon.ui").nav_file(3)<CR>', "Go to file 3" },
-    ["4"] = { '<Cmd>lua require("harpoon.ui").nav_file(4)<CR>', "Go to file 4" },
-    ["5"] = { '<Cmd>lua require("harpoon.ui").nav_file(5)<CR>', "Go to file 5" },
-    ["n"] = { '<Cmd>lua require("harpoon.ui").nav_next()<CR>', "Go to next mark" },
-    ["p"] = { '<Cmd>lua require("harpoon.ui").nav_prev()<CR>', "Go to previous mark" },
-    ["m"] = { "<Cmd>Telescope harpoon marks<CR>", "Search marks" },
+    ["h"] = { "<Cmd>lua require('harpoon').ui:toggle_quick_menu(require('harpoon'):list())<CR>", "Toggle quick menu" },
+    ["H"] = { "<Cmd>Telescope harpoon marks<CR>", "Search marks" },
+    ["a"] = { "<Cmd>lua require('harpoon'):list():append()<CR>", "Add file" },
+    ["1"] = { "<Cmd>lua require('harpoon'):list():select(1)<CR>", "Go to selection 1" },
+    ["2"] = { "<Cmd>lua require('harpoon'):list():select(2)<CR>", "Go to selection 2" },
+    ["3"] = { "<Cmd>lua require('harpoon'):list():select(3)<CR>", "Go to selection 3" },
+    ["4"] = { "<Cmd>lua require('harpoon'):list():select(4)<CR>", "Go to selection 4" },
+    ["5"] = { "<Cmd>lua require('harpoon'):list():select(5)<CR>", "Go to selection 5" },
+    ["n"] = { "<Cmd>lua require('harpoon'):list():next()<CR>", "Go to next mark" },
+    ["p"] = { "<Cmd>lua require('harpoon'):list():prev()<CR>", "Go to previous mark" },
   },
 
   q = {
@@ -634,23 +649,6 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Buffer and file types blacklists (disable visual effects).
-local BUFTYPE_BL = {
-  "help",
-  "nofile",
-  "nowrite",
-  "terminal",
-}
-local FILETYPE_BL = {
-  "alpha",
-  "checkhealth",
-  "dirbuf",
-  "fugitive",
-  "harpoon",
-  "help",
-  "lspinfo",
-}
-
 -- See plugin specification at `:help lazy.nvim-lazy.nvim-plugin-spec`
 local PLUGINS = {
 
@@ -661,7 +659,7 @@ local PLUGINS = {
     "echasnovski/mini.bufremove",
     event = "VeryLazy",
     config = function()
-      require("mini.bufremove").setup({})
+      require("mini.bufremove").setup()
     end,
   },
 
@@ -730,24 +728,17 @@ local PLUGINS = {
   -- In case of multiple targets, a third character (label) can be used.
   {
     "ggandor/leap.nvim",
+    dependencies = { "tpope/vim-repeat" },
     keys = { "s", "S" },
-    dependencies = { "unblevable/quick-scope" },
     config = function()
-      require("leap").add_default_mappings()
-      vim.keymap.del({ "x", "o" }, "x")
-      vim.keymap.del({ "x", "o" }, "X")
-      vim.api.nvim_create_autocmd("User", {
-        pattern = "LeapEnter",
-        command = "QuickScopeToggle",
-      })
-      vim.api.nvim_create_autocmd("User", {
-        pattern = "LeapLeave",
-        command = "QuickScopeToggle",
-      })
+      require("leap")
+      for _, mode in ipairs({ "n", "x", "o" }) do
+        vim.api.nvim_set_keymap(mode, "s", "<Plug>(leap-forward)", {})
+        vim.api.nvim_set_keymap(mode, "S", "<Plug>(leap-backward)", {})
+      end
     end,
   },
 
-  -- TODO: evaluate mini.surround
   -- Add (ys_), change (cs_), remove (ds_) surrounding delimiters (_ss for whole line).
   {
     "kylechui/nvim-surround",
@@ -755,7 +746,6 @@ local PLUGINS = {
     config = true,
   },
 
-  -- TODO: evaluate mini.comment
   -- Comment out lines (gcc) or comment out with motions (gc_) or selections (gc).
   -- Use gb_ for block comments.
   {
@@ -830,38 +820,23 @@ local PLUGINS = {
     end,
   },
 
-  -- TODO: evaluate mini.pairs
   -- Insert and delete brackets, parenthesis and quotes in pairs.
   {
     "windwp/nvim-autopairs",
-    keys = { { "(", "[", "{", '"', "'", "`", mode = "i" } },
+    event = "InsertEnter",
     config = function()
-      require("nvim-autopairs").setup({
-        map_bs = true,
-        map_c_h = true,
-        map_c_w = false,
-      })
-    end,
-  },
-
-  -- TODO: find lua alternative
-  -- Show how many times a search pattern occurs in current buffer.
-  {
-    "google/vim-searchindex",
-    keys = { "/", "?", "#", "*", "n", "N" },
-    config = function()
-      local opts = { silent = true }
-      vim.api.nvim_set_keymap("n", "n", "nzzzv<Plug>SearchIndex", opts)
-      vim.api.nvim_set_keymap("n", "N", "Nzzzv<Plug>SearchIndex", opts)
+      require("nvim-autopairs").setup()
     end,
   },
 
   -- Navigate between bookmarked files.
   {
     "ThePrimeagen/harpoon",
+    branch = "harpoon2",
     lazy = true, -- loaded when require'd
     dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim" },
     config = function()
+      require("harpoon"):setup({})
       require("telescope").load_extension("harpoon")
     end,
   },
@@ -881,11 +856,11 @@ local PLUGINS = {
     "echasnovski/mini.ai",
     event = "VeryLazy",
     config = function()
-      require("mini.ai").setup({})
+      require("mini.ai").setup()
     end,
   },
 
-  -- TODO: find lua alternative
+  -- TODO: evaluate chrisgrieser/nvim-various-textobjs
   -- Indentation level text object: ii (indentation level), ai (ii and line
   -- above), aI (ii with lines above/below).
   {
@@ -893,7 +868,7 @@ local PLUGINS = {
     event = "BufReadPre",
   },
 
-  -- TODO: find lua alternative
+  -- TODO: evaluate chrisgrieser/nvim-various-textobjs
   -- Text object for the entire buffer (ae/ie).
   {
     "kana/vim-textobj-entire",
@@ -901,6 +876,7 @@ local PLUGINS = {
     dependencies = { "kana/vim-textobj-user" },
   },
 
+  -- TODO: evaluate chrisgrieser/nvim-various-textobjs
   -- Text object (iv) for variable segments in camelCase or snake_case words.
   {
     "Julian/vim-textobj-variable-segment",
@@ -929,7 +905,7 @@ local PLUGINS = {
   -- TODO: fix leader mappings
   {
     "stevearc/conform.nvim",
-    event = "BufWritePre",
+    event = { "BufReadPre", "BufNewFile" },
     cmd = "ConformInfo",
 
     init = function()
@@ -967,7 +943,6 @@ local PLUGINS = {
       end, { desc = "Disable autoformat-on-save" })
     end,
 
-    -- TODO: toggle format on save
     config = function()
       require("conform").setup({
         formatters_by_ft = {
@@ -984,12 +959,17 @@ local PLUGINS = {
           end
         end,
       })
+
+      -- Enable auto formatting for some filetypes.
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "lua" },
+        group = "vimrc",
+        command = "FormatEnable!",
+      })
     end,
   },
 
   -- Lint code.
-  -- TODO: evaluate this better
-  -- TODO: fix leader mappings
   {
     "mfussenegger/nvim-lint",
     event = { "BufWritePost", "BufReadPost", "InsertLeave" },
@@ -1046,6 +1026,8 @@ local PLUGINS = {
             },
           },
         },
+        pyright = {},
+        pylyzer = {},
         -- TODO: evaluate this better
         typos_lsp = {
           filetypes = {
@@ -1138,7 +1120,13 @@ local PLUGINS = {
 
       -- Setup Fidget
       -- TODO: evaluate this better
-      require("fidget").setup({})
+      require("fidget").setup()
+
+      -- UI settings
+      local style = "rounded"
+      vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = style })
+      vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = style })
+      vim.diagnostic.config({ float = { border = style } })
     end,
   },
 
@@ -1267,15 +1255,26 @@ local PLUGINS = {
       -- Use treesitter to manage folds.
       vim.opt.foldmethod = "expr"
       vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-      vim.opt.foldlevelstart = 5
+      vim.opt.foldenable = false
     end,
     config = function()
       require("nvim-treesitter.configs").setup({
         ensure_installed = {
           "bash",
+          "c",
           "comment",
+          "cpp",
+          "csv",
+          "diff",
           "fish",
+          "git_config",
+          "gitcommit",
           "gitignore",
+          "go",
+          "haskell",
+          "html",
+          "java",
+          "javascript",
           "json",
           "julia",
           "lua",
@@ -1283,19 +1282,25 @@ local PLUGINS = {
           "python",
           "r",
           "rst",
+          "rust",
           "sql",
+          "tmux",
           "toml",
           "vim",
           "vimdoc",
+          "xml",
           "yaml",
         },
+        sync_install = false,
+        auto_install = true,
+        ignore_install = {},
         -- https://github.com/nvim-treesitter/nvim-treesitter#i-want-to-use-a-http-proxy-for-downloading-the-parsers
         prefer_git = true,
         -- Modules
+        modules = {},
         highlight = { enable = true },
+        incremental_selection = { enable = false },
         indent = { enable = true },
-        incremental_selection = { enable = true },
-        rainbow = { enable = true },
         textobjects = {
           select = {
             enable = true,
@@ -1408,6 +1413,7 @@ local PLUGINS = {
     end,
   },
 
+  -- TODO: evaluate alternatives
   -- File manager for Neovim with a directory buffer that allows file manipulation
   -- by editing text. Save buffer to modify filesystem. Use <CR> to open file or
   -- directory, gh to toggle hidden files and - to open parent directory.
@@ -1570,14 +1576,14 @@ local PLUGINS = {
       local buttons = {
         { type = "text", val = "Quick links", opts = { hl = "SpecialComment", position = "center" } },
         { type = "padding", val = 1 },
-        dashboard.button("e", "  New file", "<Cmd>enew<CR>"),
-        dashboard.button("f", "  Find file", "<Cmd>Telescope find_files<CR>"),
-        dashboard.button("b", "  Browse files", "<Cmd>Telescope file_browser<CR>"),
-        dashboard.button("g", "  Live grep", "<Cmd>Telescope live_grep<CR>"),
-        dashboard.button("c", "  Configuration", "<Cmd>edit $MYVIMRC<CR>"),
-        dashboard.button("p", "  Update plugins", "<Cmd>Lazy update<CR>"),
-        dashboard.button("t", "  Update tools", "<Cmd>Mason<CR>"),
-        dashboard.button("q", "  Quit", "<Cmd>qa<CR>"),
+        dashboard.button("e", "  New file", "<Cmd>ene<CR>"), -- UTF f15b
+        dashboard.button("f", "󰈞  Find file", "<Cmd>Telescope find_files<CR>"), -- UTF f021e
+        dashboard.button("b", "  Browse files", "<Cmd>Telescope file_browser<CR>"), -- UTF eb86
+        dashboard.button("g", "  Live grep", "<Cmd>Telescope live_grep<CR>"), -- UTF f002
+        dashboard.button("c", "  Configuration", "<Cmd>edit $MYVIMRC<CR>"), -- UTF e615
+        dashboard.button("p", "  Update plugins", "<Cmd>Lazy update<CR>"), -- UTF f1e6
+        dashboard.button("t", "  Update tools", "<Cmd>Mason<CR>"), -- UTF e20f
+        dashboard.button("q", "  Quit", "<Cmd>qa<CR>"), -- UFT f00d
       }
       theme.buttons.val = buttons
 
@@ -1614,7 +1620,7 @@ local PLUGINS = {
             motions = false,
             text_objects = false,
             windows = true,
-            g = false,
+            g = true,
             z = true,
           },
         },
@@ -1673,69 +1679,67 @@ local PLUGINS = {
     end,
   },
 
-  -- TODO: evaluate mini.indentscope
   -- Indent guides.
   {
     "lukas-reineke/indent-blankline.nvim",
     event = "BufReadPre",
     main = "ibl",
     config = function()
-      require("ibl").setup({
-        exclude = {
-          buftypes = BUFTYPE_BL,
-          filetypes = FILETYPE_BL,
-        },
+      require("ibl").setup({})
+      -- Refresh indent lines after fold operations.
+      for _, keymap in pairs({
+        "zo",
+        "zO",
+        "zc",
+        "zC",
+        "za",
+        "zA",
+        "zv",
+        "zx",
+        "zX",
+        "zm",
+        "zM",
+        "zr",
+        "zR",
+      }) do
+        vim.api.nvim_set_keymap(
+          "n",
+          keymap,
+          keymap .. "<CMD>lua require('ibl').refresh()<CR>",
+          { noremap = true, silent = true }
+        )
+      end
+    end,
+  },
+
+  -- Highlight a unique character in every word when using f/F and t/T.
+  {
+    "jinh0/eyeliner.nvim",
+    event = "BufReadPre",
+    config = function()
+      require("eyeliner").setup({
+        highlight_on_key = true,
+        dim = true,
       })
     end,
   },
 
-  -- Highlight a unique character in every word when using f/F.
+  -- Whitespace highlighting and removal.
   {
-    "unblevable/quick-scope",
+    "echasnovski/mini.trailspace",
     event = "BufReadPre",
-    init = function()
-      vim.g.qs_buftype_blacklist = BUFTYPE_BL
-      vim.g.qs_filetype_blacklist = FILETYPE_BL
-    end,
     config = function()
-      -- Add underline to quick-scope highlighted characters.
-      -- Reference: https://stackoverflow.com/questions/18774910/how-to-partially-link-highlighting-groups
-      vim.cmd([[
-        execute 'highlight QuickScopePrimary gui=underline' .
-          \' guifg='   . synIDattr(synIDtrans(hlID('ErrorMsg')), 'fg', 'gui')
-        execute 'highlight QuickScopeSecondary gui=underline' .
-          \' guifg='   . synIDattr(synIDtrans(hlID('WarningMsg')), 'fg', 'gui')
-      ]])
+      require("mini.trailspace").setup()
     end,
   },
 
-  -- TODO: evaluate mini.trailspace
-  -- Whitespace highlighting and removal.
+  -- Highlight TODO comments.
   {
-    "ntpeters/vim-better-whitespace",
+    "folke/todo-comments.nvim",
     event = "BufReadPre",
-    init = function()
-      -- Deactivate '<Leader>s' key mapping
-      vim.g.better_whitespace_operator = ""
-      vim.g.better_whitespace_filetypes_blacklist = vim.fn.extend({
-        "diff",
-        "git",
-        "gitcommit",
-        "unite",
-        "qf",
-        "markdown",
-      }, FILETYPE_BL)
-    end,
+    dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
-      local opts = { noremap = true, silent = true }
-      vim.api.nvim_set_keymap("n", "]w", "<Cmd>NextTrailingWhitespace<CR>", opts)
-      vim.api.nvim_set_keymap("n", "[w", "<Cmd>PrevTrailingWhitespace<CR>", opts)
-
-      -- vim-better-whitespace color settings.
-      vim.cmd([[
-        execute 'highlight ExtraWhitespace' .
-          \' guibg=' . synIDattr(synIDtrans(hlID('Error')), 'fg', 'gui')
-      ]])
+      require("todo-comments").setup()
     end,
   },
 
@@ -1755,17 +1759,11 @@ local PLUGINS = {
     "folke/tokyonight.nvim",
     lazy = false,
     priority = 1000,
-    init = function()
-      -- Set theme properties.
-      vim.g.tokyonight_style = "storm"
-      vim.g.tokyonight_lualine_bold = 1
-    end,
     config = function()
       -- Load default color scheme.
-      vim.cmd([[
-        colorscheme tokyonight
-        highlight Folded guibg=NONE
-      ]])
+      vim.g.tokyonight_lualine_bold = 1
+      vim.cmd.colorscheme("tokyonight-storm")
+      vim.cmd.highlight("Folded guibg=NONE")
     end,
   },
 }
