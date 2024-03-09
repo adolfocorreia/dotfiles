@@ -52,6 +52,7 @@ Plug 'justinmk/vim-sneak'
 Plug 'kana/vim-textobj-user'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'michaeljsmith/vim-indent-object'
+Plug 'ntpeters/vim-better-whitespace'
 Plug 'romainl/vim-qf'
 Plug 'sheerun/vim-polyglot'
 Plug 'svban/YankAssassin.vim'
@@ -110,7 +111,7 @@ endif
 
 """"" Vim options """""
 
-set clipboard=unnamed,unnamedplus
+set clipboard=unnamed
 set completefunc=syntaxcomplete#Complete
 set completeopt=menu,menuone,noselect
 set confirm
@@ -124,6 +125,7 @@ set guioptions-=t
 set hidden
 set hlsearch
 set ignorecase
+set joinspaces
 set lazyredraw
 set mouse=a
 set noshowmode
@@ -134,6 +136,7 @@ set omnifunc=syntaxcomplete#Complete
 set relativenumber
 set scrolloff=2
 set shiftround
+set shortmess-=S
 set showcmd
 set showmatch
 set sidescrolloff=5
@@ -188,6 +191,9 @@ endif
 
 nnoremap Y y$
 
+nnoremap n nzzzv
+nnoremap N Nzzzv
+
 vnoremap > >gv
 vnoremap < <gv
 
@@ -219,4 +225,9 @@ nnoremap <C-w><Tab>2 2gt
 nnoremap <C-w><Tab>3 3gt
 nnoremap <C-w><Tab>4 4gt
 nnoremap <C-w><Tab>5 5gt
+
+
+""""" Leader mappings """""
+
+nnoremap <Leader>v :edit $MYVIMRC<CR>
 
