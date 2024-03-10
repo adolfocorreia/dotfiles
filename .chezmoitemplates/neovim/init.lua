@@ -1413,21 +1413,20 @@ local PLUGINS = {
     end,
   },
 
-  -- TODO: evaluate alternatives
-  -- File manager for Neovim with a directory buffer that allows file manipulation
-  -- by editing text. Save buffer to modify filesystem. Use <CR> to open file or
-  -- directory, gh to toggle hidden files and - to open parent directory.
+  -- File manager plugin that allows file manipulation by editing the directory as a buffer.
+  -- Save buffer to modify filesystem (including new files and file permissions).
+  -- Use <CR> to open file, g? to show help, g. to toggle hidden files and <BS> to open parent directory.
   {
-    "elihunter173/dirbuf.nvim",
+    "stevearc/oil.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
     keys = { "<BS>" },
-    cmd = "Dirbuf",
-    init = function()
-      -- Hack to avoid the plugin automatically mapping '-'
-      vim.api.nvim_set_keymap("n", "-", "-", { noremap = true })
-    end,
+    cmd = { "Oil" },
     config = function()
-      require("dirbuf").setup({})
-      vim.api.nvim_set_keymap("n", "<BS>", "<Plug>(dirbuf_up)", {})
+      require("oil").setup({
+        columns = { "mtime", "size", "permissions", "icon" },
+        delete_to_trash = true,
+      })
+      vim.api.nvim_set_keymap("n", "<BS>", "<Cmd>Oil<CR>", { desc = "Open parent directory" })
     end,
   },
 
