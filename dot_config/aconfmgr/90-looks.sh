@@ -23,3 +23,5 @@ AddPackage lxappearance-gtk3 # Feature-rich GTK+ theme switcher of the LXDE Desk
 AddPackage materia-gtk-theme # A Material Design theme for GNOME/GTK+ based desktop environments
 AddPackage papirus-icon-theme # Papirus icon theme
 AddPackage qt5ct # Qt5 Configuration Utility
+AddPackage qt6ct # Qt 6 Configuration Utility
+
