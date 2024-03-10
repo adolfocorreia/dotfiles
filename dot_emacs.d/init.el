@@ -130,6 +130,20 @@
       (add-hook mode-hook #'my/enable-show-trailing-whitespace))))
 
 
+;; File backup settings
+(use-package emacs
+  :ensure nil
+  :demand t
+  :custom
+  (backup-by-copying t)
+  (backup-directory-alist (list (cons "." (expand-file-name "var/backups/" user-emacs-directory))))
+  (delete-old-versions t)
+  (kept-new-versions 10)
+  (kept-old-versions 5)
+  (make-backup-files t)
+  (version-control t))
+
+
 ;; Misc settings
 
 (use-package emacs
