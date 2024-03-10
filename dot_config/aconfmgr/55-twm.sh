@@ -12,8 +12,9 @@ AddPackage rofi # A window switcher, application launcher and dmenu replacement
 AddPackage copyq # Clipboard manager with searchable and editable history
 AddPackage dex # Program to generate and execute DesktopEntry files of type Application
 AddPackage dunst # Customizable and lightweight notification-daemon
-AddPackage gvfs-smb # Virtual filesystem implementation for GIO (SMB/CIFS backend; Windows client)
 AddPackage gvfs # Virtual filesystem implementation for GIO
+AddPackage gvfs-mtp # Virtual filesystem implementation for GIO (MTP backend; Android, media player)
+AddPackage gvfs-smb # Virtual filesystem implementation for GIO (SMB/CIFS backend; Windows client)
 AddPackage handlr # Powerful alternative to xdg-utils written in Rust
 AddPackage perl-file-mimeinfo # Determine file type, includes mimeopen and mimetype
 AddPackage polkit-gnome # Legacy polkit authentication agent for GNOME

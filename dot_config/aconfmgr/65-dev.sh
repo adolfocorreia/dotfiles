@@ -37,6 +37,7 @@ AddPackage python-pyflakes # A lint-like tool for Python to identify common erro
 AddPackage python-pylint # Analyzes Python code looking for bugs and signs of poor quality
 AddPackage python-rope # Refactoring library
 AddPackage python-whatthepatch # A Python patch parsing library
+AddPackage ruff # An extremely fast Python linter, written in Rust
 AddPackage tk # A windowing toolkit for use with tcl
 AddPackage yapf # Python style guide checker
 
@@ -48,6 +49,10 @@ AddPackage blas-openblas # An optimized BLAS library based on GotoBLAS2 1.13 BSD
 AddPackage gcc-fortran # Fortran front-end for GCC
 AddPackage r # Language and environment for statistical computing and graphics
 
+# Lua
+AddPackage selene # Blazing-fast modern Lua linter written in Rust
+AddPackage stylua # Code formatter for Lua
+
 # Haskell
 AddPackage haskell-language-server # LSP server for GHC
 
@@ -56,3 +61,6 @@ AddPackage rustup # The Rust toolchain installer
 
 # Go
 AddPackage go # Core compiler tools for the Go programming language
+
+# JavaScript
+AddPackage npm # A package manager for JavaScript
