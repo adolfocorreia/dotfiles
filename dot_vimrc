@@ -44,6 +44,7 @@ call plug#begin()
 
 Plug 'Julian/vim-textobj-variable-segment'
 Plug 'farmergreg/vim-lastplace'
+Plug 'google/vim-searchindex'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim',         { 'on': ['Files','GFiles','Buffers','Rg','Lines','Locate','History','Commits','BCommits','Commands','Helptags'] }
 Plug 'junegunn/vim-easy-align',  { 'on': '<Plug>(EasyAlign)' }
@@ -93,6 +94,9 @@ endif
 
 """"" Plugin configuration """""
 
+nmap n nzzzv<Plug>SearchIndex
+nmap N Nzzzv<Plug>SearchIndex
+
 nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
 
@@ -136,7 +140,6 @@ set omnifunc=syntaxcomplete#Complete
 set relativenumber
 set scrolloff=2
 set shiftround
-set shortmess-=S
 set showcmd
 set showmatch
 set sidescrolloff=5
@@ -190,9 +193,6 @@ endif
 """"" Key mappings """""
 
 nnoremap Y y$
-
-nnoremap n nzzzv
-nnoremap N Nzzzv
 
 vnoremap > >gv
 vnoremap < <gv

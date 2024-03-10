@@ -223,9 +223,11 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- - Plugin maps (<Plug>) must be recursive
 
 -- Center screen when browsing through search results.
+-- FIXME: these remaps break shortmess-S, since the screen is cleared and redrawn after zz
 vim.cmd([[
   nnoremap n nzzzv
   nnoremap N Nzzzv
+  set shortmess+=S
 ]])
 
 -- Keep selection when indenting in visual mode.
@@ -243,6 +245,11 @@ vim.cmd([[
 vim.cmd([[
   nnoremap <expr> j (v:count >= 10 ? "m'" . v:count : "") . 'j'
   nnoremap <expr> k (v:count >= 10 ? "m'" . v:count : "") . 'k'
+]])
+
+-- Open help for the word under cursor.
+vim.cmd([[
+  nnoremap <F1> :help <C-r><C-w><CR>
 ]])
 
 -- Disable C-q (tmux prefix).
@@ -706,7 +713,7 @@ local PLUGINS = {
     event = "VeryLazy",
     config = function()
       require("project_nvim").setup({
-        patterns = { "pyproject.toml", "Project.toml", "Makefile", ".git" },
+        patterns = { "pyproject.toml", "Project.toml", "Makefile", ".git", "init.lua", "init.el" },
       })
     end,
   },
@@ -1675,8 +1682,8 @@ local PLUGINS = {
         },
         sections = {
           lualine_a = { "winnr", "mode" },
-          lualine_b = { "branch", "diagnostics" },
-          lualine_c = { "filename" },
+          lualine_b = { "branch", "diff", "diagnostics" },
+          lualine_c = { "filename", "searchcount" },
           lualine_x = { { "filetype", colored = false, icon_only = true } },
           lualine_y = { "encoding", "fileformat" },
           lualine_z = { "progress", "location" },
