@@ -291,9 +291,9 @@ vim.cmd([[
   nnoremap <C-w><Tab>5 5gt
 ]])
 
+-- Diagnostics mappings.
 -- TODO: check all these mapping for conflicts
 -- TODO: test all these mapping
--- Diagnostics mappings.
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
 vim.keymap.set("n", "gl", vim.diagnostic.open_float, { desc = "Show line diagnostic" })
@@ -480,6 +480,7 @@ local LEADER_MAPPINGS = {
     ["A"] = { "<Cmd>FormatDisable<CR>", "Disable autoformatting" },
     ["w"] = { "<Cmd>lua MiniTrailspace.trim()<CR>", "Strip whitespace" },
     ["s"] = { "<Cmd>Telescope spell_suggest<CR>", "Spell suggest" },
+    ["o"] = { "<Cmd>AerialToggle<CR>", "Toggle code outline" },
   },
 
   d = {
@@ -754,7 +755,6 @@ local PLUGINS = {
     config = true,
   },
 
-  -- TODO: evaluate mini.bracketed
   -- Useful [_, ]_ keybindings: b (change buffers), Space (add blank lines),
   -- e (exchange line), navigate quickfix (q/Q) and location (l/L) lists;
   -- Paste after (]p) or before ([p) linewise.
@@ -762,6 +762,7 @@ local PLUGINS = {
   -- trailing spaces), _on (number), _or (relativenumber), _ov (virtualedit),
   -- _ow (wrap), _ox (cursorline and cursorcolumn), _oz (spell).
   -- Also _od for :diffthis and :diffoff.
+  -- TODO: evaluate mini.bracketed
   {
     "tpope/vim-unimpaired",
     keys = { "[", "]" },
@@ -798,7 +799,6 @@ local PLUGINS = {
 
   --- Editing helps ---
 
-  -- TODO: evaluate mini.align
   -- Align text by some character or regex adding spaces to the left and/or right.
   -- 1. Type ga in visual mode, or ga followed by motion or text object in normal
   --    mode to enter interactive mode.
@@ -810,6 +810,7 @@ local PLUGINS = {
   --    arbitrary regex followed by <C-x>.
   -- 5. Alternatively, use the :EasyAlign command.
   -- Reference: https://github.com/junegunn/vim-easy-align
+  -- TODO: evaluate mini.align
   {
     "junegunn/vim-easy-align",
     keys = { "ga", { "ga", mode = "v" } },
@@ -860,24 +861,24 @@ local PLUGINS = {
     end,
   },
 
-  -- TODO: evaluate chrisgrieser/nvim-various-textobjs
   -- Indentation level text object: ii (indentation level), ai (ii and line
   -- above), aI (ii with lines above/below).
+  -- TODO: evaluate chrisgrieser/nvim-various-textobjs
   {
     "michaeljsmith/vim-indent-object",
     event = "BufReadPre",
   },
 
-  -- TODO: evaluate chrisgrieser/nvim-various-textobjs
   -- Text object for the entire buffer (ae/ie).
+  -- TODO: evaluate chrisgrieser/nvim-various-textobjs
   {
     "kana/vim-textobj-entire",
     event = "BufReadPre",
     dependencies = { "kana/vim-textobj-user" },
   },
 
-  -- TODO: evaluate chrisgrieser/nvim-various-textobjs
   -- Text object (iv) for variable segments in camelCase or snake_case words.
+  -- TODO: evaluate chrisgrieser/nvim-various-textobjs
   {
     "Julian/vim-textobj-variable-segment",
     event = "BufReadPre",
@@ -893,8 +894,8 @@ local PLUGINS = {
 
   --- Language support ---
 
-  -- TODO: consider using expandtab, tabstop, softtabstop, shiftwidth explicitly
   -- Automatic tab/indenting configuration.
+  -- TODO: consider using expandtab, tabstop, softtabstop, shiftwidth explicitly
   {
     "tpope/vim-sleuth",
     event = "BufReadPre",
@@ -1090,18 +1091,18 @@ local PLUGINS = {
         desc = "Setup buffer for LSP",
 
         callback = function(event)
-          -- TODO: evaluate this better
           -- Enable completion triggered by <C-x><C-o>
+          -- TODO: evaluate this better
           vim.bo[event.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
 
           -- Set LSP buffer local key maps
           local map = function(mode, keys, func, desc)
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP " .. desc })
           end
+          -- stylua: ignore start
           -- TODO: check all these mapping for conflicts
           -- TODO: test all these mapping
           -- TODO: fix K on lua
-          -- stylua: ignore start
           map("n", "gK",   vim.lsp.buf.hover,           "hover documentation")
           map("n", "gd",   vim.lsp.buf.definition,      "goto definition")
           map("n", "gD",   vim.lsp.buf.declaration,     "goto declaration")
@@ -1345,6 +1346,20 @@ local PLUGINS = {
           },
         },
       })
+    end,
+  },
+
+  -- Code outline window.
+  -- Use :AerialToggle to open/close window and g? to show help.
+  {
+    "stevearc/aerial.nvim",
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    cmd = { "AerialToggle" },
+    config = function()
+      require("aerial").setup({})
     end,
   },
 
