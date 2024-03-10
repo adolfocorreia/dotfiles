@@ -268,19 +268,19 @@ myLayoutHook = avoidStruts (tall ||| full)
 
 -- Workspaces configuration
 myWorkspaces :: [String]
-myWorkspaces = ["term", "www", "dev", "doc", "file", "mail", "chat", "mus", "vid", "conf"]
+myWorkspaces = ["term", "www", "dev", "doc", "file", "mail", "chat", "note", "vid", "conf"]
 
 workspaceIcon :: String -> String
-workspaceIcon "dev" = "<fn=2>\xf05c0</fn>"
-workspaceIcon "doc" = "<fn=2>\xf06d3</fn>"
-workspaceIcon "mus" = "<fn=2>\xf075a</fn>"
-workspaceIcon "vid" = "<fn=2>\xf05a0</fn>"
-workspaceIcon "www" = "<fn=2>\xf059f</fn>"
 workspaceIcon "chat" = "<fn=2>\xf0b79</fn>"
 workspaceIcon "conf" = "<fn=2>\xf0493</fn>"
+workspaceIcon "dev"  = "<fn=2>\xf05c0</fn>"
+workspaceIcon "doc"  = "<fn=2>\xf06d3</fn>"
 workspaceIcon "file" = "<fn=2>\xf0770</fn>"
 workspaceIcon "mail" = "<fn=2>\xf02ab</fn>"
+workspaceIcon "note" = "<fn=2>\xf01c8</fn>"
 workspaceIcon "term" = "<fn=2>\xf07b7</fn>"
+workspaceIcon "vid"  = "<fn=2>\xf05a0</fn>"
+workspaceIcon "www"  = "<fn=2>\xf059f</fn>"
 workspaceIcon str = ""
 
 -- Windows management
@@ -326,6 +326,8 @@ myManageHook =
     myClassShifts =
       [ -- Emacs
         ("dev", "Emacs"),
+        -- Obsidian
+        ("note", "obsidian"),
         -- Visual Studio Code
         ("dev", "code"),
         -- Whatsapp (nativefier)
