@@ -115,7 +115,7 @@ endif
 
 """"" Vim options """""
 
-set clipboard=unnamed
+set clipboard=unnamed,unnamedplus
 set completefunc=syntaxcomplete#Complete
 set completeopt=menu,menuone,noselect
 set confirm

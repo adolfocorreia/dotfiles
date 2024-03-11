@@ -80,7 +80,7 @@ vim.opt.mouse = "a"
 -- Use * and/or + clipboard registers for yank and put operations.
 -- Primary selection: "* register / unnamed
 -- System clipboard:  "+ register / unnamedplus
-vim.opt.clipboard = "unnamed"
+vim.opt.clipboard = "unnamed,unnamedplus"
 
 -- Do not redraw screen while executing macros.
 vim.opt.lazyredraw = true
