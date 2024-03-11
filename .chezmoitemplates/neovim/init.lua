@@ -46,13 +46,13 @@ vim.g.loaded_netrwFileHandlers = 1
 -- Use ':set option?' to check current option value.
 -- Use ':verbose set option?' to check where it was set.
 
--- Enable select mode (with mouse or shift selection) and right click popup.
+-- Set behavior for mouse and selection.
 -- Options changed:
---   selectmode = "mouse,key"
---   mousemodel = "popup"
---   keymodel   = "startsel,stopsel"
---   selection  = "exclusive"
-vim.cmd.behave("mswin")
+--   selectmode = ""
+--   mousemodel = "extend"
+--   keymodel   = ""
+--   selection  = "inclusive"
+vim.cmd.behave("xterm")
 
 -- Enable 24-bit RGB colors in terminal mode.
 vim.opt.termguicolors = true
@@ -852,51 +852,60 @@ local PLUGINS = {
   --- Custom motions and text objects ---
 
   -- Several text objects with inside (i) and around (a) semantics.
-  -- and last (_l) semantics.
   -- Pairs: () {} [] <>
-  -- XML/HTML tags: t
   -- Quotes: ' " `
   -- Separators: , . ; : + - = ~ _ * # / | & $
-  -- Arguments: a (surrounded by braces and/or commas)
+  -- XML/HTML tags: t
   -- Any Block: b (similar to pairs, but skips pairs in nested contexts)
   -- Any Quote: q (similar to quotes, but skips pairs in nested contexts)
+  -- Arguments: a (surrounded by braces and/or commas)
+  -- Function call: f
+  -- Custom chars: ? (prompts for left and right characters)
+  -- Use g[a_ and g]a_ to move to the edges of a textobject near the cursor.
   {
     "echasnovski/mini.ai",
-    event = "VeryLazy",
+    event = "BufReadPre",
     config = function()
-      require("mini.ai").setup()
+      require("mini.ai").setup({
+        mappings = {
+          around = "a",
+          inside = "i",
+          goto_left = "g[",
+          goto_right = "g]",
+        },
+        search_method = "cover_or_nearest",
+      })
     end,
   },
 
-  -- Indentation level text object: ii (indentation level), ai (ii and line
-  -- above), aI (ii with lines above/below).
-  -- TODO: evaluate chrisgrieser/nvim-various-textobjs
+  -- Several more text objects with inside (i) and around (a) semantics.
+  -- Indentation level text object: ii (indentation level), ai (ii and line above), aI (ii with lines above/below).
   {
-    "michaeljsmith/vim-indent-object",
+    "chrisgrieser/nvim-various-textobjs",
     event = "BufReadPre",
-  },
+    config = function()
+      require("various-textobjs").setup({ useDefaultKeymaps = false })
 
-  -- Text object for the entire buffer (ae/ie).
-  -- TODO: evaluate chrisgrieser/nvim-various-textobjs
-  {
-    "kana/vim-textobj-entire",
-    event = "BufReadPre",
-    dependencies = { "kana/vim-textobj-user" },
-  },
-
-  -- Text object (iv) for variable segments in camelCase or snake_case words.
-  -- TODO: evaluate chrisgrieser/nvim-various-textobjs
-  {
-    "Julian/vim-textobj-variable-segment",
-    event = "BufReadPre",
-    dependencies = { "kana/vim-textobj-user" },
-  },
-
-  -- Language syntax text objects: functions (af/if).
-  {
-    "nvim-treesitter/nvim-treesitter-textobjects",
-    event = "BufReadPre",
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
+      -- Set custom mappings.
+      vim.keymap.set({ "o", "x" }, "ii", "<Cmd>lua require('various-textobjs').indentation('inner', 'inner')<CR>")
+      vim.keymap.set({ "o", "x" }, "ai", "<Cmd>lua require('various-textobjs').indentation('outer', 'inner')<CR>")
+      vim.keymap.set({ "o", "x" }, "iI", "<Cmd>lua require('various-textobjs').indentation('inner', 'inner')<CR>")
+      vim.keymap.set({ "o", "x" }, "aI", "<Cmd>lua require('various-textobjs').indentation('outer', 'outer')<CR>")
+      vim.keymap.set({ "o", "x" }, "iS", "<Cmd>lua require('various-textobjs').subword('inner')<CR>")
+      vim.keymap.set({ "o", "x" }, "aS", "<Cmd>lua require('various-textobjs').subword('outer')<CR>")
+      vim.keymap.set({ "o", "x" }, "ie", "<Cmd>lua require('various-textobjs').entireBuffer()<CR>")
+      vim.keymap.set({ "o", "x" }, "ae", "<Cmd>lua require('various-textobjs').entireBuffer()<CR>")
+      vim.keymap.set({ "o", "x" }, "ic", "<Cmd>lua require('various-textobjs').multiCommentedLines()<CR>")
+      vim.keymap.set({ "o", "x" }, "ac", "<Cmd>lua require('various-textobjs').multiCommentedLines()<CR>")
+      vim.keymap.set({ "o", "x" }, "iv", "<Cmd>lua require('various-textobjs').value('inner')<CR>")
+      vim.keymap.set({ "o", "x" }, "av", "<Cmd>lua require('various-textobjs').value('outer')<CR>")
+      vim.keymap.set({ "o", "x" }, "ik", "<Cmd>lua require('various-textobjs').key('inner')<CR>")
+      vim.keymap.set({ "o", "x" }, "ak", "<Cmd>lua require('various-textobjs').key('outer')<CR>")
+      vim.keymap.set({ "o", "x" }, "iu", "<Cmd>lua require('various-textobjs').url()<CR>")
+      vim.keymap.set({ "o", "x" }, "au", "<Cmd>lua require('various-textobjs').url()<CR>")
+      vim.keymap.set({ "o", "x" }, "in", "<Cmd>lua require('various-textobjs').number('inner')<CR>")
+      vim.keymap.set({ "o", "x" }, "an", "<Cmd>lua require('various-textobjs').number('outer')<CR>")
+    end,
   },
 
   --- Language support ---
@@ -909,8 +918,6 @@ local PLUGINS = {
   },
 
   -- Autoformat code.
-  -- TODO: evaluate this better
-  -- TODO: fix leader mappings
   {
     "stevearc/conform.nvim",
     event = { "BufReadPre", "BufNewFile" },
@@ -1128,7 +1135,7 @@ local PLUGINS = {
 
       -- Setup Fidget
       -- TODO: evaluate this better
-      require("fidget").setup()
+      require("fidget").setup({})
 
       -- UI settings
       local style = "rounded"
@@ -1254,8 +1261,9 @@ local PLUGINS = {
   -- Syntax highlighting, indentation, folding and more using ASTs.
   {
     "nvim-treesitter/nvim-treesitter",
-    event = "BufReadPre",
-    cmd = { "TSUpdate" },
+    event = { "VeryLazy" },
+    cmd = { "TSUpdate", "TSUpdateSync", "TSInstall" },
+    dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
     build = function()
       require("nvim-treesitter.install").update({ with_sync = true })
     end,
@@ -1284,10 +1292,14 @@ local PLUGINS = {
           "java",
           "javascript",
           "json",
+          "jsonc",
           "julia",
           "lua",
+          "luadoc",
           "markdown",
+          "markdown_inline",
           "python",
+          "query",
           "r",
           "rst",
           "rust",
@@ -1307,19 +1319,27 @@ local PLUGINS = {
         -- Modules
         modules = {},
         highlight = { enable = true },
-        incremental_selection = { enable = false },
+        incremental_selection = {
+          enable = true,
+          keymaps = { init_selection = "<C-space>", node_incremental = "<C-space>" },
+        },
         indent = { enable = true },
         textobjects = {
           select = {
             enable = true,
             lookahead = true,
             keymaps = {
-              ["aa"] = "@parameter.outer",
-              ["ia"] = "@parameter.inner",
-              ["ac"] = "@class.outer",
-              ["ic"] = "@class.inner",
-              ["af"] = "@function.outer",
-              ["if"] = "@function.inner",
+              -- Use upper case bindings to avoid conflicts with other plugins' textobjects.
+              ["aA"] = "@parameter.outer",
+              ["iA"] = "@parameter.inner",
+              ["aF"] = "@function.outer",
+              ["iF"] = "@function.inner",
+              ["aC"] = "@class.outer",
+              ["iC"] = "@class.inner",
+            },
+            selection_modes = {
+              ["@class.outer"] = "V",
+              ["@class.inner"] = "V",
             },
             include_surrounding_whitespace = true,
           },
@@ -1345,7 +1365,7 @@ local PLUGINS = {
           },
           lsp_interop = {
             enable = true,
-            border = "none",
+            border = "rounded",
             peek_definition_code = {
               ["<Leader>lpf"] = "@function.outer",
               ["<Leader>lpc"] = "@class.outer",
