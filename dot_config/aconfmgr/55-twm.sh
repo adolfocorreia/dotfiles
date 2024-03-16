@@ -15,7 +15,7 @@ AddPackage dunst # Customizable and lightweight notification-daemon
 AddPackage gvfs # Virtual filesystem implementation for GIO
 AddPackage gvfs-mtp # Virtual filesystem implementation for GIO (MTP backend; Android, media player)
 AddPackage gvfs-smb # Virtual filesystem implementation for GIO (SMB/CIFS backend; Windows client)
-AddPackage handlr # Powerful alternative to xdg-utils written in Rust
+AddPackage handlr-regex # Powerful alternative to xdg-utils written in Rust
 AddPackage perl-file-mimeinfo # Determine file type, includes mimeopen and mimetype
 AddPackage polkit-gnome # Legacy polkit authentication agent for GNOME
 AddPackage tumbler # Thumbnail service implementing the thumbnail management D-Bus specification
