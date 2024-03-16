@@ -84,7 +84,6 @@ if status is-interactive
     set sponge_purge_only_on_exit true
 
     # Load conda
-    # Reference: https://stackoverflow.com/questions/34280113/add-conda-to-path-in-fish
     if type -q conda
         conda "shell.fish" "hook" $argv | source
     end
@@ -100,5 +99,12 @@ if status is-interactive
     end
 
     # Load starship
-    starship init fish | source
+    if type -q starship
+        starship init fish | source
+    end
+
+    # Load zoxide
+    if type -q zoxide
+        zoxide init fish | source
+    end
 end

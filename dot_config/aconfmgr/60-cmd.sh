@@ -8,8 +8,8 @@ AddPackage dos2unix # Text file format converter
 AddPackage dust # A more intuitive version of du in rust
 AddPackage eza # A modern replacement for ls (community fork of exa)
 AddPackage fd # Simple, fast and user-friendly alternative to find
-AddPackage fisher # A package manager for the fish shell
 AddPackage fish # Smart and user friendly shell intended mostly for interactive use
+AddPackage fisher # A package manager for the fish shell
 AddPackage fortune-mod # The Fortune Cookie Program from BSD games
 AddPackage fzf # Command-line fuzzy finder
 AddPackage git-delta # Syntax-highlighting pager for git and diff output
@@ -28,4 +28,5 @@ AddPackage tealdeer # A fast tldr client in Rust
 AddPackage tmux # Terminal multiplexer
 AddPackage trash-cli # Command line trashcan (recycle bin) interface
 AddPackage tree # A directory listing program displaying a depth indented list of files
+AddPackage zoxide # A smarter cd command for your terminal
 AddPackage --foreign wego # Weather app for the terminal

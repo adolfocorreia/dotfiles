@@ -48,3 +48,6 @@ fi
 [[ -r /usr/share/fzf/key-bindings.bash ]] && . /usr/share/fzf/key-bindings.bash
 [[ -r /usr/share/fzf/completion.bash ]] && . /usr/share/fzf/completion.bash
 
+
+# Load zoxide
+[[ -x /usr/bin/zoxide ]] && eval "$(zoxide init bash)"
