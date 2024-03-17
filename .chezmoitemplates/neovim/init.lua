@@ -273,12 +273,6 @@ vim.cmd([[
   nnoremap <silent> <Esc> :noh<CR><Esc>
 ]])
 
--- Save buffer with C-s.
-vim.cmd([[
-  nnoremap <silent> <C-s> :update<CR>
-  inoremap <silent> <C-s> <C-o>:update<CR>
-]])
-
 -- Terminal escaping mapping.
 vim.cmd([[
   tnoremap <C-g> <C-\><C-n>
@@ -306,13 +300,6 @@ vim.cmd([[
   nnoremap <C-w><Tab>4 4gt
   nnoremap <C-w><Tab>5 5gt
 ]])
-
--- Diagnostics mappings.
--- TODO: check all these mapping for conflicts
--- TODO: test all these mapping
-vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
-vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
-vim.keymap.set("n", "gl", vim.diagnostic.open_float, { desc = "Show line diagnostic" })
 
 -----------------------------
 ----- WhichKey mappings -----
@@ -762,17 +749,84 @@ local PLUGINS = {
     config = true,
   },
 
-  -- Useful [_, ]_ keybindings: b (change buffers), Space (add blank lines),
-  -- e (exchange line), navigate quickfix (q/Q) and location (l/L) lists;
-  -- Paste after (]p) or before ([p) linewise.
-  -- Toggle common options: _oh (hlsearch), _oi (ignorecase), _ol (list tabs and
-  -- trailing spaces), _on (number), _or (relativenumber), _ov (virtualedit),
-  -- _ow (wrap), _ox (cursorline and cursorcolumn), _oz (spell).
-  -- Also _od for :diffthis and :diffoff.
-  -- TODO: evaluate mini.bracketed
+  -- Set basic useful options and mappings:
+  -- - go and gO:   Add empty lines after/before line
+  -- - gV:          Select latest changed, put or yanked text
+  -- - g/, * and #: Search inside current visual selection
+  -- - C-s:         Save and go to normal mode
+  -- Ignored plugin mappings: j, k, gy, gp, gP
   {
-    "tpope/vim-unimpaired",
+    "echasnovski/mini.basics",
+    event = { "VeryLazy" },
+    config = function()
+      require("mini.basics").setup({
+        options = {
+          basic = false, -- Too opinionated
+          extra_ui = true, -- Make popups transparent
+          win_borders = "default",
+        },
+        mappings = {
+          basic = true,
+          option_toggle_prefix = [[\]],
+          windows = false,
+          move_with_alt = false,
+        },
+        autocommands = {
+          basic = false, -- Too simple
+          relnum_in_visual_mode = false,
+        },
+      })
+      -- Use gp and gP to paste linewise.
+      vim.keymap.set({ "n", "x" }, "gp", "<Cmd>execute 'put ' . v:register<CR>", { desc = "Paste below" })
+      vim.keymap.set({ "n", "x" }, "gP", "<Cmd>execute 'put! ' . v:register<CR>", { desc = "Paste above" })
+    end,
+  },
+
+  -- Useful [_, ]_ keybindings:
+  -- - b: buffer
+  -- - x: git conflict marker
+  -- - d: diagnostic
+  -- - f: file on disk
+  -- - i: indent change
+  -- - j: jump (in current buffer)
+  -- - l: location list
+  -- - q: quickfix list
+  -- - t: treesitter node and parents
+  -- - u: undo states
+  -- - w: window (in current tab)
+  -- - y: yank selection
+  {
+    "echasnovski/mini.bracketed",
     keys = { "[", "]" },
+    config = function()
+      require("mini.bracketed").setup({
+        comment = { suffix = "" },
+        oldfile = { suffix = "" },
+      })
+    end,
+  },
+
+  -- Use C-k and C-j to move lines up or down.  Also on visual mode.
+  {
+    "echasnovski/mini.move",
+    keys = { "<C-j>", "<C-k>" },
+    config = function()
+      require("mini.move").setup({
+        -- C-l is already taken.  Use < and > for lateral moves instead.
+        mappings = {
+          -- Move visual selection in Visual mode.
+          left = "",
+          right = "",
+          down = "<C-j>",
+          up = "<C-k>",
+          -- Move current line in Normal mode
+          line_left = "",
+          line_right = "",
+          line_down = "<C-j>",
+          line_up = "<C-k>",
+        },
+      })
+    end,
   },
 
   -- Text exchange operator: cx_, cxx (current line), X (in visual mode),
@@ -806,25 +860,14 @@ local PLUGINS = {
 
   --- Editing helps ---
 
-  -- Align text by some character or regex adding spaces to the left and/or right.
-  -- 1. Type ga in visual mode, or ga followed by motion or text object in normal
-  --    mode to enter interactive mode.
-  -- 2. Optionally enter keys to cycle between alignment options (e.g. <C-d> to
-  --    cycle between left, right or center alignment).
-  -- 3. Optionally enter keys to define delimiter occurrences to consider (e.g.
-  --    2: second occurrence, *: all occurrences, -: last occurrence).
-  -- 4. Type delimiter key (one of " =:.|&#,", which have predefined rules) or an
-  --    arbitrary regex followed by <C-x>.
-  -- 5. Alternatively, use the :EasyAlign command.
-  -- Reference: https://github.com/junegunn/vim-easy-align
-  -- TODO: evaluate mini.align
+  -- Align text by some character (or pattern) adding spaces to its left and/or right.
+  -- Type ga in visual mode (or ga followed by motion or text object in normal mode) and the split character.
+  -- For complex scenarios, use gA for an interactive preview mode.
   {
-    "junegunn/vim-easy-align",
-    keys = { "ga", { "ga", mode = "v" } },
-    cmd = { "EasyAlign" },
+    "echasnovski/mini.align",
+    keys = { "ga", { "ga", mode = "v" }, "gA", { "gA", mode = "v" } },
     config = function()
-      vim.api.nvim_set_keymap("n", "ga", "<Plug>(EasyAlign)", {})
-      vim.api.nvim_set_keymap("x", "ga", "<Plug>(EasyAlign)", {})
+      require("mini.align").setup()
     end,
   },
 
@@ -1119,18 +1162,18 @@ local PLUGINS = {
           -- TODO: check all these mapping for conflicts
           -- TODO: test all these mapping
           -- TODO: fix K on lua
-          map("n", "gK",   vim.lsp.buf.hover,           "hover documentation")
-          map("n", "gd",   vim.lsp.buf.definition,      "goto definition")
-          map("n", "gD",   vim.lsp.buf.declaration,     "goto declaration")
-          map("n", "gI",   vim.lsp.buf.implementation,  "goto implementation")
-          map("n", "go",   vim.lsp.buf.type_definition, "goto type definition")
-          map("n", "gr",   vim.lsp.buf.references,      "goto references")
-          map("n", "gs",   vim.lsp.buf.signature_help,  "display signature help")
-          map("n", "<F2>", vim.lsp.buf.rename,          "rename")
-          map("n", "<F3>", vim.lsp.buf.format,          "format")
-          map("x", "<F3>", vim.lsp.buf.format,          "format")
-          map("n", "<F4>", vim.lsp.buf.code_action,     "code action")
-          map("x", "<F4>", vim.lsp.buf.code_action,     "code action")
+          map("n", "gK",     vim.lsp.buf.hover,           "hover documentation")
+          map("n", "gd",     vim.lsp.buf.definition,      "goto definition")
+          map("n", "gD",     vim.lsp.buf.declaration,     "goto declaration")
+          map("n", "g<C-d>", vim.lsp.buf.type_definition, "goto type definition")
+          map("n", "gI",     vim.lsp.buf.implementation,  "goto implementation")
+          map("n", "gr",     vim.lsp.buf.references,      "goto references")
+          map("n", "gs",     vim.lsp.buf.signature_help,  "display signature help")
+          map("n", "<F2>",   vim.lsp.buf.rename,          "rename")
+          map("n", "<F3>",   vim.lsp.buf.format,          "format")
+          map("x", "<F3>",   vim.lsp.buf.format,          "format")
+          map("n", "<F4>",   vim.lsp.buf.code_action,     "code action")
+          map("x", "<F4>",   vim.lsp.buf.code_action,     "code action")
           -- stylua: ignore end
         end,
       })
