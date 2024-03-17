@@ -85,6 +85,9 @@ vim.opt.clipboard = "unnamed,unnamedplus"
 -- Do not redraw screen while executing macros.
 vim.opt.lazyredraw = true
 
+-- Break lines at better places when wrapping lines.
+vim.opt.linebreak = true
+
 -- Keep lines above or below the cursor when scrolling.
 vim.opt.scrolloff = 2
 
@@ -109,6 +112,9 @@ vim.opt.signcolumn = "number"
 -- Open new split panes to right and bottom.
 vim.opt.splitbelow = true
 vim.opt.splitright = true
+
+-- Reduce scroll when splitting windows.
+vim.opt.splitkeep = "screen"
 
 -- Ignore case in patterns (unless upper case characters are used).
 vim.opt.ignorecase = true
@@ -136,6 +142,9 @@ vim.opt.tabstop = 4
 
 -- Always open diff windows vertically
 vim.opt.diffopt:append({ "vertical" })
+
+-- Use popup menu for completion.  Do not auto insert nor auto select.
+vim.opt.completeopt = "menuone,noinsert,noselect"
 
 -- Complete till longest common string and list all matches.
 vim.opt.wildmode = "longest:full,full"
@@ -449,15 +458,6 @@ local LEADER_MAPPINGS = {
     ["p"] = { "<Cmd>Luapad<CR>", "Open lua scratch pad" },
   },
 
-  -- TODO: evaluate mini.sessions
-  S = {
-    name = "session",
-    ["l"] = { "<Cmd>SLoad<CR>", "Load session" },
-    ["s"] = { "<Cmd>SSave<CR>", "Save session" },
-    ["d"] = { "<Cmd>SDelete<CR>", "Delete session" },
-    ["c"] = { "<Cmd>SClose<CR>", "Close session" },
-  },
-
   t = {
     name = "trouble",
     ["t"] = { "<Cmd>TroubleToggle<CR>", "Toggle Trouble" },
@@ -616,7 +616,7 @@ local LEADER_MAPPINGS = {
 
   m = {
     name = "misc",
-    ["c"] = { "<Cmd>ColorizerToggle<CR>", "Color strings highlighting" },
+    ["c"] = { "<Cmd>ColorizerToggle<CR>", "Toggle color strings highlighting" },
   },
 
   h = {
@@ -693,10 +693,10 @@ local PLUGINS = {
         "alpha",
         "lazy",
         "mason",
-        "TelescopePrompt",
         "terminal",
       }
       require("reticle").setup({
+        on_startup = { cursorline = true, cursorcolumn = true },
         disable_in_insert = false,
         always_highlight_number = true,
         never = {
@@ -1042,7 +1042,6 @@ local PLUGINS = {
           },
         },
         pyright = {},
-        pylyzer = {},
         -- TODO: evaluate this better
         typos_lsp = {
           filetypes = {
@@ -1074,6 +1073,9 @@ local PLUGINS = {
           },
         },
       }
+      if vim.fn.executable("cargo") then
+        lsp_servers["pylyzer"] = {}
+      end
 
       -- Add complete capabilities provided by cmp and broadcast them to the servers.
       local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -1176,7 +1178,10 @@ local PLUGINS = {
           end,
         },
 
-        completion = { completeopt = "menu,menuone,noinsert" },
+        -- Make cmp's completion.completeopt consistent with vim.opt.completeopt.
+        completion = { completeopt = table.concat(vim.opt.completeopt:get(), ",") },
+
+        -- TODO: add (rounded) borders around documentation windows
 
         mapping = cmp.mapping.preset.insert({
           -- Select next/previous item.
@@ -1771,6 +1776,16 @@ local PLUGINS = {
     event = "BufReadPre",
     config = function()
       require("mini.trailspace").setup()
+
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "lazy" },
+        group = "vimrc",
+        desc = "Disable trail spaces highlighting",
+        callback = function()
+          vim.b.minitrailspace_disable = true
+          MiniTrailspace.unhighlight()
+        end,
+      })
     end,
   },
 
