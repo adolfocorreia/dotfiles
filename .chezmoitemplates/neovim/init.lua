@@ -1116,7 +1116,7 @@ local PLUGINS = {
           },
         },
       }
-      if vim.fn.executable("cargo") then
+      if vim.fn.executable("cargo") == 1 then
         lsp_servers["pylyzer"] = {}
       end
 
