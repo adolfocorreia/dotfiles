@@ -473,7 +473,6 @@ local LEADER_MAPPINGS = {
     ["a"] = { "<Cmd>FormatEnable<CR>", "Enable autoformatting" },
     ["A"] = { "<Cmd>FormatDisable<CR>", "Disable autoformatting" },
     ["w"] = { "<Cmd>lua MiniTrailspace.trim()<CR>", "Strip whitespace" },
-    ["s"] = { "<Cmd>Telescope spell_suggest<CR>", "Spell suggest" },
     ["o"] = { "<Cmd>AerialToggle<CR>", "Toggle code outline" },
   },
 
@@ -499,12 +498,13 @@ local LEADER_MAPPINGS = {
     ["l"] = { "<Cmd>LspInfo<CR>", "LSP information" },
     ["L"] = { "<Cmd>LspLog<CR>", "LSP log" },
     ["d"] = { "<Cmd>Telescope diagnostics bufnr=0<CR>", "List diagnostics" },
+    ["D"] = { "<Cmd>Telescope lsp_definitions<CR>", "List definitions" },
+    ["t"] = { "<Cmd>Telescope lsp_type_definitions<CR>", "List type definitions" },
     ["r"] = { "<Cmd>Telescope lsp_references<CR>", "References for word under cursor" },
     ["I"] = { "<Cmd>Telescope lsp_implementations<CR>", "List implementations" },
-    ["t"] = { "<Cmd>Telescope lsp_type_definitions<CR>", "List type definitions" },
     ["s"] = { "<Cmd>Telescope lsp_document_symbols<CR>", "Document symbols" },
     ["S"] = { "<Cmd>Telescope lsp_workspace_symbols<CR>", "Workspace symbols" },
-    ["D"] = { "<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>", "Dynamically lists workspace symbols" },
+    ["y"] = { "<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>", "Dynamically lists workspace symbols" },
     ["i"] = { "<Cmd>Telescope lsp_incoming_calls<CR>", "List incoming calls" },
     ["o"] = { "<Cmd>Telescope lsp_outgoing_calls<CR>", "List outgoing calls" },
     ["h"] = { "<Cmd>lua vim.lsp.buf.hover()<CR>", "Hover help" },
@@ -559,6 +559,7 @@ local LEADER_MAPPINGS = {
     ["C"] = { "<Cmd>Telescope git_commits<CR>", "List git commits" },
     ["B"] = { "<Cmd>Telescope git_branches<CR>", "List git branches" },
     ["S"] = { "<Cmd>Telescope git_status<CR>", "List changes per files" },
+    ["T"] = { "<Cmd>Telescope git_stash<CR>", "List stash items" },
     ["d"] = { "<Cmd>DiffviewOpen<CR>", "Diff view" },
     ["f"] = { "<Cmd>DiffviewFileHistory<CR>", "Diff view file history" },
     h = {
@@ -591,19 +592,24 @@ local LEADER_MAPPINGS = {
     ["m"] = { "<Cmd>Telescope marks<CR>", "Marks" },
     ["r"] = { "<Cmd>Telescope registers<CR>", "Registers" },
     ["q"] = { "<Cmd>Telescope quickfix<CR>", "Quickfix list" },
+    ["Q"] = { "<Cmd>Telescope quickfixhistory<CR>", "Quickfix history" },
     ["l"] = { "<Cmd>Telescope loclist<CR>", "Location list" },
     ["j"] = { "<Cmd>Telescope jumplist<CR>", "Jump list" },
     ["o"] = { "<Cmd>Telescope vim_options<CR>", "Vim options" },
     ["a"] = { "<Cmd>Telescope autocommands<CR>", "Autocommands" },
     ["k"] = { "<Cmd>Telescope keymaps<CR>", "Key maps" },
-    ["f"] = { "<Cmd>Telescope filetype<CR>", "Filetypes" },
+    ["f"] = { "<Cmd>Telescope filetypes<CR>", "Filetypes" },
     ["H"] = { "<Cmd>Telescope highlights<CR>", "Highlights" },
+    ["t"] = { "<Cmd>Telescope treesitter<CR>", "Treesitter" },
+    ["T"] = { "<Cmd>Telescope tags<CR>", "Tags" },
+    ["M"] = { "<Cmd>Telescope man_pages<CR>", "Man pages" },
     ["p"] = { "<Cmd>Telescope builtin<CR>", "Telescope pickers" },
   },
 
   m = {
     name = "misc",
     ["c"] = { "<Cmd>ColorizerToggle<CR>", "Toggle color strings highlighting" },
+    ["s"] = { "<Cmd>Telescope spell_suggest<CR>", "Spell suggest (word on cursor)" },
   },
 
   h = {
@@ -784,6 +790,7 @@ local PLUGINS = {
 
   -- Useful [_, ]_ keybindings:
   -- - b: buffer
+  -- - k: comment
   -- - x: git conflict marker
   -- - d: diagnostic
   -- - f: file on disk
@@ -791,6 +798,7 @@ local PLUGINS = {
   -- - j: jump (in current buffer)
   -- - l: location list
   -- - q: quickfix list
+  -- - o: oldfile (see :oldfiles)
   -- - t: treesitter node and parents
   -- - u: undo states
   -- - w: window (in current tab)
@@ -800,8 +808,7 @@ local PLUGINS = {
     keys = { "[", "]" },
     config = function()
       require("mini.bracketed").setup({
-        comment = { suffix = "" },
-        oldfile = { suffix = "" },
+        comment = { suffix = "k" },
       })
     end,
   },
@@ -1167,7 +1174,7 @@ local PLUGINS = {
           map("n", "gD",     vim.lsp.buf.declaration,     "goto declaration")
           map("n", "g<C-d>", vim.lsp.buf.type_definition, "goto type definition")
           map("n", "gI",     vim.lsp.buf.implementation,  "goto implementation")
-          map("n", "gr",     vim.lsp.buf.references,      "goto references")
+          map("n", "gR",     vim.lsp.buf.references,      "goto references")
           map("n", "gs",     vim.lsp.buf.signature_help,  "display signature help")
           map("n", "<F2>",   vim.lsp.buf.rename,          "rename")
           map("n", "<F3>",   vim.lsp.buf.format,          "format")
@@ -1439,7 +1446,6 @@ local PLUGINS = {
   },
 
   -- Run test suites (e.g. pytest).
-  -- TODO: evaluate nvim-neotest/neotest
   {
     "vim-test/vim-test",
     cmd = { "TestNearest", "TestFile", "TestSuite" },
@@ -1608,8 +1614,16 @@ local PLUGINS = {
   --- Search commands ---
 
   -- Extendable fuzzy finder.
+  -- Use <C-/> and ? (in insert and normal mode) to show keymaps.
+  -- Other useful mappings:
+  -- - <Esc>, <C-c>: close telescope (in normal/insert mode)
+  -- - <C-q>: send items to quickfix list
+  -- - <C-u>, <C-d>: scroll up/down in preview window
+  -- - <C-x>, <C-v>: open selection in horizontal/vertical split
+  -- - <C-t>: open selection in new tab
   {
     "nvim-telescope/telescope.nvim",
+    branch = "0.1.x",
     cmd = { "Telescope" },
     dependencies = {
       { "nvim-lua/plenary.nvim" },
