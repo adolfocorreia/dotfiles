@@ -337,179 +337,183 @@ local function format_buffer()
   })
 end
 
+-- stylua: ignore start
 local LEADER_MAPPINGS = {
-  ["<Leader>"] = { "<Cmd>Telescope buffers theme=ivy<CR>", "Find buffer" },
-  ["`"] = { "<C-^>", "Alternate file" },
+  ["<Leader>"] = { "<Cmd>Telescope buffers theme = ivy<CR>", "Find buffer" },
+  ["`"]        = { "<C-^>",                                  "Alternate file" },
 
   w = {
     name = "window",
-    ["p"] = { "<C-w>p", "Go to alternate window" },
-    ["w"] = { "<C-w>w", "Go to next window" },
-    ["W"] = { "<C-w>W", "Go to previous window" },
-    ["h"] = { "<C-w>h", "Go left" },
-    ["l"] = { "<C-w>l", "Go right" },
-    ["j"] = { "<C-w>j", "Go down" },
-    ["k"] = { "<C-w>k", "Go up" },
-    ["t"] = { "<C-w>t", "Go to top-left window" },
-    ["b"] = { "<C-w>b", "Go to bottom-right window" },
-    ["H"] = { "<C-w>H", "Move far left" },
-    ["L"] = { "<C-w>L", "Move far right" },
-    ["J"] = { "<C-w>J", "Move to bottom" },
-    ["K"] = { "<C-w>K", "Move to top" },
-    ["c"] = { "<C-w>c", "Close window" },
-    ["q"] = { "<C-w>q", "Quit window" },
-    ["u"] = { "<C-w>u", "Undo quit window" },
-    ["U"] = { "<C-w>U", "Undo quit windows in tab" },
-    ["n"] = { "<C-w>n", "New window" },
-    ["o"] = { "<C-w>o", "Only window" },
-    ["s"] = { "<C-w>s", "Split horizontally" },
-    ["v"] = { "<C-w>v", "Split vertically" },
-    ["r"] = { "<C-w>r", "Rotate downwards" },
-    ["R"] = { "<C-w>R", "Rotate upwards" },
-    ["T"] = { "<C-w>T", "Move to new tab" },
-    ["="] = { "<C-w>=", "Balance windows" },
-    ["+"] = { "<C-w>5+", "Increase height" },
-    ["-"] = { "<C-w>5-", "Decrease height" },
-    [">"] = { "<C-w>10>", "Increase width" },
-    ["<lt>"] = { "<C-w>10<", "Decrease width" },
-    ["1"] = { "<Cmd>1wincmd w<CR>", "Go to window 1" },
-    ["2"] = { "<Cmd>2wincmd w<CR>", "Go to window 2" },
-    ["3"] = { "<Cmd>3wincmd w<CR>", "Go to window 3" },
-    ["4"] = { "<Cmd>4wincmd w<CR>", "Go to window 4" },
-    ["5"] = { "<Cmd>5wincmd w<CR>", "Go to window 5" },
+    ["p"] =    { "<C-w>p",             "Go to alternate window" },
+    ["w"] =    { "<C-w>w",             "Go to next window" },
+    ["W"] =    { "<C-w>W",             "Go to previous window" },
+    ["h"] =    { "<C-w>h",             "Go left" },
+    ["l"] =    { "<C-w>l",             "Go right" },
+    ["j"] =    { "<C-w>j",             "Go down" },
+    ["k"] =    { "<C-w>k",             "Go up" },
+    ["t"] =    { "<C-w>t",             "Go to top-left window" },
+    ["b"] =    { "<C-w>b",             "Go to bottom-right window" },
+    ["H"] =    { "<C-w>H",             "Move far left" },
+    ["L"] =    { "<C-w>L",             "Move far right" },
+    ["J"] =    { "<C-w>J",             "Move to bottom" },
+    ["K"] =    { "<C-w>K",             "Move to top" },
+    ["c"] =    { "<C-w>c",             "Close window" },
+    ["q"] =    { "<C-w>q",             "Quit window" },
+    ["u"] =    { "<C-w>u",             "Undo quit window" },
+    ["U"] =    { "<C-w>U",             "Undo quit windows in tab" },
+    ["n"] =    { "<C-w>n",             "New window" },
+    ["o"] =    { "<C-w>o",             "Only window" },
+    ["s"] =    { "<C-w>s",             "Split horizontally" },
+    ["v"] =    { "<C-w>v",             "Split vertically" },
+    ["r"] =    { "<C-w>r",             "Rotate downwards" },
+    ["R"] =    { "<C-w>R",             "Rotate upwards" },
+    ["T"] =    { "<C-w>T",             "Move to new tab" },
+    ["="] =    { "<C-w>=",             "Balance windows" },
+    ["+"] =    { "<C-w>5+",            "Increase height" },
+    ["-"] =    { "<C-w>5-",            "Decrease height" },
+    [">"] =    { "<C-w>10>",           "Increase width" },
+    ["<lt>"] = { "<C-w>10<",           "Decrease width" },
+    ["1"] =    { "<Cmd>1wincmd w<CR>", "Go to window 1" },
+    ["2"] =    { "<Cmd>2wincmd w<CR>", "Go to window 2" },
+    ["3"] =    { "<Cmd>3wincmd w<CR>", "Go to window 3" },
+    ["4"] =    { "<Cmd>4wincmd w<CR>", "Go to window 4" },
+    ["5"] =    { "<Cmd>5wincmd w<CR>", "Go to window 5" },
   },
 
   b = {
     name = "buffer",
     ["b"] = { "<Cmd>Telescope buffers theme=ivy<CR>", "Find buffer" },
-    ["w"] = { "<Cmd>write<CR>", "Write buffer" },
-    ["s"] = { "<Cmd>write<CR>", "Save buffer" },
-    ["n"] = { "<Cmd>bnext<CR>", "Next buffer" },
-    ["p"] = { "<Cmd>bprevious<CR>", "Previous buffer" },
-    ["#"] = { "<Cmd>buffer #<CR>", "Alternate buffer" },
-    ["d"] = { "<Cmd>lua MiniBufremove.delete()<CR>", "Delete buffer" },
-    ["e"] = { "<Cmd>ene<CR>", "Edit new buffer" },
-    ["W"] = { "<Cmd>wall<CR>", "Write all buffers" },
-    ["r"] = { "<Cmd>edit %<CR>", "Reload current buffer" },
-    ["R"] = { "<Cmd>checktime<CR>", "Reload all buffers" },
+    ["w"] = { "<Cmd>write<CR>",                       "Write buffer" },
+    ["s"] = { "<Cmd>write<CR>",                       "Save buffer" },
+    ["n"] = { "<Cmd>bnext<CR>",                       "Next buffer" },
+    ["p"] = { "<Cmd>bprevious<CR>",                   "Previous buffer" },
+    ["#"] = { "<Cmd>buffer #<CR>",                    "Alternate buffer" },
+    ["d"] = { "<Cmd>lua MiniBufremove.delete()<CR>",  "Delete buffer" },
+    ["e"] = { "<Cmd>ene<CR>",                         "Edit new buffer" },
+    ["W"] = { "<Cmd>wall<CR>",                        "Write all buffers" },
+    ["r"] = { "<Cmd>edit %<CR>",                      "Reload current buffer" },
+    ["R"] = { "<Cmd>checktime<CR>",                   "Reload all buffers" },
   },
 
   ["<Tab>"] = {
     name = "tab",
-    ["<Tab>"] = { new_or_next_tab, "New or next tab" },
-    ["e"] = { "<Cmd>tabedit<CR>", "New tab" },
-    ["c"] = { "<Cmd>tabclose<CR>", "Close tab" },
-    ["o"] = { "<Cmd>tabonly<CR>", "Only tab" },
-    ["n"] = { "<Cmd>tabnext<CR>", "Next tab" },
+    ["<Tab>"] = { new_or_next_tab,    "New or next tab" },
+    ["e"] = { "<Cmd>tabedit<CR>",     "New tab" },
+    ["c"] = { "<Cmd>tabclose<CR>",    "Close tab" },
+    ["o"] = { "<Cmd>tabonly<CR>",     "Only tab" },
+    ["n"] = { "<Cmd>tabnext<CR>",     "Next tab" },
     ["p"] = { "<Cmd>tabprevious<CR>", "Previous tab" },
-    ["w"] = { "<C-w>T", "Move window to new tab" },
-    ["1"] = { "1gt", "Go to tab 1" },
-    ["2"] = { "2gt", "Go to tab 2" },
-    ["3"] = { "3gt", "Go to tab 3" },
-    ["4"] = { "4gt", "Go to tab 4" },
-    ["5"] = { "5gt", "Go to tab 5" },
-    ["r"] = {
-      function()
-        rr("Tab name: ", "LualineRenameTab {}")
-      end,
-      "Rename tab",
-    },
+    ["w"] = { "<C-w>T",               "Move window to new tab" },
+    ["1"] = { "1gt",                  "Go to tab 1" },
+    ["2"] = { "2gt",                  "Go to tab 2" },
+    ["3"] = { "3gt",                  "Go to tab 3" },
+    ["4"] = { "4gt",                  "Go to tab 4" },
+    ["5"] = { "5gt",                  "Go to tab 5" },
+    ["r"] = { function() rr("Tab name: ", "LualineRenameTab {}") end, "Rename tab", },
   },
 
   f = {
     name = "file",
     ["f"] = { "<Cmd>Telescope find_files noignore=true<CR>", "Find project files" },
-    ["F"] = { "<Cmd>Telescope file_browser<CR>", "File browser" },
-    ["h"] = { "<Cmd>Telescope find_files cwd=~<CR>", "Find home folder files" },
-    ["r"] = { "<Cmd>Telescope oldfiles<CR>", "Recent files" },
-    ["g"] = { "<Cmd>Telescope git_files<CR>", "Find git files" },
-    ["p"] = { "<Cmd>Telescope projects<CR>", "Find projects" },
-    ["n"] = { "<Cmd>ene<CR>", "New file" },
-    ["D"] = { "<Cmd>Delete<CR>", "Delete file" },
-    ["R"] = {
-      function()
-        rr("New name: ", "Rename {}")
-      end,
-      "Rename file",
-    },
+    ["F"] = { "<Cmd>Telescope file_browser<CR>",             "File browser" },
+    ["h"] = { "<Cmd>Telescope find_files cwd=~<CR>",         "Find home folder files" },
+    ["r"] = { "<Cmd>Telescope oldfiles<CR>",                 "Recent files" },
+    ["g"] = { "<Cmd>Telescope git_files<CR>",                "Find git files" },
+    ["p"] = { "<Cmd>Telescope projects<CR>",                 "Find projects" },
+    ["n"] = { "<Cmd>ene<CR>",                                "New file" },
+    ["D"] = { "<Cmd>Delete<CR>",                             "Delete file" },
+    ["R"] = { function() rr("New name: ", "Rename {}") end, "Rename file", },
   },
 
   v = {
     name = "neovim",
     ["v"] = { "<Cmd>edit $MYVIMRC<CR>", "Open vim config" },
-    ["l"] = { "<Cmd>Lazy<CR>", "Open Lazy menu" },
-    ["m"] = { "<Cmd>Mason<CR>", "Open Mason menu" },
-    ["t"] = { "<Cmd>TSUpdate<CR>", "Treesitter update" },
-    ["h"] = { "<Cmd>Alpha<CR>", "Open home buffer" },
-    ["H"] = { "<Cmd>checkhealth<CR>", "Check health" },
-    ["p"] = { "<Cmd>Luapad<CR>", "Open lua scratch pad" },
+    ["l"] = { "<Cmd>Lazy<CR>",          "Open Lazy menu" },
+    ["m"] = { "<Cmd>Mason<CR>",         "Open Mason menu" },
+    ["t"] = { "<Cmd>TSUpdate<CR>",      "Treesitter update" },
+    ["h"] = { "<Cmd>Alpha<CR>",         "Open home buffer" },
+    ["H"] = { "<Cmd>checkhealth<CR>",   "Check health" },
+    ["p"] = { "<Cmd>Luapad<CR>",        "Open lua scratch pad" },
   },
 
-  t = {
-    name = "trouble",
-    ["t"] = { "<Cmd>TroubleToggle<CR>", "Toggle Trouble" },
-    ["T"] = { "<Cmd>TodoTrouble<CR>", "Toggle TODO Trouble" },
-    ["w"] = { "<Cmd>TroubleToggle workspace_diagnostics<CR>", "Workspace diagnostics" },
-    ["d"] = { "<Cmd>TroubleToggle document_diagnostics<CR>", "Document diagnostics" },
-    ["q"] = { "<Cmd>TroubleToggle quickfix<CR>", "Quickfix items" },
-    ["l"] = { "<Cmd>TroubleToggle loclist<CR>", "Loclist items" },
-    ["r"] = { "<Cmd>TroubleToggle lsp_references<CR>", "LSP references" },
-    ["s"] = { "<Cmd>TodoTelescope<CR>", "Search TODOs" },
-  },
-
-  r = {
-    name = "repl",
-    ["c"] = { "<Cmd>SlimeConfig<CR>", "Configure REPL" },
-    ["s"] = { "<Cmd>vsplit<Bar>terminal<CR>", "Open system shell" },
-    ["j"] = { "<Cmd>vsplit<Bar>terminal julia<CR>", "Open Julia REPL" },
-    ["r"] = { "<Cmd>vsplit<Bar>terminal R<CR>", "Open R REPL" },
-    ["p"] = { "<Cmd>vsplit<Bar>terminal python -m IPython --profile=vi<CR>", "Open Python REPL" },
+  s = {
+    name = "search",
+    ["s"] = { "<Cmd>Telescope live_grep<CR>",                 "Live grep search" },
+    ["w"] = { "<Cmd>Telescope grep_string<CR>",               "Word under cursor" },
+    ["b"] = { "<Cmd>Telescope current_buffer_fuzzy_find<CR>", "Current buffer" },
+    ["c"] = { "<Cmd>Telescope commands<CR>",                  "Available commands" },
+    [":"] = { "<Cmd>Telescope command_history<CR>",           "Command history" },
+    ["/"] = { "<Cmd>Telescope search_history<CR>",            "Search history" },
+    ["h"] = { "<Cmd>Telescope help_tags<CR>",                 "Help tags" },
+    ["m"] = { "<Cmd>Telescope marks<CR>",                     "Marks" },
+    ["r"] = { "<Cmd>Telescope registers<CR>",                 "Registers" },
+    ["q"] = { "<Cmd>Telescope quickfix<CR>",                  "Quickfix list" },
+    ["Q"] = { "<Cmd>Telescope quickfixhistory<CR>",           "Quickfix history" },
+    ["l"] = { "<Cmd>Telescope loclist<CR>",                   "Location list" },
+    ["j"] = { "<Cmd>Telescope jumplist<CR>",                  "Jump list" },
+    ["o"] = { "<Cmd>Telescope vim_options<CR>",               "Vim options" },
+    ["a"] = { "<Cmd>Telescope autocommands<CR>",              "Autocommands" },
+    ["k"] = { "<Cmd>Telescope keymaps<CR>",                   "Key maps" },
+    ["f"] = { "<Cmd>Telescope filetypes<CR>",                 "Filetypes" },
+    ["H"] = { "<Cmd>Telescope highlights<CR>",                "Highlights" },
+    ["t"] = { "<Cmd>Telescope treesitter<CR>",                "Treesitter" },
+    ["T"] = { "<Cmd>Telescope tags<CR>",                      "Tags" },
+    ["M"] = { "<Cmd>Telescope man_pages<CR>",                 "Man pages" },
+    ["p"] = { "<Cmd>Telescope builtin<CR>",                   "Telescope pickers" },
   },
 
   c = {
     name = "code",
-    ["c"] = { "<Cmd>Format<CR>", "Format buffer" },
-    ["C"] = { format_buffer, "Format buffer (LSP)" },
-    ["a"] = { "<Cmd>FormatEnable<CR>", "Enable autoformatting" },
-    ["A"] = { "<Cmd>FormatDisable<CR>", "Disable autoformatting" },
+    ["c"] = { "<Cmd>Format<CR>",                    "Format buffer" },
+    ["C"] = { format_buffer,                        "Format buffer (LSP)" },
+    ["a"] = { "<Cmd>FormatEnable<CR>",              "Enable autoformatting" },
+    ["A"] = { "<Cmd>FormatDisable<CR>",             "Disable autoformatting" },
     ["w"] = { "<Cmd>lua MiniTrailspace.trim()<CR>", "Strip whitespace" },
-    ["o"] = { "<Cmd>AerialToggle<CR>", "Toggle code outline" },
+    ["o"] = { "<Cmd>AerialToggle<CR>",              "Toggle code outline" },
+  },
+
+  t = {
+    name = "trouble",
+    ["t"] = { "<Cmd>TroubleToggle<CR>",                       "Toggle Trouble" },
+    ["T"] = { "<Cmd>TodoTrouble<CR>",                         "Toggle TODO Trouble" },
+    ["w"] = { "<Cmd>TroubleToggle workspace_diagnostics<CR>", "Workspace diagnostics" },
+    ["d"] = { "<Cmd>TroubleToggle document_diagnostics<CR>",  "Document diagnostics" },
+    ["q"] = { "<Cmd>TroubleToggle quickfix<CR>",              "Quickfix items" },
+    ["l"] = { "<Cmd>TroubleToggle loclist<CR>",               "Loclist items" },
+    ["r"] = { "<Cmd>TroubleToggle lsp_references<CR>",        "LSP references" },
+    ["s"] = { "<Cmd>TodoTelescope<CR>",                       "Search TODOs" },
   },
 
   d = {
     name = "diff",
-    ["s"] = {
-      function()
-        rr("Other file: ", "diffsplit {}", "file")
-      end,
-      "Open split diff window",
-    },
-    ["t"] = { "<Cmd>diffthis<CR>", "Diff this window" },
-    ["o"] = { "<Cmd>diffoff<CR>", "Switch off diff" },
+    ["t"] = { "<Cmd>diffthis<CR>",   "Diff this window" },
+    ["o"] = { "<Cmd>diffoff<CR>",    "Switch off diff" },
     ["u"] = { "<Cmd>diffupdate<CR>", "Update diff" },
-    ["g"] = { "<Cmd>diffget<CR>", "Get diff from other" },
-    ["p"] = { "<Cmd>diffput<CR>", "Put diff to other" },
-    ["G"] = { "<Cmd>'<,'>diffget<CR>", "Get selection from other" },
-    ["P"] = { "<Cmd>'<,'>diffput<CR>", "Put selection to other" },
+    ["g"] = { "<Cmd>diffget<CR>",    "Get diff from other" },
+    ["p"] = { "<Cmd>diffput<CR>",    "Put diff to other" },
+    ["G"] = { "<Cmd>'<,              '>diffget<CR>", "Get selection from other" },
+    ["P"] = { "<Cmd>'<,              '>diffput<CR>", "Put selection to other" },
+    ["s"] = { function() rr("Other file: ", "diffsplit {}", "file") end, "Open split diff window", },
   },
 
   l = {
     name = "lsp",
-    ["l"] = { "<Cmd>LspInfo<CR>", "LSP information" },
-    ["L"] = { "<Cmd>LspLog<CR>", "LSP log" },
-    ["d"] = { "<Cmd>Telescope diagnostics bufnr=0<CR>", "List diagnostics" },
-    ["D"] = { "<Cmd>Telescope lsp_definitions<CR>", "List definitions" },
-    ["t"] = { "<Cmd>Telescope lsp_type_definitions<CR>", "List type definitions" },
-    ["r"] = { "<Cmd>Telescope lsp_references<CR>", "References for word under cursor" },
-    ["I"] = { "<Cmd>Telescope lsp_implementations<CR>", "List implementations" },
-    ["s"] = { "<Cmd>Telescope lsp_document_symbols<CR>", "Document symbols" },
-    ["S"] = { "<Cmd>Telescope lsp_workspace_symbols<CR>", "Workspace symbols" },
+    ["l"] = { "<Cmd>LspInfo<CR>",                                 "LSP information" },
+    ["L"] = { "<Cmd>LspLog<CR>",                                  "LSP log" },
+    ["d"] = { "<Cmd>Telescope diagnostics bufnr=0<CR>",           "List diagnostics" },
+    ["D"] = { "<Cmd>Telescope lsp_definitions<CR>",               "List definitions" },
+    ["t"] = { "<Cmd>Telescope lsp_type_definitions<CR>",          "List type definitions" },
+    ["r"] = { "<Cmd>Telescope lsp_references<CR>",                "References for word under cursor" },
+    ["I"] = { "<Cmd>Telescope lsp_implementations<CR>",           "List implementations" },
+    ["s"] = { "<Cmd>Telescope lsp_document_symbols<CR>",          "Document symbols" },
+    ["S"] = { "<Cmd>Telescope lsp_workspace_symbols<CR>",         "Workspace symbols" },
     ["y"] = { "<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>", "Dynamically lists workspace symbols" },
-    ["i"] = { "<Cmd>Telescope lsp_incoming_calls<CR>", "List incoming calls" },
-    ["o"] = { "<Cmd>Telescope lsp_outgoing_calls<CR>", "List outgoing calls" },
-    ["h"] = { "<Cmd>lua vim.lsp.buf.hover()<CR>", "Hover help" },
-    ["H"] = { "<Cmd>lua vim.lsp.buf.signature_help()<CR>", "Signature help" },
-    ["R"] = { "<Cmd>lua vim.lsp.buf.rename()<CR>", "Rename" },
+    ["i"] = { "<Cmd>Telescope lsp_incoming_calls<CR>",            "List incoming calls" },
+    ["o"] = { "<Cmd>Telescope lsp_outgoing_calls<CR>",            "List outgoing calls" },
+    ["h"] = { "<Cmd>lua vim.lsp.buf.hover()<CR>",                 "Hover help" },
+    ["H"] = { "<Cmd>lua vim.lsp.buf.signature_help()<CR>",        "Signature help" },
+    ["R"] = { "<Cmd>lua vim.lsp.buf.rename()<CR>",                "Rename" },
+    ["a"] = { "<Cmd>lua vim.lsp.buf.code_action()<CR>",           "Code actions" },
     p = {
       name = "peek",
       ["f"] = { "Peek function definition" },
@@ -519,49 +523,60 @@ local LEADER_MAPPINGS = {
 
   D = {
     name = "debug",
-    ["D"] = { "<Cmd>lua require('dap').continue()<CR>", "Start" },
-    ["b"] = { "<Cmd>lua require('dap').step_back()<CR>", "Step Back" },
-    ["c"] = { "<Cmd>lua require('dap').continue()<CR>", "Continue" },
-    ["C"] = { "<Cmd>lua require('dap').set_breakpoint(vim.fn.input '[Condition] > ')<CR>", "Conditional Breakpoint" },
-    ["d"] = { "<Cmd>lua require('dap').disconnect()<CR>", "Disconnect" },
-    ["e"] = { "<Cmd>lua require('dapui').eval()<CR>", "Evaluate" },
-    ["E"] = { "<Cmd>lua require('dapui').eval(vim.fn.input '[Expression] > ')<CR>", "Evaluate Input" },
-    ["g"] = { "<Cmd>lua require('dap').session()<CR>", "Get Session" },
-    ["h"] = { "<Cmd>lua require('dap.ui.widgets').hover()<CR>", "Hover Variables" },
-    ["i"] = { "<Cmd>lua require('dap').step_into()<CR>", "Step Into" },
-    ["o"] = { "<Cmd>lua require('dap').step_over()<CR>", "Step Over" },
-    ["p"] = { "<Cmd>lua require('dap').pause.toggle()<CR>", "Pause" },
-    ["q"] = { "<Cmd>lua require('dap').close()<CR>", "Quit" },
-    ["r"] = { "<Cmd>lua require('dap').repl.toggle()<CR>", "Toggle Repl" },
-    ["R"] = { "<Cmd>lua require('dap').run_to_cursor()<CR>", "Run to Cursor" },
-    ["S"] = { "<Cmd>lua require('dap.ui.widgets').scopes()<CR>", "Scopes" },
-    ["t"] = { "<Cmd>lua require('dap').toggle_breakpoint()<CR>", "Toggle Breakpoint" },
-    ["u"] = { "<Cmd>lua require('dap').step_out()<CR>", "Step Out" },
-    ["U"] = { "<Cmd>lua require('dapui').toggle()<CR>", "Toggle UI" },
-    ["x"] = { "<Cmd>lua require('dap').terminate()<CR>", "Terminate" },
+    ["D"] = { "<Cmd>lua require('dap').continue()<CR>",                                    "Start" },
+    ["c"] = { "<Cmd>lua require('dap').continue()<CR>",                                    "Continue" },
+    ["l"] = { "<Cmd>lua require('dap').run_last()<CR>",                                    "Run last debug" },
+    ["t"] = { "<Cmd>lua require('dap').toggle_breakpoint()<CR>",                           "Toggle breakpoint" },
+    ["C"] = { "<Cmd>lua require('dap').set_breakpoint(vim.fn.input '[Condition] > ')<CR>", "Conditional breakpoint" },
+    ["r"] = { "<Cmd>lua require('dap').run_to_cursor()<CR>",                               "Run to cursor" },
+    ["g"] = { "<Cmd>lua require('dap').goto_()<CR>",                                       "Go to line (no execute)" },
+    ["i"] = { "<Cmd>lua require('dap').step_into()<CR>",                                   "Step into" },
+    ["o"] = { "<Cmd>lua require('dap').step_over()<CR>",                                   "Step over" },
+    ["u"] = { "<Cmd>lua require('dap').step_out()<CR>",                                    "Step out" },
+    ["b"] = { "<Cmd>lua require('dap').step_back()<CR>",                                   "Step back" },
+    ["j"] = { "<Cmd>lua require('dap').down()<CR>",                                        "Down" },
+    ["k"] = { "<Cmd>lua require('dap').up()<CR>",                                          "Up" },
+    ["n"] = { "<Cmd>lua require('dap').session()<CR>",                                     "Get session" },
+    ["p"] = { "<Cmd>lua require('dap').pause.toggle()<CR>",                                "Pause" },
+    ["R"] = { "<Cmd>lua require('dap').repl.toggle()<CR>",                                 "Toggle repl" },
+    ["d"] = { "<Cmd>lua require('dap').disconnect()<CR>",                                  "Disconnect" },
+    ["x"] = { "<Cmd>lua require('dap').terminate()<CR>",                                   "Terminate" },
+    ["q"] = { "<Cmd>lua require('dap').close()<CR>",                                       "Quit" },
+    ["e"] = { "<Cmd>lua require('dapui').eval()<CR>",                                      "Evaluate" },
+    ["E"] = { "<Cmd>lua require('dapui').eval(vim.fn.input '[Expression] > ')<CR>",        "Evaluate input" },
+    ["T"] = { "<Cmd>lua require('dapui').toggle()<CR>",                                    "Toggle UI" },
+    ["h"] = { "<Cmd>lua require('dap.ui.widgets').hover()<CR>",                            "Hover variables" },
+    ["S"] = { "<Cmd>lua require('dap.ui.widgets').scopes()<CR>",                           "Scopes" },
     s = {
       name = "Search",
       ["b"] = { "<Cmd>Telescope dap list_breakpoints<CR>", "Breakpoints" },
-      ["c"] = { "<Cmd>Telescope dap commands<CR>", "Commands" },
-      ["C"] = { "<Cmd>Telescope dap configurations<CR>", "Configurations" },
-      ["f"] = { "<Cmd>Telescope dap frames<CR>", "Frames" },
-      ["v"] = { "<Cmd>Telescope dap variables<CR>", "Variables" },
+      ["c"] = { "<Cmd>Telescope dap commands<CR>",         "Commands" },
+      ["C"] = { "<Cmd>Telescope dap configurations<CR>",   "Configurations" },
+      ["f"] = { "<Cmd>Telescope dap frames<CR>",           "Frames" },
+      ["v"] = { "<Cmd>Telescope dap variables<CR>",        "Variables" },
     },
+  },
+
+  T = {
+    name = "test",
+    ["t"] = { "<Cmd>lua require('neotest').run.run()<CR>",                   "Run nearest test" },
+    ["f"] = { "<Cmd>lua require('neotest').run.run(vim.fn.expand('%'))<CR>", "Run current file" },
+    ["d"] = { "<Cmd>lua require('neotest').run.run({strategy='dap'})<CR>",   "Debug nearest test" },
   },
 
   g = {
     name = "git",
-    ["g"] = { "<Cmd>tab Git<CR>", "Git status" },
-    ["c"] = { "<Cmd>Git commit<CR>", "Git commit" },
-    ["p"] = { "<Cmd>Git push<CR>", "Git push" },
-    ["l"] = { "<Cmd>Git log<Bar>wincmd L<CR>", "Git log" },
-    ["b"] = { "<Cmd>Git blame<CR>", "Git blame" },
-    ["C"] = { "<Cmd>Telescope git_commits<CR>", "List git commits" },
+    ["g"] = { "<Cmd>tab Git<CR>",                "Git status" },
+    ["c"] = { "<Cmd>Git commit<CR>",             "Git commit" },
+    ["p"] = { "<Cmd>Git push<CR>",               "Git push" },
+    ["l"] = { "<Cmd>Git log<Bar>wincmd L<CR>",   "Git log" },
+    ["b"] = { "<Cmd>Git blame<CR>",              "Git blame" },
+    ["C"] = { "<Cmd>Telescope git_commits<CR>",  "List git commits" },
     ["B"] = { "<Cmd>Telescope git_branches<CR>", "List git branches" },
-    ["S"] = { "<Cmd>Telescope git_status<CR>", "List changes per files" },
-    ["T"] = { "<Cmd>Telescope git_stash<CR>", "List stash items" },
-    ["d"] = { "<Cmd>DiffviewOpen<CR>", "Diff view" },
-    ["f"] = { "<Cmd>DiffviewFileHistory<CR>", "Diff view file history" },
+    ["S"] = { "<Cmd>Telescope git_status<CR>",   "List changes per files" },
+    ["T"] = { "<Cmd>Telescope git_stash<CR>",    "List stash items" },
+    ["d"] = { "<Cmd>DiffviewOpen<CR>",           "Diff view" },
+    ["f"] = { "<Cmd>DiffviewFileHistory<CR>",    "Diff view file history" },
     h = {
       name = "hunk",
       ["h"] = { "Preview hunk" },
@@ -580,50 +595,33 @@ local LEADER_MAPPINGS = {
     },
   },
 
-  s = {
-    name = "search",
-    ["s"] = { "<Cmd>Telescope live_grep<CR>", "Live grep search" },
-    ["w"] = { "<Cmd>Telescope grep_string<CR>", "Word under cursor" },
-    ["b"] = { "<Cmd>Telescope current_buffer_fuzzy_find<CR>", "Current buffer" },
-    ["c"] = { "<Cmd>Telescope commands<CR>", "Available commands" },
-    [":"] = { "<Cmd>Telescope command_history<CR>", "Command history" },
-    ["/"] = { "<Cmd>Telescope search_history<CR>", "Search history" },
-    ["h"] = { "<Cmd>Telescope help_tags<CR>", "Help tags" },
-    ["m"] = { "<Cmd>Telescope marks<CR>", "Marks" },
-    ["r"] = { "<Cmd>Telescope registers<CR>", "Registers" },
-    ["q"] = { "<Cmd>Telescope quickfix<CR>", "Quickfix list" },
-    ["Q"] = { "<Cmd>Telescope quickfixhistory<CR>", "Quickfix history" },
-    ["l"] = { "<Cmd>Telescope loclist<CR>", "Location list" },
-    ["j"] = { "<Cmd>Telescope jumplist<CR>", "Jump list" },
-    ["o"] = { "<Cmd>Telescope vim_options<CR>", "Vim options" },
-    ["a"] = { "<Cmd>Telescope autocommands<CR>", "Autocommands" },
-    ["k"] = { "<Cmd>Telescope keymaps<CR>", "Key maps" },
-    ["f"] = { "<Cmd>Telescope filetypes<CR>", "Filetypes" },
-    ["H"] = { "<Cmd>Telescope highlights<CR>", "Highlights" },
-    ["t"] = { "<Cmd>Telescope treesitter<CR>", "Treesitter" },
-    ["T"] = { "<Cmd>Telescope tags<CR>", "Tags" },
-    ["M"] = { "<Cmd>Telescope man_pages<CR>", "Man pages" },
-    ["p"] = { "<Cmd>Telescope builtin<CR>", "Telescope pickers" },
-  },
-
-  m = {
-    name = "misc",
-    ["c"] = { "<Cmd>ColorizerToggle<CR>", "Toggle color strings highlighting" },
-    ["s"] = { "<Cmd>Telescope spell_suggest<CR>", "Spell suggest (word on cursor)" },
+  r = {
+    name = "repl",
+    ["c"] = { "<Cmd>SlimeConfig<CR>",                                        "Configure REPL" },
+    ["s"] = { "<Cmd>vsplit<Bar>terminal<CR>",                                "Open system shell" },
+    ["j"] = { "<Cmd>vsplit<Bar>terminal julia<CR>",                          "Open Julia REPL" },
+    ["r"] = { "<Cmd>vsplit<Bar>terminal R<CR>",                              "Open R REPL" },
+    ["p"] = { "<Cmd>vsplit<Bar>terminal python -m IPython --profile=vi<CR>", "Open Python REPL" },
   },
 
   h = {
     name = "harpoon",
     ["h"] = { "<Cmd>lua require('harpoon').ui:toggle_quick_menu(require('harpoon'):list())<CR>", "Toggle quick menu" },
-    ["H"] = { "<Cmd>Telescope harpoon marks<CR>", "Search marks" },
-    ["a"] = { "<Cmd>lua require('harpoon'):list():append()<CR>", "Add file" },
-    ["1"] = { "<Cmd>lua require('harpoon'):list():select(1)<CR>", "Go to selection 1" },
-    ["2"] = { "<Cmd>lua require('harpoon'):list():select(2)<CR>", "Go to selection 2" },
-    ["3"] = { "<Cmd>lua require('harpoon'):list():select(3)<CR>", "Go to selection 3" },
-    ["4"] = { "<Cmd>lua require('harpoon'):list():select(4)<CR>", "Go to selection 4" },
-    ["5"] = { "<Cmd>lua require('harpoon'):list():select(5)<CR>", "Go to selection 5" },
-    ["n"] = { "<Cmd>lua require('harpoon'):list():next()<CR>", "Go to next mark" },
-    ["p"] = { "<Cmd>lua require('harpoon'):list():prev()<CR>", "Go to previous mark" },
+    ["H"] = { "<Cmd>Telescope harpoon marks<CR>",                                                "Search marks" },
+    ["a"] = { "<Cmd>lua require('harpoon'):list():append()<CR>",                                 "Add file" },
+    ["1"] = { "<Cmd>lua require('harpoon'):list():select(1)<CR>",                                "Go to selection 1" },
+    ["2"] = { "<Cmd>lua require('harpoon'):list():select(2)<CR>",                                "Go to selection 2" },
+    ["3"] = { "<Cmd>lua require('harpoon'):list():select(3)<CR>",                                "Go to selection 3" },
+    ["4"] = { "<Cmd>lua require('harpoon'):list():select(4)<CR>",                                "Go to selection 4" },
+    ["5"] = { "<Cmd>lua require('harpoon'):list():select(5)<CR>",                                "Go to selection 5" },
+    ["n"] = { "<Cmd>lua require('harpoon'):list():next()<CR>",                                   "Go to next mark" },
+    ["p"] = { "<Cmd>lua require('harpoon'):list():prev()<CR>",                                   "Go to previous mark" },
+  },
+
+  m = {
+    name = "misc",
+    ["c"] = { "<Cmd>ColorizerToggle<CR>",         "Toggle color strings highlighting" },
+    ["s"] = { "<Cmd>Telescope spell_suggest<CR>", "Spell suggest (word on cursor)" },
   },
 
   q = {
@@ -631,6 +629,7 @@ local LEADER_MAPPINGS = {
     ["q"] = { "<Cmd>quitall<CR>", "Quit all windows" },
   },
 }
+-- stylua: ignore end
 
 --------------------------------
 ----- Plugin configuration -----
@@ -1081,6 +1080,7 @@ local PLUGINS = {
       -- Language servers to enable.
       -- Use the lsp_servers table below to override the default configuration. Available keys are:
       -- cmd, filetypes, capabilities and settings.
+      -- Reference: https://microsoft.github.io/language-server-protocol/specifications/specification-current
       local lsp_servers = {
         -- Neovim specific setup for Lua.
         -- TODO: evaluate this better (lspconfig, kickstarter, lspzero)
@@ -1124,7 +1124,15 @@ local PLUGINS = {
         },
       }
       if vim.fn.executable("cargo") == 1 then
-        lsp_servers["pylyzer"] = {}
+        lsp_servers["pylyzer"] = {
+          capabilities = {
+            client = {
+              server_capabilities = {
+                codeActionProvider = false,
+              },
+            },
+          },
+        }
       end
 
       -- Add complete capabilities provided by cmp and broadcast them to the servers.
@@ -1170,11 +1178,11 @@ local PLUGINS = {
           -- TODO: test all these mapping
           -- TODO: fix K on lua
           map("n", "gK",     vim.lsp.buf.hover,           "hover documentation")
-          map("n", "gd",     vim.lsp.buf.definition,      "goto definition")
-          map("n", "gD",     vim.lsp.buf.declaration,     "goto declaration")
-          map("n", "g<C-d>", vim.lsp.buf.type_definition, "goto type definition")
-          map("n", "gI",     vim.lsp.buf.implementation,  "goto implementation")
-          map("n", "gR",     vim.lsp.buf.references,      "goto references")
+          map("n", "gd",     vim.lsp.buf.definition,      "go to definition")
+          map("n", "gD",     vim.lsp.buf.declaration,     "go to declaration")
+          map("n", "g<C-d>", vim.lsp.buf.type_definition, "go to type definition")
+          map("n", "gI",     vim.lsp.buf.implementation,  "go to implementation")
+          map("n", "gR",     vim.lsp.buf.references,      "go to references")
           map("n", "gs",     vim.lsp.buf.signature_help,  "display signature help")
           map("n", "<F2>",   vim.lsp.buf.rename,          "rename")
           map("n", "<F3>",   vim.lsp.buf.format,          "format")
@@ -1265,51 +1273,59 @@ local PLUGINS = {
   },
 
   -- Configure DAP support.
-  -- TODO: evaluate persistent-breakpoints.nvim, goto-breakpoints.nvim
   {
     "mfussenegger/nvim-dap",
     lazy = true, -- Loaded when require'd
     dependencies = {
-      "rcarriga/nvim-dap-ui",
-      "theHamsta/nvim-dap-virtual-text",
-      "nvim-telescope/telescope-dap.nvim",
+      -- DAP-ui
+      {
+        "rcarriga/nvim-dap-ui",
+        dependencies = { "nvim-neotest/nvim-nio" },
+        config = function(_, opts)
+          local dap = require("dap")
+          local dapui = require("dapui")
+          dapui.setup(opts)
 
-      -- Mason setup
-      "williamboman/mason.nvim",
-      "jay-babu/mason-nvim-dap.nvim",
+          dap.listeners.after.event_initialized["dapui_config"] = function()
+            dapui.open()
+          end
+          dap.listeners.before.event_terminated["dapui_config"] = function()
+            dapui.close()
+          end
+          dap.listeners.before.event_exited["dapui_config"] = function()
+            dapui.close()
+          end
+        end,
+      },
+
+      -- Virtual text for debugger
+      {
+        "theHamsta/nvim-dap-virtual-text",
+        opts = { commented = true },
+      },
+
+      -- Telescope DAP extension
+      {
+        "nvim-telescope/telescope-dap.nvim",
+      },
+
+      -- Mason integration
+      {
+        "jay-babu/mason-nvim-dap.nvim",
+        dependencies = { "williamboman/mason.nvim" },
+        cmd = { "DapInstall", "DapUninstall" },
+        opts = {
+          automatic_installation = true,
+          handlers = {},
+          ensure_installed = {
+            "python",
+          },
+        },
+      },
     },
     config = function()
-      local dap = require("dap")
-
-      local dapui = require("dapui")
-      dapui.setup()
-
-      -- TODO: open debug session in new tab: https://github.com/rcarriga/nvim-dap-ui/issues/122
-      dap.listeners.after.event_initialized["dapui_config"] = function()
-        dapui.open()
-      end
-      dap.listeners.before.event_terminated["dapui_config"] = function()
-        dapui.close()
-      end
-      dap.listeners.before.event_exited["dapui_config"] = function()
-        dapui.close()
-      end
-
-      require("nvim-dap-virtual-text").setup({
-        commented = true,
-      })
-
+      require("dap")
       require("telescope").load_extension("dap")
-
-      require("mason-nvim-dap").setup({
-        ensure_installed = { "python" },
-        automatic_installation = false,
-        handlers = {
-          function(config)
-            require("mason-nvim-dap").default_setup(config)
-          end,
-        },
-      })
     end,
   },
 
@@ -1447,8 +1463,23 @@ local PLUGINS = {
 
   -- Run test suites (e.g. pytest).
   {
-    "vim-test/vim-test",
-    cmd = { "TestNearest", "TestFile", "TestSuite" },
+    "nvim-neotest/neotest",
+    dependencies = {
+      "nvim-neotest/nvim-nio",
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+
+      -- Language adapters
+      "nvim-neotest/neotest-python",
+    },
+    lazy = true,
+    config = function()
+      require("neotest").setup({
+        adapters = {
+          require("neotest-python"),
+        },
+      })
+    end,
   },
 
   --- Language plugins ---
@@ -1700,12 +1731,16 @@ local PLUGINS = {
     "folke/trouble.nvim",
     cmd = { "Trouble", "TroubleToggle" },
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    init = function()
-      vim.cmd([[autocmd vimrc FileType Trouble setlocal colorcolumn=]])
-    end,
     config = function()
       require("trouble").setup({
         mode = "document_diagnostics",
+        height = 15,
+      })
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "Trouble" },
+        group = "vimrc",
+        desc = "Disable colorcolumn in Trouble",
+        command = "setlocal colorcolumn=",
       })
     end,
   },
