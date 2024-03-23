@@ -24,12 +24,13 @@ let loaded_netrwSettings     = 1
 let loaded_netrwFileHandlers = 1
 
 let simple_terminal = ($TERM == 'linux') && !has('gui_running')
+let windows = has('win32') || has('win64')
 
 
 
 """"" Plugin declaration """""
 
-let data_dir = expand(has('win32') || has('win64') ? '~/vimfiles' : '~/.vim')
+let data_dir = expand(windows ? '~/vimfiles' : '~/.vim')
 if empty(glob(data_dir . '/autoload/plug.vim'))
   let url = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
   silent execute '!curl -fLo ' . data_dir . '/autoload/plug.vim --create-dirs ' . url
@@ -45,6 +46,7 @@ call plug#begin()
 Plug 'Julian/vim-textobj-variable-segment'
 Plug 'farmergreg/vim-lastplace'
 Plug 'google/vim-searchindex'
+Plug 'jpalardy/vim-slime'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim',         { 'on': ['Files','GFiles','Buffers','Rg','Lines','Locate','History','Commits','BCommits','Commands','Helptags'] }
 Plug 'junegunn/vim-easy-align',  { 'on': '<Plug>(EasyAlign)' }
@@ -58,6 +60,7 @@ Plug 'romainl/vim-qf'
 Plug 'sheerun/vim-polyglot'
 Plug 'svban/YankAssassin.vim'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-dispatch',       { 'on': ['Dispatch','Make','Focus','Start'] }
 Plug 'tpope/vim-eunuch',         { 'on': ['Delete','Move','Rename','Mkdir'] }
 Plug 'tpope/vim-fugitive',       { 'on': 'Git' }
 Plug 'tpope/vim-repeat'
@@ -66,7 +69,7 @@ Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'unblevable/quick-scope'
-Plug 'vim-test/vim-test'
+Plug 'vim-test/vim-test',        { 'on': ['TestNearest','TestFile','TestSuite'] }
 Plug 'wellle/targets.vim'
 
 if !simple_terminal
@@ -97,29 +100,32 @@ endif
 nmap n nzzzv<Plug>SearchIndex
 nmap N Nzzzv<Plug>SearchIndex
 
+let g:slime_no_mappings = 1
+let g:slime_target = 'vimterminal'
+let g:slime_vimterminal_config = { 'vertical': 1, 'close_cb': 'SlimeClearConfig' }
+function! SlimeClearConfig(channel) abort
+  bufdo if exists('b:slime_config') | unlet b:slime_config | endif
+endfunction
+autocmd FileType julia  let b:slime_vimterminal_cmd='julia'
+autocmd FileType python let b:slime_vimterminal_cmd='ipython --profile=vi'
+xmap gy  <Plug>SlimeRegionSend
+nmap gy  <Plug>SlimeMotionSend
+nmap gyy <Plug>SlimeLineSend
+
 nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
 
 nmap <BS> <Plug>(dirvish_up)
 
-nmap go ]<Space>
-nmap gO [<Space>
-nmap gp ]p
-nmap gP [p
-nmap <C-j> ]e
-nmap <C-k> [e
-xmap <C-j> ]egv
-xmap <C-k> [egv
-
 let g:sneak#label = 1
-
-let g:qs_buftype_blacklist = ['help', 'nofile', 'nowrite', 'terminal']
-
-let test#strategy = 'vimterminal'
 
 if has('mac')
   let g:gutentags_ctags_executable = 'uctags'
 endif
+
+let g:qs_buftype_blacklist = ['help', 'nofile', 'nowrite', 'terminal']
+
+let test#strategy = 'dispatch'
 
 
 """"" Vim options """""
@@ -216,6 +222,15 @@ let @p="a \<Esc>p"
 nnoremap <expr> j (v:count >= 10 ? "m'" . v:count : "") . 'j'
 nnoremap <expr> k (v:count >= 10 ? "m'" . v:count : "") . 'k'
 
+nmap go ]<Space>
+nmap gO [<Space>
+nmap gp ]p
+nmap gP [p
+nmap <C-j> ]e
+nmap <C-k> [e
+xmap <C-j> ]egv
+xmap <C-k> [egv
+
 nnoremap <silent> <C-s> :update<CR>
 inoremap <silent> <C-s> <C-o>:update<CR>
 tnoremap <C-g> <C-\><C-n>
@@ -241,4 +256,5 @@ nnoremap <C-w><Tab>5 5gt
 """"" Leader mappings """""
 
 nnoremap <Leader>v :edit $MYVIMRC<CR>
+nnoremap <Leader>q :quitall<CR>
 
