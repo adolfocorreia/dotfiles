@@ -183,11 +183,11 @@ vim.cmd([[autocmd vimrc VimEnter * let t:tabname = 'main']])
 -- Disable numbering in terminal buffers.
 vim.cmd([[autocmd vimrc TermOpen * setlocal nonumber norelativenumber]])
 
--- Move terminal windows to the right.
-vim.cmd([[autocmd vimrc TermOpen * wincmd L]])
-
 -- Set terminal filetype.
 vim.cmd([[autocmd vimrc TermOpen * set filetype=terminal]])
+
+-- Leave terminal mode and enter normal mode when process exits.
+vim.cmd([[autocmd vimrc TermClose * stopinsert]])
 
 --- Yank autocmds
 
@@ -597,11 +597,11 @@ local LEADER_MAPPINGS = {
 
   r = {
     name = "repl",
-    ["c"] = { "<Cmd>SlimeConfig<CR>",                                        "Configure REPL" },
-    ["s"] = { "<Cmd>vsplit<Bar>terminal<CR>",                                "Open system shell" },
-    ["j"] = { "<Cmd>vsplit<Bar>terminal julia<CR>",                          "Open Julia REPL" },
-    ["r"] = { "<Cmd>vsplit<Bar>terminal R<CR>",                              "Open R REPL" },
-    ["p"] = { "<Cmd>vsplit<Bar>terminal python -m IPython --profile=vi<CR>", "Open Python REPL" },
+    ["r"] = { "<Cmd>IronRepl<CR>",            "Open REPL" },
+    ["R"] = { "<Cmd>IronReplHere<CR>",        "Open REPL in current window" },
+    ["f"] = { "<Cmd>IronFocus<CR>",           "Focus REPL" },
+    ["h"] = { "<Cmd>IronHide<CR>",            "Hide REPL" },
+    ["s"] = { "<Cmd>vsplit<Bar>terminal<CR>", "Open system shell" },
   },
 
   h = {
@@ -1489,49 +1489,32 @@ local PLUGINS = {
 
   --- Terminal and file management support ---
 
-  -- Send code to REPL: send motion in normal mode (gy_) or visual mode (gy),
-  -- send line (gyy) and send paragraph (gyY).
+  -- Send code to REPL: send motion in normal mode (gy_) or visual mode (gy) and send line (gyy).
+  -- Also check terminal autocommands when configuring REPL behaviour.
   {
-    "jpalardy/vim-slime",
-    event = "VeryLazy", -- Cannot be lazy loaded otherwise!
-    init = function()
-      vim.g.slime_no_mappings = 1
-      vim.g.slime_paste_file = os.tmpname()
-      vim.g.slime_target = "neovim"
-
-      -- Slime overrides: https://github.com/jpalardy/vim-slime#advanced-configuration-overrides
-
-      -- IPython REPL
-      if vim.g.os ~= "Windows" then
-        vim.g.slime_python_ipython = 1
-      else
-        -- TODO: improve this (check vim-slime issues #123/223/273/283/293)
-        vim.cmd([[
-          function! SlimeOverride_EscapeText_python(text)
-            " Using %paste (as done in neoterm), since %cpaste does not seem to work
-            " in neovim's terminal on Windows.
-            call setreg('+', a:text, 'l')
-            return ['%paste', slime#config#resolve("dispatch_ipython_pause"), "\n"]
-          endfunction
-        ]])
-      end
-
-      -- Use bracketed paste in Julia REPL.
-      -- Reference: https://cirw.in/blog/bracketed-paste
-      vim.cmd([[
-        function! SlimeOverride_EscapeText_julia(text)
-          return "\x1b[200~" . a:text . "\x1b[201~"
-        endfunction
-      ]])
-    end,
+    "Vigemus/iron.nvim",
+    keys = { "gy", { "gy", mode = "v" } },
+    cmd = { "IronRepl", "IronReplHere", "IronFocus", "IronHide", "IronSend" },
     config = function()
-      vim.api.nvim_set_keymap("x", "gy", "<Plug>SlimeRegionSend", {})
-      vim.api.nvim_set_keymap("n", "gy", "<Plug>SlimeMotionSend", {})
-      vim.api.nvim_set_keymap("n", "gyy", "<Plug>SlimeLineSend", {})
-      vim.api.nvim_set_keymap("n", "gyY", "<Plug>SlimeParagraphSend", {})
-
-      -- Reset vim-slime configuration in all buffers.
-      vim.cmd([[autocmd vimrc TermClose * bufdo if exists('b:slime_config') | unlet b:slime_config | endif]])
+      require("iron.core").setup({
+        config = {
+          repl_definition = {
+            python = {
+              command = { "ipython", "--profile=vi" },
+              format = require("iron.fts.common").bracketed_paste,
+            },
+          },
+          repl_open_cmd = require("iron.view").split.vertical.botright(0.4),
+          scope = require("iron.scope").tab_based,
+          close_window_on_exit = false,
+          buflisted = true,
+        },
+        keymaps = {
+          send_motion = "gy",
+          visual_send = "gy",
+          send_line = "gyy",
+        },
+      })
     end,
   },
 
@@ -1776,14 +1759,14 @@ local PLUGINS = {
       local terminal = {
         sections = {
           lualine_a = { "winnr", "mode" },
-          lualine_b = { "vim.opt.filetype._value", "'jobid: ' .. vim.opt.channel._value" },
+          lualine_b = { "vim.opt.filetype._value" },
           lualine_c = { "filename" },
           lualine_x = { { "filetype", icon_only = true, colored = false } },
           lualine_z = { "progress", "location" },
         },
         inactive_sections = {
           lualine_a = { "winnr" },
-          lualine_c = { "vim.opt.filetype._value", "'jobid: ' .. vim.opt.channel._value" },
+          lualine_c = { "vim.opt.filetype._value" },
           lualine_x = { "location" },
         },
         filetypes = { "terminal" },
