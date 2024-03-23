@@ -1074,6 +1074,7 @@ local PLUGINS = {
     event = { "BufWritePost", "BufReadPost", "InsertLeave" },
     config = function()
       require("lint").linters_by_ft = {
+        markdown = { "markdownlint" },
         python = { "ruff" },
       }
       vim.api.nvim_create_autocmd("BufWritePost", {
@@ -1115,10 +1116,11 @@ local PLUGINS = {
       -- Language servers to enable.
       -- Use the lsp_servers table below to override the default configuration. Available keys are:
       -- cmd, filetypes, capabilities and settings.
-      -- Reference: https://microsoft.github.io/language-server-protocol/specifications/specification-current
+      -- References:
+      -- - https://microsoft.github.io/language-server-protocol/specifications/specification-current
+      -- - https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
       local lsp_servers = {
-        -- Neovim specific setup for Lua.
-        -- TODO: evaluate this better (lspconfig, kickstarter, lspzero)
+        -- The configuration for lua_ls is mostly done by the neodev plugin.
         lua_ls = {
           settings = {
             Lua = {
@@ -1126,8 +1128,34 @@ local PLUGINS = {
             },
           },
         },
-        pyright = {},
-        -- TODO: evaluate this better
+        basedpyright = {},
+        ruff_lsp = {},
+        jsonls = {
+          settings = {
+            json = {
+              format = { enable = true },
+              validate = { enable = true },
+            },
+          },
+        },
+        yamlls = {
+          capabilities = {
+            textDocument = {
+              foldingRange = {
+                dynamicRegistration = false,
+                lineFoldingOnly = true,
+              },
+            },
+          },
+          settings = {
+            yaml = {
+              keyOrdering = false,
+              format = { enable = true },
+              validate = true,
+            },
+          },
+        },
+        marksman = {},
         typos_lsp = {
           filetypes = {
             "awk",
@@ -1191,6 +1219,11 @@ local PLUGINS = {
         run_on_start = true,
         start_delay = 10000,
         debounce_hours = 12,
+        ensure_installed = {
+          "markdownlint",
+          "selene",
+          "stylua",
+        },
       })
 
       -- Create autocmd that is run when a LSP attaches to a particular buffer.
@@ -1885,7 +1918,10 @@ local PLUGINS = {
     "jinh0/eyeliner.nvim",
     event = "BufReadPre",
     config = function()
-      require("eyeliner").setup({})
+      require("eyeliner").setup({
+        highlight_on_key = true,
+        dim = true,
+      })
     end,
   },
 
