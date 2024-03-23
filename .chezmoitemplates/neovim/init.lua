@@ -339,8 +339,8 @@ end
 
 -- stylua: ignore start
 local LEADER_MAPPINGS = {
-  ["<Leader>"] = { "<Cmd>Telescope buffers theme = ivy<CR>", "Find buffer" },
-  ["`"]        = { "<C-^>",                                  "Alternate file" },
+  ["<Leader>"] = { "<Cmd>Telescope buffers theme=ivy<CR>", "Find buffer" },
+  ["`"]        = { "<C-^>",                                "Alternate file" },
 
   w = {
     name = "window",
@@ -382,17 +382,17 @@ local LEADER_MAPPINGS = {
 
   b = {
     name = "buffer",
-    ["b"] = { "<Cmd>Telescope buffers theme=ivy<CR>", "Find buffer" },
-    ["w"] = { "<Cmd>write<CR>",                       "Write buffer" },
-    ["s"] = { "<Cmd>write<CR>",                       "Save buffer" },
-    ["n"] = { "<Cmd>bnext<CR>",                       "Next buffer" },
-    ["p"] = { "<Cmd>bprevious<CR>",                   "Previous buffer" },
-    ["#"] = { "<Cmd>buffer #<CR>",                    "Alternate buffer" },
-    ["d"] = { "<Cmd>lua MiniBufremove.delete()<CR>",  "Delete buffer" },
-    ["e"] = { "<Cmd>ene<CR>",                         "Edit new buffer" },
-    ["W"] = { "<Cmd>wall<CR>",                        "Write all buffers" },
-    ["r"] = { "<Cmd>edit %<CR>",                      "Reload current buffer" },
-    ["R"] = { "<Cmd>checktime<CR>",                   "Reload all buffers" },
+    ["b"] = { "<Cmd>Telescope buffers theme=ivy<CR>",            "Find buffer" },
+    ["w"] = { "<Cmd>write<CR>",                                  "Write buffer" },
+    ["s"] = { "<Cmd>write<CR>",                                  "Save buffer" },
+    ["n"] = { "<Cmd>bnext<CR>",                                  "Next buffer" },
+    ["p"] = { "<Cmd>bprevious<CR>",                              "Previous buffer" },
+    ["#"] = { "<Cmd>buffer #<CR>",                               "Alternate buffer" },
+    ["d"] = { "<Cmd>lua require('mini.bufremove').delete()<CR>", "Delete buffer" },
+    ["e"] = { "<Cmd>ene<CR>",                                    "Edit new buffer" },
+    ["W"] = { "<Cmd>wall<CR>",                                   "Write all buffers" },
+    ["r"] = { "<Cmd>edit %<CR>",                                 "Reload current buffer" },
+    ["R"] = { "<Cmd>checktime<CR>",                              "Reload all buffers" },
   },
 
   ["<Tab>"] = {
@@ -657,7 +657,7 @@ local PLUGINS = {
   -- Delete buffers without losing window layout.
   {
     "echasnovski/mini.bufremove",
-    event = "VeryLazy",
+    lazy = true,
     config = function()
       require("mini.bufremove").setup()
     end,
@@ -1137,7 +1137,6 @@ local PLUGINS = {
 
       -- Add complete capabilities provided by cmp and broadcast them to the servers.
       local capabilities = vim.lsp.protocol.make_client_capabilities()
-      -- TODO: evaluate this (dependency between lsp and cmp)
       capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
       require("mason-lspconfig").setup({
@@ -1222,6 +1221,7 @@ local PLUGINS = {
       { "hrsh7th/cmp-nvim-lua" },
       { "hrsh7th/cmp-path" },
       { "saadparwaiz1/cmp_luasnip" },
+      { "kdheepak/cmp-latex-symbols" },
     },
 
     config = function()
@@ -1263,6 +1263,7 @@ local PLUGINS = {
         }),
 
         sources = {
+          { name = "latex_symbols" },
           { name = "path" },
           { name = "nvim_lsp", keyword_length = 2 },
           { name = "buffer", keyword_length = 3 },
@@ -1485,12 +1486,6 @@ local PLUGINS = {
   --- Language plugins ---
 
   -- Reference: https://github.com/sheerun/vim-polyglot#language-packs
-
-  -- Julia. LaTeX to Unicode substitutions.
-  {
-    "JuliaEditorSupport/julia-vim",
-    event = "VeryLazy", -- Cannot be lazy loaded otherwise!
-  },
 
   --- Terminal and file management support ---
 
@@ -1855,10 +1850,7 @@ local PLUGINS = {
     "jinh0/eyeliner.nvim",
     event = "BufReadPre",
     config = function()
-      require("eyeliner").setup({
-        highlight_on_key = true,
-        dim = true,
-      })
+      require("eyeliner").setup({})
     end,
   },
 
