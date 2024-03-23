@@ -570,9 +570,17 @@ local LEADER_MAPPINGS = {
 
   T = {
     name = "test",
-    ["t"] = { "<Cmd>lua require('neotest').run.run()<CR>",                   "Run nearest test" },
-    ["f"] = { "<Cmd>lua require('neotest').run.run(vim.fn.expand('%'))<CR>", "Run current file" },
-    ["d"] = { "<Cmd>lua require('neotest').run.run({strategy='dap'})<CR>",   "Debug nearest test" },
+    ["T"] = { "<Cmd>lua require('neotest').summary.toggle()<CR>",               "Toggle summary" },
+    ["s"] = { "<Cmd>lua require('neotest').summary.toggle()<CR>",               "Toggle summary" },
+    ["p"] = { "<Cmd>lua require('neotest').output_panel.toggle()<CR>",          "Toggle output panel" },
+    ["o"] = { "<Cmd>lua require('neotest').output.open({auto_close=true})<CR>", "Show output" },
+    ["t"] = { "<Cmd>lua require('neotest').run.run()<CR>",                      "Run nearest test" },
+    ["d"] = { "<Cmd>lua require('neotest').run.run({strategy='dap'})<CR>",      "Debug nearest test" },
+    ["l"] = { "<Cmd>lua require('neotest').run.run_last()<CR>",                 "Run last test" },
+    ["L"] = { "<Cmd>lua require('neotest').run.run_last({strategy='dap'})<CR>", "Debug last test" },
+    ["f"] = { "<Cmd>lua require('neotest').run.run(vim.fn.expand('%'))<CR>",    "Run current file" },
+    ["A"] = { "<Cmd>lua require('neotest').run.run(vim.uv.cwd())<CR>",          "Run all tests" },
+    ["S"] = { "<Cmd>lua require('neotest').run.stop()<CR>",                     "Stop tests" },
   },
 
   g = {
@@ -1506,6 +1514,11 @@ local PLUGINS = {
         adapters = {
           require("neotest-python"),
         },
+      })
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "neotest-output", "neotest-output-panel", "neotest-summary" },
+        group = "vimrc",
+        command = "nnoremap <silent> <buffer> q :close<CR>",
       })
     end,
   },
