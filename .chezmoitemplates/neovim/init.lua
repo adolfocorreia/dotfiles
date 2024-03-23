@@ -359,8 +359,6 @@ local LEADER_MAPPINGS = {
     ["K"] =    { "<C-w>K",             "Move to top" },
     ["c"] =    { "<C-w>c",             "Close window" },
     ["q"] =    { "<C-w>q",             "Quit window" },
-    ["u"] =    { "<C-w>u",             "Undo quit window" },
-    ["U"] =    { "<C-w>U",             "Undo quit windows in tab" },
     ["n"] =    { "<C-w>n",             "New window" },
     ["o"] =    { "<C-w>o",             "Only window" },
     ["s"] =    { "<C-w>s",             "Split horizontally" },
@@ -470,6 +468,7 @@ local LEADER_MAPPINGS = {
     ["A"] = { "<Cmd>FormatDisable<CR>",             "Disable autoformatting" },
     ["w"] = { "<Cmd>lua MiniTrailspace.trim()<CR>", "Strip whitespace" },
     ["o"] = { "<Cmd>AerialToggle<CR>",              "Toggle code outline" },
+    ["u"] = { "<Cmd>Telescope undo<CR>",            "Search undo tree" },
   },
 
   t = {
@@ -1638,6 +1637,7 @@ local PLUGINS = {
       { "nvim-lua/plenary.nvim" },
       { "nvim-telescope/telescope-file-browser.nvim" },
       { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+      { "debugloop/telescope-undo.nvim" },
     },
     config = function()
       require("telescope").setup({
@@ -1650,10 +1650,18 @@ local PLUGINS = {
             },
           },
         },
+        extensions = {
+          undo = {
+            side_by_side = true,
+            layout_strategy = "vertical",
+            layout_config = { preview_height = 0.8 },
+          },
+        },
       })
       require("telescope").load_extension("projects")
       require("telescope").load_extension("file_browser")
       require("telescope").load_extension("fzf")
+      require("telescope").load_extension("undo")
     end,
   },
 
