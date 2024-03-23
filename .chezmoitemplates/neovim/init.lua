@@ -425,13 +425,25 @@ local LEADER_MAPPINGS = {
 
   v = {
     name = "neovim",
-    ["v"] = { "<Cmd>edit $MYVIMRC<CR>", "Open vim config" },
-    ["l"] = { "<Cmd>Lazy<CR>",          "Open Lazy menu" },
-    ["m"] = { "<Cmd>Mason<CR>",         "Open Mason menu" },
-    ["t"] = { "<Cmd>TSUpdate<CR>",      "Treesitter update" },
-    ["h"] = { "<Cmd>Alpha<CR>",         "Open home buffer" },
-    ["H"] = { "<Cmd>checkhealth<CR>",   "Check health" },
-    ["p"] = { "<Cmd>Luapad<CR>",        "Open lua scratch pad" },
+    ["v"] = { "<Cmd>edit $MYVIMRC<CR>",             "Open vim config" },
+    ["l"] = { "<Cmd>Lazy<CR>",                      "Open Lazy menu" },
+    ["m"] = { "<Cmd>Mason<CR>",                     "Open Mason menu" },
+    ["t"] = { "<Cmd>TSUpdate<CR>",                  "Treesitter update" },
+    ["h"] = { "<Cmd>Alpha<CR>",                     "Open home buffer" },
+    ["H"] = { "<Cmd>checkhealth<CR>",               "Check health" },
+    ["p"] = { "<Cmd>Luapad<CR>",                    "Open lua scratch pad" },
+    ["s"] = { "<Cmd>Telescope possession list<CR>", "Load session" },
+  },
+
+  S = {
+    name = "session",
+    ["s"] = { "<Cmd>PossessionSave!<CR>",           "Save current session" },
+    ["S"] = { "<Cmd>PossessionShow<CR>",            "Show session info" },
+    ["l"] = { "<Cmd>Telescope possession list<CR>", "Load session" },
+    ["L"] = { "<Cmd>PossessionLoad<CR>",            "Load last session" },
+    ["c"] = { "<Cmd>PossessionClose<CR>",           "Close session" },
+    ["r"] = { "<Cmd>PossessionRename<CR>",          "Rename session" },
+    ["d"] = { "<Cmd>PossessionDelete<CR>",          "Delete session" },
   },
 
   s = {
@@ -706,6 +718,22 @@ local PLUGINS = {
       require("project_nvim").setup({
         patterns = { "pyproject.toml", "Project.toml", "Makefile", ".git", "init.lua", "init.el" },
       })
+    end,
+  },
+
+  -- Automated session management.
+  {
+    "jedrzejboczar/possession.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim" },
+    event = "VeryLazy",
+    config = function()
+      require("possession").setup({
+        autosave = {
+          current = true,
+          tmp = true,
+        },
+      })
+      require("telescope").load_extension("possession")
     end,
   },
 
@@ -1671,6 +1699,7 @@ local PLUGINS = {
   {
     "goolord/alpha-nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
+    event = "VimEnter",
     config = function()
       local theme = require("alpha.themes.theta")
 
@@ -1700,10 +1729,12 @@ local PLUGINS = {
         dashboard.button("f", "󰈞  Find file", "<Cmd>Telescope find_files<CR>"), -- UTF f021e
         dashboard.button("b", "  Browse files", "<Cmd>Telescope file_browser<CR>"), -- UTF eb86
         dashboard.button("g", "  Live grep", "<Cmd>Telescope live_grep<CR>"), -- UTF f002
+        dashboard.button("l", "  Last session", "<Cmd>PossessionLoad<CR>"), -- UTF e384
+        dashboard.button("s", "  Select session", "<Cmd>Telescope possession list<CR>"), -- UTF eb85
         dashboard.button("c", "  Configuration", "<Cmd>edit $MYVIMRC<CR>"), -- UTF e615
         dashboard.button("p", "  Update plugins", "<Cmd>Lazy update<CR>"), -- UTF f1e6
         dashboard.button("t", "  Update tools", "<Cmd>Mason<CR>"), -- UTF e20f
-        dashboard.button("q", "  Quit", "<Cmd>qa<CR>"), -- UFT f00d
+        dashboard.button("q", "  Quit", "<Cmd>quitall<CR>"), -- UFT f00d
       }
       theme.buttons.val = buttons
 
