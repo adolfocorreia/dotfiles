@@ -1899,24 +1899,37 @@ local PLUGINS = {
   {
     "nvim-lualine/lualine.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
+    event = "VeryLazy",
+    init = function()
+      vim.g.lualine_laststatus = vim.o.laststatus
+      if vim.fn.argc(-1) > 0 then
+        -- Set an empty statusline until lualine loads
+        vim.o.statusline = " "
+      else
+        -- Hide the statusline on the starter page
+        vim.o.laststatus = 0
+      end
+    end,
     config = function()
+      vim.o.laststatus = vim.g.lualine_laststatus
       local terminal = {
         sections = {
           lualine_a = { "winnr", "mode" },
-          lualine_b = { "vim.opt.filetype._value" },
+          lualine_b = { { "filetype", colored = false } },
           lualine_c = { "filename" },
           lualine_x = { { "filetype", icon_only = true, colored = false } },
           lualine_z = { "progress", "location" },
         },
         inactive_sections = {
           lualine_a = { "winnr" },
-          lualine_c = { "vim.opt.filetype._value" },
+          lualine_c = { { "filetype", colored = false } },
           lualine_x = { "location" },
         },
         filetypes = { "terminal" },
       }
       require("lualine").setup({
         options = {
+          disabled_filetypes = { "alpha" },
           globalstatus = false,
         },
         sections = {
@@ -1934,7 +1947,29 @@ local PLUGINS = {
           lualine_a = { { "buffers", mode = 0 } },
           lualine_z = { { "tabs", mode = 2 } },
         },
-        extensions = { "fugitive", "quickfix", terminal },
+        winbar = {
+          lualine_c = { { "aerial", sep = "  ", depth = 5 } },
+          lualine_x = { "filename" },
+          lualine_z = { "winnr" },
+        },
+        inactive_winbar = {
+          lualine_c = {},
+          lualine_x = { "filename" },
+          lualine_z = { "winnr" },
+        },
+        extensions = {
+          "aerial",
+          "fugitive",
+          "lazy",
+          "man",
+          "mason",
+          "nvim-dap-ui",
+          "oil",
+          "overseer",
+          "quickfix",
+          "trouble",
+          terminal,
+        },
       })
     end,
   },
