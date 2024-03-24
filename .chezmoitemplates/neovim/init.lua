@@ -2052,24 +2052,54 @@ local PLUGINS = {
   -- Tokyo Night theme.
   {
     "folke/tokyonight.nvim",
-    lazy = false,
+    lazy = true,
     priority = 1000,
     config = function()
-      -- Load default color scheme.
-      vim.g.tokyonight_lualine_bold = 1
-      vim.cmd.colorscheme("tokyonight-storm")
-      vim.cmd.highlight("Folded guibg=NONE")
+      require("tokyonight").setup({
+        sidebars = { "qf" },
+        dim_inactive = true,
+        lualine_bold = true,
+      })
+    end,
+  },
+
+  -- Catppuccin theme.
+  {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    lazy = true,
+    priority = 1000,
+    config = function()
+      require("catppuccin").setup({
+        dim_inactive = { enabled = true },
+      })
+    end,
+  },
+
+  -- Kanagawa theme.
+  {
+    "rebelot/kanagawa.nvim",
+    lazy = true,
+    priority = 1000,
+    config = function()
+      require("kanagawa").setup({
+        dimInactive = true,
+      })
     end,
   },
 }
 
 require("lazy").setup(PLUGINS, {
   install = {
-    colorscheme = { "tokyonight" },
+    colorscheme = { "habamax" },
   },
   checker = {
     enabled = true,
   },
 })
+
+-- vim.cmd.colorscheme("tokyonight-storm")
+-- vim.cmd.colorscheme("catppuccin-macchiato")
+vim.cmd.colorscheme("kanagawa-wave")
 
 -- vim: tabstop=4
