@@ -753,6 +753,28 @@ local PLUGINS = {
     cmd = { "Luapad", "LuaRun" },
   },
 
+  -- Execute a command and show the output in a temporary buffer.
+  -- Use as :Redir <ex-command> or :lua Redir(<lua-expression)
+  {
+    "AckslD/messages.nvim",
+    cmd = "Redir",
+    init = function()
+      Redir = function(...)
+        require("messages.api").capture_thing(...)
+      end
+    end,
+    config = function()
+      require("messages").setup({
+        command_name = "Redir",
+        prepare_buffer = function(opts)
+          local buf = vim.api.nvim_create_buf(false, true)
+          vim.keymap.set("n", "q", "<Cmd>close<CR>", { buffer = buf })
+          return vim.api.nvim_open_win(buf, true, opts)
+        end,
+      })
+    end,
+  },
+
   --- Useful keybindings ---
 
   -- Make repeat command (.) plugin compatible.
