@@ -76,8 +76,11 @@ if !simple_terminal
   Plug 'vim-airline/vim-airline'
 endif
 
-Plug 'catppuccin/vim',  { 'as': 'catppuccin' }
-Plug 'jeffkreeftmeijer/vim-dim'
+Plug 'cocopon/iceberg.vim'
+Plug 'romainl/Apprentice'
+" Plug 'drewtempelmeyer/palenight.vim'
+" Plug 'jeffkreeftmeijer/vim-dim'
+" Plug 'joshdick/onedark.vim'
 
 call plug#end()
 
@@ -89,9 +92,9 @@ if !simple_terminal
   let g:airline_powerline_fonts = 1
   let g:airline#extensions#tabline#enabled = 1
   set termguicolors
-  colorscheme catppuccin_frappe
+  colorscheme iceberg
 else
-  colorscheme dim
+  colorscheme apprentice
 endif
 
 
@@ -124,6 +127,9 @@ if has('mac')
 endif
 
 let g:qs_buftype_blacklist = ['help', 'nofile', 'nowrite', 'terminal']
+
+execute 'highlight QuickScopePrimary   gui=underline guifg=' . synIDattr(synIDtrans(hlID('ErrorMsg')),   'fg', 'gui')
+execute 'highlight QuickScopeSecondary gui=underline guifg=' . synIDattr(synIDtrans(hlID('WarningMsg')), 'fg', 'gui')
 
 let test#strategy = 'dispatch'
 
