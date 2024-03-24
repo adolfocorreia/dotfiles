@@ -66,6 +66,9 @@ vim.opt.showcmd = false
 -- Disable mode indication on last line.
 vim.opt.showmode = false
 
+-- Save undo history.
+vim.opt.undofile = true
+
 -- Set blinking cursor in normal mode.
 if vim.g.os == "Windows" then
   vim.opt.guicursor = "n-v-c-sm:block-blinkwait500-blinkon200-blinkoff150,i-ci-ve:ver25,r-cr-o:hor20"
@@ -82,9 +85,6 @@ vim.opt.mouse = "a"
 -- System clipboard:  "+ register / unnamedplus
 vim.opt.clipboard = "unnamed,unnamedplus"
 
--- Do not redraw screen while executing macros.
-vim.opt.lazyredraw = true
-
 -- Break lines at better places when wrapping lines.
 vim.opt.linebreak = true
 
@@ -96,7 +96,7 @@ vim.opt.sidescrolloff = 5
 
 -- Highlight line and column under cursor. It helps with navigation.
 vim.opt.cursorline = true
-vim.opt.cursorcolumn = true
+vim.opt.cursorcolumn = false
 
 -- Highlight column 90. It helps identifying long lines.
 vim.opt.colorcolumn = "100"
@@ -167,6 +167,7 @@ vim.opt.wildignore:append({ "*.pyc,*.pyo,*.pyd" })
 vim.cmd([[autocmd vimrc VimResized * tabdo wincmd =]])
 
 -- Use q to close some support windows.
+-- TODO: move git from here
 vim.cmd([[autocmd vimrc FileType git,help,juliadoc,qf nnoremap <silent> <buffer> q :close<CR>]])
 
 -- Send help windows to the right.
@@ -232,11 +233,9 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- - Plugin maps (<Plug>) must be recursive
 
 -- Center screen when browsing through search results.
--- FIXME: these remaps break shortmess-S, since the screen is cleared and redrawn after zz
 vim.cmd([[
   nnoremap n nzzzv
   nnoremap N Nzzzv
-  set shortmess+=S
 ]])
 
 -- Keep selection when indenting in visual mode.
@@ -449,6 +448,7 @@ local LEADER_MAPPINGS = {
   s = {
     name = "search",
     ["s"] = { "<Cmd>Telescope live_grep<CR>",                 "Live grep search" },
+    ["S"] = { "<Cmd>Telescope resume<CR>",                    "Resume last search" },
     ["w"] = { "<Cmd>Telescope grep_string<CR>",               "Word under cursor" },
     ["b"] = { "<Cmd>Telescope current_buffer_fuzzy_find<CR>", "Current buffer" },
     ["c"] = { "<Cmd>Telescope commands<CR>",                  "Available commands" },
@@ -639,8 +639,10 @@ local LEADER_MAPPINGS = {
 
   m = {
     name = "misc",
-    ["c"] = { "<Cmd>ColorizerToggle<CR>",         "Toggle color strings highlighting" },
-    ["s"] = { "<Cmd>Telescope spell_suggest<CR>", "Spell suggest (word on cursor)" },
+    ["i"] = { "<Cmd>IBLToggle<CR>",                                 "Toggle indent lines" },
+    ["c"] = { "<Cmd>ColorizerToggle<CR>",                           "Toggle color strings highlighting" },
+    ["s"] = { "<Cmd>Telescope spell_suggest<CR>",                   "Spell suggest (word on cursor)" },
+    ["t"] = { "<Cmd>Telescope colorscheme enable_preview=true<CR>", "Change color theme" },
   },
 
   q = {
@@ -707,7 +709,7 @@ local PLUGINS = {
         "terminal",
       }
       require("reticle").setup({
-        on_startup = { cursorline = true, cursorcolumn = true },
+        on_startup = { cursorline = vim.o.cursorline, cursorcolumn = vim.o.cursorcolumn },
         disable_in_insert = false,
         always_highlight_number = true,
         never = {
@@ -1028,6 +1030,7 @@ local PLUGINS = {
       vim.api.nvim_create_user_command("FormatEnable", function(args)
         -- Use ! for buffer-local setup
         if args.bang then
+          ---@diagnostic disable-next-line: inject-field
           vim.b.enable_autoformat = true
         else
           vim.g.enable_autoformat = true
@@ -1037,6 +1040,7 @@ local PLUGINS = {
         bang = true,
       })
       vim.api.nvim_create_user_command("FormatDisable", function()
+        ---@diagnostic disable-next-line: inject-field
         vim.b.enable_autoformat = false
         vim.g.enable_autoformat = false
       end, { desc = "Disable autoformat-on-save" })
@@ -1094,7 +1098,6 @@ local PLUGINS = {
     "neovim/nvim-lspconfig",
     dependencies = {
       -- neodev
-      -- TODO: evaluate this better
       { "folke/neodev.nvim" },
 
       -- Mason
@@ -1103,7 +1106,10 @@ local PLUGINS = {
       { "WhoIsSethDaniel/mason-tool-installer.nvim" },
 
       -- Fidget
-      { "j-hui/fidget.nvim" },
+      {
+        "j-hui/fidget.nvim",
+        opts = {},
+      },
     },
 
     config = function()
@@ -1125,6 +1131,7 @@ local PLUGINS = {
           settings = {
             Lua = {
               telemetry = { enable = false },
+              diagnostics = { disable = { "missing-fields" } },
             },
           },
         },
@@ -1260,10 +1267,6 @@ local PLUGINS = {
         end,
       })
 
-      -- Setup Fidget
-      -- TODO: evaluate this better
-      require("fidget").setup({})
-
       -- UI settings
       local style = "rounded"
       vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = style })
@@ -1281,15 +1284,19 @@ local PLUGINS = {
       -- Snippets
       { "L3MON4D3/LuaSnip", build = "make install_jsregexp" },
       -- TODO: evaluate this better
-      { "rafamadriz/friendly-snippets" },
+      {
+        "rafamadriz/friendly-snippets",
+        config = function()
+          require("luasnip.loaders.from_vscode").lazy_load()
+        end,
+      },
 
       -- Autocompletion
       { "hrsh7th/cmp-buffer" },
       { "hrsh7th/cmp-nvim-lsp" },
-      { "hrsh7th/cmp-nvim-lua" },
       { "hrsh7th/cmp-path" },
-      { "saadparwaiz1/cmp_luasnip" },
       { "kdheepak/cmp-latex-symbols" },
+      { "saadparwaiz1/cmp_luasnip" },
     },
 
     config = function()
@@ -1332,10 +1339,10 @@ local PLUGINS = {
 
         sources = {
           { name = "latex_symbols" },
-          { name = "path" },
           { name = "nvim_lsp", keyword_length = 2 },
-          { name = "buffer", keyword_length = 3 },
           { name = "luasnip", keyword_length = 2 },
+          { name = "buffer", keyword_length = 4 },
+          { name = "path" },
         },
       })
     end,
@@ -1441,6 +1448,7 @@ local PLUGINS = {
           "python",
           "query",
           "r",
+          "regex",
           "rst",
           "rust",
           "sql",
@@ -1771,16 +1779,18 @@ local PLUGINS = {
       local buttons = {
         { type = "text", val = "Quick links", opts = { hl = "SpecialComment", position = "center" } },
         { type = "padding", val = 1 },
-        dashboard.button("e", "  New file", "<Cmd>ene<CR>"), -- UTF f15b
-        dashboard.button("f", "󰈞  Find file", "<Cmd>Telescope find_files<CR>"), -- UTF f021e
-        dashboard.button("b", "  Browse files", "<Cmd>Telescope file_browser<CR>"), -- UTF eb86
-        dashboard.button("g", "  Live grep", "<Cmd>Telescope live_grep<CR>"), -- UTF f002
-        dashboard.button("l", "  Last session", "<Cmd>PossessionLoad<CR>"), -- UTF e384
+        -- stylua: ignore start
+        dashboard.button("e", "  New file",       "<Cmd>ene<CR>"), -- UTF f15b
+        dashboard.button("f", "󰈞  Find file",      "<Cmd>Telescope find_files<CR>"), -- UTF f021e
+        dashboard.button("b", "  Browse files",   "<Cmd>Telescope file_browser<CR>"), -- UTF eb86
+        dashboard.button("g", "  Live grep",      "<Cmd>Telescope live_grep<CR>"), -- UTF f002
+        dashboard.button("l", "  Last session",   "<Cmd>PossessionLoad<CR>"), -- UTF e384
         dashboard.button("s", "  Select session", "<Cmd>Telescope possession list<CR>"), -- UTF eb85
-        dashboard.button("c", "  Configuration", "<Cmd>edit $MYVIMRC<CR>"), -- UTF e615
+        dashboard.button("c", "  Configuration",  "<Cmd>edit $MYVIMRC<CR>"), -- UTF e615
         dashboard.button("p", "  Update plugins", "<Cmd>Lazy update<CR>"), -- UTF f1e6
-        dashboard.button("t", "  Update tools", "<Cmd>Mason<CR>"), -- UTF e20f
-        dashboard.button("q", "  Quit", "<Cmd>quitall<CR>"), -- UFT f00d
+        dashboard.button("t", "  Update tools",   "<Cmd>Mason<CR>"), -- UTF e20f
+        dashboard.button("q", "  Quit",           "<Cmd>quitall<CR>"), -- UFT f00d
+        -- stylua: ignore end
       }
       theme.buttons.val = buttons
 
@@ -1812,6 +1822,10 @@ local PLUGINS = {
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
+    init = function()
+      vim.opt.timeout = true
+      vim.opt.timeoutlen = 300
+    end,
     config = function()
       local wk = require("which-key")
       wk.setup({
@@ -1886,23 +1900,12 @@ local PLUGINS = {
     event = "BufReadPre",
     main = "ibl",
     config = function()
-      require("ibl").setup({})
+      require("ibl").setup({
+        scope = { enabled = true },
+      })
       -- Refresh indent lines after fold operations.
-      for _, keymap in pairs({
-        "zo",
-        "zO",
-        "zc",
-        "zC",
-        "za",
-        "zA",
-        "zv",
-        "zx",
-        "zX",
-        "zm",
-        "zM",
-        "zr",
-        "zR",
-      }) do
+      local fold_keymaps = { "zo", "zO", "zc", "zC", "za", "zA", "zv", "zx", "zX", "zm", "zM", "zr", "zR" }
+      for _, keymap in pairs(fold_keymaps) do
         vim.api.nvim_set_keymap(
           "n",
           keymap,
@@ -1937,6 +1940,7 @@ local PLUGINS = {
         group = "vimrc",
         desc = "Disable trail spaces highlighting",
         callback = function()
+          ---@diagnostic disable-next-line: inject-field
           vim.b.minitrailspace_disable = true
           MiniTrailspace.unhighlight()
         end,
