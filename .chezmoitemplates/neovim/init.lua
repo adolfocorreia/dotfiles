@@ -1772,51 +1772,107 @@ local PLUGINS = {
   --- Windows, interface elements, visual editing helpers and themes ---
 
   -- Show start screen.
+  -- Some colorschemes (e.g. tokyonight and catppuccin) define the highlights:
+  -- AlphaShortcut, AlphaHeader, AlphaHeaderLabel, AlphaFooter and AlphaButtons.
   {
     "goolord/alpha-nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+      { "rubiin/fortune.nvim", opts = { display_format = "mixed", max_width = 52, content_type = "tips" } },
+    },
     event = "VimEnter",
+    init = function()
+      -- Disable :intro screen
+      vim.opt.shortmess:append({ I = true })
+    end,
     config = function()
-      local theme = require("alpha.themes.theta")
-
-      local header = {
-        [[                                                  ]],
-        [[      _______                    .__              ]],
-        [[      \      \   ____  _______  _|__| _____       ]],
-        [[      /   |   \_/ __ \/  _ \  \/ /  |/     \      ]],
-        [[     /    |    \  ___(  <_> )   /|  |  Y Y  \     ]],
-        [[     \____|__  /\___  \____/ \_/ |__|__|_|  /     ]],
-        [[             \/     \/                    \/      ]],
-        [[                                                  ]],
-        [[                                                  ]],
-      }
-      for _, line in ipairs(require("alpha.fortune")()) do
-        table.insert(header, line)
-      end
-      table.insert(header, "")
-      theme.header.val = header
-      theme.header.opts.hl = "Normal"
-
       local dashboard = require("alpha.themes.dashboard")
-      local buttons = {
+
+      -- Header
+      local header = dashboard.section.header
+      header.val = {
+        [[                                                                     ]],
+        [[       ████ ██████           █████      ██                     ]],
+        [[      ███████████             █████                             ]],
+        [[      █████████ ███████████████████ ███   ███████████   ]],
+        [[     █████████  ███    █████████████ █████ ██████████████   ]],
+        [[    █████████ ██████████ █████████ █████ █████ ████ █████   ]],
+        [[  ███████████ ███    ███ █████████ █████ █████ ████ █████  ]],
+        [[ ██████  █████████████████████ ████ █████ █████ ████ ██████ ]],
+      }
+
+      -- Sub-header info (empty placeholder to be filled after plugin loading)
+      local info = { type = "padding", val = 2, opts = { position = "center", hl = "Number" } }
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "LazyVimStarted",
+        once = true,
+        group = "vimrc",
+        callback = function()
+          local stats = require("lazy").stats()
+          local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
+          local plugins_line = "⚡ Lazy-loaded " .. stats.loaded .. "/" .. stats.count .. " plugins in " .. ms .. "ms"
+
+          local v = vim.version()
+          local version_line = "  v" .. v.major .. "." .. v.minor .. "." .. v.patch
+          local width = vim.fn.strdisplaywidth
+          local padding = string.rep(" ", (width(plugins_line) - width(version_line)) / 2)
+
+          info.type = "text"
+          info.val = { plugins_line, padding .. version_line }
+          require("alpha").redraw()
+        end,
+      })
+
+      -- Recent files
+      local mru = require("alpha.themes.theta").config.layout[4]
+
+      -- Center buttons
+      local create_button = require("alpha.themes.dashboard").button
+      local buttons = dashboard.section.buttons
+      buttons.val = {
         { type = "text", val = "Quick links", opts = { hl = "SpecialComment", position = "center" } },
         { type = "padding", val = 1 },
         -- stylua: ignore start
-        dashboard.button("e", "  New file",       "<Cmd>ene<CR>"), -- UTF f15b
-        dashboard.button("f", "󰈞  Find file",      "<Cmd>Telescope find_files<CR>"), -- UTF f021e
-        dashboard.button("b", "  Browse files",   "<Cmd>Telescope file_browser<CR>"), -- UTF eb86
-        dashboard.button("g", "  Live grep",      "<Cmd>Telescope live_grep<CR>"), -- UTF f002
-        dashboard.button("l", "  Last session",   "<Cmd>PossessionLoad<CR>"), -- UTF e384
-        dashboard.button("s", "  Select session", "<Cmd>Telescope possession list<CR>"), -- UTF eb85
-        dashboard.button("c", "  Configuration",  "<Cmd>edit $MYVIMRC<CR>"), -- UTF e615
-        dashboard.button("p", "  Update plugins", "<Cmd>Lazy update<CR>"), -- UTF f1e6
-        dashboard.button("t", "  Update tools",   "<Cmd>Mason<CR>"), -- UTF e20f
-        dashboard.button("q", "  Quit",           "<Cmd>quitall<CR>"), -- UFT f00d
+        create_button("n", "  New file",         "<Cmd>ene<Bar>startinsert<CR>"), -- UTF f15b
+        create_button("f", "  Find file",        "<Cmd>Telescope find_files<CR>"), -- UTF f002
+        create_button("b", "  Browse files",     "<Cmd>Telescope file_browser<CR>"), -- UTF eb86
+        create_button("r", "  Recent files",     "<Cmd>Telescope oldfiles<CR>"), -- UTF f0c5
+        create_button("g", "  Grep text",        "<Cmd>Telescope live_grep<CR>"), -- UTF eb69
+        create_button("l", "  Last session",     "<Cmd>PossessionLoad<CR>"), -- UTF f021
+        create_button("s", "  Restore sessions", "<Cmd>Telescope possession list<CR>"), -- UTF eb85
+        create_button("c", "  Configuration",    "<Cmd>edit $MYVIMRC<CR>"), -- UTF e615
+        create_button("p", "  Update plugins",   "<Cmd>Lazy update<CR>"), -- UTF f1e6
+        create_button("t", "  Update tools",     "<Cmd>Mason<CR>"), -- UTF e20f
+        create_button("q", "  Quit",             "<Cmd>quitall<CR>"), -- UFT f426
         -- stylua: ignore end
       }
-      theme.buttons.val = buttons
+      buttons.opts.spacing = 0
 
-      require("alpha").setup(theme.config)
+      -- Footer
+      -- local fortune = require("alpha.fortune")
+      local fortune = require("fortune").get_fortune
+      local footer = dashboard.section.footer
+      footer.val = {}
+      for _, line in ipairs(fortune()) do
+        ---@diagnostic disable-next-line: param-type-mismatch
+        table.insert(footer.val, line)
+      end
+
+      local layout = {
+        { type = "padding", val = 3 },
+        header,
+        { type = "padding", val = 2 },
+        info,
+        { type = "padding", val = 3 },
+        mru,
+        { type = "padding", val = 3 },
+        buttons,
+        { type = "padding", val = 2 },
+        footer,
+      }
+      dashboard.config.layout = layout
+
+      require("alpha").setup(dashboard.config)
     end,
   },
 
@@ -1899,19 +1955,22 @@ local PLUGINS = {
   {
     "nvim-lualine/lualine.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    event = "VeryLazy",
+    event = "VimEnter",
     init = function()
-      vim.g.lualine_laststatus = vim.o.laststatus
+      vim.g.lualine_laststatus = vim.o.laststatus -- Save 'laststatus' value
       if vim.fn.argc(-1) > 0 then
-        -- Set an empty statusline until lualine loads
+        -- Set empty lines until lualine loads
         vim.o.statusline = " "
+        vim.o.winbar = " "
       else
         -- Hide the statusline on the starter page
         vim.o.laststatus = 0
       end
+      -- Show tabline to avoid flickering when lualine loads
+      vim.opt.showtabline = 2
     end,
     config = function()
-      vim.o.laststatus = vim.g.lualine_laststatus
+      vim.o.laststatus = vim.g.lualine_laststatus -- Restore 'laststatus' value
       local terminal = {
         sections = {
           lualine_a = { "winnr", "mode" },
