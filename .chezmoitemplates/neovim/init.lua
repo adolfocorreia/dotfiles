@@ -430,7 +430,7 @@ local LEADER_MAPPINGS = {
     ["t"] = { "<Cmd>TSUpdate<CR>",                  "Treesitter update" },
     ["h"] = { "<Cmd>Alpha<CR>",                     "Open home buffer" },
     ["H"] = { "<Cmd>checkhealth<CR>",               "Check health" },
-    ["p"] = { "<Cmd>Luapad<CR>",                    "Open lua scratch pad" },
+    ["P"] = { "<Cmd>Luapad<CR>",                    "Open lua scratch pad" },
     ["s"] = { "<Cmd>Telescope possession list<CR>", "Load session" },
   },
 
@@ -1003,12 +1003,12 @@ local PLUGINS = {
       vim.keymap.set({ "o", "x" }, "aS", "<Cmd>lua require('various-textobjs').subword('outer')<CR>")
       vim.keymap.set({ "o", "x" }, "ie", "<Cmd>lua require('various-textobjs').entireBuffer()<CR>")
       vim.keymap.set({ "o", "x" }, "ae", "<Cmd>lua require('various-textobjs').entireBuffer()<CR>")
-      vim.keymap.set({ "o", "x" }, "ic", "<Cmd>lua require('various-textobjs').multiCommentedLines()<CR>")
-      vim.keymap.set({ "o", "x" }, "ac", "<Cmd>lua require('various-textobjs').multiCommentedLines()<CR>")
-      vim.keymap.set({ "o", "x" }, "iv", "<Cmd>lua require('various-textobjs').value('inner')<CR>")
-      vim.keymap.set({ "o", "x" }, "av", "<Cmd>lua require('various-textobjs').value('outer')<CR>")
-      vim.keymap.set({ "o", "x" }, "ik", "<Cmd>lua require('various-textobjs').key('inner')<CR>")
-      vim.keymap.set({ "o", "x" }, "ak", "<Cmd>lua require('various-textobjs').key('outer')<CR>")
+      vim.keymap.set({ "o", "x" }, "ik", "<Cmd>lua require('various-textobjs').multiCommentedLines()<CR>")
+      vim.keymap.set({ "o", "x" }, "ak", "<Cmd>lua require('various-textobjs').multiCommentedLines()<CR>")
+      vim.keymap.set({ "o", "x" }, "iV", "<Cmd>lua require('various-textobjs').value('inner')<CR>")
+      vim.keymap.set({ "o", "x" }, "aV", "<Cmd>lua require('various-textobjs').value('outer')<CR>")
+      vim.keymap.set({ "o", "x" }, "iK", "<Cmd>lua require('various-textobjs').key('inner')<CR>")
+      vim.keymap.set({ "o", "x" }, "aK", "<Cmd>lua require('various-textobjs').key('outer')<CR>")
       vim.keymap.set({ "o", "x" }, "iu", "<Cmd>lua require('various-textobjs').url()<CR>")
       vim.keymap.set({ "o", "x" }, "au", "<Cmd>lua require('various-textobjs').url()<CR>")
       vim.keymap.set({ "o", "x" }, "in", "<Cmd>lua require('various-textobjs').number('inner')<CR>")
@@ -1982,6 +1982,9 @@ local PLUGINS = {
     config = function()
       require("ibl").setup({
         scope = { enabled = true },
+        indent = {
+          char = "┆",
+        },
       })
       -- Refresh indent lines after fold operations.
       local fold_keymaps = { "zo", "zO", "zc", "zC", "za", "zA", "zv", "zx", "zX", "zm", "zM", "zr", "zR" }
