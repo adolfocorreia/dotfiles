@@ -22,7 +22,7 @@
 (when ON-LINUX
   (add-to-list 'default-frame-alist '(undecorated . t)))
 (when ON-MAC
-  (add-to-list 'default-frame-alist '(height . 60))
+  (add-to-list 'default-frame-alist '(height . 70))
   (add-to-list 'default-frame-alist '(width . 240)))
 (when ON-WINDOWS
   (add-to-list 'default-frame-alist '(height . 50))
