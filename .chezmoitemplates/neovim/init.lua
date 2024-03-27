@@ -140,7 +140,7 @@ vim.opt.shiftround = true
 -- Number of spaces that a <Tab> in the file counts for.
 vim.opt.tabstop = 4
 
--- Always open diff windows vertically
+-- Always open diff windows vertically.
 vim.opt.diffopt:append({ "vertical" })
 
 -- Use popup menu for completion.  Do not auto insert nor auto select.
@@ -769,7 +769,7 @@ local PLUGINS = {
   },
 
   -- Execute a command and show the output in a temporary buffer.
-  -- Use as :Redir <ex-command> or :lua Redir(<lua-expression)
+  -- Use as :Redir <ex-command> or :lua Redir(<lua-expression>)
   {
     "AckslD/messages.nvim",
     cmd = "Redir",
@@ -1803,7 +1803,7 @@ local PLUGINS = {
     config = function()
       local dashboard = require("alpha.themes.dashboard")
 
-      -- Header
+      -- Header (see https://github.com/MaximilianLloyd/ascii.nvim)
       local header = dashboard.section.header
       header.val = {
         [[                                                                     ]],
@@ -1864,7 +1864,7 @@ local PLUGINS = {
       buttons.opts.spacing = 0
 
       -- Footer
-      -- local fortune = require("alpha.fortune")
+      -- TODO: get vim tips from https://vtip.43z.one
       local fortune = require("fortune").get_fortune
       local footer = dashboard.section.footer
       footer.val = {}

@@ -264,3 +264,8 @@ nnoremap <C-w><Tab>5 5gt
 nnoremap <Leader>v :edit $MYVIMRC<CR>
 nnoremap <Leader>q :quitall<CR>
 
+
+""""" User commands """""
+
+command! Vtip echomsg system('curl --silent --max-time 5 https://vtip.43z.one')
+

@@ -1298,6 +1298,7 @@
     (eval `(evil-textobj-tree-sitter-get-textobj ,group ,query)))
 
   ;; TODO: evaluate creating text objects for loops, parameters and comments
+  ;; FIXME: text objects are not working
   (define-key evil-inner-text-objects-map "f" (my/evil-textobj-tree-sitter-get-textobj "function.inner"))
   (define-key evil-outer-text-objects-map "f" (my/evil-textobj-tree-sitter-get-textobj "function.outer"))
   (define-key evil-inner-text-objects-map "c" (my/evil-textobj-tree-sitter-get-textobj "class.inner"))
@@ -1731,6 +1732,12 @@
 (use-package lua-mode
   :mode
   ("\\.lua\\'" . lua-mode))
+
+
+;; Vimrc
+(use-package vimrc-mode
+  :mode
+  ("\\.vim\\(rc\\)?\\'" . vimrc-mode))
 
 
 ;; Fish
