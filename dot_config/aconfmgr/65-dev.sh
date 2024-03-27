@@ -1,6 +1,7 @@
 # Code editors and IDEs
 AddPackage emacs-nativecomp # The extensible, customizable, self-documenting real-time display editor with native compilation enabled
 AddPackage gvim # Vi Improved, a highly configurable, improved version of the vi text editor (with advanced features, such as a GUI)
+AddPackage neovide # No Nonsense Neovim Client in Rust
 AddPackage pycharm-community-edition # Python IDE for Professional Developers
 AddPackage --foreign rstudio-desktop-bin # An integrated development environment (IDE) for R (binary from RStudio official repository)
 AddPackage --foreign sublime-merge # Meet a new Git Client, from the makers of Sublime Text
@@ -49,10 +50,6 @@ AddPackage --foreign julia-bin # High-level, high-performance, dynamic programmi
 AddPackage blas-openblas # An optimized BLAS library based on GotoBLAS2 1.13 BSD (Provides BLAS/CBLAS/LAPACK/LAPACKE system-wide)
 AddPackage gcc-fortran # Fortran front-end for GCC
 AddPackage r # Language and environment for statistical computing and graphics
-
-# Lua
-AddPackage selene # Blazing-fast modern Lua linter written in Rust
-AddPackage stylua # Code formatter for Lua
 
 # Haskell
 AddPackage haskell-language-server # LSP server for GHC
