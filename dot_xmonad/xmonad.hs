@@ -328,6 +328,8 @@ myManageHook =
         ("dev", "Emacs"),
         -- Obsidian
         ("note", "obsidian"),
+        -- Neovide
+        ("dev", "neovide"),
         -- Visual Studio Code
         ("dev", "code"),
         -- Whatsapp (nativefier)

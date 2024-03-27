@@ -157,6 +157,21 @@ vim.opt.wildignore:append({ "*.doc,*.docx,*.xls,*.xslx,*.ppt,*.pptx" })
 vim.opt.wildignore:append({ "*.png,*.jpg,*.gif" })
 vim.opt.wildignore:append({ "*.pyc,*.pyo,*.pyd" })
 
+-- Neovide options.
+-- Reference: https://neovide.dev/configuration.html
+if vim.g.neovide then
+  -- Font settings
+  vim.opt.guifont = "Hack Nerd Font:h9"
+  vim.opt.linespace = -1
+
+  -- Visual effects settings
+  vim.g.neovide_cursor_vfx_mode = "pixiedust"
+  vim.g.neovide_hide_mouse_when_typing = true
+  vim.g.neovide_transparency = 0.95
+  vim.g.neovide_theme = "dark"
+  vim.g.neovide_window_blurred = true
+end
+
 ------------------------
 ----- Autocommands -----
 ------------------------
