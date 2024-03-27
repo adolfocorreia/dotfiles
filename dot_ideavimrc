@@ -125,16 +125,17 @@ vnoremap > >gv
 map g, <Action>(JumpToNextChange)
 map g; <Action>(JumpToLastChange)
 
+nnoremap gO O<Esc>j
+nnoremap go o<Esc>k
+
+nnoremap gP O<Esc>p
+nnoremap gp o<Esc>p
+
+map <C-k> <Action>(MoveLineUp)
+map <C-j> <Action>(MoveLineDown)
+
 
 " Unimpaired-like bindings
-nnoremap [<Space> O<Esc>j
-nnoremap ]<Space> o<Esc>k
-
-map [e <Action>(MoveLineUp)
-map ]e <Action>(MoveLineDown)
-
-nnoremap [p O<Esc>p
-nnoremap ]p o<Esc>p
 
 map [b <Action>(NextTab)
 map ]b <Action>(PreviousTab)
@@ -168,6 +169,7 @@ map gss <Action>(AceAction)
 
 " Leader
 map <Leader><Leader> <Action>(GotoAction)
+map <Leader><Backspace> <C-6>
 
 " Buffers
 map <Leader>bb <Action>(RecentFiles)
