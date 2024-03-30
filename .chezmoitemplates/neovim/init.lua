@@ -170,6 +170,9 @@ if vim.g.neovide then
   vim.g.neovide_transparency = 0.95
   vim.g.neovide_theme = "dark"
   vim.g.neovide_window_blurred = true
+
+  -- Key mappings
+  vim.cmd([[map! <S-Insert> <C-r>+]])
 end
 
 ------------------------
@@ -1787,13 +1790,13 @@ local PLUGINS = {
   --- Windows, interface elements, visual editing helpers and themes ---
 
   -- Show start screen.
-  -- Some colorschemes (e.g. tokyonight and catppuccin) define the highlights:
+  -- Note: some colorschemes (e.g. tokyonight and catppuccin) define the highlights:
   -- AlphaShortcut, AlphaHeader, AlphaHeaderLabel, AlphaFooter and AlphaButtons.
   {
     "goolord/alpha-nvim",
     dependencies = {
       "nvim-tree/nvim-web-devicons",
-      { "rubiin/fortune.nvim", opts = { display_format = "mixed", max_width = 52, content_type = "tips" } },
+      { "rubiin/fortune.nvim", opts = { display_format = "mixed", max_width = 52, content_type = "mixed" } },
     },
     event = "VimEnter",
     init = function()
@@ -1848,17 +1851,17 @@ local PLUGINS = {
         { type = "text", val = "Quick links", opts = { hl = "SpecialComment", position = "center" } },
         { type = "padding", val = 1 },
         -- stylua: ignore start
-        create_button("n", "  New file",         "<Cmd>ene<Bar>startinsert<CR>"), -- UTF f15b
-        create_button("f", "  Find file",        "<Cmd>Telescope find_files<CR>"), -- UTF f002
-        create_button("b", "  Browse files",     "<Cmd>Telescope file_browser<CR>"), -- UTF eb86
-        create_button("r", "  Recent files",     "<Cmd>Telescope oldfiles<CR>"), -- UTF f0c5
-        create_button("g", "  Grep text",        "<Cmd>Telescope live_grep<CR>"), -- UTF eb69
-        create_button("l", "  Last session",     "<Cmd>PossessionLoad<CR>"), -- UTF f021
-        create_button("s", "  Restore sessions", "<Cmd>Telescope possession list<CR>"), -- UTF eb85
-        create_button("c", "  Configuration",    "<Cmd>edit $MYVIMRC<CR>"), -- UTF e615
-        create_button("p", "  Update plugins",   "<Cmd>Lazy update<CR>"), -- UTF f1e6
-        create_button("t", "  Update tools",     "<Cmd>Mason<CR>"), -- UTF e20f
-        create_button("q", "  Quit",             "<Cmd>quitall<CR>"), -- UFT f426
+        create_button("n", "  New file",             "<Cmd>ene<Bar>startinsert<CR>"), -- UTF f15b
+        create_button("f", "  Find file",            "<Cmd>Telescope find_files<CR>"), -- UTF f002
+        create_button("b", "  Browse files",         "<Cmd>Telescope file_browser<CR>"), -- UTF eb86
+        create_button("r", "  Recent files",         "<Cmd>Telescope oldfiles<CR>"), -- UTF f0c5
+        create_button("g", "  Grep text",            "<Cmd>Telescope live_grep<CR>"), -- UTF eb69
+        create_button("l", "  Last session",         "<Cmd>PossessionLoad<CR>"), -- UTF f021
+        create_button("s", "  Restore sessions",     "<Cmd>Telescope possession list<CR>"), -- UTF eb85
+        create_button("v", "  Neovim configuration", "<Cmd>edit $MYVIMRC<CR>"), -- UTF e615
+        create_button("p", "  Update plugins",       "<Cmd>Lazy update<CR>"), -- UTF f1e6
+        create_button("t", "  Update tools",         "<Cmd>Mason<CR>"), -- UTF e20f
+        create_button("q", "  Quit",                 "<Cmd>quitall<CR>"), -- UFT f426
         -- stylua: ignore end
       }
       buttons.opts.spacing = 0
