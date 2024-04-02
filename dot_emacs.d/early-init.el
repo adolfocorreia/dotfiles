@@ -23,7 +23,9 @@
   (add-to-list 'default-frame-alist '(undecorated . t)))
 (when ON-MAC
   (add-to-list 'default-frame-alist '(height . 70))
-  (add-to-list 'default-frame-alist '(width . 240)))
+  (add-to-list 'default-frame-alist '(width . 240))
+  (add-to-list 'default-frame-alist '(ns-appearance . dark))
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t)))
 (when ON-WINDOWS
   (add-to-list 'default-frame-alist '(height . 50))
   (add-to-list 'default-frame-alist '(width . 200)))
