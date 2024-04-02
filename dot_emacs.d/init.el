@@ -326,11 +326,14 @@
   (doom-modeline-mode +1))
 
 (use-package doom-themes
+  :demand t)
+
+(use-package catppuccin-theme
   :demand t
   :custom
-  (doom-tokyo-night-comment-bg t)
+  (catppuccin-flavor 'macchiato)
   :config
-  (load-theme 'doom-tokyo-night t))
+  (load-theme 'catppuccin t))
 
 (use-package major-mode-hydra
   :demand t
