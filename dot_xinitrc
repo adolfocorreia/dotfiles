@@ -57,7 +57,7 @@ xsetroot -cursor_name left_ptr
 setxkbmap -layout 'us,us(intl)' -option grp:win_space_toggle
 # Use menu key as compose key (e.g. type menu , c to get cedilla)
 # https://en.wikipedia.org/wiki/Compose_key
-setxkbmap -option compose:ralt
+setxkbmap -option compose:menu
 # Enable numlock in X
 numlockx
 # Bind special keys
