@@ -1,6 +1,7 @@
 {
-  "ActivationHotkey": "LWin_LMenu",
+  "ActivationHotkey": "LWin_LeftAlt",
   "ShowStartupWindow": false,
+  "NotifyVirtualDesktopServiceIncompatibility": false,
   "AllocateNewPanelSpace": false,
   "AutoCollapsePanels": false,
   "AnimateWindowMovement": false,
@@ -83,7 +84,7 @@
     "PullWindowUp": {
       "IsDirectMode": false,
       "Keys": [
-        "Return"
+        "Enter"
       ]
     },
     "ToggleFloatingMode": {
@@ -151,25 +152,25 @@
     "IncreaseWidth": {
       "IsDirectMode": false,
       "Keys": [
-        "Oem6"
+        "OemPlus"
       ]
     },
     "IncreaseHeight": {
       "IsDirectMode": false,
       "Keys": [
-        "OemQuotes"
+        "Oem6"
       ]
     },
     "DecreaseWidth": {
       "IsDirectMode": false,
       "Keys": [
-        "OemOpenBrackets"
+        "OemMinus"
       ]
     },
     "DecreaseHeight": {
       "IsDirectMode": false,
       "Keys": [
-        "Oem1"
+        "Oem4"
       ]
     },
     "SwitchToPreviousDesktop": {
