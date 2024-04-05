@@ -248,6 +248,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 --   - https://skippi.medium.com/ideas-for-non-leader-vim-mappings-fd32a2769c87
 -- - Prefer non recursive maps (_noremap)
 -- - Plugin maps (<Plug>) must be recursive
+-- - Terminal keycodes issues: https://vim.fandom.com/wiki/Mapping_fast_keycodes_in_terminal_Vim
 
 -- Center screen when browsing through search results.
 vim.cmd([[
@@ -1522,10 +1523,10 @@ local PLUGINS = {
         incremental_selection = {
           enable = true,
           keymaps = {
-            init_selection = "<C-space>",
-            node_incremental = "<C-space>",
+            init_selection = "<Tab>",
+            node_incremental = "<Tab>",
+            node_decremental = "<S-Tab>",
             scope_incremental = false,
-            node_decremental = false,
           },
         },
         indent = { enable = true },
