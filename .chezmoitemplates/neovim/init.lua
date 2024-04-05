@@ -185,8 +185,7 @@ end
 vim.cmd([[autocmd vimrc VimResized * tabdo wincmd =]])
 
 -- Use q to close some support windows.
--- TODO: move git from here
-vim.cmd([[autocmd vimrc FileType git,help,juliadoc,qf nnoremap <silent> <buffer> q :close<CR>]])
+vim.cmd([[autocmd vimrc FileType help,juliadoc,qf nnoremap <silent> <buffer> q :close<CR>]])
 
 -- Send help windows to the right.
 vim.cmd([[autocmd vimrc FileType help,juliadoc setlocal bufhidden=unload | wincmd L]])
@@ -912,11 +911,24 @@ local PLUGINS = {
     end,
   },
 
-  -- Text exchange operator: cx_, cxx (current line), X (in visual mode),
-  -- cxc (clear pending exchanges).
+  -- Text edit operators:
+  -- - evaluate (=) text and replace with output
+  -- - eXchange text regions (use C-c to clear pending exchanges)
+  -- - Multiply (duplicate) text (e.g. gmm to duplicate line)
+  -- - Replace text with register's contents
+  -- - Sort text (e.g. gsib to sort inside block)
   {
-    "tommcdo/vim-exchange",
-    keys = { "cx" },
+    "echasnovski/mini.operators",
+    keys = { "g=", "gm", "gr", "gs", "gx" },
+    config = function()
+      require("mini.operators").setup({
+        evaluate = { prefix = "g=" },
+        exchange = { prefix = "gx" },
+        multiply = { prefix = "gm" },
+        replace = { prefix = "gr" },
+        sort = { prefix = "gs" },
+      })
+    end,
   },
 
   -- Coerce text cases with: crs (snake_case), crm (MixedCase), crc (camelCase),
@@ -1297,7 +1309,7 @@ local PLUGINS = {
           map("n", "g<C-d>", vim.lsp.buf.type_definition, "go to type definition")
           map("n", "gI",     vim.lsp.buf.implementation,  "go to implementation")
           map("n", "gR",     vim.lsp.buf.references,      "go to references")
-          map("n", "gs",     vim.lsp.buf.signature_help,  "display signature help")
+          map("n", "gS",     vim.lsp.buf.signature_help,  "display signature help")
           map("n", "<F2>",   vim.lsp.buf.rename,          "rename")
           map("n", "<F3>",   vim.lsp.buf.format,          "format")
           map("x", "<F3>",   vim.lsp.buf.format,          "format")
@@ -1509,7 +1521,12 @@ local PLUGINS = {
         highlight = { enable = true },
         incremental_selection = {
           enable = true,
-          keymaps = { init_selection = "<C-space>", node_incremental = "<C-space>" },
+          keymaps = {
+            init_selection = "<C-space>",
+            node_incremental = "<C-space>",
+            scope_incremental = false,
+            node_decremental = false,
+          },
         },
         indent = { enable = true },
         textobjects = {
