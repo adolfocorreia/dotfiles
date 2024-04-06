@@ -46,14 +46,6 @@ vim.g.loaded_netrwFileHandlers = 1
 -- Use ':set option?' to check current option value.
 -- Use ':verbose set option?' to check where it was set.
 
--- Set behavior for mouse and selection.
--- Options changed:
---   selectmode = ""
---   mousemodel = "extend"
---   keymodel   = ""
---   selection  = "inclusive"
-vim.cmd.behave("xterm")
-
 -- Enable 24-bit RGB colors in terminal mode.
 vim.opt.termguicolors = true
 
@@ -79,6 +71,9 @@ vim.opt.confirm = true
 
 -- Enable mouse support in all modes.
 vim.opt.mouse = "a"
+
+-- Make right mouse button extend selection (equivalent to ':behave xterm')
+vim.opt.mousemodel = "extend"
 
 -- Use * and/or + clipboard registers for yank and put operations.
 -- Primary selection: "* register / unnamed
