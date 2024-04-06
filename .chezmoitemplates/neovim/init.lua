@@ -494,6 +494,8 @@ local LEADER_MAPPINGS = {
     ["w"] = { "<Cmd>lua MiniTrailspace.trim()<CR>", "Strip whitespace" },
     ["o"] = { "<Cmd>AerialToggle<CR>",              "Toggle code outline" },
     ["u"] = { "<Cmd>Telescope undo<CR>",            "Search undo tree" },
+    ["n"] = { "<Cmd>Neogen<CR>",                    "Generate annotation" },
+    ["s"] = { "<Cmd>Spectre<CR>",                   "Search and replace" },
   },
 
   t = {
@@ -1042,6 +1044,16 @@ local PLUGINS = {
     end,
   },
 
+  -- Search and replace panel using rg/sed.
+  {
+    "nvim-pack/nvim-spectre",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    cmd = "Spectre",
+    config = function()
+      require("spectre").setup()
+    end,
+  },
+
   --- Language support ---
 
   -- Automatic tab/indenting configuration.
@@ -1190,6 +1202,7 @@ local PLUGINS = {
             json = {
               format = { enable = true },
               validate = { enable = true },
+              schemas = require("schemastore").json.schemas(),
             },
           },
         },
@@ -1207,6 +1220,8 @@ local PLUGINS = {
               keyOrdering = false,
               format = { enable = true },
               validate = true,
+              schemaStore = { enable = false, url = "" }, -- Disable builtin support
+              schemas = require("schemastore").yaml.schemas(),
             },
           },
         },
@@ -1617,9 +1632,26 @@ local PLUGINS = {
     end,
   },
 
+  -- Generate code annotations for function, class, type or file.
+  {
+    "danymat/neogen",
+    cmd = "Neogen",
+    config = function()
+      require("neogen").setup({
+        snippet_engine = "luasnip",
+      })
+    end,
+  },
+
   --- Language plugins ---
 
   -- Reference: https://github.com/sheerun/vim-polyglot#language-packs
+
+  -- SchemaStore catalog support for jsonls and yamlls.
+  {
+    "b0o/SchemaStore.nvim",
+    lazy = true,
+  },
 
   --- Terminal and file management support ---
 
