@@ -29,7 +29,7 @@ sethandler <C-O> a:vim
 sethandler <C-P> a:vim
 sethandler <C-Q> a:vim
 sethandler <C-R> a:vim
-sethandler <C-S> a:ide " Save using Idea
+sethandler <C-S> a:vim
 sethandler <C-T> a:vim
 sethandler <C-U> a:vim
 sethandler <C-V> a:vim
@@ -133,6 +133,9 @@ nnoremap gp o<Esc>p
 
 map <C-k> <Action>(MoveLineUp)
 map <C-j> <Action>(MoveLineDown)
+
+nnoremap <silent> <C-s> :update<CR>
+inoremap <silent> <C-s> <C-o>:update<CR>
 
 
 " Unimpaired-like bindings
