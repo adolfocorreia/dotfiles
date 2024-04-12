@@ -1190,8 +1190,9 @@ local PLUGINS = {
         lua_ls = {
           settings = {
             Lua = {
-              telemetry = { enable = false },
+              completion = { callSnippet = "Replace" },
               diagnostics = { disable = { "missing-fields" } },
+              telemetry = { enable = false },
             },
           },
         },
@@ -1387,6 +1388,10 @@ local PLUGINS = {
           -- Accept (yes) the completion.
           ["<C-y>"] = cmp.mapping.confirm({ select = true }),
 
+          -- Scroll documentation window back/forward.
+          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+          ["<C-f>"] = cmp.mapping.scroll_docs(4),
+
           -- Move right/left in the snippet expansion.
           ["<C-l>"] = cmp.mapping(function()
             if luasnip.expand_or_locally_jumpable() then
@@ -1425,15 +1430,9 @@ local PLUGINS = {
           local dapui = require("dapui")
           dapui.setup(opts)
 
-          dap.listeners.after.event_initialized["dapui_config"] = function()
-            dapui.open()
-          end
-          dap.listeners.before.event_terminated["dapui_config"] = function()
-            dapui.close()
-          end
-          dap.listeners.before.event_exited["dapui_config"] = function()
-            dapui.close()
-          end
+          dap.listeners.after.event_initialized["dapui_config"] = dapui.open
+          dap.listeners.before.event_terminated["dapui_config"] = dapui.close
+          dap.listeners.before.event_exited["dapui_config"] = dapui.close
         end,
       },
 
@@ -1463,8 +1462,15 @@ local PLUGINS = {
       },
     },
     config = function()
-      require("dap")
+      local dap = require("dap")
       require("telescope").load_extension("dap")
+
+      -- Debugging keymaps.
+      vim.keymap.set("n", "<F5>", dap.continue, { desc = "Debug: start/continue" })
+      vim.keymap.set("n", "<F9>", dap.toggle_breakpoint, { desc = "Debug: toggle breakpoint" })
+      vim.keymap.set("n", "<F10>", dap.step_over, { desc = "Debug: step over" })
+      vim.keymap.set("n", "<F11>", dap.step_into, { desc = "Debug: step into" })
+      vim.keymap.set("n", "<S-F11>", dap.step_out, { desc = "Debug: step out" })
     end,
   },
 
@@ -2087,7 +2093,6 @@ local PLUGINS = {
           "mason",
           "nvim-dap-ui",
           "oil",
-          "overseer",
           "quickfix",
           "trouble",
           terminal,
