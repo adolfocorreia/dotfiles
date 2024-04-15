@@ -1,5 +1,5 @@
 {
-  "ActivationHotkey": "LWin_LeftAlt",
+  "ActivationHotkey": "Alt_Win",
   "ShowStartupWindow": false,
   "NotifyVirtualDesktopServiceIncompatibility": false,
   "AllocateNewPanelSpace": false,
