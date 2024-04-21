@@ -2,7 +2,7 @@
 AddPackage emacs-nativecomp # The extensible, customizable, self-documenting real-time display editor with native compilation enabled
 AddPackage gvim # Vi Improved, a highly configurable, improved version of the vi text editor (with advanced features, such as a GUI)
 AddPackage neovide # No Nonsense Neovim Client in Rust
-AddPackage pycharm-community-edition # Python IDE for Professional Developers
+AddPackage --foreign jetbrains-toolbox # Manage all your JetBrains Projects and Tools
 AddPackage --foreign rstudio-desktop-bin # An integrated development environment (IDE) for R (binary from RStudio official repository)
 AddPackage --foreign sublime-merge # Meet a new Git Client, from the makers of Sublime Text
 AddPackage --foreign sublime-text-4 # Sophisticated text editor for code, html and prose - stable build

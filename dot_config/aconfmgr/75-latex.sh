@@ -15,7 +15,6 @@ AddPackage texlab # A cross-platform implementation of the Language Server Proto
 
 # LaTeX apps
 AddPackage texstudio # Integrated writing environment for creating LaTeX documents
-AddPackage --foreign jabref # Graphical Java application for managing BibTeX and biblatex (.bib) databases
 AddPackage --foreign lyx # An advanced WYSIWYM document processor & LaTeX front-end
 
 IgnorePath '/etc/texmf/ls-R'

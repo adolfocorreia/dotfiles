@@ -4,6 +4,10 @@
 # Add extra directories to PATH.
 [[ -d ~/.local/bin ]] && export PATH="${HOME}/.local/bin:${PATH}"
 
+JB="${HOME}/.local/share/JetBrains/Toolbox/scripts"
+[[ -d "${JB}" ]] && export PATH="${PATH}:${JB}"
+
+
 # Init pyenv by adding it to PATH.
 if [[ -x /usr/bin/pyenv ]]; then
   eval "$(pyenv init --path)"

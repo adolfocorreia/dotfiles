@@ -7,6 +7,7 @@ AddPackage --foreign universal-android-debloater-bin # Cross-platform GUI writte
 AddPackage chromium # A web browser built for speed, simplicity, and security
 AddPackage firefox # Standalone web browser from mozilla.org
 AddPackage nyxt # A keyboard-driven web browser designed for power users
+AddPackage torbrowser-launcher # Securely and easily download, verify, install, and launch Tor Browser in Linux
 AddPackage --foreign brave-bin # Web browser that blocks ads and trackers by default (binary release)
 AddPackage --foreign librewolf-bin # Community-maintained fork of Firefox, focused on privacy, security and freedom.
 
