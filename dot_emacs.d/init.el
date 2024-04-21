@@ -4,7 +4,8 @@
 
 ;; Suppress annoying messages
 (defun suppress-messages (func &rest args)
-  "Suppress message output from (FUNC ARGS)."  ; Reference: https://superuser.com/questions/669701/emacs-disable-some-minibuffer-messages
+  "Suppress message output from (FUNC ARGS)."
+  ;; Reference: https://superuser.com/questions/669701/emacs-disable-some-minibuffer-messages
   (cl-flet ((silence (&rest _) (ignore)))
     (advice-add 'message :around #'silence)
     (unwind-protect
@@ -12,7 +13,8 @@
       (advice-remove 'message #'silence))))
 
 (defadvice load (before quiet-load (file &optional noerror nomessage nosuffix must-suffix) activate)
-  "Suppress file loading messages."  ; Reference: https://stackoverflow.com/questions/11498108/elisp-silence-loading-messages-in-batch-mode
+  "Suppress file loading messages."
+  ;; Reference: https://stackoverflow.com/questions/11498108/elisp-silence-loading-messages-in-batch-mode
   (setq nomessage t))
 
 
@@ -150,6 +152,7 @@
   :ensure nil
   :demand t
   :custom
+  (bookmark-save-flag 1)
   (delete-by-moving-to-trash t)
   (find-file-visit-truename t)
   (native-comp-deferred-compilation t)
@@ -674,6 +677,13 @@
   :config
   (auto-package-update-maybe))
 
+;; TODO: learn how to use calc-mode
+(use-package casual
+  :hook
+  (calc-mode . casual-main-menu)
+  :config
+  (evil-collection-define-key 'normal 'calc-mode-map (kbd "C-o") 'casual-main-menu))
+
 ;; TODO: evaluate crux and better-defaults
 (use-package crux
   :bind
@@ -894,7 +904,6 @@
   (define-key evil-insert-state-map (kbd "C-e") #'move-end-of-line)        ; original: evil-copy-from-below
   (define-key evil-insert-state-map (kbd "C-d") #'delete-char)             ; original: evil-shift-left-line
   (define-key evil-insert-state-map (kbd "M-h") #'backward-kill-word)      ; original: mark-paragraph
-  ;; TODO: evaluate evil-rsi and what to do with C-t (e.g. transpose-char)
 
   ;; Since C-d is not available in insert mode (see above), remap evil-shift-line commands
   (define-key evil-insert-state-map (kbd "C-,") #'evil-shift-left-line)
@@ -1430,6 +1439,7 @@
 ;; tempel
 ;; which-func
 ;; whitespace-mode
+;; olivetti
 
 
 
