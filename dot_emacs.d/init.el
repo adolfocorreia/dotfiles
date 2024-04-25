@@ -1620,15 +1620,13 @@
 
 (use-package blacken
   :after python
-  :hook
-  (python-mode . blacken-mode))
+  :commands (blacken-buffer blacken-mode))
 
 (use-package python-isort
   :after python
   :custom
   (python-isort-arguments '("--stdout" "--atomic" "--profile black" "-"))
-  :hook
-  (python-mode . python-isort-on-save-mode))
+  :commands (python-isort-buffer python-isort-on-save-mode))
 
 (use-package poetry
   :after python
