@@ -102,7 +102,7 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 
 -- Display signs in the 'number' column.
-vim.opt.signcolumn = "number"
+vim.opt.signcolumn = "auto:1"
 
 -- Open new split panes to right and bottom.
 vim.opt.splitbelow = true
