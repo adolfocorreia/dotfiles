@@ -140,12 +140,6 @@ inoremap <silent> <C-s> <C-o>:update<CR>
 
 " Unimpaired-like bindings
 
-map [b <Action>(NextTab)
-map ]b <Action>(PreviousTab)
-
-map [[ <Action>(MethodUp)
-map ]] <Action>(MethodDown)
-
 map [d <Action>(GotoPreviousError)
 map ]d <Action>(GotoNextError)
 
