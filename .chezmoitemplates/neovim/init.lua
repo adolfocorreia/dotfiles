@@ -1910,8 +1910,8 @@ local PLUGINS = {
         create_button("l", "  Last session",         "<Cmd>PossessionLoad<CR>"), -- UTF f021
         create_button("s", "  Restore sessions",     "<Cmd>Telescope possession list<CR>"), -- UTF eb85
         create_button("v", "  Neovim configuration", "<Cmd>edit $MYVIMRC<CR>"), -- UTF e615
-        create_button("p", "  Update plugins",       "<Cmd>Lazy update<CR>"), -- UTF f1e6
-        create_button("t", "  Update tools",         "<Cmd>Mason<CR>"), -- UTF e20f
+        create_button("p", "  Setup plugins",        "<Cmd>Lazy<CR>"), -- UTF f1e6
+        create_button("t", "  Setup tools",          "<Cmd>Mason<CR>"), -- UTF e20f
         create_button("q", "  Quit",                 "<Cmd>quitall<CR>"), -- UFT f426
         -- stylua: ignore end
       }
