@@ -1,6 +1,5 @@
 # X.org packages
 AddPackage imwheel # Mouse wheel configuration tool for XFree86/Xorg
-AddPackage numlockx # Turns on the numlock key in X11.
 AddPackage xbindkeys # Launch shell commands with your keyboard or your mouse under X
 AddPackage xclip # Command line interface to the X11 clipboard
 AddPackage xdotool # Command-line X11 automation tool

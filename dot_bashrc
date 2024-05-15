@@ -31,12 +31,6 @@ else
 fi
 
 
-# Enable numlock on shell login (tty).
-if [[ "${TERM}" == 'linux' ]]; then
-  setleds -D +num
-fi
-
-
 # Find packages that provide unavailable commands.
 [[ -r /usr/share/doc/pkgfile/command-not-found.bash ]] && . /usr/share/doc/pkgfile/command-not-found.bash
 
