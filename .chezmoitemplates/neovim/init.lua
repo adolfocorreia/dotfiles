@@ -46,9 +46,6 @@ vim.g.loaded_netrwFileHandlers = 1
 -- Use ':set option?' to check current option value.
 -- Use ':verbose set option?' to check where it was set.
 
--- Enable 24-bit RGB colors in terminal mode.
-vim.opt.termguicolors = true
-
 -- Enable the window title.
 vim.opt.title = true
 
@@ -820,14 +817,6 @@ local PLUGINS = {
     config = true,
   },
 
-  -- Comment out lines (gcc) or comment out with motions (gc_) or selections (gc).
-  -- Use gb_ for block comments.
-  {
-    "numToStr/Comment.nvim",
-    keys = { "gc", "gb", { "gc", "gb", mode = "v" } },
-    config = true,
-  },
-
   -- Set basic useful options and mappings:
   -- - go and gO:   Add empty lines after/before line
   -- - gV:          Select latest changed, put or yanked text
@@ -861,7 +850,7 @@ local PLUGINS = {
     end,
   },
 
-  -- Useful [_, ]_ keybindings:
+  -- Useful [_, ]_ keybindings, with capital letters for first/last semantics:
   -- - b: buffer
   -- - k: comment
   -- - x: git conflict marker
@@ -1298,24 +1287,18 @@ local PLUGINS = {
       })
 
       -- Create autocmd that is run when a LSP attaches to a particular buffer.
+      -- See :help lsp-defaults
       vim.api.nvim_create_autocmd("LspAttach", {
         group = "vimrc",
         desc = "Setup buffer for LSP",
 
         callback = function(event)
-          -- Enable completion triggered by <C-x><C-o>
-          -- TODO: evaluate this better
-          vim.bo[event.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
-
           -- Set LSP buffer local key maps
           local map = function(mode, keys, func, desc)
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP " .. desc })
           end
           -- stylua: ignore start
-          -- TODO: check all these mapping for conflicts
           -- TODO: test all these mapping
-          -- TODO: fix K on lua
-          map("n", "gK",     vim.lsp.buf.hover,           "hover documentation")
           map("n", "gd",     vim.lsp.buf.definition,      "go to definition")
           map("n", "gD",     vim.lsp.buf.declaration,     "go to declaration")
           map("n", "g<C-d>", vim.lsp.buf.type_definition, "go to type definition")
@@ -2221,7 +2204,7 @@ local PLUGINS = {
 
 require("lazy").setup(PLUGINS, {
   install = {
-    colorscheme = { "habamax" },
+    colorscheme = { "default" },
   },
   checker = {
     enabled = true,
