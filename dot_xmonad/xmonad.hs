@@ -47,6 +47,7 @@ import XMonad
     doFloat,
     doShift,
     io,
+    kill,
     mod1Mask,
     mod4Mask,
     sendMessage,
@@ -186,8 +187,10 @@ myAdditionalKeys =
     ("M-\\", spawn "rofi -show"),
     -- Spawn file manager
     ("M-C-S-<Return>", spawn "pcmanfm"),
+    -- Close the focused window
+    ("M-S-q", kill),
     -- Restart xmonad
-    ("M-S-q", spawn "xmonad --recompile && xmonad --restart"),
+    ("M-C-S-q", spawn "xmonad --recompile && xmonad --restart"),
     -- Quit xmonad (this key binding should be hard to trigger by accident)
     ("M-<Pause>", io exitSuccess),
     -- Force window kill with xkill
