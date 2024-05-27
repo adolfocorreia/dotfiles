@@ -1329,7 +1329,7 @@ local PLUGINS = {
     event = { "InsertEnter" },
     dependencies = {
       -- Snippets
-      { "L3MON4D3/LuaSnip", build = "make install_jsregexp" },
+      { "L3MON4D3/LuaSnip", build = (vim.g.os ~= "Windows" and "make install_jsregexp" or {}) },
       -- TODO: evaluate this better
       {
         "rafamadriz/friendly-snippets",
