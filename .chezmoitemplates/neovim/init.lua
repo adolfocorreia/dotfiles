@@ -687,6 +687,12 @@ local PLUGINS = {
 
   --- Neovim management and fixes ---
 
+  -- Configure LuaLS for editing neovim configuration.
+  {
+    "folke/lazydev.nvim",
+    ft = "lua",
+  },
+
   -- Delete buffers without losing window layout.
   {
     "echasnovski/mini.bufremove",
@@ -1146,9 +1152,6 @@ local PLUGINS = {
   {
     "neovim/nvim-lspconfig",
     dependencies = {
-      -- neodev
-      { "folke/neodev.nvim" },
-
       -- Mason
       { "williamboman/mason.nvim" },
       { "williamboman/mason-lspconfig.nvim" },
@@ -1162,9 +1165,6 @@ local PLUGINS = {
     },
 
     config = function()
-      -- Setup neovim with signature help, docs and completion for the nvim Lua API.
-      require("neodev").setup()
-
       -- Setup Mason.
       require("mason").setup()
 
@@ -1175,12 +1175,12 @@ local PLUGINS = {
       -- - https://microsoft.github.io/language-server-protocol/specifications/specification-current
       -- - https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
       local lsp_servers = {
-        -- The configuration for lua_ls is mostly done by the neodev plugin.
+        -- The configuration for lua_ls is mostly done by the lazydev plugin.
         lua_ls = {
           settings = {
             Lua = {
               completion = { callSnippet = "Replace" },
-              diagnostics = { disable = { "missing-fields" } },
+              diagnostics = { globals = { "vim" }, disable = { "missing-fields" } },
               telemetry = { enable = false },
             },
           },
