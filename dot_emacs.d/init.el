@@ -1628,15 +1628,16 @@
   (python-isort-arguments '("--stdout" "--atomic" "--profile black" "-"))
   :commands (python-isort-buffer python-isort-on-save-mode))
 
-(use-package poetry
-  :after python
-  :hook
-  (python-mode . poetry-tracking-mode)
-  :custom
-  (poetry-tracking-strategy 'switch-buffer)
-  :bind
-  (:map python-mode-map
-   ("C-c P" . poetry)))
+(unless ON-WINDOWS
+  (use-package poetry
+    :after python
+    :hook
+    (python-mode . poetry-tracking-mode)
+    :custom
+    (poetry-tracking-strategy 'switch-buffer)
+    :bind
+    (:map python-mode-map
+     ("C-c P" . poetry))))
 
 (use-package pytest
   :after python
