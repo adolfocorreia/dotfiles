@@ -110,9 +110,9 @@ c.content.blocking.adblock.lists = [
     'https://easylist.to/easylist/fanboy-social.txt',
     'https://fanboy.co.nz/fanboy-annoyance.txt',
     'https://fanboy.co.nz/fanboy-antifacebook.txt',
-    'https://www.i-dont-care-about-cookies.eu/abp',
     'https://easylist-downloads.adblockplus.org/abp-filters-anti-cv.txt',
-    'https://ewpratten.github.io/youtube_ad_blocklist/adblockplus.txt',
+    'http://www.i-dont-care-about-cookies.eu/abp/',
+    'http://ewpratten.github.io/youtube_ad_blocklist/adblockplus.txt',
 ]
 
 # Search engines
