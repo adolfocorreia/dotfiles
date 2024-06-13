@@ -1,9 +1,11 @@
 {
   "ActivationHotkey": "Alt_Win",
+  "ActivateOnCapsLock": false,
   "ShowStartupWindow": false,
   "NotifyVirtualDesktopServiceIncompatibility": false,
   "AllocateNewPanelSpace": false,
   "AutoCollapsePanels": false,
+  "AutoSplitCount": 2,
   "AnimateWindowMovement": false,
   "ModifierMoveWindow": false,
   "ModifierMoveWindowAutoFocus": false,
@@ -358,18 +360,18 @@
     "MoveToDisplay9": null
   },
   "ProcessIgnoreList": [
-    "Taskmgr",
+    "CalculatorApp",
     "PomoDoneApp",
-    "PowerToys.Peek.UI",
+    "PowerToys.AdvancedPaste"
+    "Taskmgr",
     "speedcrunch",
-    "CalculatorApp"
   ],
   "ClassIgnoreList": [
     "#32770",
-    "bosa_sdm_XL9",
     "CredentialHelperSelector",
     "EditShortcutsWindow",
     "OperationStatusWindow"
+    "bosa_sdm_XL9",
   ],
   "RemindToRateReview": false,
   "ShowContextHints": true,
