@@ -10,6 +10,6 @@ IgnorePath '/etc/printcap'
 
 # Keyboard customization
 AddPackage qmk # CLI tool for customizing supported mechanical keyboards.
-AddPackage --foreign kanata # Bring the customizability of a QMK board to any keyboard near you
+AddPackage --foreign vial-appimage # Vial is an open-source cross-platform (Windows, Linux and Mac) GUI and a QMK fork for configuring your keyboard in real time, similar to VIA.
 
 CreateLink /etc/kanata.kbd /home/adcor/.config/kanata/kanata.kbd
