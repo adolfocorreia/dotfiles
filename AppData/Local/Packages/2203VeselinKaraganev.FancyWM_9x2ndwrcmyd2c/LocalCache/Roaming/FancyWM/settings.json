@@ -4,16 +4,18 @@
   "ShowStartupWindow": false,
   "NotifyVirtualDesktopServiceIncompatibility": false,
   "AllocateNewPanelSpace": false,
-  "AutoCollapsePanels": false,
-  "AutoSplitCount": 2,
+  "AutoCollapsePanels": true,
+  "AutoSplitCount": 4,
+  "DelayReposition": true,
   "AnimateWindowMovement": false,
   "ModifierMoveWindow": false,
   "ModifierMoveWindowAutoFocus": false,
   "WindowPadding": 8,
   "PanelHeight": 18,
   "PanelFontSize": 12,
-  "ShowFocusDuringAction": true,
-  "OverrideAccentColor": false,
+  "ShowFocus": true,
+  "ShowFocusDuringAction": false,
+  "OverrideAccentColor": true,
   "CustomAccentColor": "#5E81ACFF",
   "Keybindings": {
     "ToggleManager": {
@@ -360,18 +362,18 @@
     "MoveToDisplay9": null
   },
   "ProcessIgnoreList": [
+    "Taskmgr",
     "CalculatorApp",
     "PomoDoneApp",
-    "PowerToys.AdvancedPaste"
-    "Taskmgr",
-    "speedcrunch",
+    "PowerToys.AdvancedPaste",
+    "speedcrunch"
   ],
   "ClassIgnoreList": [
     "#32770",
     "CredentialHelperSelector",
     "EditShortcutsWindow",
-    "OperationStatusWindow"
-    "bosa_sdm_XL9",
+    "OperationStatusWindow",
+    "bosa_sdm_XL9"
   ],
   "RemindToRateReview": false,
   "ShowContextHints": true,
