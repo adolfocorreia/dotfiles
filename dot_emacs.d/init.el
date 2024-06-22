@@ -678,11 +678,12 @@
   (auto-package-update-maybe))
 
 ;; TODO: learn how to use calc-mode
-(use-package casual
+(use-package casual-calc
+  :after calc
   :hook
-  (calc-mode . casual-main-menu)
+  (calc-mode . casual-calc-tmenu)
   :config
-  (evil-collection-define-key 'normal 'calc-mode-map (kbd "C-o") 'casual-main-menu))
+  (evil-collection-define-key 'normal 'calc-mode-map (kbd "C-o") 'casual-calc-tmenu))
 
 ;; TODO: evaluate crux and better-defaults
 (use-package crux
@@ -1575,7 +1576,8 @@
   (emacs-lisp-mode . parinfer-rust-mode)
   (lisp-mode . parinfer-rust-mode)
   :custom
-  (parinfer-rust-auto-download t))
+  (parinfer-rust-auto-download t)
+  (parinfer-rust-prefered-mode 'smart))
 
 
 ;; Python
@@ -1995,6 +1997,14 @@
 
 
 
+;;; Chezmoi
+
+;; TODO: add ediff and magit extensions
+(use-package chezmoi
+  :commands (chezmoi-find chezmoi-open-other))
+
+
+
 ;;; Git
 
 ;; Magit
@@ -2021,8 +2031,6 @@
   (prog-mode . diff-hl-mode)
   (text-mode . diff-hl-mode)
   (dired-mode . diff-hl-dired-mode))
-
-;; TODO: evaluate chezmoi.el
 
 
 
