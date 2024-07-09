@@ -74,6 +74,8 @@ Library
 .config/fish/functions/fzf_key_bindings.fish
 .config/fish/functions/lfcd.fish
 
+.hammerspoon
+
 .qutebrowser
 
 .zprofile
