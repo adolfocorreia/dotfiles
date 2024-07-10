@@ -69,6 +69,7 @@ tags
 {{ if ne .chezmoi.os "darwin" }}
 Library
 
+.config/amethyst
 .config/karabiner
 
 .config/fish/functions/fzf_key_bindings.fish

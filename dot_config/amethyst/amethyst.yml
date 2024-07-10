@@ -1,0 +1,73 @@
+# Restart Amethyst in order to register changes.
+# Run `defaults delete com.amethyst.Amethyst.plist` to remove the current preferences.
+
+# References:
+# - https://github.com/ianyh/Amethyst/blob/development/docs/configuration-files.md
+# - https://github.com/ianyh/Amethyst/blob/development/.amethyst.sample.yml
+
+# layouts - Ordered list of layouts to use by layout key (default tall, wide, fullscreen, and column).
+layouts:
+  - tall
+  - fullscreen
+  - wide
+  - column
+  - floating
+
+# First mod (default option + shift).
+mod1:
+  - option
+  - shift
+
+# Second mod (default option + shift + control).
+mod2:
+  - option
+  - shift
+  - control
+
+# Boolean flag for whether or not to add margins between windows (default false).
+window-margins: true
+
+# The size of the margins between windows (in px, default 0).
+window-margin-size: 4
+
+# List of bundle identifiers for applications to either be automatically floating or automatically tiled based on floating-is-blacklist (default []).
+floating:
+  - com.amazon.Lassen
+  - com.apple.Console
+  - com.apple.Preview
+  - com.apple.Safari
+  - com.apple.mail
+  - com.bitwarden.desktop
+  - com.brave.Browser
+  - com.googlecode.iterm2
+  - com.microsoft.Excel
+  - com.microsoft.Powerpoint
+  - com.microsoft.VSCode
+  - com.microsoft.Word
+  - com.nirvanahq.desktop
+  - com.olivetree.BibleReaderMac
+  - com.sublimemerge
+  - com.sublimetext.4
+  - md.obsidian
+  - net.whatsapp.WhatsApp
+  - org.gnu.Emacs
+  - org.mozilla.firefox
+  - org.qutebrowser.qutebrowser
+
+# Boolean flag determining behavior of the floating list. true if the applications should be floating and all others tiled. false if the applications should be tiled and all others floating (default true).
+floating-is-blacklist: false
+
+# true if dragging and dropping windows on to each other should swap their positions (default false).
+mouse-swaps-windows: true
+
+# true if changing the frame of a window with the mouse should update the layout to accommodate the change (default false). Note that not all layouts will be able to respond to the change.
+mouse-resizes-windows: true
+
+# true to display the name of the layout when moving to a new space (default true).
+enables-layout-hud-on-space-change: false
+
+# true to insert new windows into the first position and false to insert new windows into the last position (default false).
+new-windows-to-main: true
+
+# true to automatically move to a space when throwing a window to it (default true).
+follow-space-thrown-windows: false

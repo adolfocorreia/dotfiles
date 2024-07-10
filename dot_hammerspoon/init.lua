@@ -4,10 +4,14 @@
 
 hs = hs
 
-hs.hotkey.bind({ "option", "shift" }, "return", function()
+-- Same as in Amethyst
+mod1 = { "option", "shift" }
+mod2 = { "option", "shift", "control" }
+
+hs.hotkey.bind(mod1, "return", function()
 	hs.execute("open -n /Applications/iTerm.app")
 end)
 
-hs.hotkey.bind({ "option", "shift", "ctrl" }, "return", function()
+hs.hotkey.bind(mod2, "return", function()
 	hs.execute("open /Users/adcor")
 end)
