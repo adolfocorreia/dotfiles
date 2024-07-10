@@ -18,7 +18,7 @@
 ;; Set title template for visible frames
 (setq-default frame-title-format '(multiple-frames "%b" ("" "%b - GNU Emacs")))
 
-;; Start frames maximized and with no window decorations (including title bar)
+;; Set default frame properties
 (when ON-LINUX
   (add-to-list 'default-frame-alist '(undecorated . t)))
 (when ON-MAC
