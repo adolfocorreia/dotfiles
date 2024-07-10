@@ -1,0 +1,27 @@
+{
+  "$schema" : "https:\/\/schema.linearmouse.app\/0.9.5",
+  "schemes" : [
+    {
+      "scrolling" : {
+        "speed" : {
+          "vertical" : 10
+        },
+        "reverse" : {
+          "vertical" : true
+        }
+      },
+      "if" : {
+        "device" : {
+          "vendorID" : "0x45e",
+          "category" : "mouse",
+          "productName" : "BluetoothMouse3600",
+          "productID" : "0x916"
+        }
+      },
+      "pointer" : {
+        "acceleration" : 0.75,
+        "speed" : 0.15
+      }
+    }
+  ]
+}

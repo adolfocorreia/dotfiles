@@ -71,6 +71,7 @@ Library
 
 .config/amethyst
 .config/karabiner
+.config/linearmouse
 
 .config/fish/functions/fzf_key_bindings.fish
 .config/fish/functions/lfcd.fish
