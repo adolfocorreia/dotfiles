@@ -1,4 +1,5 @@
 {
+  // Sane Home/End behaviour
   "\UF729"   = moveToBeginningOfParagraph:;                    // home
   "\UF72B"   = moveToEndOfParagraph:;                          // end
   "$\UF729"  = moveToBeginningOfParagraphAndModifySelection:;  // shift-home
@@ -7,4 +8,8 @@
   "^\UF72B"  = moveToEndOfDocument:;                           // ctrl-end
   "^$\UF729" = moveToBeginningOfDocumentAndModifySelection:;   // ctrl-shift-home
   "^$\UF72B" = moveToEndOfDocumentAndModifySelection:;         // ctrl-shift-end
+
+  "^y" = yankAndSelect:;       // Yank from kill ring (defaults write -g NSTextKillRingSize -int 4)
+  "^w" = deleteWordBackward:;
+  "^u" = deleteToBeginningOfParagraph:;
 }
