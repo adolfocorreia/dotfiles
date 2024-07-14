@@ -9,11 +9,6 @@ mod1 = { "option", "shift" }
 mod2 = { "option", "shift", "control" }
 
 -- Open iTerm
-hs.hotkey.bind(mod1, "\\", function()
+hs.hotkey.bind(mod2, "return", function()
 	hs.execute("open -n /Applications/iTerm.app")
-end)
-
--- Open Finder
-hs.hotkey.bind(mod2, "\\", function()
-	hs.execute("open /Users/adcor")
 end)
