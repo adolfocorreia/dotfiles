@@ -1932,6 +1932,7 @@ local PLUGINS = {
   -- Display popup with key bindings.
   {
     "folke/which-key.nvim",
+    dependencies = { "echasnovski/mini.icons" },
     event = "VeryLazy",
     init = function()
       vim.opt.timeout = true
@@ -1949,12 +1950,6 @@ local PLUGINS = {
             g = true,
             z = true,
           },
-        },
-        key_labels = {
-          -- Override label used to display some keys
-          ["<space>"] = "SPC",
-          ["<CR>"] = "RET",
-          ["<Tab>"] = "TAB",
         },
       })
       wk.add(LEADER_MAPPINGS)
