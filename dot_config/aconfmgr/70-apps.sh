@@ -1,7 +1,7 @@
 # Android
 AddPackage android-file-transfer # Android MTP client with minimalistic UI
 AddPackage android-tools # Android platform tools
-AddPackage --foreign universal-android-debloater-bin # Cross-platform GUI written in Rust using ADB to debloat non-rooted Android devices.
+AddPackage --foreign universal-android-debloater # Cross-platform GUI written in Rust using ADB to debloat non-rooted Android devices
 
 # Browsers
 AddPackage chromium # A web browser built for speed, simplicity, and security

@@ -18,7 +18,7 @@ AddPackage rclone # Sync files to and from Google Drive, S3, Swift, Cloudfiles, 
 AddPackage rsnapshot # A remote filesystem snapshot utility
 AddPackage rsync # A fast and versatile file copying tool for remote and local files
 AddPackage vorta # Desktop Client for Borg Backup
-AddPackage --foreign backblaze-b2-bin # Backblaze B2 Command Line Client
+AddPackage --foreign backblaze-b2 # Backblaze B2 Command Line Client
 
 AddPackage python-llfuse # A set of Python bindings for the low level FUSE API.
 

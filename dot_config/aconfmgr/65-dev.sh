@@ -62,3 +62,6 @@ AddPackage go # Core compiler tools for the Go programming language
 
 # JavaScript
 AddPackage npm # A package manager for JavaScript
+
+# Lua
+AddPackage luarocks # Deployment and management system for Lua modules
