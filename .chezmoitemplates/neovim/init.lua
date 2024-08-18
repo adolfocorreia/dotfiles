@@ -480,14 +480,14 @@ local LEADER_MAPPINGS = {
   { "<Leader>cs", "<Cmd>Spectre<CR>",                   desc = "Search and replace" },
 
   { "<Leader>t", group = "trouble" },
-  { "<Leader>tt", "<Cmd>TroubleToggle<CR>",                       desc = "Toggle Trouble" },
-  { "<Leader>tT", "<Cmd>TodoTrouble<CR>",                         desc = "Toggle TODO Trouble" },
-  { "<Leader>tw", "<Cmd>TroubleToggle workspace_diagnostics<CR>", desc = "Workspace diagnostics" },
-  { "<Leader>td", "<Cmd>TroubleToggle document_diagnostics<CR>",  desc = "Document diagnostics" },
-  { "<Leader>tq", "<Cmd>TroubleToggle quickfix<CR>",              desc = "Quickfix items" },
-  { "<Leader>tl", "<Cmd>TroubleToggle loclist<CR>",               desc = "Loclist items" },
-  { "<Leader>tr", "<Cmd>TroubleToggle lsp_references<CR>",        desc = "LSP references" },
-  { "<Leader>ts", "<Cmd>TodoTelescope<CR>",                       desc = "Search TODOs" },
+  { "<Leader>tt", "<Cmd>Trouble diagnostics toggle filter.buf=0<CR>", desc = "Document diagnostics" },
+  { "<Leader>tw", "<Cmd>Trouble diagnostics toggle<CR>",              desc = "Workspace diagnostics" },
+  { "<Leader>tq", "<Cmd>Trouble quickfix toggle<CR>",                 desc = "Quickfix items" },
+  { "<Leader>tl", "<Cmd>Trouble loclist toggle<CR>",                  desc = "Loclist items" },
+  { "<Leader>ts", "<Cmd>Trouble symbols toggle<CR>",                  desc = "Document symbols" },
+  { "<Leader>tL", "<Cmd>Trouble lsp toggle<CR>",                      desc = "LSP definitions and references" },
+  { "<Leader>tT", "<Cmd>Trouble todo toggle<CR>",                     desc = "TODOs" },
+  { "<Leader>tS", "<Cmd>TodoTelescope<CR>",                           desc = "Search TODOs" },
 
   { "<Leader>d", group = "diff" },
   { "<Leader>dt", "<Cmd>diffthis<CR>",     desc = "Diff this window" },
@@ -1144,7 +1144,7 @@ local PLUGINS = {
           },
         },
         basedpyright = {},
-        ruff_lsp = {},
+        ruff = {},
         jsonls = {
           settings = {
             json = {
@@ -1204,17 +1204,6 @@ local PLUGINS = {
           },
         },
       }
-      if vim.fn.executable("cargo") == 1 then
-        lsp_servers["pylyzer"] = {
-          capabilities = {
-            client = {
-              server_capabilities = {
-                codeActionProvider = false,
-              },
-            },
-          },
-        }
-      end
 
       -- Add complete capabilities provided by cmp and broadcast them to the servers.
       local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -1909,22 +1898,21 @@ local PLUGINS = {
     },
   },
 
-  -- List for showing diagnostics, references, search results, quickfix and
-  -- location lists.
+  -- List for showing diagnostics, quickfix and location items, document symbols, search results
+  -- and LSP definitions, references, implementations, type definitions and declarations.
   {
     "folke/trouble.nvim",
-    cmd = { "Trouble", "TroubleToggle" },
+    cmd = { "Trouble" },
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
       require("trouble").setup({
         mode = "document_diagnostics",
         height = 15,
-      })
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = { "Trouble" },
-        group = "vimrc",
-        desc = "Disable colorcolumn in Trouble",
-        command = "setlocal colorcolumn=",
+        win = {
+          wo = {
+            colorcolumn = "",
+          },
+        },
       })
     end,
   },
