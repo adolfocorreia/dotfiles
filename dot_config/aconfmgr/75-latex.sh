@@ -19,4 +19,7 @@ AddPackage --foreign lyx # An advanced WYSIWYM document processor & LaTeX front-
 
 IgnorePath '/etc/texmf/ls-R'
 IgnorePath '/etc/texmf/tex/generic/config/language*'
-IgnorePath '/etc/texmf/web2c'
+IgnorePath '/etc/texmf/web2c/*.cfg'
+IgnorePath '/etc/texmf/web2c/*.cnf'
+IgnorePath '/usr/share/texmf'
+IgnorePath '/usr/share/texmf-dist'

@@ -46,6 +46,7 @@ IgnorePath '/var/db/sudo'
 IgnorePath '/var/lib'
 IgnorePath '/var/log'
 IgnorePath '/var/spool'
+IgnorePath '/var/spool/*'
 IgnorePath '/var/tmp'
 
 # Misc

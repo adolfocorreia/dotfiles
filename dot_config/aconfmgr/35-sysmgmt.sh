@@ -26,5 +26,6 @@ AddPackage python-llfuse # A set of Python bindings for the low level FUSE API.
 AddPackage at # AT and batch delayed command scheduling utility and daemon
 AddPackage cronie # Daemon that runs specified programs at scheduled times and related tools
 
-CreateLink /usr/lib/jvm/default java-21-openjdk
-CreateLink /usr/lib/jvm/default-runtime java-21-openjdk
+# Default runtimes
+CreateLink /usr/lib/jvm/default java-22-openjdk
+CreateLink /usr/lib/jvm/default-runtime java-22-openjdk

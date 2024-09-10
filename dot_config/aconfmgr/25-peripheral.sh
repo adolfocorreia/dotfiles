@@ -6,6 +6,8 @@ AddPackage simple-scan # Simple scanning utility
 AddPackage system-config-printer # A CUPS printer configuration tool and status applet
 AddPackage --foreign epson-inkjet-printer-escpr # Epson Inkjet Printer Driver (ESC/P-R) for Linux
 
+IgnorePath '/etc/cups'
+IgnorePath '/etc/cups/*.conf'
 IgnorePath '/etc/printcap'
 
 # Keyboard customization

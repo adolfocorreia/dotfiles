@@ -14,6 +14,7 @@ IgnorePath '/usr/share/*vim/*/doc/tags'
 AddPackage cmake # A cross-platform open-source make system
 AddPackage ctags # Generates an index file of language objects found in source files
 AddPackage direnv # A shell extension that manages your environment
+AddPackage lazygit # Simple terminal UI for git commands
 AddPackage meld # Compare files, directories and working copies
 AddPackage pre-commit # A framework for managing and maintaining multi-language pre-commit hooks
 AddPackage vint # Lint tool for Vim script Language

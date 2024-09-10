@@ -35,10 +35,11 @@ AddPackage handbrake # Multithreaded video transcoder
 AddPackage obsidian # A powerful knowledge base that works on top of a local folder of plain text Markdown files
 AddPackage pandoc-cli # Conversion between documentation formats
 AddPackage syncthing # Open Source Continuous Replication / Cluster Synchronization Thing
+AddPackage tgpt # AI Chatbots in terminal without needing API keys
 AddPackage transmission-gtk # Fast, easy, and free BitTorrent client (GTK+ GUI)
 AddPackage yt-dlp # A youtube-dl fork with additional features and fixes
 AddPackage --foreign dropbox # A free service that lets you bring your photos, docs, and videos anywhere and share them easily.
+AddPackage --foreign irpf # Brazilian physical person income tax (IRPF) program
 AddPackage --foreign nodejs-nativefier # A command-line tool to easily create a desktop app for any web site with minimal configuration
 AddPackage --foreign noti # Monitor a process and trigger a notification
-AddPackage --foreign tgpt-bin # ChatGPT in terminal without needing API keys
 AddPackage --foreign whatsapp-nativefier # WhatsApp desktop built with nativefier (electron)
