@@ -100,7 +100,9 @@ Config {
                                ]
     , Run Com "echo" ["<fc=#bb9af7><fn=1>\xf021</fn></fc>"] "pkgs_icon" 0
     , Run Com "echo" ["<fc=#bb9af7><fn=1>\xf11c</fn></fc>"] "kbd_icon"  0
+    , Run Com "echo" ["<fc=#7dcfff><fn=1>\xf11d</fn></fc>"] "flag_icon"  0
     , Run Com "sh" ["-c", "checkupdates | wc -l"] "pkgs" 6000
+    , Run Com "sh" ["-c", "curl -s ipinfo.io | jq -r '.country'"] "country" 3000
     , Run Kbd [ ("us",       "us")
               , ("us(intl)", "us-intl")
               ]
@@ -112,7 +114,8 @@ Config {
   , template = " %_XMONAD_LOG_1% \
                \ }   \
                \<box color=#7dcfff type=Bottom width=3>%SBRJ%</box>  \
-               \<box color=#bb9af7 type=Bottom width=3>%date%  %time%</box> \
+               \<box color=#bb9af7 type=Bottom width=3>%date%  %time%</box>  \
+               \<box color=#7dcfff type=Bottom width=3>%flag_icon% %country%</box> \
                \   { \
                \<box color=#7dcfff type=Bottom width=3>%cpu%  %memory%  %multicoretemp%</box>  \
                \<box color=#bb9af7 type=Bottom width=3>%pkgs_icon% %pkgs%</box>  \
