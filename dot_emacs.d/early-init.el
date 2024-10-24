@@ -48,3 +48,7 @@
 ;; Make UTF-8 the default coding system
 (set-language-environment "UTF-8")
 (setq default-input-method nil)
+
+(let
+   ((git-home (getenv "GIT_INSTALL_ROOT")))
+   (if git-home (add-to-list 'exec-path git-home)))
