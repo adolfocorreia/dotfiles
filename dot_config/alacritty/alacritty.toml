@@ -2,7 +2,7 @@
 
 ## General
 
-[shell]
+[terminal.shell]
 program = "/usr/bin/tmux"
 
 
