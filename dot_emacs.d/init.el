@@ -678,7 +678,7 @@
   (auto-package-update-maybe))
 
 ;; TODO: learn how to use calc-mode
-(use-package casual-calc
+(use-package casual
   :after calc
   :hook
   (calc-mode . casual-calc-tmenu)
