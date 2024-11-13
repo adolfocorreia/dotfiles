@@ -10,6 +10,7 @@ AddPackage nyxt # A keyboard-driven web browser designed for power users
 AddPackage torbrowser-launcher # Securely and easily download, verify, install, and launch Tor Browser in Linux
 AddPackage --foreign brave-bin # Web browser that blocks ads and trackers by default (binary release)
 AddPackage --foreign librewolf-bin # Community-maintained fork of Firefox, focused on privacy, security and freedom.
+AddPackage --foreign mullvad-browser-bin # Privacy-focused web browser developed by Mullvad VPN and the Tor Project
 
 AddPackage qutebrowser # A keyboard-driven, vim-like browser based on Python and Qt
 AddPackage pdfjs-legacy # PDF reader in javascript - legacy distribution
@@ -19,7 +20,7 @@ AddPackage python-adblock # Brave's adblock library in Python
 AddPackage aspell # A spell checker designed to eventually replace Ispell
 AddPackage aspell-en # English dictionary for aspell
 AddPackage hunspell-en_us # US English hunspell dictionaries
-AddPackage libreoffice-still # LibreOffice maintenance branch
+AddPackage libreoffice-fresh # LibreOffice branch which contains new features and program enhancements
 AddPackage --foreign hunspell-pt-br # Brazillian Portuguese grammar, spelling and hyphenation checker to hunspell
 AddPackage --foreign proselint # A linter for prose
 
