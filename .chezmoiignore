@@ -26,6 +26,7 @@ tags
 .config/alacritty
 .config/dunst
 .config/gtk-3.0
+.config/gtk-4.0
 .config/kanata
 .config/keepassxc
 .config/kitty
