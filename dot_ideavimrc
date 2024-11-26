@@ -2,6 +2,7 @@
 
 let mapleader = " "
 
+" Documentation: https://www.jetbrains.com/help/idea/using-product-as-the-vim-editor.html
 " List available actions with :actionlist
 " Enable action tracking with :set trackactionids
 " List current maps with :map
@@ -78,11 +79,8 @@ set ideastatusicon=gray
 
 " Install via marketplace:
 " - IdeaVim
-" - Tokyo Night Theme
 " - AceJump:             https://github.com/acejump/AceJump
-" - IdeaVimMulticursor:  https://github.com/dankinsoid/IdeaVimMulticursor
 " - IdeaVim-Quickscope:  https://github.com/joshestein/ideavim-quickscope
-" - IdeaVim-Sneak:       https://github.com/Mishkun/ideavim-sneak
 " - Which-Key:           https://github.com/TheBlob42/idea-which-key
 
 set surround
@@ -94,8 +92,6 @@ set highlightedyank
 
 set sneak
 set quickscope
-
-set multicursor
 
 " NERDTree bindings: https://github.com/JetBrains/ideavim/wiki/NERDTree-support
 set NERDTree
@@ -110,9 +106,12 @@ let g:argtextobj_pairs="(:),{:},<:>,[:]"
 set textobj-entire
 set textobj-indent
 
+set vim-paragraph-motion
+
 
 """ Mappings
-" Default mappings: https://github.com/JetBrains/ideavim/blob/master/src/main/java/com/maddyhome/idea/vim/package-info.java
+" Default mappings:
+" - See old package-info.java: https://github.com/JetBrains/ideavim/commit/126de5c218641d56f211e0465097352678cdd209
 
 nnoremap Y y$
 
@@ -124,6 +123,11 @@ vnoremap > >gv
 
 map g, <Action>(JumpToNextChange)
 map g; <Action>(JumpToLastChange)
+
+map gI <Action>(GotoImplementation)
+map gr <Action>(ShowUsages)
+map gR <Action>(FindUsages)
+map gS <Action>(GotoSuperMethod)
 
 nnoremap gO O<Esc>j
 nnoremap go o<Esc>k
@@ -157,10 +161,6 @@ inoremap <C-e> <End>
 inoremap <C-d> <Del>
 
 
-" Plugin bindings
-map gss <Action>(AceAction)
-
-
 " Leader mappings
 " Reference: https://github.com/MarcoIeni/intellimacs
 
@@ -185,6 +185,19 @@ map <Leader>ch <Action>(HighlightUsagesInFile)
 map <Leader>ci <Action>(OptimizeImports)
 map <Leader>cR <Action>(RefactoringMenu)
 map <Leader>cr <Action>(RenameElement)
+map <Leader>cs <Action>(FileStructurePopup)
+
+" Debug
+map <Leader>dd <Action>(Debug)
+map <Leader>dr <Action>(Run)
+map <Leader>ds <Action>(StepOver)
+map <Leader>di <Action>(StepInto)
+map <Leader>do <Action>(StepOut)
+map <Leader>dc <Action>(RunToCursor)
+map <Leader>dR <Action>(Resume)
+map <Leader>dS <Action>(Stop)
+map <Leader>db <Action>(EditBreakpoint)
+map <Leader>dB <Action>(ViewBreakpoints)
 
 " Files
 map <Leader>ff <Action>(GotoFile)
@@ -221,3 +234,7 @@ map <Leader>sn :nohlsearch<CR>
 " Toggle
 map <Leader>tt :NERDTreeToggle<CR>
 map <Leader>tT <Action>(Terminal.OpenInTerminal)
+map <Leader>tb <Action>(ToggleLineBreakpoint)
+map <Leader>td <Action>(ToggleDistractionFreeMode)
+map <Leader>tz <Action>(ToggleZenMode)
+
