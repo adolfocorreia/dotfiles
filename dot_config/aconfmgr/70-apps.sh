@@ -35,7 +35,6 @@ AddPackage bibletime # Bible study tool
 AddPackage handbrake # Multithreaded video transcoder
 AddPackage obsidian # A powerful knowledge base that works on top of a local folder of plain text Markdown files
 AddPackage pandoc-cli # Conversion between documentation formats
-AddPackage syncthing # Open Source Continuous Replication / Cluster Synchronization Thing
 AddPackage tgpt # AI Chatbots in terminal without needing API keys
 AddPackage transmission-gtk # Fast, easy, and free BitTorrent client (GTK+ GUI)
 AddPackage yt-dlp # A youtube-dl fork with additional features and fixes
