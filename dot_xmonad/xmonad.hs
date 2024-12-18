@@ -267,7 +267,7 @@ myLayoutHook = avoidStruts (tall ||| full)
     full = renamed [Replace "full"] Full
     spc = spacingRaw False border True border True
     border = Border gap gap gap gap
-    gap = 8
+    gap = 4
 
 -- Workspaces configuration
 myWorkspaces :: [String]
