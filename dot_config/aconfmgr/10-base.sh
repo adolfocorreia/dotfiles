@@ -24,8 +24,8 @@ AddPackage arch-wiki-docs # Pages from Arch Wiki optimized for offline browsing
 AddPackage arch-wiki-lite # Arch Wiki without HTML. 1/9 as big, easily searched & viewable on console
 
 # Compression
+AddPackage 7zip # File archiver for extremely high compression
 AddPackage gzip # GNU compression utility
-AddPackage p7zip # Command-line file archiver with high compression ratio
 AddPackage unzip # For extracting and viewing files in .zip archives
 
 # Basic tools to build packages

@@ -11,3 +11,9 @@ AddPackage pamixer # Pulseaudio command-line mixer like amixer
 AddPackage pavucontrol # PulseAudio Volume Control
 AddPackage playerctl # mpris media player controller and lib for spotify, vlc, audacious, bmp, xmms2, and others.
 AddPackage pulsemixer # CLI and curses mixer for pulseaudio
+
+# Multimedia codecs
+AddPackage gst-libav # Multimedia graph framework - libav plugin
+AddPackage gst-plugin-va # Multimedia graph framework - va plugin
+AddPackage gst-plugins-good # Multimedia graph framework - good plugins
+AddPackage libdvdcss # Portable abstraction library for DVD decryption
