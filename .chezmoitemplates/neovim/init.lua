@@ -973,7 +973,7 @@ local PLUGINS = {
     "chrisgrieser/nvim-various-textobjs",
     event = "BufReadPre",
     config = function()
-      require("various-textobjs").setup({ useDefaultKeymaps = false })
+      require("various-textobjs").setup()
 
       -- Set custom mappings.
       vim.keymap.set({ "o", "x" }, "ii", "<Cmd>lua require('various-textobjs').indentation('inner', 'inner')<CR>")
