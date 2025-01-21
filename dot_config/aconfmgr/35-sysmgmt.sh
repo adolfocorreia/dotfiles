@@ -20,8 +20,6 @@ AddPackage rsync # A fast and versatile file copying tool for remote and local f
 AddPackage vorta # Desktop Client for Borg Backup
 AddPackage --foreign backblaze-b2 # Backblaze B2 Command Line Client
 
-AddPackage python-llfuse # A set of Python bindings for the low level FUSE API.
-
 # Scheduling tools
 AddPackage at # AT and batch delayed command scheduling utility and daemon
 AddPackage cronie # Daemon that runs specified programs at scheduled times and related tools

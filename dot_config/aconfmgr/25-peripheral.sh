@@ -4,7 +4,7 @@ AddPackage cups-pdf # PDF printer for cups
 AddPackage sane-airscan # SANE - SANE backend for AirScan (eSCL) and WSD document scanners
 AddPackage simple-scan # Simple scanning utility
 AddPackage system-config-printer # A CUPS printer configuration tool and status applet
-AddPackage --foreign epson-inkjet-printer-escpr # Epson Inkjet Printer Driver (ESC/P-R) for Linux
+AddPackage --foreign hpuld # HP Unified Linux Driver
 
 IgnorePath '/etc/cups'
 IgnorePath '/etc/cups/*.conf'

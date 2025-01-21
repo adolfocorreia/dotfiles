@@ -19,4 +19,3 @@ AddPackage --foreign xkb-switch # Program that allows to query and change the XK
 AddPackage arandr # Provide a simple visual front end for XRandR 1.2.
 AddPackage xcolor # Lightweight color picker for X11
 AddPackage xorg-xwininfo # Command-line utility to print information about windows on an X server
-AddPackage --foreign xdg-ninja # A shell script which checks your $HOME for unwanted files and directories.

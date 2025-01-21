@@ -29,4 +29,6 @@ AddPackage tmux # Terminal multiplexer
 AddPackage trash-cli # Command line trashcan (recycle bin) interface
 AddPackage tree # A directory listing program displaying a depth indented list of files
 AddPackage zoxide # A smarter cd command for your terminal
+AddPackage --foreign czkawka-gui-bin # Find and manage duplicate files, empty folders, similar images, and other "lint" (GUI, with HEIF support)
+AddPackage --foreign xdg-ninja # A shell script which checks your $HOME for unwanted files and directories.
 AddPackage --foreign wego # Weather app for the terminal
