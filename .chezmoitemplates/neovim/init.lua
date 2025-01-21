@@ -478,6 +478,8 @@ local LEADER_MAPPINGS = {
   { "<Leader>cu", "<Cmd>Telescope undo<CR>",            desc = "Search undo tree" },
   { "<Leader>cn", "<Cmd>Neogen<CR>",                    desc = "Generate annotation" },
   { "<Leader>cs", "<Cmd>Spectre<CR>",                   desc = "Search and replace" },
+  { "<Leader>cp", "<Cmd>Copilot panel<CR>",             desc = "Open Copilot window" },
+  { "<Leader>ct", "<Cmd>Copilot toggle<CR>",            desc = "Toggle Copilot on/off" },
 
   { "<Leader>t", group = "trouble" },
   { "<Leader>tt", "<Cmd>Trouble diagnostics toggle filter.buf=0<CR>", desc = "Document diagnostics" },
@@ -1225,7 +1227,7 @@ local PLUGINS = {
         auto_update = true,
         run_on_start = true,
         start_delay = 10000,
-        debounce_hours = 12,
+        debounce_hours = 24 * 5,
         ensure_installed = {
           "markdownlint",
           "selene",
@@ -1343,6 +1345,20 @@ local PLUGINS = {
           { name = "path" },
         },
       })
+    end,
+  },
+
+  -- Copilot code suggestions.
+  -- M-l: accept suggestion
+  -- M-]: next suggestion
+  -- M-[: previous suggestion
+  -- TODO: evaluate using Copilot as a cmp completion source.
+  {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+      require("copilot").setup({ suggestion = { auto_trigger = true } })
     end,
   },
 
