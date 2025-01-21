@@ -1,34 +1,50 @@
 #!/bin/bash
 # ~/.bash_profile
 
-# Add extra directories to PATH.
-[[ -d ~/.local/bin ]] && export PATH="${HOME}/.local/bin:${PATH}"
-
-JB="${HOME}/.local/share/JetBrains/Toolbox/scripts"
-[[ -d "${JB}" ]] && export PATH="${PATH}:${JB}"
-
-
-# Init pyenv by adding it to PATH.
-if [[ -x /usr/bin/pyenv ]]; then
-  eval "$(pyenv init --path)"
-fi
-
-
-# Set other environment variables.
+# Set system environment variables.
 export LC_TIME=en_DK.UTF-8
 export TIME_STYLE=long-iso
 
 export EDITOR=nvim
 export OPENER=mimeopen
 
-export XDG_CACHE_HOME=${HOME}/.cache
-export XDG_CONFIG_HOME=${HOME}/.config
-export XDG_DATA_HOME=${HOME}/.local/share
-export XDG_STATE_HOME=${HOME}/.local/state
+export XDG_CACHE_HOME="${HOME}/.cache"
+export XDG_CONFIG_HOME="${HOME}/.config"
+export XDG_DATA_HOME="${HOME}/.local/share"
+export XDG_STATE_HOME="${HOME}/.local/state"
 
+
+# Add extra directories to PATH.
+[[ -d ~/.local/bin ]] && export PATH="${HOME}/.local/bin:${PATH}"
+
+JB="${XDG_DATA_HOME}/JetBrains/Toolbox/scripts"
+[[ -d "${JB}" ]] && export PATH="${PATH}:${JB}"
+
+
+# Init pyenv by adding it to PATH.
+export PYENV_ROOT="${XDG_DATA_HOME}/pyenv"
+if [[ -x /usr/bin/pyenv ]]; then
+  eval "$(pyenv init --path)"
+fi
+
+
+# Set apps environment variables.
 export FZF_DEFAULT_OPTS='--cycle --layout=reverse --border --height=90% --preview-window=wrap --marker="*"'
-
 export _ZO_ECHO=1
+
+# Set default apps directories (see xdg-ninja)
+export CARGO_HOME="${XDG_DATA_HOME}/cargo"
+export DVDCSS_CACHE="${XDG_DATA_HOME}/dvdcss"
+export HISTFILE="${XDG_STATE_HOME}/bash/history"
+export JULIA_DEPOT_PATH="${XDG_DATA_HOME}/julia:${JULIA_DEPOT_PATH}"
+export LESSHISTFILE="${XDG_STATE_HOME}/less/history"
+export NODE_REPL_HISTORY="${XDG_DATA_HOME}/node_repl_history"
+export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
+export PARALLEL_HOME="${XDG_CONFIG_HOME}/parallel"
+export PASSWORD_STORE_DIR="${XDG_DATA_HOME}/pass"
+export RECOLL_CONFDIR="${XDG_CONFIG_HOME}/recoll"
+export RUSTUP_HOME="${XDG_DATA_HOME}/rustup"
+export TEXMFVAR="${XDG_CACHE_HOME}/texlive/texmf-var"
 
 
 # Run .bashrc

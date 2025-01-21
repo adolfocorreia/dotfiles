@@ -1,0 +1,2 @@
+# Reference: https://cran.r-project.org/web/packages/startup/vignettes/startup-intro.html
+R_LIBS_USER="${XDG_DATA_HOME}/R/%p-library/%v"

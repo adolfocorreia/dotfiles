@@ -9,6 +9,7 @@ tags
 # Files common to Linux and macOS
 {{ if and (ne .chezmoi.os "linux") (ne .chezmoi.os "darwin") }}
 .config/Code
+.config/conda
 .config/fish
 .config/lf
 .config/mpv
@@ -25,6 +26,7 @@ tags
 .config/aconfmgr
 .config/alacritty
 .config/dunst
+.config/gtk-2.0
 .config/gtk-3.0
 .config/gtk-4.0
 .config/keepassxc
@@ -48,8 +50,6 @@ tags
 
 .bash_profile
 .bashrc
-
-.gtkrc-2.0
 
 .librewolf
 
