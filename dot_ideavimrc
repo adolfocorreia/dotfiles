@@ -94,6 +94,11 @@ set sneak
 set quickscope
 
 " NERDTree bindings: https://github.com/JetBrains/ideavim/wiki/NERDTree-support
+" - o: open file or directory
+" - t: open file in a new tab
+" - s: open file in a split window
+" - q: close tree window
+" - d: delete file or directory
 set NERDTree
 
 set which-key
@@ -101,7 +106,7 @@ set notimeout
 let g:WhichKey_ShowVimActions = "true"
 
 set argtextobj
-let g:argtextobj_pairs="(:),{:},<:>,[:]"
+let g:argtextobj_pairs = "(:),{:},<:>,[:]"
 
 set textobj-entire
 set textobj-indent
@@ -205,6 +210,7 @@ map <Leader>fR <Action>(RenameFile)
 map <Leader>fr <Action>(RecentFiles)
 map <Leader>fS <Action>(SaveAll)
 map <Leader>fs <Action>(SaveDocument)
+map <Leader>ft :NERDTreeFocus<CR>
 
 " Git
 map <leader>gg <Action>(Vcs.Show.Local.Changes)
@@ -231,9 +237,9 @@ map <Leader>sf <Action>(GotoFile)
 map <Leader>ss <Action>(GotoSymbol)
 map <Leader>sn :nohlsearch<CR>
 
-" Toggle
-map <Leader>tt :NERDTreeToggle<CR>
-map <Leader>tT <Action>(Terminal.OpenInTerminal)
+" Toggle / Tree
+map <Leader>tt :NERDTreeFocus<CR>
+map <Leader>tT :NERDTreeToggle<CR>
 map <Leader>tb <Action>(ToggleLineBreakpoint)
 map <Leader>td <Action>(ToggleDistractionFreeMode)
 map <Leader>tz <Action>(ToggleZenMode)
