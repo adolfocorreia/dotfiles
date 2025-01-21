@@ -5,6 +5,11 @@ if ($ExecutionContext.SessionState.LanguageMode -ne "FullLanguage") {
   $ExecutionContext.SessionState.LanguageMode = "FullLanguage"
 }
 
+# Warn about $env:XDG_CONFIG_HOME not being set
+if (-Not [System.Environment]::GetEnvironmentVariable("XDG_CONFIG_HOME", "User")) {
+  Write-Warning "XDG_CONFIG_HOME environment variable not set!"
+}
+
 # My TMP path
 $tmp = "$env:TMP\tmp"
 if (-Not (Test-Path $tmp)) { New-Item -ItemType Directory $tmp }

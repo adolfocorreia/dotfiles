@@ -13,7 +13,6 @@ tags
 .config/fish
 .config/lf
 .config/mpv
-.config/nvim
 .config/pypoetry
 .config/qutebrowser
 .config/tealdeer
