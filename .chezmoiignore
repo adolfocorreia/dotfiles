@@ -14,7 +14,6 @@ tags
 .config/lf
 .config/mpv
 .config/pypoetry
-.config/qutebrowser
 .config/tealdeer
 .config/tmux
 {{ end }}
