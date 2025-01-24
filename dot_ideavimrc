@@ -149,6 +149,9 @@ inoremap <silent> <C-s> <C-o>:update<CR>
 
 " Unimpaired-like bindings
 
+map [b :bprevious<CR>
+map ]b :bnext<CR>
+
 map [d <Action>(GotoPreviousError)
 map ]d <Action>(GotoNextError)
 
