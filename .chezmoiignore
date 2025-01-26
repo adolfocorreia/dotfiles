@@ -10,6 +10,7 @@ tags
 {{ if and (ne .chezmoi.os "linux") (ne .chezmoi.os "darwin") }}
 .config/Code
 .config/conda
+.config/direnv
 .config/fish
 .config/lf
 .config/mpv
