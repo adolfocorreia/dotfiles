@@ -32,6 +32,7 @@
 ;; TODO: evaluate all packages for lazy loading and :defer declarations (e.g. evil extension packages)
 ;; TODO: check if :after declarations are necessary/useful
 ;; TODO: evaluate project-rootfile
+;; TODO: review new features in Emacs 29 and later (e.g. treesitter modes, completion)
 
 
 
@@ -666,6 +667,8 @@
 
 
 ;; Community packages
+
+;; TODO: evaluate purcell/envrc
 
 (use-package auto-package-update
   :defer 5
@@ -1477,6 +1480,7 @@
 
 ;; tree-sitter
 ;; TODO: prevent writing on Messages buffer during initialization
+;; TODO: switch language modes to tree-sitter alternatives
 (use-package tree-sitter
   :hook
   (haskell-mode . tree-sitter-mode)
@@ -1630,6 +1634,8 @@
   (python-isort-arguments '("--stdout" "--atomic" "--profile black" "-"))
   :commands (python-isort-buffer python-isort-on-save-mode))
 
+;; TODO: evaluate alternative for virtual environment management (https://mclare.blog/posts/using-uv-in-emacs)
+;; TODO: evaluate purcell/envrc
 (unless ON-WINDOWS
   (use-package poetry
     :after python
