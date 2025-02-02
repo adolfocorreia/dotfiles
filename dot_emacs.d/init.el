@@ -729,6 +729,11 @@
   (elfeed-goodies/feed-source-column-width 40)
   (elfeed-goodies/powerline-default-separator 'alternate))
 
+(use-package ellama
+  :commands (ellama-chat)
+  :config
+  (add-hook 'org-ctrl-c-ctrl-c-hook #'ellama-chat-send-last-message))
+
 (use-package gcmh
   :defer 2
   :config
