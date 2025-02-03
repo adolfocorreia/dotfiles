@@ -43,6 +43,14 @@ sethandler <C-]> a:vim
 sethandler <C-\> a:vim
 sethandler <M-b> a:vim
 sethandler <M-f> a:vim
+sethandler <C-Up> a:ide
+sethandler <C-Down> a:ide
+sethandler <C-Left> a:ide
+sethandler <C-Right> a:ide
+sethandler <S-Up> a:ide
+sethandler <S-Down> a:ide
+sethandler <S-Left> a:ide
+sethandler <S-Right> a:ide
 
 
 """ Options
