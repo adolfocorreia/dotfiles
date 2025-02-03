@@ -2,8 +2,8 @@
 
 sysresources=/etc/X11/xinit/.Xresources
 sysmodmap=/etc/X11/xinit/.Xmodmap
-userresources=$HOME/.Xresources
-usermodmap=$HOME/.Xmodmap
+userresources=$XDG_CONFIG_HOME/X11/Xresources
+usermodmap=$XDG_CONFIG_HOME/X11/Xmodmap
 
 # Merge in defaults and keymaps
 [ -f "$sysresources" ]  && xrdb -merge $sysresources
@@ -62,11 +62,11 @@ setxkbmap -layout 'us,us(intl)' -option grp:win_space_toggle
 # https://en.wikipedia.org/wiki/Compose_key
 setxkbmap -option compose:menu
 # Bind special keys
-xbindkeys
+xbindkeys -f $XDG_CONFIG_HOME/X11/xbindkeysrc
 
 # Screen locking
 # Reference: https://wiki.archlinux.org/title/Session_lock
-xset s 300 3
+xset s 600 5
 xss-lock --notifier=/usr/lib/xsecurelock/dimmer -- betterlockscreen --lock --quiet --time-format "%H:%M" &
 readarray -t WP < <(ls ~/Pictures/Wallpapers/variety/**/*.jpg | shuf -n 2)
 betterlockscreen --update ${WP[0]} --update ${WP[1]} &

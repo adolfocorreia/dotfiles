@@ -44,9 +44,12 @@ tags
 .config/sublime-text
 .config/systemd
 .config/variety
+.config/X11
 .config/xdg-desktop-portal
 .config/xmobar
 .config/zathura
+
+.config/fish/functions/add_domain_route.fish
 
 .bash_profile
 .bashrc
@@ -57,11 +60,7 @@ tags
 
 .lyx
 
-.imwheelrc
-.xbindkeysrc
-.xinitrc
 .xmonad
-.Xresources
 {{ end }}
 
 
@@ -92,4 +91,6 @@ Documents
 
 .config/ahk
 .config/scoop
+
+.vrapperrc
 {{ end }}
