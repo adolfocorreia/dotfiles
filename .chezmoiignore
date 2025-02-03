@@ -39,6 +39,7 @@ tags
 .config/qt6ct
 .config/redshift
 .config/rofi
+.config/rust-motd
 .config/stalonetrayrc
 .config/sublime-text
 .config/systemd

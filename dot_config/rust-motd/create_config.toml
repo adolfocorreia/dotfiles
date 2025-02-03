@@ -1,0 +1,29 @@
+[global]
+progress_full_character = "="
+progress_empty_character = "="
+progress_prefix = "["
+progress_suffix = "]"
+time_format = "%Y-%m-%d %H:%M:%S"
+
+[banner]
+color = "yellow"
+command = "figlet -f slant 'Archlinux'"
+
+[service_status]
+shadow = "shadow"
+borgmatic = "borgmatic"
+systemd-journald = "systemd-journald"
+systemd-logind = "systemd-logind"
+systemd-networkd = "systemd-networkd"
+systemd-resolved = "systemd-resolved"
+systemd-timesyncd = "systemd-timesyncd"
+systemd-udevd = "systemd-udevd"
+
+[filesystems]
+root = "/"
+boot = "/boot"
+
+[memory]
+swap_pos = "none" # "beside" or "below" or "none"
+
+[last_run]
