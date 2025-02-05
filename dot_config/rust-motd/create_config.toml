@@ -10,14 +10,22 @@ color = "yellow"
 command = "figlet -f slant 'Archlinux'"
 
 [service_status]
-shadow = "shadow"
 borgmatic = "borgmatic"
+cronie = "cronie"
+dbus-broker = "dbus-broker"
+polkit = "polkit"
+rtkit-daemon = "rtkit-daemon"
+shadow = "shadow"
+smartd = "smartd"
+systemd-hostnamed = "systemd-hostnamed"
 systemd-journald = "systemd-journald"
 systemd-logind = "systemd-logind"
 systemd-networkd = "systemd-networkd"
+systemd-oomd = "systemd-oomd"
 systemd-resolved = "systemd-resolved"
 systemd-timesyncd = "systemd-timesyncd"
 systemd-udevd = "systemd-udevd"
+systemd-udisk2 = "systemd-udisk2"
 
 [filesystems]
 root = "/"
