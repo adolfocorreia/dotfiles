@@ -45,3 +45,7 @@ fi
 
 # Load zoxide
 [[ -x /usr/bin/zoxide ]] && eval "$(zoxide init bash)"
+
+
+# Print welcome message
+rust-motd
