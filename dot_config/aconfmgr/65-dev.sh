@@ -14,6 +14,7 @@ IgnorePath '/usr/share/*vim/*/doc/tags'
 AddPackage cmake # A cross-platform open-source make system
 AddPackage ctags # Generates an index file of language objects found in source files
 AddPackage direnv # A shell extension that manages your environment
+AddPackage gitu # A TUI Git client inspired by Magit
 AddPackage lazygit # Simple terminal UI for git commands
 AddPackage meld # Compare files, directories and working copies
 AddPackage pre-commit # A framework for managing and maintaining multi-language pre-commit hooks
@@ -27,7 +28,6 @@ AddPackage shfmt # Format shell programs
 # Python
 AddPackage ipython # Enhanced Interactive Python shell
 AddPackage pyenv # Easily switch between multiple versions of Python
-AddPackage pyright # Type checker for the Python language
 AddPackage python-black # Uncompromising Python code formatter
 AddPackage python-debugpy # An implementation of the Debug Adapter Protocol for Python
 AddPackage python-isort # A Python utility / library to sort Python imports
@@ -44,6 +44,7 @@ AddPackage ruff # An extremely fast Python linter, written in Rust
 AddPackage tk # A windowing toolkit for use with tcl
 AddPackage uv # An extremely fast Python package installer and resolver written in Rust
 AddPackage yapf # Python style guide checker
+AddPackage --foreign basedpyright # pyright fork with various improvements and pylance features
 
 # Julia
 AddPackage --foreign julia-bin # High-level, high-performance, dynamic programming language - official binaries

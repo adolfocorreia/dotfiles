@@ -16,6 +16,7 @@ CopyFile /etc/pacman.conf
 CopyFile /etc/pacman.d/hooks/xmonad.hook
 CopyFile /etc/rsnapshot.conf
 CopyFile /etc/rsyncd.conf
+CopyFile /etc/security/faillock.conf
 CopyFile /etc/smartd.conf
 CopyFile /etc/snapper/configs/cloud 640
 CopyFile /etc/snapper/configs/documents 640
