@@ -730,7 +730,8 @@
   (elfeed-goodies/powerline-default-separator 'alternate))
 
 (use-package ellama
-  :commands (ellama-chat)
+  :bind
+  ("C-c e" . ellama-transient-main-menu)
   :config
   (add-hook 'org-ctrl-c-ctrl-c-hook #'ellama-chat-send-last-message))
 
