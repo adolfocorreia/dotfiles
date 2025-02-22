@@ -47,6 +47,7 @@ tags
 .config/X11
 .config/xdg-desktop-portal
 .config/xmobar
+.config/xmonad
 .config/zathura
 
 .config/fish/functions/add_domain_route.fish
@@ -59,8 +60,6 @@ tags
 .local
 
 .lyx
-
-.xmonad
 {{ end }}
 
 
