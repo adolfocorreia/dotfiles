@@ -2,114 +2,155 @@
     "$help": "https://aka.ms/terminal-documentation",
     "$schema": "https://aka.ms/terminal-profiles-schema",
 
-    // General settings
-    "copyFormatting": "none",
-    "copyOnSelect": true,
-    "focusFollowMouse": true,
-    "initialCols": 175,
-    "initialRows": 50,
-    "launchMode": "default",
-    "snapToGridOnResize": false,
-    "useAcrylicInTabRow": true,
-
-    "actions":
-    [
-        // Unbind keys (disable default keybindings)
-        { "command": "unbound", "keys": "ctrl+shift+c" },     // Copy text
-        { "command": "unbound", "keys": "ctrl+shift+d" },     // Duplicate tab
-        { "command": "unbound", "keys": "ctrl+shift+f" },     // Find
-        { "command": "unbound", "keys": "ctrl+shift+n" },     // New window
-        { "command": "unbound", "keys": "ctrl+shift+p" },     // Toggle command palette
-        { "command": "unbound", "keys": "ctrl+shift+t" },     // New tab
-        { "command": "unbound", "keys": "ctrl+shift+v" },     // Paste
-        { "command": "unbound", "keys": "ctrl+shift+w" },     // Close pane
-        { "command": "unbound", "keys": "alt+enter" },        // Toggle full screen
-        { "command": "unbound", "keys": "alt+down" },         // Move focus down
-        { "command": "unbound", "keys": "alt+up" },           // Move focus up
-        { "command": "unbound", "keys": "alt+left" },         // Move focus left
-        { "command": "unbound", "keys": "alt+right" },        // Move focus right
-        { "command": "unbound", "keys": "alt+shift+down" },   // Resize pane down
-        { "command": "unbound", "keys": "alt+shift+up" },     // Resize pane up
-        { "command": "unbound", "keys": "alt+shift+left" },   // Resize pane left
-        { "command": "unbound", "keys": "alt+shift+right" },  // Resize pane right
-        { "command": "unbound", "keys": "alt+shift+minus" },  // Split pane, split: down
-        { "command": "unbound", "keys": "alt+shift+plus" },   // Split pane, split: right
-        { "command": "unbound", "keys": "ctrl+shift+down" },  // Scroll down
-        { "command": "unbound", "keys": "ctrl+shift+up" },    // Scroll up
-        { "command": "unbound", "keys": "ctrl+shift+pgdn" },  // Scroll down one page
-        { "command": "unbound", "keys": "ctrl+shift+pgup" },  // Scroll up one page
-        { "command": "unbound", "keys": "ctrl+shift+home" },  // Scroll to the bottom of history
-        { "command": "unbound", "keys": "ctrl+shift+end" },   // Scroll to the top of history
-        { "command": "unbound", "keys": "ctrl+alt+left" },    // Move focus to the last used pane
-        { "command": "unbound", "keys": "ctrl+shift+1" },     // New tab, profile index: 0
-        { "command": "unbound", "keys": "ctrl+shift+2" },     // New tab, profile index: 1
-        { "command": "unbound", "keys": "ctrl+shift+3" },     // New tab, profile index: 2
-        { "command": "unbound", "keys": "ctrl+shift+4" },     // New tab, profile index: 3
-        { "command": "unbound", "keys": "ctrl+shift+5" },     // New tab, profile index: 4
-        { "command": "unbound", "keys": "ctrl+shift+6" },     // New tab, profile index: 5
-        { "command": "unbound", "keys": "ctrl+shift+7" },     // New tab, profile index: 6
-        { "command": "unbound", "keys": "ctrl+shift+8" },     // New tab, profile index: 7
-        { "command": "unbound", "keys": "ctrl+shift+9" },     // New tab, profile index: 8
-        { "command": "unbound", "keys": "ctrl+alt+1" },       // Switch to tab, index: 0
-        { "command": "unbound", "keys": "ctrl+alt+2" },       // Switch to tab, index: 1
-        { "command": "unbound", "keys": "ctrl+alt+3" },       // Switch to tab, index: 2
-        { "command": "unbound", "keys": "ctrl+alt+4" },       // Switch to tab, index: 3
-        { "command": "unbound", "keys": "ctrl+alt+5" },       // Switch to tab, index: 4
-        { "command": "unbound", "keys": "ctrl+alt+6" },       // Switch to tab, index: 5
-        { "command": "unbound", "keys": "ctrl+alt+7" },       // Switch to tab, index: 6
-        { "command": "unbound", "keys": "ctrl+alt+8" },       // Switch to tab, index: 7
-        { "command": "unbound", "keys": "ctrl+alt+9" },       // Switch to tab, index: 8
-        { "command": "unbound", "keys": "enter" },            // Copy text
-        { "command": "unbound", "keys": "win+sc(41)" },       // Summon Quake window
-
-        // Switch to tab
-        { "command": { "action": "switchToTab", "index": 0 }, "keys": "ctrl+shift+1", "id": "User.switchToTab.1" },
-        { "command": { "action": "switchToTab", "index": 1 }, "keys": "ctrl+shift+2", "id": "User.switchToTab.2" },
-        { "command": { "action": "switchToTab", "index": 2 }, "keys": "ctrl+shift+3", "id": "User.switchToTab.3" },
-        { "command": { "action": "switchToTab", "index": 3 }, "keys": "ctrl+shift+4", "id": "User.switchToTab.4" },
-        { "command": { "action": "switchToTab", "index": 4 }, "keys": "ctrl+shift+5", "id": "User.switchToTab.5" },
-        { "command": { "action": "switchToTab", "index": 5 }, "keys": "ctrl+shift+6", "id": "User.switchToTab.6" },
-        { "command": { "action": "switchToTab", "index": 6 }, "keys": "ctrl+shift+7", "id": "User.switchToTab.7" },
-        { "command": { "action": "switchToTab", "index": 7 }, "keys": "ctrl+shift+8", "id": "User.switchToTab.8" },
-        { "command": { "action": "switchToTab", "index": 8 }, "keys": "ctrl+shift+9", "id": "User.switchToTab.9" },
-
-        // tmux-like keybindings
-        // Reference: https://docs.microsoft.com/en-us/windows/terminal/customize-settings/actions
-        { "command": { "action": "splitPane",  "split": "horizontal", "splitMode": "duplicate" }, "keys": "ctrl+shift+s", "id": "User.splitPane.horizontal" },
-        { "command": { "action": "splitPane",  "split": "vertical",   "splitMode": "duplicate" }, "keys": "ctrl+shift+v", "id": "User.splitPane.vertical" },
-        { "command": { "action": "moveFocus",  "direction": "left"  }, "keys": "ctrl+shift+h", "id": "User.moveFocus.left" },
-        { "command": { "action": "moveFocus",  "direction": "down"  }, "keys": "ctrl+shift+j", "id": "User.moveFocus.down" },
-        { "command": { "action": "moveFocus",  "direction": "up"    }, "keys": "ctrl+shift+k", "id": "User.moveFocus.up" },
-        { "command": { "action": "moveFocus",  "direction": "right" }, "keys": "ctrl+shift+l", "id": "User.moveFocus.right" },
-        { "command": { "action": "resizePane", "direction": "left"  }, "keys": "ctrl+alt+shift+h", "id": "User.resizePane.left" },
-        { "command": { "action": "resizePane", "direction": "down"  }, "keys": "ctrl+alt+shift+j", "id": "User.resizePane.down" },
-        { "command": { "action": "resizePane", "direction": "up"    }, "keys": "ctrl+alt+shift+k", "id": "User.resizePane.up" },
-        { "command": { "action": "resizePane", "direction": "right" }, "keys": "ctrl+alt+shift+l", "id": "User.resizePane.right" },
-        { "command": "duplicateTab",   "keys": "ctrl+shift+c", "id": "User.duplicateTab" },
-        { "command": "closePane",      "keys": "ctrl+shift+x", "id": "User.closePane" },
-        { "command": "nextTab",        "keys": "ctrl+shift+n", "id": "User.nextTab" },
-        { "command": "prevTab",        "keys": "ctrl+shift+p", "id": "User.prevTab" },
-        { "command": "togglePaneZoom", "keys": "ctrl+shift+z", "id": "User.togglePaneZoom" },
-
-        // Scroll up and down
-        { "command": "scrollUpPage",   "keys": "shift+pgup", "id": "User.scrollUpPage" },
-        { "command": "scrollDownPage", "keys": "shift+pgdn", "id": "User.scrollDownPage" },
-
-        // Other bindings
-        { "command": "find", "keys": "ctrl+shift+f", "id": "User.find" },                               // Open search box
-        { "command": "toggleFocusMode", "keys": "ctrl+shift+t", "id": "User.toggleFocusMode" },         // Show or hide tab bar
-        { "command": { "action": "commandPalette" }, "keys": "ctrl+shift+space", "id": "User.action" }  // Toggle command palette
-    ],
-
+    // Startup
     "defaultProfile": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
     "disabledProfileSources":
     [
         "Windows.Terminal.Azure"
     ],
-    "newTabMenu":
+    "initialCols": 175,
+    "initialRows": 50,
+
+    // Interaction
+    "copyOnSelect": true,
+    "snapToGridOnResize": false,
+    "focusFollowMouse": true,
+
+    // Appearance
+    "language": "en-US",
+    "theme": "dark",
+    "useAcrylicInTabRow": true,
+
+    // Actions (and key bindings)
+    "actions":
     [
-        { "type": "remainingProfiles" }
+        // Switch to tab
+        { "command": { "action": "switchToTab", "index": 0 }, "id": "User.switchToTab.1" },
+        { "command": { "action": "switchToTab", "index": 1 }, "id": "User.switchToTab.2" },
+        { "command": { "action": "switchToTab", "index": 2 }, "id": "User.switchToTab.3" },
+        { "command": { "action": "switchToTab", "index": 3 }, "id": "User.switchToTab.4" },
+        { "command": { "action": "switchToTab", "index": 4 }, "id": "User.switchToTab.5" },
+        { "command": { "action": "switchToTab", "index": 5 }, "id": "User.switchToTab.6" },
+        { "command": { "action": "switchToTab", "index": 6 }, "id": "User.switchToTab.7" },
+        { "command": { "action": "switchToTab", "index": 7 }, "id": "User.switchToTab.8" },
+        { "command": { "action": "switchToTab", "index": 8 }, "id": "User.switchToTab.9" },
+
+        // tmux-like keybindings
+        // Reference: https://docs.microsoft.com/en-us/windows/terminal/customize-settings/actions
+        { "command": { "action": "splitPane",  "split": "horizontal", "splitMode": "duplicate" }, "id": "User.splitPane.horizontal" },
+        { "command": { "action": "splitPane",  "split": "vertical",   "splitMode": "duplicate" }, "id": "User.splitPane.vertical" },
+        { "command": { "action": "moveFocus",  "direction": "left"  }, "id": "User.moveFocus.left" },
+        { "command": { "action": "moveFocus",  "direction": "down"  }, "id": "User.moveFocus.down" },
+        { "command": { "action": "moveFocus",  "direction": "up"    }, "id": "User.moveFocus.up" },
+        { "command": { "action": "moveFocus",  "direction": "right" }, "id": "User.moveFocus.right" },
+        { "command": { "action": "resizePane", "direction": "left"  }, "id": "User.resizePane.left" },
+        { "command": { "action": "resizePane", "direction": "down"  }, "id": "User.resizePane.down" },
+        { "command": { "action": "resizePane", "direction": "up"    }, "id": "User.resizePane.up" },
+        { "command": { "action": "resizePane", "direction": "right" }, "id": "User.resizePane.right" },
+        { "command": "duplicateTab",   "id": "User.duplicateTab" },
+        { "command": "closePane",      "id": "User.closePane" },
+        { "command": "nextTab",        "id": "User.nextTab" },
+        { "command": "prevTab",        "id": "User.prevTab" },
+        { "command": "togglePaneZoom", "id": "User.togglePaneZoom" },
+
+        // Scroll up and down
+        { "command": "scrollUpPage",   "id": "User.scrollUpPage" },
+        { "command": "scrollDownPage", "id": "User.scrollDownPage" },
+
+        // Other bindings
+        { "command": "find", "id": "User.find" },                               // Open search box
+        { "command": "toggleFocusMode", "id": "User.toggleFocusMode" },         // Show or hide tab bar
+        { "command": { "action": "commandPalette" }, "id": "User.action" }  // Toggle command palette
     ],
+    "keybindings": [
+        // Unbind keys (disable default keybindings)
+        { "id": null, "keys": "ctrl+shift+c" },     // Copy text
+        { "id": null, "keys": "ctrl+shift+d" },     // Duplicate tab
+        { "id": null, "keys": "ctrl+shift+f" },     // Find
+        { "id": null, "keys": "ctrl+shift+n" },     // New window
+        { "id": null, "keys": "ctrl+shift+p" },     // Toggle command palette
+        { "id": null, "keys": "ctrl+shift+t" },     // New tab
+        { "id": null, "keys": "ctrl+shift+v" },     // Paste
+        { "id": null, "keys": "ctrl+shift+w" },     // Close pane
+        { "id": null, "keys": "alt+enter" },        // Toggle full screen
+        { "id": null, "keys": "alt+down" },         // Move focus down
+        { "id": null, "keys": "alt+up" },           // Move focus up
+        { "id": null, "keys": "alt+left" },         // Move focus left
+        { "id": null, "keys": "alt+right" },        // Move focus right
+        { "id": null, "keys": "alt+shift+down" },   // Resize pane down
+        { "id": null, "keys": "alt+shift+up" },     // Resize pane up
+        { "id": null, "keys": "alt+shift+left" },   // Resize pane left
+        { "id": null, "keys": "alt+shift+right" },  // Resize pane right
+        { "id": null, "keys": "alt+shift+minus" },  // Split pane, split: down
+        { "id": null, "keys": "alt+shift+plus" },   // Split pane, split: right
+        { "id": null, "keys": "ctrl+shift+down" },  // Scroll down
+        { "id": null, "keys": "ctrl+shift+up" },    // Scroll up
+        { "id": null, "keys": "ctrl+shift+pgdn" },  // Scroll down one page
+        { "id": null, "keys": "ctrl+shift+pgup" },  // Scroll up one page
+        { "id": null, "keys": "ctrl+shift+home" },  // Scroll to the bottom of history
+        { "id": null, "keys": "ctrl+shift+end" },   // Scroll to the top of history
+        { "id": null, "keys": "ctrl+alt+left" },    // Move focus to the last used pane
+        { "id": null, "keys": "ctrl+shift+1" },     // New tab, profile index: 0
+        { "id": null, "keys": "ctrl+shift+2" },     // New tab, profile index: 1
+        { "id": null, "keys": "ctrl+shift+3" },     // New tab, profile index: 2
+        { "id": null, "keys": "ctrl+shift+4" },     // New tab, profile index: 3
+        { "id": null, "keys": "ctrl+shift+5" },     // New tab, profile index: 4
+        { "id": null, "keys": "ctrl+shift+6" },     // New tab, profile index: 5
+        { "id": null, "keys": "ctrl+shift+7" },     // New tab, profile index: 6
+        { "id": null, "keys": "ctrl+shift+8" },     // New tab, profile index: 7
+        { "id": null, "keys": "ctrl+shift+9" },     // New tab, profile index: 8
+        { "id": null, "keys": "ctrl+alt+1" },       // Switch to tab, index: 0
+        { "id": null, "keys": "ctrl+alt+2" },       // Switch to tab, index: 1
+        { "id": null, "keys": "ctrl+alt+3" },       // Switch to tab, index: 2
+        { "id": null, "keys": "ctrl+alt+4" },       // Switch to tab, index: 3
+        { "id": null, "keys": "ctrl+alt+5" },       // Switch to tab, index: 4
+        { "id": null, "keys": "ctrl+alt+6" },       // Switch to tab, index: 5
+        { "id": null, "keys": "ctrl+alt+7" },       // Switch to tab, index: 6
+        { "id": null, "keys": "ctrl+alt+8" },       // Switch to tab, index: 7
+        { "id": null, "keys": "ctrl+alt+9" },       // Switch to tab, index: 8
+        { "id": null, "keys": "enter" },            // Copy text
+        { "id": null, "keys": "win+sc(41)" },       // Summon Quake window
+
+        // Switch to tab
+        { "keys": "ctrl+shift+1", "id": "User.switchToTab.1" },
+        { "keys": "ctrl+shift+2", "id": "User.switchToTab.2" },
+        { "keys": "ctrl+shift+3", "id": "User.switchToTab.3" },
+        { "keys": "ctrl+shift+4", "id": "User.switchToTab.4" },
+        { "keys": "ctrl+shift+5", "id": "User.switchToTab.5" },
+        { "keys": "ctrl+shift+6", "id": "User.switchToTab.6" },
+        { "keys": "ctrl+shift+7", "id": "User.switchToTab.7" },
+        { "keys": "ctrl+shift+8", "id": "User.switchToTab.8" },
+        { "keys": "ctrl+shift+9", "id": "User.switchToTab.9" },
+
+        // tmux-like keybindings
+        // Reference: https://docs.microsoft.com/en-us/windows/terminal/customize-settings/actions
+        { "keys": "ctrl+shift+s", "id": "User.splitPane.horizontal" },
+        { "keys": "ctrl+shift+v", "id": "User.splitPane.vertical" },
+        { "keys": "ctrl+shift+h", "id": "User.moveFocus.left" },
+        { "keys": "ctrl+shift+j", "id": "User.moveFocus.down" },
+        { "keys": "ctrl+shift+k", "id": "User.moveFocus.up" },
+        { "keys": "ctrl+shift+l", "id": "User.moveFocus.right" },
+        { "keys": "ctrl+alt+shift+h", "id": "User.resizePane.left" },
+        { "keys": "ctrl+alt+shift+j", "id": "User.resizePane.down" },
+        { "keys": "ctrl+alt+shift+k", "id": "User.resizePane.up" },
+        { "keys": "ctrl+alt+shift+l", "id": "User.resizePane.right" },
+        { "keys": "ctrl+shift+c", "id": "User.duplicateTab" },
+        { "keys": "ctrl+shift+x", "id": "User.closePane" },
+        { "keys": "ctrl+shift+n", "id": "User.nextTab" },
+        { "keys": "ctrl+shift+p", "id": "User.prevTab" },
+        { "keys": "ctrl+shift+z", "id": "User.togglePaneZoom" },
+
+        // Scroll up and down
+        { "keys": "shift+pgup", "id": "User.scrollUpPage" },
+        { "keys": "shift+pgdn", "id": "User.scrollDownPage" },
+
+        // Other bindings
+        { "keys": "ctrl+shift+f",     "id": "User.find" },             // Open search box
+        { "keys": "ctrl+shift+t",     "id": "User.toggleFocusMode" },  // Show or hide tab bar
+        { "keys": "ctrl+shift+space", "id": "User.action" }            // Toggle command palette
+    ],
+
+    // Profiles
     "profiles":
     {
         "defaults":
@@ -131,35 +172,44 @@
                 "name": "PowerShell Core",
                 "guid": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
                 "commandline": "pwsh.exe -NoLogo",
-                "startingDirectory": "%USERPROFILE%",
-                "colorScheme": "Tokyo Night Storm",
-                "hidden": false
+                "colorScheme": "Tokyo Night Storm"
             },
             {
                 "name": "Windows PowerShell",
                 "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
-                "colorScheme": "Campbell Powershell",
-                "hidden": false
+                "colorScheme": "Campbell Powershell"
             },
             {
                 "name": "Command Prompt",
                 "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
-                "colorScheme": "Campbell",
-                "hidden": false
+                "colorScheme": "Campbell"
             }
         ]
     },
 
-    "theme": "dark",
+    // Themes
     "themes": [],
 
+    // Color schemes
     "schemes":
     [
         {
             "name":                "Tokyo Night Storm",
+
+            "cursorColor":         "#C0CAF5",
+            "selectionBackground": "#28344A",
+
             "background":          "#24283B",
+            "foreground":          "#A9B1DC",
+
             "black":               "#414868",
             "blue":                "#7AA2F7",
+            "cyan":                "#7DCFFF",
+            "green":               "#73DACA",
+            "purple":              "#BB9AF7",
+            "red":                 "#F7768E",
+            "white":               "#C0CAF5",
+            "yellow":              "#E0AF68",
             "brightBlack":         "#414868",
             "brightBlue":          "#7AA2F7",
             "brightCyan":          "#7DCFFF",
@@ -167,16 +217,8 @@
             "brightPurple":        "#BB9AF7",
             "brightRed":           "#F7768E",
             "brightWhite":         "#C0CAF5",
-            "brightYellow":        "#E0AF68",
-            "cursorColor":         "#C0CAF5",
-            "cyan":                "#7DCFFF",
-            "foreground":          "#A9B1DC",
-            "green":               "#73DACA",
-            "purple":              "#BB9AF7",
-            "red":                 "#F7768E",
-            "selectionBackground": "#28344A",
-            "white":               "#C0CAF5",
-            "yellow":              "#E0AF68"
+            "brightYellow":        "#E0AF68"
         }
     ]
 }
+// vim: ft=jsonc
