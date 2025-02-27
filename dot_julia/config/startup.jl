@@ -11,6 +11,9 @@ atreplinit() do repl
         @eval import OhMyREPL
 
         @async begin
+            # Autocomplete brackets breaks copying multiline statements to the REPL
+            OhMyREPL.enable_autocomplete_brackets(false)
+
             # Reinstall keybindings
             # Reference: https://github.com/KristofferC/OhMyREPL.jl/issues/166
             sleep(1)
@@ -34,6 +37,3 @@ if isfile("Project.toml") && isfile("Manifest.toml")
     Pkg.activate(".")
 end
 
-# Autocomplete brackets breaks copying multiline statements to the REPL
-import OhMyREPL
-OhMyREPL.enable_autocomplete_brackets(false)
