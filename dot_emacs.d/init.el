@@ -2,22 +2,6 @@
 
 ;; Comments best practice: same line with code (;), comment-only line (;;), headlines in outline mode (;;;)
 
-;; Suppress annoying messages
-(defun suppress-messages (func &rest args)
-  "Suppress message output from (FUNC ARGS)."
-  ;; Reference: https://superuser.com/questions/669701/emacs-disable-some-minibuffer-messages
-  (cl-flet ((silence (&rest _) (ignore)))
-    (advice-add 'message :around #'silence)
-    (unwind-protect
-        (apply func args)
-      (advice-remove 'message #'silence))))
-
-(defadvice load (before quiet-load (file &optional noerror nomessage nosuffix must-suffix) activate)
-  "Suppress file loading messages."
-  ;; Reference: https://stackoverflow.com/questions/11498108/elisp-silence-loading-messages-in-batch-mode
-  (setq nomessage t))
-
-
 ;; Custom settings
 (setq custom-file (make-temp-file "custom_" nil ".el"))
 
@@ -229,23 +213,11 @@
 (use-package bind-key
   :demand t
   :config
-  ;; Make ESC quit prompts
-  (bind-key "<escape>" #'keyboard-escape-quit)
-  ;; Avoid delete-other-windows call when pressing ESC
-  ;; Reference: https://stackoverflow.com/questions/557282/in-emacs-whats-the-best-way-for-keyboard-escape-quit-not-destroy-other-windows
-  (defadvice keyboard-escape-quit (around my/keyboard-escape-quit-advice activate)
-    (let (orig-one-window-p)
-      (fset 'orig-one-window-p (symbol-function 'one-window-p))
-      (fset 'one-window-p (lambda (&optional nomini all-frames) t))
-      (unwind-protect
-          ad-do-it
-        (fset 'one-window-p (symbol-function 'orig-one-window-p)))))
-
   ;; Alternative binding for universal-argument
   (bind-key "C-c u" #'universal-argument)
 
   ;; Kill current buffer
-  (bind-key "C-x C-k" #'kill-this-buffer)
+  (bind-key "C-x C-k" #'kill-current-buffer)
 
   ;; Open dashboard buffer
   (bind-key "C-c D" #'dashboard-refresh-buffer)
@@ -594,9 +566,7 @@
   :custom
   (recentf-max-saved-items 20)
   :config
-  (advice-add 'recentf-cleanup :around #'suppress-messages)
-  (recentf-mode +1)
-  (advice-remove 'recentf-cleanup #'suppress-messages))
+  (recentf-mode +1))
 
 (use-package replace
   :ensure nil
@@ -1988,24 +1958,6 @@
 
 ;; TODO: evaluate packages
 ;; denote
-
-
-
-;;; Obsidian
-
-(unless ON-WINDOWS
-  (use-package obsidian
-    :demand t
-    :bind
-    (:map obsidian-mode-map
-      ("C-c C-o" . obsidian-follow-link-at-point)
-      ("C-c C-b" . obsidian-backlink-jump)
-      ("C-c C-l" . obsidian-insert-wikilink))
-    :custom
-    (obsidian-directory (file-truename "~/Obsidian"))
-    (obsidian-inbox-directory "Inbox")
-    :config
-    (global-obsidian-mode +1)))
 
 
 
