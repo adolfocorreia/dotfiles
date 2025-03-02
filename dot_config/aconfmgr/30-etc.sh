@@ -11,6 +11,7 @@ CopyFile /etc/fstab
 CopyFile /etc/hostname
 CopyFile /etc/locale.conf
 CopyFile /etc/logrotate.conf
+CopyFile /etc/mkinitcpio.conf
 CopyFile /etc/modprobe.d/hda-jack-retask.conf
 CopyFile /etc/pacman.conf
 CopyFile /etc/pacman.d/hooks/xmonad.hook
@@ -25,6 +26,5 @@ CopyFile /etc/snapper/configs/provisional 640
 CopyFile /etc/systemd/network/20-wired.network
 CopyFile /etc/udev/rules.d/50-qmk.rules
 CopyFile /etc/vconsole.conf
-CopyFile /etc/xdg/reflector/reflector.conf
 CopyFile /usr/lib/firmware/hda-jack-retask.fw '' adcor adcor
 CopyFile /usr/share/smartmontools/smartd_warning.d/smartdnotify 755

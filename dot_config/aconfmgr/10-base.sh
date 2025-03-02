@@ -37,11 +37,11 @@ AddPackage archlinux-contrib # Collection of contrib scripts used in Arch Linux
 AddPackage lostfiles # Find orphaned files not owned by any Arch packages
 AddPackage pkgfile # a pacman .files metadata explorer
 AddPackage rebuild-detector # Detects which packages need to be rebuilt
-AddPackage reflector # A Python 3 module and script to retrieve and filter the latest Pacman mirror list.
 AddPackage --foreign aconfmgr-git # A configuration manager for Arch Linux
 AddPackage --foreign informant # An Arch Linux News reader and pacman hook
 AddPackage --foreign pacman-log-orphans-hook # hook to check whether there are any packages marked as unrequired (orphans) via pacman -Qttdq after every pacman run
 AddPackage --foreign paru-bin # Feature packed AUR helper
+AddPackage --foreign rate-mirrors # Everyday-use client-side map-aware mirror ranking tool
 AddPackage --foreign systemd-boot-pacman-hook # Pacman hook to upgrade systemd-boot after systemd upgrade.
 
 IgnorePath '/etc/pacman.d/mirrorlist'

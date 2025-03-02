@@ -23,6 +23,7 @@ AddPackage udiskie # Removable disk automounter using udisks
 AddPackage variety # Changes the wallpaper on a regular interval using user-specified or automatically downloaded images.
 AddPackage xdg-user-dirs # Manage user directories like ~/Desktop and ~/Music
 AddPackage --foreign autotrash # Tool to automatically purge old trashed files
+AddPackage --foreign caffeine-ng # Status bar application able to temporarily inhibit the screensaver and sleep mode.
 
 # Desktop basic apps
 AddPackage alacritty # A cross-platform, GPU-accelerated terminal emulator

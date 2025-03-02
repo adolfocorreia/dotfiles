@@ -1,5 +1,5 @@
 # Code editors and IDEs
-AddPackage emacs-nativecomp # The extensible, customizable, self-documenting real-time display editor with native compilation enabled
+AddPackage emacs # The extensible, customizable, self-documenting real-time display editor
 AddPackage gvim # Vi Improved, a highly configurable, improved version of the vi text editor (with advanced features, such as a GUI)
 AddPackage neovide # No Nonsense Neovim Client in Rust
 AddPackage --foreign jetbrains-toolbox # Manage all your JetBrains Projects and Tools

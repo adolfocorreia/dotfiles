@@ -11,6 +11,7 @@ AddPackage torbrowser-launcher # Securely and easily download, verify, install, 
 AddPackage --foreign brave-bin # Web browser that blocks ads and trackers by default (binary release)
 AddPackage --foreign librewolf-bin # Community-maintained fork of Firefox, focused on privacy, security and freedom.
 AddPackage --foreign mullvad-browser-bin # Privacy-focused web browser developed by Mullvad VPN and the Tor Project
+AddPackage --foreign zen-browser-bin # Performance oriented Firefox-based web browser
 
 AddPackage qutebrowser # A keyboard-driven, vim-like browser based on Python and Qt
 AddPackage pdfjs-legacy # PDF reader in javascript - legacy distribution
@@ -32,6 +33,7 @@ AddPackage xdg-desktop-portal-gtk # A backend implementation for xdg-desktop-por
 
 # Miscelaneous apps and tools
 AddPackage bibletime # Bible study tool
+AddPackage calibre # Ebook management application
 AddPackage handbrake # Multithreaded video transcoder
 AddPackage obsidian # A powerful knowledge base that works on top of a local folder of plain text Markdown files
 AddPackage ollama-cuda # Create, run and share large language models (LLMs) with CUDA

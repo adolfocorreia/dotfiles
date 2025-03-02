@@ -98,6 +98,8 @@ playerctld daemon &
 variety &
 # Color temperature shifter
 redshift &
+# Manually disable screensaver
+caffeine &
 
 
 # Execute Xmonad
