@@ -1147,6 +1147,7 @@ local PLUGINS = {
         },
         basedpyright = {},
         ruff = {},
+        julials = {},
         jsonls = {
           settings = {
             json = {
