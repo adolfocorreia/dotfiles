@@ -367,6 +367,7 @@
   (bind-key "C-M-`" #'popper-toggle-type))
 
 (use-package which-key
+  :ensure nil
   :demand t
   :config
   (which-key-mode +1))
@@ -1873,7 +1874,10 @@
                     (("d" pdf-view-dark-minor-mode      :exit nil)
                      ("m" pdf-view-midnight-minor-mode  :exit nil)
                      ("p" pdf-view-printer-minor-mode   :exit nil)
-                     ("t" pdf-view-themed-minor-mode    :exit nil))))))
+                     ("t" pdf-view-themed-minor-mode    :exit nil)))))
+
+  (use-package doc-toc
+    :commands (doc-toc-extract-with-pdf-tocgen doc-toc-gen-set-level)))
 
 
 ;; TODO: evaluate latex related packages
