@@ -31,7 +31,6 @@ tags
 .config/keepassxc
 .config/kitty
 .config/Kvantum
-.config/lxsession
 .config/mimeapps.list
 .config/paru
 .config/picom
@@ -42,7 +41,6 @@ tags
 .config/rust-motd
 .config/stalonetrayrc
 .config/sublime-text
-.config/systemd
 .config/variety
 .config/X11
 .config/xdg-desktop-portal
@@ -57,7 +55,7 @@ tags
 
 .librewolf
 
-.local
+.local/share/flatpak
 
 .lyx
 {{ end }}
