@@ -373,6 +373,7 @@
     "CredentialHelperSelector",
     "EditShortcutsWindow",
     "OperationStatusWindow",
+    "TkTopLevel",
     "bosa_sdm_XL9"
   ],
   "RemindToRateReview": false,
