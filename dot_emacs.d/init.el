@@ -1134,8 +1134,8 @@
   (evil-define-text-object evil-variable-segment-outer (count &optional beg end type)
     (evil-variable-segment--find-range evil-variable-segment-left-outer-regex evil-variable-segment-right-outer-regex))
 
-  (define-key evil-inner-text-objects-map "v" #'evil-variable-segment-inner)
-  (define-key evil-outer-text-objects-map "v" #'evil-variable-segment-outer))
+  (define-key evil-inner-text-objects-map "S" #'evil-variable-segment-inner)
+  (define-key evil-outer-text-objects-map "S" #'evil-variable-segment-outer))
 
 (use-package evil-matchit
   :after evil
