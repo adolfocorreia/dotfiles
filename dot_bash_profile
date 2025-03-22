@@ -36,6 +36,7 @@ export _ZO_ECHO=1
 export CARGO_HOME="${XDG_DATA_HOME}/cargo"
 export CUDA_CACHE_PATH="${XDG_CACHE_HOME}/nv"
 export DVDCSS_CACHE="${XDG_DATA_HOME}/dvdcss"
+export GOPATH="${XDG_DATA_HOME}/go"
 export HISTFILE="${XDG_STATE_HOME}/bash/history"
 export JULIA_DEPOT_PATH="${XDG_DATA_HOME}/julia:${JULIA_DEPOT_PATH}"
 export LESSHISTFILE="${XDG_STATE_HOME}/less/history"
