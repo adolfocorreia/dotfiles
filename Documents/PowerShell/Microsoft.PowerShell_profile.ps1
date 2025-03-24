@@ -180,6 +180,12 @@ Function Create-Link (
 
 
 
+# Load direnv
+
+Invoke-Expression "$(direnv hook pwsh)"
+
+
+
 # Load Starship
 
 Function Invoke-Starship-PreCommand {
