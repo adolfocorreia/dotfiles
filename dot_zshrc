@@ -1,10 +1,10 @@
+#!/bin/zsh
+
 alias ll='ls -l'
 alias la='ls -la'
 
-LFCD="/opt/local/share/lf/lfcd.sh"
-if [ -f "$LFCD" ]; then
-  source "$LFCD"
-fi
+lfcd() {
+	cd "$(command lf -print-last-dir "$@")" || exit
+}
 
 eval "$(zoxide init zsh)"
-

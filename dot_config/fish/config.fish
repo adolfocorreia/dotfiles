@@ -38,7 +38,9 @@ function fish_user_key_bindings
     # Ctrl+r: search shell command history
     # Ctrl+t: list files in current directory
     # Alt+c:  change directory
-    fzf_key_bindings
+    if type -q fzf
+        fzf --fish | source
+    end
 end
 
 # Commands to run in interactive sessions can go here

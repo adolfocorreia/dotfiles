@@ -123,7 +123,7 @@ nmap <BS> <Plug>(dirvish_up)
 let g:sneak#label = 1
 
 if has('mac')
-  let g:gutentags_ctags_executable = 'uctags'
+  let g:gutentags_ctags_executable = '/opt/homebrew/bin/ctags'
 endif
 
 let g:qs_buftype_blacklist = ['help', 'nofile', 'nowrite', 'terminal']
