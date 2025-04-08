@@ -11,3 +11,6 @@ command = """ date +"[%H:%M:%S]" """
 when = "true"
 description = "The current time stamp"
 os = "linux"
+
+[status]
+disabled = false
