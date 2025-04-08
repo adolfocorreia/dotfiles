@@ -12,6 +12,7 @@ tags
 .config/conda
 .config/direnv
 .config/fish
+.config/kitty
 .config/lf
 .config/mpv
 .config/pypoetry
@@ -29,7 +30,6 @@ tags
 .config/gtk-3.0
 .config/gtk-4.0
 .config/keepassxc
-.config/kitty
 .config/Kvantum
 .config/mimeapps.list
 .config/paru
