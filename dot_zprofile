@@ -1,12 +1,26 @@
 #!/bin/zsh
+# ~/.zprofile
 
-# Homebrew config
+# Set system environment variables.
+export LANG=en_US.UTF-8
+export EDITOR=vim
+
+export XDG_CACHE_HOME="${HOME}/.cache"
+export XDG_CONFIG_HOME="${HOME}/.config"
+export XDG_DATA_HOME="${HOME}/.local/share"
+export XDG_STATE_HOME="${HOME}/.local/state"
+
+
+# Configure Homebrew.
 export HOMEBREW_NO_ANALYTICS=1
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
-export PATH="${HOME}/.local/bin:$PATH"
 
-export LANG=en_US.UTF-8
+# Add extra directories to PATH.
+[[ -d ~/.local/bin ]] && export PATH="${HOME}/.local/bin:${PATH}"
 
-export EDITOR=vim
+
+# Set apps environment variables.
+export FZF_DEFAULT_OPTS='--cycle --layout=reverse --border --height=90% --preview-window=wrap --marker="*"'
+export _ZO_ECHO=1
 

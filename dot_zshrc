@@ -1,10 +1,32 @@
 #!/bin/zsh
 
+# If not running interactively, don't do anything.
+[[ $- != *i* ]] && return
+
+
+# Useful aliases and functions.
+alias ls='ls --color=auto'
 alias ll='ls -l'
 alias la='ls -la'
 
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+
+alias cp='cp -i'
+alias mv='mv -i'
+alias rm='rm -i'
+
+if command -v nvim &> /dev/null; then
+  alias vi='nvim --clean'
+else
+  alias vi='vim -u NONE'
+fi
+
 lfcd() {
-	cd "$(command lf -print-last-dir "$@")" || exit
+  cd "$(command lf -print-last-dir "$@")" || return
 }
 
+
+# Load zoxide
 eval "$(zoxide init zsh)"

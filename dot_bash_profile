@@ -5,7 +5,7 @@
 export LC_TIME=en_DK.UTF-8
 export TIME_STYLE=long-iso
 
-export EDITOR=nvim
+export EDITOR=vim
 export OPENER=mimeopen
 
 export XDG_CACHE_HOME="${HOME}/.cache"
