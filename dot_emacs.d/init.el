@@ -706,6 +706,9 @@
   :config
   (add-hook 'org-ctrl-c-ctrl-c-hook #'ellama-chat-send-last-message))
 
+(use-package envrc
+  :hook (after-init . envrc-global-mode))
+
 (use-package gcmh
   :defer 2
   :config
