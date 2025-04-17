@@ -5,6 +5,11 @@ if ($ExecutionContext.SessionState.LanguageMode -ne "FullLanguage") {
   $ExecutionContext.SessionState.LanguageMode = "FullLanguage"
 }
 
+# Warn about pwsh telemetry
+if ([System.Environment]::GetEnvironmentVariable("POWERSHELL_TELEMETRY_OPTOUT", "User") -NE 1) {
+  Write-Warning "POWERSHELL_TELEMETRY_OPTOUT environment variable not enabled!"
+}
+
 # Warn about $env:XDG_CONFIG_HOME not being set
 if (-Not [System.Environment]::GetEnvironmentVariable("XDG_CONFIG_HOME", "User")) {
   Write-Warning "XDG_CONFIG_HOME environment variable not set!"
@@ -177,6 +182,12 @@ Function Create-Link (
     cmd /C mklink /H $link.Replace("/", "\") $real.Replace("/", "\")
   }
 }
+
+
+
+# Load scoop-search
+
+Invoke-Expression $(& scoop-search --hook)
 
 
 
