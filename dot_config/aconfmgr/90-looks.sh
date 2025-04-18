@@ -22,7 +22,6 @@ AddPackage --foreign ttf-gentium-basic # Fonts based on the original Gentium des
 AddPackage --foreign ttf-material-design-icons-git # Material Design Icons Web Font
 
 # Themes
-AddPackage arc-gtk-theme # A flat theme with transparent elements for GTK 2,3,4 and Gnome-Shell
 AddPackage kvantum # SVG-based theme engine for Qt5/6 (including config tool and extra themes)
 AddPackage kvantum-qt5 # SVG-based theme engine for Qt5
 AddPackage lxappearance-gtk3 # Feature-rich GTK+ theme switcher of the LXDE Desktop (GTK+ 3 version)
@@ -30,3 +29,4 @@ AddPackage materia-gtk-theme # A Material Design theme for GNOME/GTK+ based desk
 AddPackage papirus-icon-theme # Papirus icon theme
 AddPackage qt5ct # Qt5 Configuration Utility
 AddPackage qt6ct # Qt 6 Configuration Utility
+AddPackage --foreign arc-gtk-theme # A flat theme with transparent elements for GTK 2,3,4 and Gnome-Shell

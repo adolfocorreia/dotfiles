@@ -25,5 +25,5 @@ AddPackage at # AT and batch delayed command scheduling utility and daemon
 AddPackage cronie # Daemon that runs specified programs at scheduled times and related tools
 
 # Default runtimes
-CreateLink /usr/lib/jvm/default java-23-openjdk
-CreateLink /usr/lib/jvm/default-runtime java-23-openjdk
+CreateLink /usr/lib/jvm/default java-24-openjdk
+CreateLink /usr/lib/jvm/default-runtime java-24-openjdk

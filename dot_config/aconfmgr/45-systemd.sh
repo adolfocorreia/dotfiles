@@ -11,7 +11,7 @@ CreateLink /etc/systemd/system/multi-user.target.wants/smartd.service /usr/lib/s
 CreateLink /etc/systemd/system/multi-user.target.wants/systemd-networkd.service /usr/lib/systemd/system/systemd-networkd.service
 CreateLink /etc/systemd/system/multi-user.target.wants/systemd-oomd.service /usr/lib/systemd/system/systemd-oomd.service
 CreateLink /etc/systemd/system/multi-user.target.wants/systemd-resolved.service /usr/lib/systemd/system/systemd-resolved.service
-CreateLink /etc/systemd/system/multi-user.target.wants/wg-quick@protonvpn.service /usr/lib/systemd/system/wg-quick@.service
+CreateLink /etc/systemd/system/multi-user.target.wants/wg-quick@vpn.service /usr/lib/systemd/system/wg-quick@.service
 CreateLink /etc/systemd/system/network-online.target.wants/systemd-networkd-wait-online.service /usr/lib/systemd/system/systemd-networkd-wait-online.service
 CreateLink /etc/systemd/system/sockets.target.wants/cups.socket /usr/lib/systemd/system/cups.socket
 CreateLink /etc/systemd/system/sockets.target.wants/systemd-networkd.socket /usr/lib/systemd/system/systemd-networkd.socket
