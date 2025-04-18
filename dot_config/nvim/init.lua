@@ -419,7 +419,7 @@ local LEADER_MAPPINGS = {
   { "<Leader>fh", "<Cmd>Telescope find_files cwd=~<CR>",         desc = "Find home folder files" },
   { "<Leader>fr", "<Cmd>Telescope oldfiles<CR>",                 desc = "Recent files" },
   { "<Leader>fg", "<Cmd>Telescope git_files<CR>",                desc = "Find git files" },
-  { "<Leader>fp", "<Cmd>Telescope projects<CR>",                 desc = "Find projects" },
+  { "<Leader>fp", "<Cmd>Telescope project<CR>",                  desc = "Find projects" },
   { "<Leader>fn", "<Cmd>ene<CR>",                                desc = "New file" },
   { "<Leader>fD", "<Cmd>Delete<CR>",                             desc = "Delete file" },
   { "<Leader>fR", function() rr("New name: ", "Rename {}") end,  desc = "Rename file", },
@@ -699,12 +699,14 @@ local PLUGINS = {
   },
 
   -- Project management.
+  -- TODO: evaluate reverting back to ahmedkhalf/project.nvim
+  -- TODO: evaluate notjedi/nvim-rooter.lua
   {
-    "ahmedkhalf/project.nvim",
+    "wsdjeg/rooter.nvim",
     event = "VeryLazy",
     config = function()
-      require("project_nvim").setup({
-        patterns = { "pyproject.toml", "Project.toml", "Makefile", ".git", "init.lua", "init.el" },
+      require("rooter").setup({
+        root_patterns = { "pyproject.toml", "Project.toml", "Makefile", ".git/", ".venv/", "init.lua", "init.el" },
       })
     end,
   },
@@ -1778,7 +1780,7 @@ local PLUGINS = {
           },
         },
       })
-      require("telescope").load_extension("projects")
+      require("telescope").load_extension("project")
       require("telescope").load_extension("file_browser")
       require("telescope").load_extension("fzf")
       require("telescope").load_extension("undo")
@@ -2167,6 +2169,7 @@ require("lazy").setup(PLUGINS, {
   },
   checker = {
     enabled = true,
+    frequency = 12 * 60 * 60, -- Check every 12 hours
   },
 })
 
