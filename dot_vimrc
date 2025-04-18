@@ -4,6 +4,7 @@
 " - https://codeinthehole.com/tips/vim-lists
 " - https://nosarthur.github.io/productivity/2021/08/27/ex-vim.html
 " - https://learnvimscriptthehardway.stevelosh.com
+" - https://vim.fandom.com/wiki/Unused_keys
 
 augroup vimrc
   autocmd!
@@ -44,6 +45,7 @@ endif
 call plug#begin()
 
 Plug 'Julian/vim-textobj-variable-segment'
+Plug 'airblade/vim-rooter'
 Plug 'farmergreg/vim-lastplace'
 Plug 'google/vim-searchindex'
 Plug 'jpalardy/vim-slime'
@@ -99,6 +101,8 @@ endif
 
 
 """"" Plugin configuration """""
+
+let g:rooter_silent_chdir = 1
 
 nmap n nzzzv<Plug>SearchIndex
 nmap N Nzzzv<Plug>SearchIndex
