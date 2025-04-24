@@ -42,6 +42,9 @@ if simple_terminal
   let g:plug_threads = 1
 endif
 
+"" Do not autoload the default bindings (av/iv)
+let g:loaded_textobj_variable_segment = 1
+
 call plug#begin()
 
 Plug 'Julian/vim-textobj-variable-segment'
@@ -101,6 +104,13 @@ endif
 
 
 """"" Plugin configuration """""
+
+call textobj#user#plugin('variable', {
+  \ '-': {
+  \     'sfile': expand('<sfile>:p'),
+  \     'select-a': 'aS',  'select-a-function': 'textobj#variable_segment#select_a',
+  \     'select-i': 'iS',  'select-i-function': 'textobj#variable_segment#select_i',
+  \ }})
 
 let g:rooter_silent_chdir = 1
 
