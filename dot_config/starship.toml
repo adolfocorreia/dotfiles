@@ -14,3 +14,4 @@ os = "linux"
 
 [status]
 disabled = false
+format = "[$symbol$hex_status]($style) "
