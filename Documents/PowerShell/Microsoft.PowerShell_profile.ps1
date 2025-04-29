@@ -27,10 +27,10 @@ $OutputEncoding = [Console]::InputEncoding = [Console]::OutputEncoding = New-Obj
 [System.Net.WebRequest]::DefaultWebProxy.Credentials = [System.Net.CredentialCache]::DefaultNetworkCredentials
 
 # Update PATH environment variable
-Function Refresh-Path {
+Function Update-Path {
   $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH","User") + ";" + [System.Environment]::GetEnvironmentVariable("PATH","Machine")
 }
-Refresh-Path
+Update-Path
 
 # Install the PSFzf module (https://github.com/kelleyma49/PSFzf) using the command "Install-Module PSFzf"
 Import-Module PSFzf
@@ -43,7 +43,7 @@ Set-PSReadLineOption -EditMode Vi
 
 # Enable bash style completion
 Set-PSReadLineKeyHandler -Key Tab -Function Complete
-Remove-PSReadLineKeyHandler -Key Shift+Tab
+Remove-PSReadLineKeyHandler -Chord Shift+Tab
 
 # Enable emacs/readline style mappings on insert mode
 # References:
@@ -104,6 +104,7 @@ Function OnViModeChange {
   }
 }
 Set-PSReadLineOption -ViModeIndicator Script -ViModeChangeHandler $Function:OnViModeChange
+OnViModeChange
 
 # Search paths
 Set-PsFzfOption -PSReadlineChordProvider Ctrl+t
@@ -151,7 +152,7 @@ Set-PsFzfOption -EnableFd
 "sleep",
 "sort",
 "tee"
-) | ForEach-Object { if (Test-Path Alias:$_) { Remove-Alias -Force $_ } }
+) | ForEach-Object { if (Test-Path Alias:$_) { Remove-Alias -Force -Name $_ } }
 
 
 Function ls { & eza     @args }
@@ -163,15 +164,15 @@ Function mkdir { & coreutils mkdir $args }
 
 # Create other shell aliases and functions
 
-Function Start-Explorer { & explorer . }
-Set-Alias -Name "e." -Value Start-Explorer
+Function Invoke-Explorer { & explorer . }
+Set-Alias -Name "e." -Value Invoke-Explorer
 Set-Alias -Name e -Value explorer
 Set-Alias -Name trash -Value recycle-bin
 Function vi { & nvim --clean $args }
 Function pipx { & python $env:APPS\pipx\pipx.pyz $args }
 Function ipython { & python -m IPython --profile=vi $args }
 
-Function Create-Link (
+Function New-Link (
     [Parameter(Mandatory=$true)] [String] $link,
     [Parameter(Mandatory=$true)] [String] $real) {
   if (Test-Path $real -PathType Container) {
@@ -181,6 +182,10 @@ Function Create-Link (
     # Create file hard link (must be on the same volume)
     cmd /C mklink /H $link.Replace("/", "\") $real.Replace("/", "\")
   }
+}
+
+Function Test-Command ([Parameter(Mandatory=$true)] [String] $cmd) {
+  return [bool] (Get-Command -ErrorAction SilentlyContinue $cmd)
 }
 
 
@@ -193,7 +198,9 @@ Invoke-Expression $(& scoop-search --hook)
 
 # Load direnv
 
-Invoke-Expression "$(direnv hook pwsh)"
+if (Test-Command "direnv") {
+  Invoke-Expression "$(direnv hook pwsh)"
+}
 
 
 
