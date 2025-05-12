@@ -50,22 +50,8 @@
 !^l::Run "fancywm.exe --action MoveRight"
 
 ; Switch to monitor (Alt + wer).
-; Three-monitor setup
-;!w::Run "fancywm.exe --action SwitchToDisplay2"
-;!e::Run "fancywm.exe --action SwitchToDisplay3"
-;!r::Run "fancywm.exe --action SwitchToDisplay1"
-; Two-monitor setup
-!w::Run "fancywm.exe --action SwitchToDisplay1"
-!e::Run "fancywm.exe --action SwitchToDisplay2"
-
 ; Move the focused window to monitor (Alt + Shift + wer).
-; Three-monitor setup
-;!+w::Run "fancywm.exe --action MoveToDisplay2"
-;!+e::Run "fancywm.exe --action MoveToDisplay3"
-;!+r::Run "fancywm.exe --action MoveToDisplay1"
-; Two-monitor setup
-!+w::Run "fancywm.exe --action MoveToDisplay1"
-!+e::Run "fancywm.exe --action MoveToDisplay2"
+#Include "monitors.ahk"
 
 ; Close windows.
 !+q::SendInput "!{F4}"
