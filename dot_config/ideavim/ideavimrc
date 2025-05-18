@@ -81,6 +81,9 @@ set ideajoin
 " Use gray icon on status bar
 set ideastatusicon=gray
 
+" Save just the current file when using :w
+set ideawrite=file
+
 
 """ Plugins
 " Reference: https://github.com/JetBrains/ideavim/blob/master/doc/IdeaVim%20Plugins.md
@@ -88,18 +91,30 @@ set ideastatusicon=gray
 " Install via marketplace:
 " - IdeaVim
 " - AceJump:             https://github.com/acejump/AceJump
+" - HarpoonIJ:           https://github.com/AlexGirardDev/HarpoonIJ
 " - IdeaVim-Quickscope:  https://github.com/joshestein/ideavim-quickscope
+" - TabMover:            https://github.com/mikinw/TabMover
+" - Vim FunctionTextObj: https://github.com/jphalip/ideavim-functiontextobj
 " - Which-Key:           https://github.com/TheBlob42/idea-which-key
 
-set surround
-set commentary
-set matchit
-set exchange
+" Useful bindings
+set commentary  " gc_
+set exchange    " cx_
+set surround    " ys_, ds_, cs_
 
+" Extended behaviour
 set highlightedyank
-
-set sneak
+set matchit
 set quickscope
+set vim-paragraph-motion
+
+" Text objects
+set argtextobj       " a
+set functiontextobj  " f
+set mini-ai          " b, q
+set textobj-entire   " e
+set textobj-indent   " i
+let g:argtextobj_pairs = "(:),{:},<:>,[:]"
 
 " NERDTree bindings: https://github.com/JetBrains/ideavim/wiki/NERDTree-support
 " - o: open file or directory
@@ -111,20 +126,41 @@ set NERDTree
 
 set which-key
 set notimeout
-let g:WhichKey_ShowVimActions = "true"
+let g:WhichKey_ProcessUnknownMappings = "false"
 
-set argtextobj
-let g:argtextobj_pairs = "(:),{:},<:>,[:]"
+" Prevent WhichKey from showing up for non-leader mappings
+let g:WhichKey_ShowVimActions = "false"
+let g:WhichKeyDesc_hide_gc = "gc"
+let g:WhichKeyDesc_hide_gI = "gI"
+let g:WhichKeyDesc_hide_go = "go"
+let g:WhichKeyDesc_hide_gO = "gO"
+let g:WhichKeyDesc_hide_gp = "gp"
+let g:WhichKeyDesc_hide_gP = "gP"
+let g:WhichKeyDesc_hide_gr = "gr"
+let g:WhichKeyDesc_hide_gR = "gR"
+let g:WhichKeyDesc_hide_gS = "gS"
+let g:WhichKeyDesc_hide_g_comma = "g,"
+let g:WhichKeyDesc_hide_g_percent = "g%"
+let g:WhichKeyDesc_hide_g_semicolon = "g;"
+let g:WhichKeyDesc_hide_cx = "cx"
+let g:WhichKeyDesc_hide_cs = "cs"
+let g:WhichKeyDesc_hide_ds = "ds"
+let g:WhichKeyDesc_hide_ys = "ys"
+let g:WhichKeyDesc_hide_bracket_b1 = "[b"
+let g:WhichKeyDesc_hide_bracket_b2 = "]b"
+let g:WhichKeyDesc_hide_bracket_d1 = "[d"
+let g:WhichKeyDesc_hide_bracket_d2 = "]d"
+let g:WhichKeyDesc_hide_bracket_h1 = "[h"
+let g:WhichKeyDesc_hide_bracket_h2 = "]h"
 
-set textobj-entire
-set textobj-indent
-
-set vim-paragraph-motion
 
 
 """ Mappings
 " Default mappings:
+" - https://github.com/JetBrains/ideavim/blob/master/vim-engine/src/main/resources/ksp-generated/engine_commands.json
 " - See old package-info.java: https://github.com/JetBrains/ideavim/commit/126de5c218641d56f211e0465097352678cdd209
+" Available ex commands:
+" - https://github.com/JetBrains/ideavim/blob/master/vim-engine/src/main/resources/ksp-generated/engine_ex_commands.json
 
 nnoremap Y y$
 
@@ -133,6 +169,10 @@ nnoremap N Nzzzv
 
 vnoremap < <gv
 vnoremap > >gv
+
+" AceJump is also activated with C-; (use sneak alternatively)
+map s <Action>(AceForwardAction)
+map S <Action>(AceBackwardAction)
 
 map g, <Action>(JumpToNextChange)
 map g; <Action>(JumpToLastChange)
@@ -150,6 +190,12 @@ nnoremap gp o<Esc>p
 
 map <C-k> <Action>(MoveLineUp)
 map <C-j> <Action>(MoveLineDown)
+
+map <C-w>m <Action>(MaximizeEditorInSplit)
+map <C-w>M <Action>(MoveEditorToOppositeTabGroup)
+map <C-w>H <Action>(com.mnw.tabmover.actions.MoveTabToPreviousWindow)
+map <C-w>L <Action>(com.mnw.tabmover.actions.MoveTabToNextWindow)
+map <C-w>U <Action>(Unsplit)
 
 nnoremap <silent> <C-s> :update<CR>
 inoremap <silent> <C-s> <C-o>:update<CR>
@@ -179,79 +225,119 @@ inoremap <C-d> <Del>
 
 " Leader mappings
 " Reference: https://github.com/MarcoIeni/intellimacs
+" Use Shift-Esc to close non-editor windows
 
 " Leader
-map <Leader><Leader> <Action>(GotoAction)
+let g:WhichKeyDesc_open_switcher = "<leader><leader> Open Switcher"
+map <Leader><Leader> <Action>(Switcher)
+let g:WhichKeyDesc_goto_previous = "<leader><Backspace> Previous buffer"
 map <Leader><Backspace> <C-6>
 
 " Buffers
+let g:WhichKeyDesc_buffers = "<leader>b Buffers"
 map <Leader>bb <Action>(RecentFiles)
 map <Leader>bd <Action>(CloseContent)
 map <Leader>bn <Action>(NextTab)
+map <Leader>bo <Action>(CloseAllEditorsButActive)
 map <Leader>bp <Action>(PreviousTab)
 map <Leader>bs <Action>(NewScratchBuffer)
 map <Leader>bu <Action>(ReopenClosedTab)
 map <Leader>bx <Action>(CloseAllEditors)
 
 " Code
-map <Leader>ca <Action>(ShowIntentionActions)
+let g:WhichKeyDesc_code = "<leader>c Code"
 map <Leader>cc <Action>(ShowIntentionActions)
+map <Leader>ca <Action>(ShowIntentionActions)
+map <Leader>cC <Action>(CodeCleanup)
 map <Leader>cf <Action>(ReformatCode)
+map <Leader>cH <Action>(CallHierarchy)
 map <Leader>ch <Action>(HighlightUsagesInFile)
-map <Leader>ci <Action>(OptimizeImports)
+map <Leader>ci <Action>(InspectCode)
+map <Leader>cI <Action>(OptimizeImports)
 map <Leader>cR <Action>(RefactoringMenu)
 map <Leader>cr <Action>(RenameElement)
 map <Leader>cs <Action>(FileStructurePopup)
+map <Leader>ct <Action>(InsertLiveTemplate)
 
 " Debug
+let g:WhichKeyDesc_debug = "<leader>d Debug"
 map <Leader>dd <Action>(Debug)
-map <Leader>dr <Action>(Run)
-map <Leader>ds <Action>(StepOver)
-map <Leader>di <Action>(StepInto)
-map <Leader>do <Action>(StepOut)
-map <Leader>dc <Action>(RunToCursor)
-map <Leader>dR <Action>(Resume)
-map <Leader>dS <Action>(Stop)
 map <Leader>db <Action>(EditBreakpoint)
 map <Leader>dB <Action>(ViewBreakpoints)
+map <Leader>dC <Action>(ChooseRunConfiguration)
+map <Leader>dc <Action>(RunToCursor)
+map <Leader>di <Action>(StepInto)
+map <Leader>do <Action>(StepOut)
+map <Leader>dR <Action>(Resume)
+map <Leader>dr <Action>(Run)
+map <Leader>ds <Action>(StepOver)
+map <Leader>dS <Action>(Stop)
+map <Leader>dt <Action>(ToggleLineBreakpoint)
 
 " Files
+let g:WhichKeyDesc_files = "<leader>f Files"
 map <Leader>ff <Action>(GotoFile)
-map <Leader>fR <Action>(RenameFile)
+map <Leader>fb <Action>(ShowBookmarks)
+map <Leader>fh <Action>(LocalHistory.ShowHistory)
+map <Leader>fN <Action>(NewElement)
+map <Leader>fn <Action>(ShowNavBar)
 map <Leader>fr <Action>(RecentFiles)
+map <Leader>fR <Action>(RenameFile)
 map <Leader>fS <Action>(SaveAll)
 map <Leader>fs <Action>(SaveDocument)
 map <Leader>ft :NERDTreeFocus<CR>
+map <Leader>fy <Action>(CopyAbsolutePath)
 
 " Git
-map <leader>gg <Action>(Vcs.Show.Local.Changes)
-map <leader>gl <Action>(Vcs.Show.Log)
+let g:WhichKeyDesc_git = "<leader>g Git"
+map <Leader>gg <Action>(Vcs.QuickListPopupAction)
+map <Leader>gb <Action>(Annotate)
+map <Leader>gB <Action>(Git.Branches)
+map <Leader>gG <Action>(ActivateVersionControlToolWindow)
+map <Leader>gl <Action>(Vcs.Show.Log)
+map <Leader>gs <Action>(Vcs.Show.Local.Changes)
+
+" Harpoon
+let g:WhichKeyDesc_harpoon = "<leader>h Harpoon"
+map <Leader>hh <Action>(ShowHarpoon)
+map <Leader>ha <Action>(AddToHarpoon)
+map <Leader>h1 <Action>(GotoHarpoon1)
+map <Leader>h2 <Action>(GotoHarpoon2)
+map <Leader>h3 <Action>(GotoHarpoon3)
+map <Leader>h4 <Action>(GotoHarpoon4)
+map <Leader>h5 <Action>(GotoHarpoon5)
 
 " IdeaVim
+let g:WhichKeyDesc_ideavim = "<leader>i IdeaVim"
 map <Leader>ii :edit ~/.ideavimrc<CR>
 map <Leader>ir <Action>(IdeaVim.ReloadVimRc.reload)
+map <Leader>is <Action>(ShowSettings)
 
 " Quit
+let g:WhichKeyDesc_quit = "<leader>q Quit"
 map <Leader>qq <Action>(Exit)
 map <Leader>qp <Action>(CloseProject)
 map <Leader>qr <Action>(RestartIde)
 
 " Search
-map <Leader>se <Action>(SearchEverywhere)
-map <Leader>su <Action>(ShowUsages)
-map <Leader>sU <Action>(FindUsages)
-map <Leader>sp <Action>(FindInPath)
-map <Leader>sP <Action>(ReplaceInPath)
+let g:WhichKeyDesc_search = "<leader>s Search"
 map <Leader>sa <Action>(GotoAction)
 map <Leader>sc <Action>(GotoClass)
+map <Leader>se <Action>(SearchEverywhere)
 map <Leader>sf <Action>(GotoFile)
-map <Leader>ss <Action>(GotoSymbol)
 map <Leader>sn :nohlsearch<CR>
+map <Leader>sp <Action>(FindInPath)
+map <Leader>sP <Action>(ReplaceInPath)
+map <Leader>ss <Action>(GotoSymbol)
+map <Leader>sU <Action>(FindUsages)
+map <Leader>su <Action>(ShowUsages)
 
 " Toggle / Tree
+let g:WhichKeyDesc_toggle_tree = "<leader>t Toggle/Tree"
 map <Leader>tt :NERDTreeFocus<CR>
 map <Leader>tT :NERDTreeToggle<CR>
 map <Leader>tb <Action>(ToggleLineBreakpoint)
+map <Leader>tD <Action>(ActivateTODOToolWindow)
 map <Leader>td <Action>(ToggleDistractionFreeMode)
+map <Leader>tp <Action>(TogglePresentationMode)
 map <Leader>tz <Action>(ToggleZenMode)
-
