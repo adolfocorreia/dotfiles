@@ -74,6 +74,7 @@ import XMonad.Actions.GroupNavigation
     isOnAnyVisibleWS,
     nextMatch,
   )
+import XMonad.Actions.OnScreen (greedyViewOnScreen)
 import XMonad.Actions.UpdatePointer (updatePointer)
 import XMonad.Config.Desktop (desktopConfig)
 import XMonad.Hooks.EwmhDesktops (ewmh)
@@ -255,8 +256,9 @@ myRemoveKeys =
 -- Startup processes
 myStartupHook :: X ()
 myStartupHook = do
-  -- Open terminal on startup
-  spawnOnce $ myTerminal ++ " &"
+  -- Show 'term' and 'time' workspaces at startup
+  windows (greedyViewOnScreen 0 "term")
+  windows (greedyViewOnScreen 1 "time")
 
 -- Layout configuration
 myLayoutHook :: ModifiedLayout _ _ _
@@ -271,17 +273,17 @@ myLayoutHook = avoidStruts (tall ||| full)
 
 -- Workspaces configuration
 myWorkspaces :: [String]
-myWorkspaces = ["term", "www", "dev", "doc", "file", "mail", "chat", "note", "vid", "conf"]
+myWorkspaces = ["term", "www", "dev", "doc", "file", "mail", "chat", "note", "vid", "time"]
 
 workspaceIcon :: String -> String
 workspaceIcon "chat" = "<fn=2>\xf0b79</fn>"
-workspaceIcon "conf" = "<fn=2>\xf0493</fn>"
 workspaceIcon "dev"  = "<fn=2>\xf05c0</fn>"
 workspaceIcon "doc"  = "<fn=2>\xf06d3</fn>"
 workspaceIcon "file" = "<fn=2>\xf0770</fn>"
 workspaceIcon "mail" = "<fn=2>\xf02ab</fn>"
 workspaceIcon "note" = "<fn=2>\xf01c8</fn>"
 workspaceIcon "term" = "<fn=2>\xf07b7</fn>"
+workspaceIcon "time" = "<fn=2>\xf051b</fn>"
 workspaceIcon "vid"  = "<fn=2>\xf05a0</fn>"
 workspaceIcon "www"  = "<fn=2>\xf059f</fn>"
 workspaceIcon str = ""
@@ -315,6 +317,7 @@ myManageHook =
         "Gsmartcontrol",
         "Hdajackretask",
         "Pavucontrol",
+        "superProductivity",
         "Systemadm",
         "Vorta",
         "Xdg-desktop-portal-gtk"
@@ -333,6 +336,8 @@ myManageHook =
         ("note", "obsidian"),
         -- Neovide
         ("dev", "neovide"),
+        -- Super Productivity
+        ("time", "superProductivity"),
         -- Visual Studio Code
         ("dev", "code"),
         -- Whatsapp (nativefier)

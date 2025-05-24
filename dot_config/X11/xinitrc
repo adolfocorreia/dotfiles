@@ -87,10 +87,6 @@ dunst &
 stalonetray &
 # Storage devices automounter
 udiskie --tray &
-# Password manager
-keepassxc &
-# Clipboard manager
-copyq &
 # Media player controller
 playerctld daemon &
 # Wallpaper setter
@@ -100,6 +96,16 @@ variety &
 redshift &
 # Manually disable screensaver
 caffeine &
+# Password manager
+keepassxc ~/Documents/Passwords.kdbx &
+# Clipboard manager
+copyq &
+# Cloud files sync
+dropbox &
+# Time tracker
+superproductivity &
+# Terminal
+alacritty &
 
 
 # Execute Xmonad
