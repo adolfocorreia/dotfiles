@@ -81,7 +81,7 @@ set ideajoin
 " Use gray icon on status bar
 set ideastatusicon=gray
 
-" Save just the current file when using :w
+" Save the current file only when using the command :w
 set ideawrite=file
 
 
@@ -321,6 +321,7 @@ map <Leader>qr <Action>(RestartIde)
 
 " Search
 let g:WhichKeyDesc_search = "<leader>s Search"
+map <Leader>ss <Action>(GotoSymbol)
 map <Leader>sa <Action>(GotoAction)
 map <Leader>sc <Action>(GotoClass)
 map <Leader>se <Action>(SearchEverywhere)
@@ -328,16 +329,15 @@ map <Leader>sf <Action>(GotoFile)
 map <Leader>sn :nohlsearch<CR>
 map <Leader>sp <Action>(FindInPath)
 map <Leader>sP <Action>(ReplaceInPath)
-map <Leader>ss <Action>(GotoSymbol)
 map <Leader>sU <Action>(FindUsages)
 map <Leader>su <Action>(ShowUsages)
 
 " Toggle / Tree
 let g:WhichKeyDesc_toggle_tree = "<leader>t Toggle/Tree"
 map <Leader>tt :NERDTreeFocus<CR>
-map <Leader>tT :NERDTreeToggle<CR>
 map <Leader>tb <Action>(ToggleLineBreakpoint)
 map <Leader>tD <Action>(ActivateTODOToolWindow)
 map <Leader>td <Action>(ToggleDistractionFreeMode)
 map <Leader>tp <Action>(TogglePresentationMode)
+map <Leader>tT :NERDTreeToggle<CR>
 map <Leader>tz <Action>(ToggleZenMode)

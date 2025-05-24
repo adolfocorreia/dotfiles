@@ -1,6 +1,7 @@
 -------------------
 ----- General -----
 -------------------
+vim = vim
 
 -- Neovim tips:
 -- - https://github.com/wincent/vim-university
