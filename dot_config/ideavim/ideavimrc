@@ -152,7 +152,11 @@ let g:WhichKeyDesc_hide_bracket_d1 = "[d"
 let g:WhichKeyDesc_hide_bracket_d2 = "]d"
 let g:WhichKeyDesc_hide_bracket_h1 = "[h"
 let g:WhichKeyDesc_hide_bracket_h2 = "]h"
-
+let g:WhichKeyDesc_hide_window_m = "<C-w>m"
+let g:WhichKeyDesc_hide_window_M = "<C-w>M"
+let g:WhichKeyDesc_hide_window_H = "<C-w>H"
+let g:WhichKeyDesc_hide_window_L = "<C-w>L"
+let g:WhichKeyDesc_hide_window_U = "<C-w>U"
 
 
 """ Mappings
@@ -243,6 +247,24 @@ map <Leader>bp <Action>(PreviousTab)
 map <Leader>bs <Action>(NewScratchBuffer)
 map <Leader>bu <Action>(ReopenClosedTab)
 map <Leader>bx <Action>(CloseAllEditors)
+
+" Windows
+let g:WhichKeyDesc_windows = "<leader>w Windows"
+map <Leader>ww <C-w>w
+map <Leader>wW <C-w>W
+map <Leader>wc <C-w>c
+map <Leader>wo <C-w>o
+map <Leader>ws <C-w>s
+map <Leader>wv <C-w>v
+map <Leader>wh <C-w>h
+map <Leader>wj <C-w>j
+map <Leader>wk <C-w>k
+map <Leader>wl <C-w>l
+map <Leader>wm <Action>(MaximizeEditorInSplit)
+map <Leader>wM <Action>(MoveEditorToOppositeTabGroup)
+map <Leader>wH <Action>(com.mnw.tabmover.actions.MoveTabToPreviousWindow)
+map <Leader>wL <Action>(com.mnw.tabmover.actions.MoveTabToNextWindow)
+map <Leader>wU <Action>(Unsplit)
 
 " Code
 let g:WhichKeyDesc_code = "<leader>c Code"
