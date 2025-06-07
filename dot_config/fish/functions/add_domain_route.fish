@@ -1,5 +1,5 @@
 function add_domain_route --description 'Add direct routes to addresses pointed by domain'
-    set default $(ip route | grep default | awk '{print $3}')
+    set default $(ip route | grep default | awk '{print $3}' | sort | uniq)
     test -n $(string match --regex '\d+\.\d+\.\d+\.\d+' $default); or return
 
     set domains $argv[1]
