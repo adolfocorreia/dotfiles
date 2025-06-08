@@ -1,3 +1,10 @@
+# Wireless
+AddPackage iwd # Internet Wireless Daemon
+
+# DNS (resolvconf replacement)
+AddPackage systemd-resolvconf # systemd resolvconf replacement (for use with systemd-resolved)
+CreateLink /etc/resolv.conf /run/systemd/resolve/stub-resolv.conf
+
 # Network tools
 AddPackage bind # A complete, highly portable implementation of the DNS protocol
 AddPackage inetutils # A collection of common network programs

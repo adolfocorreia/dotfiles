@@ -4,6 +4,7 @@ CreateLink /etc/systemd/system/dbus-org.freedesktop.resolve1.service /usr/lib/sy
 CreateLink /etc/systemd/system/dbus-org.freedesktop.timesync1.service /usr/lib/systemd/system/systemd-timesyncd.service
 CreateLink /etc/systemd/system/getty.target.wants/getty@tty1.service /usr/lib/systemd/system/getty@.service
 CreateLink /etc/systemd/system/multi-user.target.wants/cronie.service /usr/lib/systemd/system/cronie.service
+CreateLink /etc/systemd/system/multi-user.target.wants/iwd.service /usr/lib/systemd/system/iwd.service
 CreateLink /etc/systemd/system/multi-user.target.wants/ollama.service /usr/lib/systemd/system/ollama.service
 CreateLink /etc/systemd/system/multi-user.target.wants/pkgfile-update.timer /usr/lib/systemd/system/pkgfile-update.timer
 CreateLink /etc/systemd/system/multi-user.target.wants/remote-fs.target /usr/lib/systemd/system/remote-fs.target
@@ -35,4 +36,3 @@ CreateLink /etc/systemd/user/sockets.target.wants/p11-kit-server.socket /usr/lib
 CreateLink /etc/systemd/user/sockets.target.wants/pipewire-pulse.socket /usr/lib/systemd/user/pipewire-pulse.socket
 CreateLink /etc/systemd/user/sockets.target.wants/pipewire.socket /usr/lib/systemd/user/pipewire.socket
 
-CreateLink /etc/resolv.conf /run/systemd/resolve/stub-resolv.conf

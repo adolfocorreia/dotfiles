@@ -12,8 +12,6 @@ AddPackage nvidia-lts # NVIDIA drivers for linux-lts
 AddPackage nvidia # NVIDIA kernel modules
 AddPackage nvidia-settings # Tool for configuring the NVIDIA graphics driver
 
-CopyFile /etc/X11/xorg.conf.d/10-intel-xorg-nvidia-cuda.conf
-
 # Boot
 AddPackage efibootmgr # Linux user-space application to modify the EFI Boot Manager
 

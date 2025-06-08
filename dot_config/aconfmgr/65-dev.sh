@@ -14,12 +14,19 @@ IgnorePath '/usr/share/*vim/*/doc/tags'
 AddPackage cmake # A cross-platform open-source make system
 AddPackage ctags # Generates an index file of language objects found in source files
 AddPackage direnv # A shell extension that manages your environment
+AddPackage meld # Compare files, directories and working copies
+AddPackage vint # Lint tool for Vim script Language
+
+# Data file tools (json, toml, yaml, xml, csv)
+AddPackage yamllint # Linter for YAML files
+AddPackage --foreign dasel # Select, put and delete data from JSON, TOML, YAML, XML and CSV files with a single tool
+
+# Git tools
 AddPackage gitu # A TUI Git client inspired by Magit
 AddPackage lazygit # Simple terminal UI for git commands
-AddPackage meld # Compare files, directories and working copies
 AddPackage pre-commit # A framework for managing and maintaining multi-language pre-commit hooks
-AddPackage vint # Lint tool for Vim script Language
-AddPackage --foreign dasel # Select, put and delete data from JSON, TOML, YAML, XML and CSV files with a single tool
+AddPackage --foreign git-town-bin # Git workflow automation to keep branches in sync and reduce merge conflicts.Written in Go.(Prebuilt version)
+AddPackage --foreign python-commitizen # Create committing rules for projects, auto bump versions, and auto changelog generation
 
 # Shell
 AddPackage shellcheck # Shell script analysis tool

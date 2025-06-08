@@ -3,9 +3,6 @@ AddPackage base # Minimal package set to define a basic Arch Linux installation
 AddPackage pacman # A library-based package manager with dependency support
 AddPackage pacman-contrib # Contributed scripts and tools for pacman systems
 
-# Networking extra packages
-AddPackage systemd-resolvconf # systemd resolvconf replacement (for use with systemd-resolved)
-
 # Core utils
 AddPackage bash-completion # Programmable completion for the bash shell
 AddPackage file # File type identification utility

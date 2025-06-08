@@ -9,6 +9,7 @@ CopyFile /etc/conf.d/snapper
 CopyFile /etc/cron.daily/rsnapshot 755
 CopyFile /etc/fstab
 CopyFile /etc/hostname
+CopyFile /etc/iwd/main.conf
 CopyFile /etc/locale.conf
 CopyFile /etc/logrotate.conf
 CopyFile /etc/mkinitcpio.conf
@@ -24,7 +25,9 @@ CopyFile /etc/snapper/configs/documents 640
 CopyFile /etc/snapper/configs/media 640
 CopyFile /etc/snapper/configs/provisional 640
 CopyFile /etc/systemd/network/20-wired.network
+CopyFile /etc/systemd/network/25-wireless.network
 CopyFile /etc/udev/rules.d/50-qmk.rules
 CopyFile /etc/vconsole.conf
+CopyFile /etc/X11/xorg.conf.d/10-intel-xorg-nvidia-cuda.conf
 CopyFile /usr/lib/firmware/hda-jack-retask.fw '' adcor adcor
 CopyFile /usr/share/smartmontools/smartd_warning.d/smartdnotify 755

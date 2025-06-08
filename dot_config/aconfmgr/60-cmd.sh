@@ -24,7 +24,6 @@ AddPackage lynx # A text browser for the World Wide Web
 AddPackage magic-wormhole # Securely transfer data between computers
 AddPackage moreutils # A growing collection of the unix tools that nobody thought to write thirty years ago
 AddPackage ncdu # Disk usage analyzer with an ncurses interface
-AddPackage neofetch # A CLI system information tool written in BASH that supports displaying images.
 AddPackage parallel # A shell tool for executing jobs in parallel
 AddPackage pdfgrep # A tool to search text in PDF files
 AddPackage progress # Shows running coreutils basic commands and displays stats
@@ -38,6 +37,7 @@ AddPackage tree # A directory listing program displaying a depth indented list o
 AddPackage xh # Friendly and fast tool for sending HTTP requests
 AddPackage zoxide # A smarter cd command for your terminal
 AddPackage --foreign cht.sh-git # The only cheat sheet you need (command line client for cheat.sh)
+AddPackage --foreign neofetch # A CLI system information tool written in BASH that supports displaying images.
 AddPackage --foreign rust-motd-bin # Beautiful, useful MOTD generation with zero runtime dependencies
 AddPackage --foreign sesh-bin # Smart session manager for the terminal
 AddPackage --foreign tmuxinator # Manage complex tmux sessions easily
