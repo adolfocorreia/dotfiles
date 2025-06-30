@@ -11,6 +11,7 @@ AddPackage xorg-xrandr # Primitive command line interface to RandR extension
 AddPackage xorg-xsetroot # Classic X utility to set your root window background to a given pattern or color
 AddPackage xsecurelock # X11 screen lock utility with security in mind
 AddPackage xsel # Command-line program for getting and setting the contents of the X selection
+AddPackage xsettingsd # Provides settings to X11 applications via the XSETTINGS specification
 AddPackage xss-lock # Use external locker as X screen saver
 AddPackage --foreign betterlockscreen-git # A simple lock script for i3lock-color
 AddPackage --foreign xkb-switch # Program that allows to query and change the XKB layout state

@@ -22,11 +22,12 @@ AddPackage --foreign ttf-gentium-basic # Fonts based on the original Gentium des
 AddPackage --foreign ttf-material-design-icons-git # Material Design Icons Web Font
 
 # Themes
-AddPackage kvantum # SVG-based theme engine for Qt5/6 (including config tool and extra themes)
+AddPackage gtk-engine-murrine # GTK2 engine to make your desktop look like a 'murrina', an italian word meaning the art glass works done by Venicians glass blowers.
 AddPackage kvantum-qt5 # SVG-based theme engine for Qt5
+AddPackage kvantum # SVG-based theme engine for Qt5/6 (including config tool and extra themes)
 AddPackage lxappearance-gtk3 # Feature-rich GTK+ theme switcher of the LXDE Desktop (GTK+ 3 version)
-AddPackage materia-gtk-theme # A Material Design theme for GNOME/GTK+ based desktop environments
 AddPackage papirus-icon-theme # Papirus icon theme
 AddPackage qt5ct # Qt5 Configuration Utility
 AddPackage qt6ct # Qt 6 Configuration Utility
-AddPackage --foreign arc-gtk-theme # A flat theme with transparent elements for GTK 2,3,4 and Gnome-Shell
+AddPackage --foreign libadwaita-without-adwaita-git # libadwaita; Includes a patch to not overwrite the system theme
+AddPackage --foreign tokyonight-gtk-theme-git # A GTK theme based on the Tokyo Night colour palette.

@@ -34,6 +34,7 @@ AddPackage shfmt # Format shell programs
 
 # Python
 AddPackage ipython # Enhanced Interactive Python shell
+AddPackage mypy # Optional static typing for Python (PEP484)
 AddPackage pyenv # Easily switch between multiple versions of Python
 AddPackage python-black # Uncompromising Python code formatter
 AddPackage python-debugpy # An implementation of the Debug Adapter Protocol for Python
@@ -60,9 +61,6 @@ AddPackage --foreign julia-bin # High-level, high-performance, dynamic programmi
 AddPackage blas-openblas # An optimized BLAS library based on GotoBLAS2 1.13 BSD (Provides BLAS/CBLAS/LAPACK/LAPACKE system-wide)
 AddPackage gcc-fortran # Fortran front-end for GCC
 AddPackage r # Language and environment for statistical computing and graphics
-
-# Haskell
-AddPackage haskell-language-server # LSP server for GHC
 
 # Rust
 AddPackage rustup # The Rust toolchain installer

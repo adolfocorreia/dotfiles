@@ -15,6 +15,7 @@ AddPackage fisher # A package manager for the fish shell
 AddPackage fish # Smart and user friendly shell intended mostly for interactive use
 AddPackage fortune-mod # The Fortune Cookie Program from BSD games
 AddPackage fzf # Command-line fuzzy finder
+AddPackage gdu # Fast disk usage analyzer
 AddPackage git-delta # Syntax-highlighting pager for git and diff output
 AddPackage glow # Command-line markdown renderer
 AddPackage gron # Makes JSON greppable

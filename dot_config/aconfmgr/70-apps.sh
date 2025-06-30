@@ -31,10 +31,28 @@ IgnorePath '/etc/libreoffice/sofficerc'
 AddPackage flatpak # Linux application sandboxing and distribution framework (formerly xdg-app)
 AddPackage xdg-desktop-portal-gtk # A backend implementation for xdg-desktop-portal using GTK
 
+# Document viewers
+AddPackage calibre # Ebook management application
+AddPackage xchm # Viewer for CHM files (GUI front-end to chmlib)
+AddPackage xreader # Document viewer for files like PDF and Postscript. X-Apps Project.
+AddPackage zathura-djvu # DjVu support for Zathura
+AddPackage zathura-pdf-mupdf # PDF support for Zathura (MuPDF backend) (Supports PDF, ePub, and OpenXPS)
+
 # Document conversion and manipulation
-AddPackage pandoc-cli # Conversion between documentation formats
 AddPackage --foreign fntsample # PDF and PostScript font samples generator
+AddPackage --foreign pandoc-bin # Conversion between documentation formats
 AddPackage --foreign pdf.tocgen # Automatically generate table of contents for PDF documents.
+
+# Image viewers and media players
+AddPackage gpicview # Lightweight image viewer
+AddPackage mpv # a free, open source, and cross-platform media player
+AddPackage vlc # Multi-platform MPEG, VCD/DVD, and DivX player
+AddPackage --foreign findimagedupes # Tool to find visually similar or duplicate images
+
+AddPackage --foreign vimiv-qt # An image viewer with vim-like keybindings
+AddPackage --foreign python-exiv2 # A Python 3 binding to exiv2, the C++ library for manipulation of EXIF, IPTC and XMP image metadata.
+
+IgnorePath '/usr/lib/vlc/plugins/plugins.dat'
 
 # AI apps and tools
 AddPackage aichat # All-in-one AI CLI tool featuring Chat-REPL, Shell Assistant, RAG, AI tools & agents
