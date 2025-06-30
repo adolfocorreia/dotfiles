@@ -10,23 +10,30 @@
 
    Default themes:
    - https://github.com/davatorium/rofi/tree/next/themes
+
+   Available modes:
+   - window: windows
+   - windowcd: windows in current desktop
+   - run: executables in PATH
+   - drun: desktop applications
+   - ssh: ssh targets
+   - keys: rofi key bindings
+   - script: custom mode with simple scripts
+   - filebrowser: file browser (navigate through directories)
+   - recursivebrowser: file browser (list all files and directories recursively)
+   - combi: combine multiple modes in one list
 */
 
 configuration {
 
-  /* Modi */
-  /* modi: "drun,file-browser,run,window"; */
-  modi: "drun,run,window";
+  /* Modes */
+  modes: [drun, window, filebrowser];  /* Use Ctrl-Tab to switch modes */
   display-drun: "Applications";
-  /* display-file-browser: "File browser"; */
-  display-run: "Shell commands";
   display-window: "Windows";
+  display-filebrowser: "Files";
 
   /* Appearance */
   show-icons: true;
-
-  /* Search */
-  /* matching: "fuzzy"; */
 }
 
 @theme "Arc-Dark"
