@@ -83,8 +83,6 @@ betterlockscreen --update ${WP[0]} --update ${WP[1]} &
 picom &
 # Notification daemon
 dunst &
-# System tray
-stalonetray &
 # Storage devices automounter
 udiskie --tray &
 # Media player controller
@@ -102,14 +100,6 @@ keepassxc ~/Documents/Passwords.kdbx &
 copyq &
 # Cloud files sync
 dropbox &
-# Time tracker
-superproductivity &
-# Terminal
-alacritty &
 
 
-# Execute Xmonad
-# X logs available at /var/log
-[ ! -d "${XDG_CACHE_HOME}/xmonad" ] && mkdir -p "${XDG_CACHE_HOME}/xmonad"
-[ ! -d "${XDG_DATA_HOME}/xmonad" ]  && mkdir -p "${XDG_DATA_HOME}/xmonad"
-exec xmonad
+exec qtile start

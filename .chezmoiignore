@@ -36,6 +36,7 @@ tags
 .config/picom
 .config/qt5ct
 .config/qt6ct
+.config/qtile
 .config/redshift
 .config/rofi
 .config/rust-motd
