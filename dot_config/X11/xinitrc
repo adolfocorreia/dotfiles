@@ -31,11 +31,6 @@ fi
 # - https://wiki.haskell.org/Xmonad/Frequently_asked_questions#Preferred_Method
 export _JAVA_AWT_WM_NONREPARENTING=1
 
-# Set environment variable for GTK applications
-# Reference:
-# - https://wiki.archlinux.org/title/GTK
-export GTK_THEME=Arc-Dark
-
 # Monitor configuration (monitor 1: 3840x2160 / monitor 2: 2560x1440)
 # References:
 # - https://wiki.archlinux.org/title/Xorg#Display_size_and_DPI
@@ -79,6 +74,8 @@ betterlockscreen --update ${WP[0]} --update ${WP[1]} &
 # Autostart desktop apps
 # Polkit authentication agent
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+# Xsettings daemon
+xsettingsd &
 # Xorg compositor
 picom &
 # Notification daemon

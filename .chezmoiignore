@@ -47,6 +47,7 @@ tags
 .config/xdg-desktop-portal
 .config/xmobar
 .config/xmonad
+.config/xsettingsd
 .config/zathura
 
 .config/fish/functions/add_domain_route.fish
