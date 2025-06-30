@@ -151,7 +151,7 @@ if http_proxy is not None:
 # Color theme
 # Set colors.webpage.bg to dark to avoid white flashes when loading tabs
 # Reference: https://github.com/qutebrowser/qutebrowser/issues/2912
-theme_file = "base16-tokyonight.config.py"
+theme_file = "base16-tokyo-night-dark.config.py"
 if platform.system() == "Windows":
     config_home = os.getenv("XDG_CONFIG_HOME")
     assert config_home is not None
