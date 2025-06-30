@@ -426,12 +426,12 @@ local LEADER_MAPPINGS = {
   { "<Leader>fR", function() rr("New name: ", "Rename {}") end,  desc = "Rename file", },
 
   { "<Leader>v", group = "neovim" },
-  { "<Leader>vv", "<Cmd>edit $MYVIMRC<CR>",             desc = "Open vim config" },
-  { "<Leader>vl", "<Cmd>Lazy<CR>",                      desc = "Open Lazy menu" },
-  { "<Leader>vm", "<Cmd>Mason<CR>",                     desc = "Open Mason menu" },
-  { "<Leader>vt", "<Cmd>TSUpdate<CR>",                  desc = "Treesitter update" },
+  { "<Leader>vv", "<Cmd>edit $MYVIMRC<CR>",             desc = "Open neovim config" },
+  { "<Leader>vp", "<Cmd>Lazy<CR>",                      desc = "Open plugins menu (Lazy)" },
+  { "<Leader>vt", "<Cmd>Mason<CR>",                     desc = "Open tools menu (Mason)" },
+  { "<Leader>vu", "<Cmd>TSUpdate<CR>",                  desc = "Update Treesitter parsers" },
   { "<Leader>vh", "<Cmd>Alpha<CR>",                     desc = "Open home buffer" },
-  { "<Leader>vH", "<Cmd>checkhealth<CR>",               desc = "Check health" },
+  { "<Leader>vH", "<Cmd>checkhealth<CR>",               desc = "Check neovim health" },
   { "<Leader>vP", "<Cmd>Luapad<CR>",                    desc = "Open lua scratch pad" },
   { "<Leader>vs", "<Cmd>Telescope possession list<CR>", desc = "Load session" },
 
@@ -1072,6 +1072,11 @@ local PLUGINS = {
           python = { "isort", "black" },
           sh = { "shfmt" },
         },
+        formatters = {
+          isort = {
+            prepend_args = { "--profile", "black" },
+          },
+        },
         format_on_save = function(bufnr)
           if vim.g.enable_autoformat or vim.b[bufnr].enable_autoformat then
             return { timeout_ms = 500, lsp_fallback = true }
@@ -1148,9 +1153,18 @@ local PLUGINS = {
             },
           },
         },
-        basedpyright = {},
+        basedpyright = {
+          settings = {
+            basedpyright = {
+              analysis = {
+                typeCheckingMode = "standard",
+              },
+            },
+          },
+        },
         ruff = {},
         julials = {},
+        clangd = {},
         jsonls = {
           settings = {
             json = {
@@ -1361,8 +1375,26 @@ local PLUGINS = {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
     event = "InsertEnter",
+    dependencies = { "hrsh7th/nvim-cmp" },
     config = function()
-      require("copilot").setup({ suggestion = { auto_trigger = true } })
+      require("copilot").setup({
+        suggestion = {
+          auto_trigger = true,
+          keymap = {
+            accept = "<C-y>",
+            dismiss = "<C-e>",
+            next = "<M-]>",
+            prev = "<M-[>",
+          },
+        },
+      })
+      local cmp = require("cmp")
+      cmp.event:on("menu_opened", function()
+        vim.b.copilot_suggestion_hidden = true
+      end)
+      cmp.event:on("menu_closed", function()
+        vim.b.copilot_suggestion_hidden = false
+      end)
     end,
   },
 
@@ -1427,6 +1459,7 @@ local PLUGINS = {
   -- Syntax highlighting, indentation, folding and more using ASTs.
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "master", -- TODO: change to main branch
     event = { "VeryLazy" },
     cmd = { "TSUpdate", "TSUpdateSync", "TSInstall" },
     dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
@@ -2174,8 +2207,9 @@ require("lazy").setup(PLUGINS, {
   },
 })
 
--- vim.cmd.colorscheme("tokyonight-storm")
--- vim.cmd.colorscheme("catppuccin-macchiato")
-vim.cmd.colorscheme("kanagawa-wave")
+-- See https://dotfyle.com/neovim/colorscheme/top for top colorschemes.
+vim.cmd.colorscheme("tokyonight-night")
+-- vim.cmd.colorscheme("catppuccin-mocha")
+-- vim.cmd.colorscheme("kanagawa-wave")
 
 -- vim: tabstop=4

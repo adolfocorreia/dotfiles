@@ -5,6 +5,7 @@
 " - https://nosarthur.github.io/productivity/2021/08/27/ex-vim.html
 " - https://learnvimscriptthehardway.stevelosh.com
 " - https://vim.fandom.com/wiki/Unused_keys
+" - https://vimawesome.com
 
 augroup vimrc
   autocmd!
