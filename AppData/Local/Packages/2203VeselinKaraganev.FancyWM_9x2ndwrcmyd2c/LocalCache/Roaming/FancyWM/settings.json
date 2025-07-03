@@ -15,7 +15,7 @@
   "PanelFontSize": 12,
   "ShowFocus": true,
   "ShowFocusDuringAction": false,
-  "OverrideAccentColor": true,
+  "OverrideAccentColor": false,
   "CustomAccentColor": "#5E81ACFF",
   "Keybindings": {
     "ToggleManager": {
