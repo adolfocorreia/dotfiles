@@ -24,6 +24,7 @@ config.default_workspace = "main"
 
 config.color_scheme = "tokyonight_night"
 
+config.font_size = 10
 config.harfbuzz_features = { "calt=0", "clig=0", "liga=0" } -- disable ligatures
 
 config.disable_default_key_bindings = true
