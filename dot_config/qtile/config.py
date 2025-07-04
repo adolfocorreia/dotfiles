@@ -232,8 +232,8 @@ groups_by_name["time"].spawn = "superproductivity"
 ### Layouts ###
 
 layouts = [
-    MonadTall(margin=gap, ratio=0.6),
-    MonadWide(margin=gap, ratio=0.6),
+    MonadTall(margin=gap, ratio=0.6, new_client_position="top"),
+    MonadWide(margin=gap, ratio=0.6, new_client_position="top"),
     layout.Max(),
 ]
 
@@ -321,8 +321,6 @@ right_screen = Screen(
             widget.WindowCount(),
             widget.Spacer(length=10),
             widget.GroupBox(),
-            widget.Spacer(length=10),
-            widget.Prompt(),
             widget.Spacer(length=bar.STRETCH),
             widget.WindowName(),
             widget.Spacer(length=bar.STRETCH),
