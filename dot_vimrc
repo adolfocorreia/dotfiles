@@ -83,7 +83,8 @@ if !simple_terminal
 endif
 
 Plug 'cocopon/iceberg.vim'
-Plug 'romainl/Apprentice'
+Plug 'nanotech/jellybeans.vim'
+" Plug 'romainl/Apprentice'
 " Plug 'drewtempelmeyer/palenight.vim'
 " Plug 'jeffkreeftmeijer/vim-dim'
 " Plug 'joshdick/onedark.vim'
@@ -100,7 +101,7 @@ if !simple_terminal
   set termguicolors
   colorscheme iceberg
 else
-  colorscheme apprentice
+  colorscheme jellybeans
 endif
 
 
@@ -151,7 +152,9 @@ let test#strategy = 'dispatch'
 
 """"" Vim options """""
 
-set clipboard=unnamed,unnamedplus
+if !simple_terminal
+  set clipboard=unnamed,unnamedplus
+endif
 set completefunc=syntaxcomplete#Complete
 set completeopt=menuone,noinsert,noselect
 set confirm
