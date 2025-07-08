@@ -13,12 +13,13 @@
 import re
 import typing
 
-from libqtile import bar, hook, layout, qtile, widget
+from libqtile import bar, hook, layout, qtile
 from libqtile.backend.base.window import Window
 from libqtile.command.base import expose_command
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.core.manager import Qtile
 from libqtile.lazy import lazy
+from qtile_extras import widget
 
 import traverse  # pyright: ignore[reportImplicitRelativeImport]
 
@@ -35,6 +36,20 @@ R = 1 - L  # Right screen
 # Behaviour settings
 cursor_warp = True  # Cursor follows focus as directed by keyboard
 
+# Colors
+colors = dict(
+    background="#1a1b26",
+    foreground="#c0caf5",
+    black="#15161e",
+    blue="#7aa2f7",
+    cyan="#7dcfff",
+    gray="#444b6a",
+    green="#9ece6a",
+    magenta="#bb9af7",
+    red="#f7768e",
+    white="#a9b1d6",
+    yellow="#e0af68",
+)
 
 ### Custom classes and functions ###
 
@@ -193,7 +208,7 @@ group_names = [
     ("time", "\U000f051b"),
 ]
 # fmt: on
-groups = [Group(name=name, label=name.upper()) for (name, _) in group_names]
+groups = [Group(name=name, label=icon) for (name, icon) in group_names]
 
 group_keys = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
 for g, key in zip(groups, group_keys):
@@ -231,9 +246,16 @@ groups_by_name["time"].spawn = "superproductivity"
 
 ### Layouts ###
 
+monad_options = dict(
+    margin=gap,
+    ratio=0.6,
+    new_client_position="top",
+    border_focus=colors["magenta"],
+    border_normal=colors["gray"],
+)
 layouts = [
-    MonadTall(margin=gap, ratio=0.6, new_client_position="top"),
-    MonadWide(margin=gap, ratio=0.6, new_client_position="top"),
+    MonadTall(**monad_options),
+    MonadWide(**monad_options),
     layout.Max(),
 ]
 
@@ -260,17 +282,19 @@ center_floats = [
     Match(wm_class="Gpicview"),
     Match(wm_class="Gsmartcontrol"),
     Match(wm_class="Hdajackretask"),
-    Match(wm_class="Pavucontrol"),
+    Match(wm_class="pavucontrol"),
     Match(wm_class="superProductivity"),
     Match(wm_class="Systemadm"),
     Match(wm_class="Vorta"),
     Match(wm_class="Xdg-desktop-portal-gtk"),
+    Match(wm_class=re.compile("serpro"), title="win0"),
 ]
 # TODO: add hook to resize these windows on creation
 resize_floats = [
     Match(wm_class="gksqt"),
     Match(wm_class="Matplotlib"),
     Match(wm_class="mpv"),
+    Match(wm_class="system-config-printer"),
     Match(wm_class="vlc"),
 ]
 floating_layout = layout.Floating(
@@ -281,34 +305,77 @@ floating_layout = layout.Floating(
         *resize_floats,
     ],
     no_reposition_rules=[*free_floats],
+    border_focus=colors["blue"],
+    border_normal=colors["gray"],
 )
 
 
 ### Bars and widgets ###
 
 widget_defaults = dict(
-    font="sans",
-    fontsize=12,
+    font="Hack Nerd Font",
+    fontsize=14,
     padding=3,
+    background=colors["background"],
+    foreground=colors["foreground"],
 )
 extension_defaults = widget_defaults.copy()
 
-bar_size = 24
+glyph_font = dict(
+    font="Hack Nerd Font Mono",
+    fontsize=20,
+)
+groupbox_options = dict(
+    active=colors["foreground"],
+    inactive=colors["gray"],
+    this_current_screen_border=colors["magenta"],
+    this_screen_border=colors["magenta"],
+    other_current_screen_border=colors["gray"],
+    other_screen_border=colors["gray"],
+    urgent_border=colors["red"],
+)
+checkupdate_options = dict(
+    distro="Arch_checkupdates",
+    display_format="\U0000f021  {updates}",
+    initial_text="\U0000f021  0",
+    no_update_string="\U0000f021  0",
+    colour_have_updates=colors["yellow"],
+    colour_no_updates=colors["foreground"],
+)
+
+bar_size = 30
 left_screen = Screen(
     top=bar.Bar(
         [
-            widget.CurrentLayoutIcon(),
-            widget.Spacer(length=5),
-            widget.WindowCount(),
+            widget.CurrentLayoutIcon(scale=0.75),
             widget.Spacer(length=10),
-            widget.GroupBox(),
-            widget.Spacer(length=10),
+            widget.GroupBox(**glyph_font, **groupbox_options),
+            widget.Spacer(length=20),
+            widget.WindowName(format="{name}", fontsize=12),
+            widget.Spacer(length=bar.STRETCH),
+            widget.Clock(format="\U0000f133  %Y-%m-%d %a   \U0000f017  %H:%M"),
+            widget.Spacer(length=20),
             widget.Prompt(),
             widget.Spacer(length=bar.STRETCH),
-            widget.WindowName(),
-            widget.Spacer(length=bar.STRETCH),
-            widget.Spacer(length=15),
-            widget.Clock(format="%Y-%m-%d %a %H:%M"),
+            widget.TextBox("\U0000f11d "),
+            widget.GenPollCommand(
+                cmd="curl -s ipinfo.io | jq -r '.country'", shell=True
+            ),
+            widget.Spacer(length=20),
+            widget.CPU(format="\U0000f2db {load_percent:2.0f}%"),
+            widget.Spacer(length=20),
+            widget.Memory(format="\U0000f538 {MemPercent:2.0f}%"),
+            widget.Spacer(length=20),
+            widget.ThermalSensor(format="\U0000f2c9 {temp:2.0f}{unit}"),
+            widget.Spacer(length=20),
+            widget.CheckUpdates(**checkupdate_options),
+            widget.Spacer(length=20),
+            widget.Volume(
+                emoji=True,
+                emoji_list=["\U0000f6a9", "\U0000f026 ", "\U0000f027 ", "\U0000f028 "],
+            ),
+            widget.Volume(unmute_format="{volume:2.0f}%", mute_format="0%"),
+            widget.Spacer(length=10),
         ],
         bar_size,
     ),
@@ -316,17 +383,24 @@ left_screen = Screen(
 right_screen = Screen(
     top=bar.Bar(
         [
-            widget.CurrentLayoutIcon(),
-            widget.Spacer(length=5),
-            widget.WindowCount(),
+            widget.CurrentLayoutIcon(scale=0.75),
             widget.Spacer(length=10),
-            widget.GroupBox(),
+            widget.GroupBox(**glyph_font, **groupbox_options),
+            widget.Spacer(length=20),
+            widget.WindowName(format="{name}", fontsize=12),
             widget.Spacer(length=bar.STRETCH),
-            widget.WindowName(),
+            widget.Wttr(
+                location={"SBRJ": ""},
+                format="%c%C  \U0000f2c9 %t  \U0000e373 %h  \U0000e34a %p  \U0000ef16 %w",
+            ),
             widget.Spacer(length=bar.STRETCH),
             widget.Systray(),
             widget.Spacer(length=15),
-            widget.QuickExit(),
+            widget.QuickExit(
+                default_text="[shutdown]",
+                countdown_format="[{} seconds]",
+                foreground=colors["yellow"],
+            ),
         ],
         bar_size,
     )
