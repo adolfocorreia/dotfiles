@@ -283,6 +283,7 @@
   :custom
   (dashboard-center-content t)
   (dashboard-projects-backend 'project-el)
+  (dashboard-projects-switch-function 'project-switch-project)  ; or dired
   (dashboard-startup-banner 'logo)
   (dashboard-items '((recents   . 10)
                      (projects  .  5)
