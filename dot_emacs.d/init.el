@@ -642,8 +642,6 @@
 
 ;; Community packages
 
-;; TODO: evaluate purcell/envrc
-
 (use-package auto-package-update
   :defer 5
   :custom
@@ -1463,18 +1461,21 @@
 
 ;; tree-sitter
 ;; TODO: prevent writing on Messages buffer during initialization
-;; TODO: switch language modes to tree-sitter alternatives
 (use-package tree-sitter
-  :hook
-  (haskell-mode . tree-sitter-mode)
-  ;; TODO: try new grammar @ https://github.com/tree-sitter/tree-sitter-julia
-  ;; (julia-mode . tree-sitter-mode)
-  (python-mode . tree-sitter-mode)
   :config
   (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
 
 (use-package tree-sitter-langs
   :after tree-sitter)
+
+;; TODO: enable this plugin without using ':demand t'
+(use-package treesit-auto
+  :demand t
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
 
 
 ;; Language documentation
@@ -1593,6 +1594,10 @@
     :prefix "C-c"
     :major-modes 'python-mode
     "C-t" '(:ignore t :which-key "python-skeleton"))
+  (general-def
+    :prefix "C-c"
+    :major-modes 'python-ts-mode
+    "C-t" '(:ignore t :which-key "python-skeleton"))
   (add-to-list 'display-buffer-alist
                '("\\*Python\\*"
                  (display-buffer-reuse-window display-buffer-same-window))))
@@ -1600,8 +1605,8 @@
 (use-package anaconda-mode
   :after python
   :hook
-  (python-mode . anaconda-mode)
-  (python-mode . anaconda-eldoc-mode)
+  (python-base-mode . anaconda-mode)
+  (python-base-mode . anaconda-eldoc-mode)
   :config
   (add-to-list 'display-buffer-alist
           '("\\*Anaconda\\*"
@@ -1618,17 +1623,10 @@
   :commands (python-isort-buffer python-isort-on-save-mode))
 
 ;; TODO: evaluate alternative for virtual environment management (https://mclare.blog/posts/using-uv-in-emacs)
-;; TODO: evaluate purcell/envrc
-(unless ON-WINDOWS
-  (use-package poetry
-    :after python
-    :hook
-    (python-mode . poetry-tracking-mode)
-    :custom
-    (poetry-tracking-strategy 'switch-buffer)
-    :bind
-    (:map python-mode-map
-     ("C-c P" . poetry))))
+(use-package pet
+  :after python
+  :hook
+  (python-base-mode . pet-mode))
 
 (use-package pytest
   :after python
@@ -1652,6 +1650,10 @@
   (general-def
     :prefix "C-c"
     :major-modes 'python-mode
+    "t" '(:ignore t :which-key "pytest"))
+  (general-def
+    :prefix "C-c"
+    :major-modes 'python-ts-mode
     "t" '(:ignore t :which-key "pytest"))
   :config
   (add-to-list 'display-buffer-alist
