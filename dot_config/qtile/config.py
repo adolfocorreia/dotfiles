@@ -329,7 +329,7 @@ groupbox_options = dict(
     active=colors["foreground"],
     inactive=colors["gray"],
     this_current_screen_border=colors["magenta"],
-    this_screen_border=colors["magenta"],
+    this_screen_border=colors["blue"],
     other_current_screen_border=colors["gray"],
     other_screen_border=colors["gray"],
     urgent_border=colors["red"],
@@ -339,7 +339,7 @@ checkupdate_options = dict(
     display_format="\U0000f021  {updates}",
     initial_text="\U0000f021  0",
     no_update_string="\U0000f021  0",
-    colour_have_updates=colors["yellow"],
+    colour_have_updates=colors["foreground"],
     colour_no_updates=colors["foreground"],
 )
 
@@ -347,34 +347,38 @@ bar_size = 30
 left_screen = Screen(
     top=bar.Bar(
         [
-            widget.CurrentLayoutIcon(scale=0.75),
-            widget.Spacer(length=10),
-            widget.GroupBox(**glyph_font, **groupbox_options),
-            widget.Spacer(length=20),
-            widget.WindowName(format="{name}", fontsize=12),
-            widget.Spacer(length=bar.STRETCH),
-            widget.Clock(format="\U0000f133  %Y-%m-%d %a   \U0000f017  %H:%M"),
-            widget.Spacer(length=20),
+            # Left
+            widget.TextBox(" \U000f08c7 ", foreground=colors["blue"], **glyph_font),
             widget.Prompt(),
+            widget.Spacer(length=10),
+            widget.WindowName(format="{name}", width=1000, scroll=True),
             widget.Spacer(length=bar.STRETCH),
+            # Center
+            widget.CurrentLayout(icon_first=True, scale=0.75, use_mask=True),
+            widget.Spacer(length=15),
+            widget.GroupBox(**glyph_font, **groupbox_options),
+            widget.Spacer(length=bar.STRETCH),
+            # Right
             widget.TextBox("\U0000f11d "),
             widget.GenPollCommand(
                 cmd="curl -s ipinfo.io | jq -r '.country'", shell=True
             ),
-            widget.Spacer(length=20),
-            widget.CPU(format="\U0000f2db {load_percent:2.0f}%"),
-            widget.Spacer(length=20),
-            widget.Memory(format="\U0000f538 {MemPercent:2.0f}%"),
-            widget.Spacer(length=20),
-            widget.ThermalSensor(format="\U0000f2c9 {temp:2.0f}{unit}"),
-            widget.Spacer(length=20),
+            widget.Spacer(length=15),
             widget.CheckUpdates(**checkupdate_options),
-            widget.Spacer(length=20),
+            widget.Spacer(length=15),
+            widget.CPU(format="\U0000f2db {load_percent:2.0f}%"),
+            widget.Spacer(length=15),
+            widget.Memory(format="\U0000f538 {MemPercent:2.0f}%"),
+            widget.Spacer(length=15),
+            widget.ThermalSensor(format="\U0000f2c9 {temp:2.0f}{unit}"),
+            widget.Spacer(length=15),
             widget.Volume(
                 emoji=True,
                 emoji_list=["\U0000f6a9", "\U0000f026 ", "\U0000f027 ", "\U0000f028 "],
             ),
             widget.Volume(unmute_format="{volume:2.0f}%", mute_format="0%"),
+            widget.Spacer(length=15),
+            widget.Clock(format="\U0000f133  %Y-%m-%d  \U0000f017  %H:%M"),
             widget.Spacer(length=10),
         ],
         bar_size,
@@ -383,24 +387,29 @@ left_screen = Screen(
 right_screen = Screen(
     top=bar.Bar(
         [
-            widget.CurrentLayoutIcon(scale=0.75),
+            # Left
+            widget.TextBox(" \U000f08c7 ", foreground=colors["blue"], **glyph_font),
             widget.Spacer(length=10),
+            widget.WindowName(format="{name}", width=1000, scroll=True),
+            widget.Spacer(length=bar.STRETCH),
+            # Center
+            widget.CurrentLayout(icon_first=True, scale=0.75, use_mask=True),
+            widget.Spacer(length=15),
             widget.GroupBox(**glyph_font, **groupbox_options),
-            widget.Spacer(length=20),
-            widget.WindowName(format="{name}", fontsize=12),
             widget.Spacer(length=bar.STRETCH),
+            # Right
             widget.Wttr(
-                location={"SBRJ": ""},
-                format="%c%C  \U0000f2c9 %t  \U0000e373 %h  \U0000e34a %p  \U0000ef16 %w",
+                location={"SBJR": ""},
+                format="%c%C   \U0000f2c9 %t   \U0000e373 %h   \U0000e34a %p   \U0000ef16 %w",
             ),
-            widget.Spacer(length=bar.STRETCH),
-            widget.Systray(),
             widget.Spacer(length=15),
             widget.QuickExit(
                 default_text="[shutdown]",
                 countdown_format="[{} seconds]",
-                foreground=colors["yellow"],
+                foreground=colors["magenta"],
             ),
+            widget.Spacer(length=15),
+            widget.Systray(),
         ],
         bar_size,
     )
