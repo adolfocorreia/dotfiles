@@ -1,0 +1,10 @@
+/*
+* Prevent rounded corners on menus (set by themes):
+* https://unix.stackexchange.com/questions/705043/rounded-corners-from-gtk-theme-have-black-background
+*/
+menu,
+.csd .menu,
+.csd .dropdown,
+.csd .context-menu {
+    border-radius: 0;
+}
