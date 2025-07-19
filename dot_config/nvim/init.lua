@@ -1069,6 +1069,7 @@ local PLUGINS = {
         formatters_by_ft = {
           fish = { "fish_indent" },
           lua = { "stylua" },
+          markdown = { "mdformat" },
           python = { "isort", "black" },
           sh = { "shfmt" },
         },
@@ -1163,6 +1164,7 @@ local PLUGINS = {
           },
         },
         ruff = {},
+        ty = {},
         julials = {},
         clangd = {},
         jsonls = {
@@ -2203,7 +2205,7 @@ require("lazy").setup(PLUGINS, {
   },
   checker = {
     enabled = true,
-    frequency = 12 * 60 * 60, -- Check every 12 hours
+    frequency = 5 * 24 * 60 * 60, -- Check every 5 days
   },
 })
 
