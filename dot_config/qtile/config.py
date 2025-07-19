@@ -354,7 +354,7 @@ left_screen = Screen(
             widget.WindowName(format="{name}", width=1000, scroll=True),
             widget.Spacer(length=bar.STRETCH),
             # Center
-            widget.CurrentLayout(icon_first=True, scale=0.75, use_mask=True),
+            widget.CurrentLayoutIcon(icon_first=True, scale=0.75, use_mask=True),
             widget.Spacer(length=15),
             widget.GroupBox(**glyph_font, **groupbox_options),
             widget.Spacer(length=bar.STRETCH),
@@ -393,7 +393,7 @@ right_screen = Screen(
             widget.WindowName(format="{name}", width=1000, scroll=True),
             widget.Spacer(length=bar.STRETCH),
             # Center
-            widget.CurrentLayout(icon_first=True, scale=0.75, use_mask=True),
+            widget.CurrentLayoutIcon(icon_first=True, scale=0.75, use_mask=True),
             widget.Spacer(length=15),
             widget.GroupBox(**glyph_font, **groupbox_options),
             widget.Spacer(length=bar.STRETCH),
