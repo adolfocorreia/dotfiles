@@ -39,8 +39,8 @@ AddPackage zathura-djvu # DjVu support for Zathura
 AddPackage zathura-pdf-mupdf # PDF support for Zathura (MuPDF backend) (Supports PDF, ePub, and OpenXPS)
 
 # Document conversion and manipulation
+AddPackage pandoc-cli # Conversion between documentation formats
 AddPackage --foreign fntsample # PDF and PostScript font samples generator
-AddPackage --foreign pandoc-bin # Conversion between documentation formats
 AddPackage --foreign pdf.tocgen # Automatically generate table of contents for PDF documents.
 
 # Image viewers and media players

@@ -2,6 +2,7 @@
 AddPackage emacs # The extensible, customizable, self-documenting real-time display editor
 AddPackage gvim # Vi Improved, a highly configurable, improved version of the vi text editor (with advanced features, such as a GUI)
 AddPackage neovide # No Nonsense Neovim Client in Rust
+AddPackage zed # A high-performance, multiplayer code editor from the creators of Atom and Tree-sitter
 AddPackage --foreign jetbrains-toolbox # Manage all your JetBrains Projects and Tools
 AddPackage --foreign rstudio-desktop-bin # An integrated development environment (IDE) for R (binary from RStudio official repository)
 AddPackage --foreign sublime-merge # Meet a new Git Client, from the makers of Sublime Text
@@ -18,6 +19,7 @@ AddPackage meld # Compare files, directories and working copies
 AddPackage vint # Lint tool for Vim script Language
 
 # Data file tools (json, toml, yaml, xml, csv)
+AddPackage mdformat # CommonMark compliant Markdown formatter
 AddPackage yamllint # Linter for YAML files
 AddPackage --foreign dasel # Select, put and delete data from JSON, TOML, YAML, XML and CSV files with a single tool
 

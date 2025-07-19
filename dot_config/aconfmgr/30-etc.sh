@@ -6,6 +6,7 @@ CreateLink /etc/localtime /usr/share/zoneinfo/America/Sao_Paulo
 
 CopyFile /etc/borgmatic/config.yaml
 CopyFile /etc/conf.d/snapper
+CopyFile /etc/cron.daily/rate-mirrors 755
 CopyFile /etc/cron.daily/rsnapshot 755
 CopyFile /etc/fstab
 CopyFile /etc/hostname

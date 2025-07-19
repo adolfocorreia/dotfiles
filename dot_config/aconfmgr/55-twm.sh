@@ -1,7 +1,7 @@
 # Window manager
 AddPackage qtile # A full-featured, pure-Python tiling window manager
 AddPackage python-dbus-fast # A faster version of dbus-next
-AddPackage --foreign qtile-extras-git # Unofficial mods for qtile that are unlikely to be maintained in the main repo.
+AddPackage --foreign qtile-extras # Unofficial mods for qtile. Tagged release to match stable qtile releases.
 
 # Window manager support
 AddPackage dmenu # Generic menu for X
