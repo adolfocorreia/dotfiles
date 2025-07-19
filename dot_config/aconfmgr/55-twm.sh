@@ -13,6 +13,7 @@ AddPackage rofi # A window switcher, application launcher and dmenu replacement
 AddPackage wmctrl # Control your EWMH compliant window manager from command line
 AddPackage --foreign caffeine-ng # Status bar application able to temporarily inhibit the screensaver and sleep mode.
 AddPackage --foreign noti # Monitor a process and trigger a notification
+AddPackage --foreign plank-reloaded # Fork of the original Plank project, providing a simple dock for X11 desktop environments
 
 # Folder utils
 AddPackage dex # Program to generate and execute DesktopEntry files of type Application
@@ -31,6 +32,7 @@ AddPackage handlr-regex # Powerful alternative to xdg-utils written in Rust
 AddPackage perl-file-mimeinfo # Determine file type, includes mimeopen and mimetype
 
 # Desktop basic apps
+AddPackage alacarte # Menu editor for gnome
 AddPackage alacritty # A cross-platform, GPU-accelerated terminal emulator
 AddPackage copyq # Clipboard manager with searchable and editable history
 AddPackage feh # Fast and light imlib2-based image viewer
@@ -43,4 +45,3 @@ AddPackage speedcrunch # Simple but powerful calculator using Qt
 AddPackage variety # Changes the wallpaper on a regular interval using user-specified or automatically downloaded images.
 AddPackage xarchiver # GTK+ frontend to various command line archivers
 AddPackage --foreign gscreenshot # A simple screenshot tool supporting multiple backends
-

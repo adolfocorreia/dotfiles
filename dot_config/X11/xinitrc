@@ -95,6 +95,9 @@ caffeine &
 keepassxc ~/Documents/Passwords.kdbx &
 # Clipboard manager
 copyq &
+# Dock
+XDG_SESSION_TYPE=x11 plank -n left_dock &
+XDG_SESSION_TYPE=x11 plank -n right_dock &
 # Cloud files sync
 dropbox &
 

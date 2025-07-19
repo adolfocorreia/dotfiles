@@ -1,0 +1,17 @@
+[left_dock]
+current-workspace-only=false
+dock-items=['applications.dockitem', 'clippy.dockitem', 'trash.dockitem', 'separator.dockitem', 'Alacritty.dockitem', 'pcmanfm.dockitem', 'l3afpad.dockitem']
+hide-mode='auto'
+lock-items=true
+monitor='HDMI-2'
+theme='Gtk+'
+zoom-enabled=true
+
+[right_dock]
+current-workspace-only=false
+dock-items=['applications.dockitem', 'clippy.dockitem', 'trash.dockitem', 'separator.dockitem', 'Alacritty.dockitem', 'pcmanfm.dockitem', 'l3afpad.dockitem']
+hide-mode='auto'
+lock-items=true
+monitor='DP-1'
+theme='Gtk+'
+zoom-enabled=true

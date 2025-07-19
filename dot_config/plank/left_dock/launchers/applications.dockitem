@@ -1,0 +1,9 @@
+[PlankDockItemPreferences]
+#The uri for this item.
+Launcher=docklet://applications
+#The sort order for directory items.
+SortBy=name
+
+[DockyApplicationsPreferences]
+LargeIcons=false
+CustomIcon=

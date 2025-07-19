@@ -1,0 +1,5 @@
+[PlankDockItemPreferences]
+#The uri for this item.
+Launcher=docklet://trash
+#The sort order for directory items.
+SortBy=name

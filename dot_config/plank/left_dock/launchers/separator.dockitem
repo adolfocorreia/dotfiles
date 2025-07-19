@@ -1,0 +1,9 @@
+[PlankDockItemPreferences]
+#The uri for this item.
+Launcher=docklet://separator
+#The sort order for directory items.
+SortBy=name
+
+[DockySeparatorPreferences]
+#Inverts the color of the separator
+InvertColor=false

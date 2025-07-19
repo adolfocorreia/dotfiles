@@ -1,0 +1,15 @@
+[PlankDockItemPreferences]
+#The uri for this item.
+Launcher=docklet://clippy
+#The sort order for directory items.
+SortBy=name
+
+[DockyClippyPreferences]
+#How many recent clipboard entries to keep.
+MaxEntries=15
+#If it should track the primary (mouse selection) clipboard.
+TrackMouseSelections=false
+#Track images in the clipboard.
+TrackImages=true
+#Disable clipboard tracking.
+DisableTracking=false

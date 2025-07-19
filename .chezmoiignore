@@ -34,6 +34,7 @@ tags
 .config/mimeapps.list
 .config/paru
 .config/picom
+.config/plank
 .config/qt5ct
 .config/qt6ct
 .config/qtile
