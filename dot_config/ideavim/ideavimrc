@@ -4,6 +4,7 @@ let mapleader = " "
 
 " Documentation: https://www.jetbrains.com/help/idea/using-product-as-the-vim-editor.html
 " List available actions with :actionlist
+" Actions can be invoked with :action <Action>
 " Enable action tracking with :set trackactionids
 " List current maps with :map
 
@@ -271,6 +272,7 @@ let g:WhichKeyDesc_code = "<leader>c Code"
 map <Leader>cc <Action>(ShowIntentionActions)
 map <Leader>ca <Action>(ShowIntentionActions)
 map <Leader>cC <Action>(CodeCleanup)
+map <Leader>ce <Action>(ShowErrorDescription)
 map <Leader>cf <Action>(ReformatCode)
 map <Leader>cH <Action>(CallHierarchy)
 map <Leader>ch <Action>(HighlightUsagesInFile)
@@ -307,7 +309,8 @@ map <Leader>fr <Action>(RecentFiles)
 map <Leader>fR <Action>(RenameFile)
 map <Leader>fS <Action>(SaveAll)
 map <Leader>fs <Action>(SaveDocument)
-map <Leader>ft :NERDTreeFocus<CR>
+map <Leader>ft <Action>(ActivateProjectToolWindow)
+map <Leader>fT <Action>(SelectInProjectView)
 map <Leader>fy <Action>(CopyAbsolutePath)
 
 " Git
@@ -331,7 +334,7 @@ map <Leader>h5 <Action>(GotoHarpoon5)
 
 " IdeaVim
 let g:WhichKeyDesc_ideavim = "<leader>i IdeaVim"
-map <Leader>ii :edit ~/.ideavimrc<CR>
+map <Leader>ii :edit ~/.config/ideavim/ideavimrc<CR>
 map <Leader>ir <Action>(IdeaVim.ReloadVimRc.reload)
 map <Leader>is <Action>(ShowSettings)
 
@@ -361,5 +364,8 @@ map <Leader>tb <Action>(ToggleLineBreakpoint)
 map <Leader>tD <Action>(ActivateTODOToolWindow)
 map <Leader>td <Action>(ToggleDistractionFreeMode)
 map <Leader>tp <Action>(TogglePresentationMode)
+map <Leader>ts <Action>(ActivateStructureToolWindow)
 map <Leader>tT :NERDTreeToggle<CR>
 map <Leader>tz <Action>(ToggleZenMode)
+
+" vim:ft=vim
