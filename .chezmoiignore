@@ -31,6 +31,7 @@ tags
 .config/gtk-4.0
 .config/keepassxc
 .config/Kvantum
+.config/menus
 .config/mimeapps.list
 .config/paru
 .config/picom
