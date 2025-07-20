@@ -12,7 +12,10 @@ let mapleader = " "
 """ Handlers
 
 " Use IdeaVim for Ctrl bindings
+sethandler <C-2> a:vim
+sethandler <C-S-2> a:vim
 sethandler <C-6> a:vim
+sethandler <C-S-6> a:vim
 sethandler <C-A> a:vim
 sethandler <C-B> a:vim
 sethandler <C-C> a:vim
@@ -52,6 +55,7 @@ sethandler <S-Up> a:ide
 sethandler <S-Down> a:ide
 sethandler <S-Left> a:ide
 sethandler <S-Right> a:ide
+sethandler <S-Enter> a:ide
 
 
 """ Options
