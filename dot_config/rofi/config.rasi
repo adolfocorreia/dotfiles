@@ -34,8 +34,9 @@ configuration {
 
   /* Appearance */
   show-icons: true;
+  drun-display-format: "{icon} {name}";
 }
 
-@theme "Arc-Dark"
+@theme "tokyonight"
 
 /* vim:ft=css

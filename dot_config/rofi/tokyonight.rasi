@@ -1,0 +1,130 @@
+/*-*- mode: css; -*-*/
+
+/*
+ * Tokyonight colorscheme for rofi
+ * https://github.com/w8ste/Tokyonight-rofi-theme
+ */
+
+* {
+    background-color: @bg;
+    bg: #24283b;
+    black: #000000;
+    border: 0px;
+    font: "Monospace 11";
+    hv: #9274ca;
+    kl: #7aa2f7;
+    primary: #C5C8C6;
+    transparent: rgba(46,52,64,0);
+    ug: #0B2447;
+}
+
+window {
+    anchor: center;
+    border: 3px;
+    border-color: @primary;
+    border-radius: 6px;
+    children: [ mainbox ];
+    location: center;
+    orientation: horizontal;
+    spacing: 0;
+    transparency: "screenshot";
+    width: 700;
+}
+
+mainbox {
+    children: [ inputbar, message, listview ];
+    spacing: 0;
+}
+
+inputbar {
+    border: 0 0 2px 0;
+    border-color: @primary;
+    color: @kl;
+    padding: 11px;
+}
+
+message {
+    padding: 0;
+}
+
+textbox {
+    color: @kl;
+    padding: 10px;
+}
+
+entry, prompt, case-indicator {
+    text-color: inherit;
+    text-font: inherit;
+}
+
+entry {
+    cursor: pointer;
+}
+
+prompt {
+    margin: 0px 5px 0px 0px;
+}
+
+listview {
+    columns: 1;
+    dynamic: false;
+    layout: vertical;
+    lines: 12;
+    padding: 8px;
+}
+
+element {
+    color: @kl;
+    font: inherit;
+    padding: 2px;
+    vertical-align: 1;
+}
+
+element-text {
+    background-color: inherit;
+    text-color: inherit;
+}
+
+element selected.normal {
+    background-color: @hv;
+    color: @black;
+}
+
+element normal active {
+    background-color: @hv;
+    color: @black;
+}
+
+element-text, element-icon {
+    background-color: inherit;
+    text-color: inherit;
+}
+
+element normal urgent {
+    background-color: @primary;
+}
+
+element selected active {
+    background: @hv;
+    foreground: @bg;
+}
+
+button {
+    border: 2px 0px 2px 2px;
+    border-color: @primary;
+    border-radius: 4px 0px 0px 4px;
+    color: @primary;
+    horizonatal-align: 0.5;
+    padding: 6px;
+}
+
+button selected normal {
+    border: 2px 0px 2px 2px;
+    border-color: @primary;
+}
+
+scrollbar {
+    enabled: true;
+}
+
+/* vim:ft=css
