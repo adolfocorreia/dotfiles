@@ -6,6 +6,7 @@
 ; - https://www.ishaat.ca/posts/2023/02/11/my-ultimate-windows-10-window-management-setup
 ; - https://github.com/dankrusi/WindowsVirtualDesktopHelper
 ; - https://github.com/Ciantic/VirtualDesktopAccessor
+; - https://github.com/MScholtes/PSVirtualDesktop
 
 ; Switch to the selected virtual desktop (Alt + #).
 !1::Run "fancywm.exe --action SwitchToDesktop1"
