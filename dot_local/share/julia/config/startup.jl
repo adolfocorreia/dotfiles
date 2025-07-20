@@ -9,18 +9,19 @@ atreplinit() do repl
     # Load OhMyREPL
     try
         @eval import OhMyREPL
-
-        @async begin
-            # Autocomplete brackets breaks copying multiline statements to the REPL
-            OhMyREPL.enable_autocomplete_brackets(false)
-
-            # Reinstall keybindings
-            # Reference: https://github.com/KristofferC/OhMyREPL.jl/issues/166
-            sleep(1)
-            OhMyREPL.Prompt.insert_keybindings()
-        end
     catch e
-        @warn "error while importing OhMyREPL" e
+        @eval import Pkg
+        Pkg.add("OhMyREPL")
+        @eval import OhMyREPL
+    end
+    @async begin
+        # Autocomplete brackets breaks copying multiline statements to the REPL
+        OhMyREPL.enable_autocomplete_brackets(false)
+
+        # Reinstall keybindings
+        # Reference: https://github.com/KristofferC/OhMyREPL.jl/issues/166
+        sleep(1)
+        OhMyREPL.Prompt.insert_keybindings()
     end
 end
 

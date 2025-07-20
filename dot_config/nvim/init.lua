@@ -1068,6 +1068,7 @@ local PLUGINS = {
       require("conform").setup({
         formatters_by_ft = {
           fish = { "fish_indent" },
+          julia = { "runic" },
           lua = { "stylua" },
           markdown = { "mdformat" },
           python = { "isort", "black" },
@@ -1076,6 +1077,10 @@ local PLUGINS = {
         formatters = {
           isort = {
             prepend_args = { "--profile", "black" },
+          },
+          runic = {
+            command = "julia",
+            args = { "--project=@runic", "--startup-file=no", "-e", "using Runic; exit(Runic.main(ARGS))" },
           },
         },
         format_on_save = function(bufnr)
