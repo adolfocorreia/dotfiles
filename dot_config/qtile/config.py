@@ -20,6 +20,7 @@ from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.core.manager import Qtile
 from libqtile.lazy import lazy
 from qtile_extras import widget
+from qtile_extras.widget.decorations import PowerLineDecoration, RectDecoration
 
 import traverse  # pyright: ignore[reportImplicitRelativeImport]
 
@@ -37,7 +38,7 @@ R = 1 - L  # Right screen
 cursor_warp = True  # Cursor follows focus as directed by keyboard
 
 # Colors
-colors = dict(
+COLORS = dict(
     background="#1a1b26",
     foreground="#c0caf5",
     black="#15161e",
@@ -50,6 +51,12 @@ colors = dict(
     white="#a9b1d6",
     yellow="#e0af68",
 )
+CURRENT_COLOR = COLORS["magenta"]
+NONCURRENT_COLOR = COLORS["blue"]
+FOCUS_COLOR = COLORS["magenta"]
+FLOATING_COLOR = COLORS["blue"]
+NONFOCUS_COLOR = COLORS["gray"]
+URGENT_COLOR = COLORS["red"]
 
 ### Custom classes and functions ###
 
@@ -196,19 +203,21 @@ keys = [
 
 # fmt: off
 group_names = [
-    ("term", "\U000f07b7"),
-    ("www",  "\U000f059f"),
-    ("dev",  "\U000f05c0"),
-    ("doc",  "\U000f06d3"),
-    ("file", "\U000f0770"),
-    ("mail", "\U000f02ab"),
-    ("chat", "\U000f0b79"),
-    ("note", "\U000f01c8"),
-    ("vid",  "\U000f05a0"),
-    ("time", "\U000f051b"),
+    ("term", "\U000f07b7", "max"),
+    ("www",  "\U000f059f", "max"),
+    ("dev",  "\U000f05c0", "max"),
+    ("doc",  "\U000f06d3", "max"),
+    ("file", "\U000f0770", "monadtall"),
+    ("mail", "\U000f02ab", "monadtall"),
+    ("chat", "\U000f0b79", "max"),
+    ("vid",  "\U000f05a0", "max"),
+    ("note", "\U000f01c8", "max"),
+    ("time", "\U000f051b", "monadtall"),
 ]
 # fmt: on
-groups = [Group(name=name, label=icon) for (name, icon) in group_names]
+groups = [
+    Group(name=name, label=icon, layout=layout) for (name, icon, layout) in group_names
+]
 
 group_keys = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
 for g, key in zip(groups, group_keys):
@@ -250,8 +259,8 @@ monad_options = dict(
     margin=gap,
     ratio=0.6,
     new_client_position="top",
-    border_focus=colors["magenta"],
-    border_normal=colors["gray"],
+    border_focus=FOCUS_COLOR,
+    border_normal=NONFOCUS_COLOR,
 )
 layouts = [
     MonadTall(**monad_options),
@@ -305,8 +314,8 @@ floating_layout = layout.Floating(
         *resize_floats,
     ],
     no_reposition_rules=[*free_floats],
-    border_focus=colors["blue"],
-    border_normal=colors["gray"],
+    border_focus=FLOATING_COLOR,
+    border_normal=NONFOCUS_COLOR,
 )
 
 
@@ -316,8 +325,8 @@ widget_defaults = dict(
     font="Hack Nerd Font",
     fontsize=14,
     padding=3,
-    background=colors["background"],
-    foreground=colors["foreground"],
+    background=COLORS["background"],
+    foreground=COLORS["foreground"],
 )
 extension_defaults = widget_defaults.copy()
 
@@ -325,22 +334,34 @@ glyph_font = dict(
     font="Hack Nerd Font Mono",
     fontsize=20,
 )
+textbox_options = dict(
+    decorations=[PowerLineDecoration()],
+    foreground=COLORS["black"],
+    **glyph_font,
+)
+currentlayout_options = dict(
+    decorations=[RectDecoration(filled=True, padding_y=4)],
+    foreground=COLORS["black"],
+    icon_first=True,
+    scale=0.5,
+    use_mask=True,
+)
 groupbox_options = dict(
-    active=colors["foreground"],
-    inactive=colors["gray"],
-    this_current_screen_border=colors["magenta"],
-    this_screen_border=colors["blue"],
-    other_current_screen_border=colors["gray"],
-    other_screen_border=colors["gray"],
-    urgent_border=colors["red"],
+    active=COLORS["foreground"],
+    inactive=COLORS["gray"],
+    this_current_screen_border=CURRENT_COLOR,
+    this_screen_border=NONCURRENT_COLOR,
+    other_current_screen_border=NONFOCUS_COLOR,
+    other_screen_border=NONFOCUS_COLOR,
+    urgent_border=URGENT_COLOR,
 )
 checkupdate_options = dict(
     distro="Arch_checkupdates",
     display_format="\U0000f021  {updates}",
     initial_text="\U0000f021  0",
     no_update_string="\U0000f021  0",
-    colour_have_updates=colors["foreground"],
-    colour_no_updates=colors["foreground"],
+    colour_have_updates=COLORS["foreground"],
+    colour_no_updates=COLORS["foreground"],
 )
 
 bar_size = 30
@@ -348,13 +369,13 @@ left_screen = Screen(
     top=bar.Bar(
         [
             # Left
-            widget.TextBox(" \U000f08c7 ", foreground=colors["blue"], **glyph_font),
+            widget.TextBox(" \U000f08c7 ", name="left_textbox", **textbox_options),
             widget.Prompt(),
             widget.Spacer(length=10),
             widget.WindowName(format="{name}", width=1000, scroll=True),
             widget.Spacer(length=bar.STRETCH),
             # Center
-            widget.CurrentLayoutIcon(icon_first=True, scale=0.75, use_mask=True),
+            widget.CurrentLayoutIcon(name="left_layout", **currentlayout_options),
             widget.Spacer(length=15),
             widget.GroupBox(**glyph_font, **groupbox_options),
             widget.Spacer(length=bar.STRETCH),
@@ -388,12 +409,12 @@ right_screen = Screen(
     top=bar.Bar(
         [
             # Left
-            widget.TextBox(" \U000f08c7 ", foreground=colors["blue"], **glyph_font),
+            widget.TextBox(" \U000f08c7 ", name="right_textbox", **textbox_options),
             widget.Spacer(length=10),
             widget.WindowName(format="{name}", width=1000, scroll=True),
             widget.Spacer(length=bar.STRETCH),
             # Center
-            widget.CurrentLayoutIcon(icon_first=True, scale=0.75, use_mask=True),
+            widget.CurrentLayoutIcon(name="right_layout", **currentlayout_options),
             widget.Spacer(length=15),
             widget.GroupBox(**glyph_font, **groupbox_options),
             widget.Spacer(length=bar.STRETCH),
@@ -406,7 +427,7 @@ right_screen = Screen(
             widget.QuickExit(
                 default_text="[shutdown]",
                 countdown_format="[{} seconds]",
-                foreground=colors["magenta"],
+                foreground=COLORS["magenta"],
             ),
             widget.Spacer(length=15),
             widget.Systray(),
@@ -427,3 +448,17 @@ else:
 def startup_complete():
     qtile.groups_map["term"].toscreen(L)
     qtile.groups_map["time"].toscreen(R)
+
+
+@hook.subscribe.current_screen_change
+def focus_change():
+    if qtile.current_screen.index == L:
+        qtile.widgets_map["left_textbox"].background = CURRENT_COLOR
+        qtile.widgets_map["right_textbox"].background = NONCURRENT_COLOR
+        qtile.widgets_map["left_layout"].decorations[0].colour = CURRENT_COLOR
+        qtile.widgets_map["right_layout"].decorations[0].colour = NONCURRENT_COLOR
+    else:
+        qtile.widgets_map["left_textbox"].background = NONCURRENT_COLOR
+        qtile.widgets_map["right_textbox"].background = CURRENT_COLOR
+        qtile.widgets_map["left_layout"].decorations[0].colour = NONCURRENT_COLOR
+        qtile.widgets_map["right_layout"].decorations[0].colour = CURRENT_COLOR

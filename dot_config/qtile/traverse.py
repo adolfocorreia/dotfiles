@@ -18,7 +18,7 @@ Example usage:
 
 import math
 import typing
-from collections.abc import Iterable, Iterator
+from collections.abc import Iterator
 from dataclasses import dataclass
 
 from libqtile.backend.base.window import Window
@@ -76,8 +76,8 @@ def focusable(qtile: Qtile) -> Iterator[Window | Screen]:
 class Point:
     """Point in virtual coordinates"""
 
-    main: float
-    cross: float
+    main: int
+    cross: int
 
     def distance(self, other: "Point") -> float:
         """Calculate the distance to another point"""
@@ -98,8 +98,8 @@ class Rectangle:
     def center(self) -> Point:
         """Return the center point of the rectangle"""
         return Point(
-            self.main + self.length / 2,
-            self.cross + self.breadth / 2,
+            self.main + self.length // 2,
+            self.cross + self.breadth // 2,
         )
 
     @property
@@ -111,7 +111,7 @@ class Rectangle:
         """Determine whether the rectangle intersects with the given cross band"""
         return (
             band_min <= self.cross <= band_max
-            or band_min <= self.cross + self.breadth <= band_max
+            or band_min <= (self.cross + self.breadth) <= band_max
         )
 
 
@@ -145,20 +145,25 @@ def _focus_window(qtile: Qtile, transform: Transform) -> Window | Screen | None:
     # The negative offset prioritizes candidates that appear before along the cross axis.
     offset = -10
     focused_reference = Point(
-        focused.main + focused.length, focused.cross + focused.breadth / 2 + offset
+        focused.main + focused.length, focused.cross + focused.breadth // 2 + offset
     )
 
     # Filter to only consider visible objects in the correct direction.
     # The filter currently assumes windows are tiled (i.e., without superpositioning);
     # in case of floating windows, the reference points should be their centers.
+    # TODO: fix windows selection to pick the one in the middle of the screen
     # TODO: add support for floating windows (lambda rect: rect.center.main > focused.center.main)
-    visible: Iterable[Rectangle] = filter(
-        lambda rect: rect.is_visible,
-        map(transform, focusable(qtile)),
+    visible: list[Rectangle] = list(
+        filter(
+            lambda rect: rect.is_visible,
+            map(transform, focusable(qtile)),
+        )
     )
-    candidates: Iterable[Rectangle] = filter(
-        lambda rect: rect.main > focused.main + focused.length,
-        visible,
+    candidates: list[Rectangle] = list(
+        filter(
+            lambda rect: rect.main >= (focused.main + focused.length),
+            visible,
+        )
     )
 
     # Then take closest in direction of the main axis, preferring those on the
@@ -173,13 +178,15 @@ def _focus_window(qtile: Qtile, transform: Transform) -> Window | Screen | None:
         candidates,
         key=lambda rect: (
             0 if rect.in_cross_band(band_min, band_max) else 1,  # in-band are 'closer'
-            focused_reference.distance(Point(rect.main, rect.cross + rect.breadth / 2)),
+            focused_reference.distance(
+                Point(rect.main, rect.cross + rect.breadth // 2)
+            ),
             rect.cross,
         ),
     )
 
     if not closest:
-        # Could not find anything to focus. Maybe this is the edge of the known space :-D
+        # Could not find anything to focus. Maybe this is the edge of the known space.
         return None
 
     target: Window | Screen = closest[0].obj
