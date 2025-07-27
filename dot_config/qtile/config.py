@@ -190,11 +190,11 @@ keys = [
     Key([M,S],       "q", lazy.window.kill(),               desc="Kill focused window"),
     Key([M,S],       "c", lazy.window.kill(),               desc="Kill focused window"),
 
-    # Spawn applications and commands.
-    Key([M],         "p", lazy.spawncmd(),               desc="Spawn command using prompt widget"),
-    Key([M], "backslash", lazy.spawn("rofi -show"),      desc="Spawn launcher"),
-    Key([M,S],  "return", lazy.spawn("alacritty"),       desc="Launch terminal"),
-    Key([M],    "escape", lazy.spawn("xset s activate"), desc="Lock screen"),
+    # Spawn applications and other miscellaneous commands.
+    Key([M,S], "backslash", lazy.spawncmd(),               desc="Spawn command using prompt widget"),
+    Key([M],   "backslash", lazy.spawn("rofi -show"),      desc="Spawn launcher"),
+    Key([M,S],    "return", lazy.spawn("alacritty"),       desc="Launch terminal"),
+    Key([M],      "escape", lazy.spawn("xset s activate"), desc="Lock screen"),
 ]
 # fmt: on
 

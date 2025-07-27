@@ -898,15 +898,38 @@ local PLUGINS = {
     cmd = { "Subvert", "S", "Abolish" },
   },
 
-  -- Emacs keybindings in insert and command modes:
-  -- C-b, C-f: back/forward character
-  -- M-b, M-f: back/forward word
-  -- C-a, C-e: beginning/end of line
-  -- M-n, M-p: down/up line
-  -- C-d, M-d: delete character/word
+  -- Readline/Emacs keybindings in insert and command modes:
+  -- C-b, C-f:  back/forward character
+  -- C-a, C-e:  beginning/end of line
+  -- C-h, M-BS: backward delete character/word
+  -- C-d, M-d:  forward delete character/word
+  -- C-u, C-k:  backward/forward kill line
+  -- M-b, M-f:  back/forward word
+  -- M-n, M-p:  down/up line (keep C-n/C-p native bindings)
+  -- C-w:       unix word rubout (backward delete word)
+  -- M-m:       go back to indentation
   {
-    "tpope/vim-rsi",
+    "assistcontrol/readline.nvim",
     event = "VeryLazy",
+    config = function()
+      local readline = require("readline")
+      vim.keymap.set({ "i", "c" }, "<C-b>", "<Left>")
+      vim.keymap.set({ "i", "c" }, "<C-f>", "<Right>")
+      vim.keymap.set({ "i", "c" }, "<C-a>", readline.dwim_beginning_of_line)
+      vim.keymap.set({ "i", "c" }, "<C-e>", readline.end_of_line)
+      vim.keymap.set({ "i", "c" }, "<C-h>", "<BS>")
+      --vim.keymap.set({ "i", "c" }, "<M-BS>", readline.backward_kill_word)
+      vim.keymap.set({ "i", "c" }, "<C-d>", "<Delete>")
+      vim.keymap.set({ "i", "c" }, "<M-d>", readline.kill_word)
+      --vim.keymap.set({ "i", "c" }, "<C-u>", readline.dwim_backward_kill_line)
+      vim.keymap.set({ "i", "c" }, "<C-k>", readline.kill_line)
+      vim.keymap.set({ "i", "c" }, "<M-b>", readline.backward_word)
+      vim.keymap.set({ "i", "c" }, "<M-f>", readline.forward_word)
+      vim.keymap.set({ "i", "c" }, "<M-n>", "<Down>")
+      vim.keymap.set({ "i", "c" }, "<M-p>", "<Up>")
+      --vim.keymap.set({ "i", "c" }, "<C-w>", readline.unix_word_rubout)
+      vim.keymap.set({ "i", "c" }, "<M-m>", readline.back_to_indentation)
+    end,
   },
 
   --- Editing helps ---
@@ -1344,6 +1367,15 @@ local PLUGINS = {
 
           -- Accept (yes) the completion.
           ["<C-y>"] = cmp.mapping.confirm({ select = true }),
+
+          -- Abort (escape) the completion.
+          ["<C-e>"] = cmp.mapping(function()
+            if cmp.visible() then
+              cmp.mapping.abort()
+            else
+              require("readline").end_of_line()
+            end
+          end),
 
           -- Scroll documentation window back/forward.
           ["<C-b>"] = cmp.mapping.scroll_docs(-4),
@@ -2128,17 +2160,6 @@ local PLUGINS = {
     event = "BufReadPre",
     config = function()
       require("mini.trailspace").setup()
-
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = { "lazy" },
-        group = "vimrc",
-        desc = "Disable trail spaces highlighting",
-        callback = function()
-          ---@diagnostic disable-next-line: inject-field
-          vim.b.minitrailspace_disable = true
-          MiniTrailspace.unhighlight()
-        end,
-      })
     end,
   },
 
