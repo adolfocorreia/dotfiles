@@ -334,13 +334,35 @@ glyph_font = dict(
     font="Hack Nerd Font Mono",
     fontsize=20,
 )
+rect_options = dict(
+    filled=True,
+    group=True,
+    padding_y=4,
+    radius=5,
+)
+first_dec = dict(
+    decorations=[RectDecoration(colour=COLORS["red"], **rect_options)],
+    foreground=COLORS["black"],
+)
+second_dec = dict(
+    decorations=[RectDecoration(colour=COLORS["yellow"], **rect_options)],
+    foreground=COLORS["black"],
+)
+third_dec = dict(
+    decorations=[RectDecoration(colour=COLORS["green"], **rect_options)],
+    foreground=COLORS["black"],
+)
+fourth_dec = dict(
+    decorations=[RectDecoration(colour=COLORS["cyan"], **rect_options)],
+    foreground=COLORS["black"],
+)
 textbox_options = dict(
     decorations=[PowerLineDecoration()],
     foreground=COLORS["black"],
     **glyph_font,
 )
 currentlayout_options = dict(
-    decorations=[RectDecoration(filled=True, padding_y=4)],
+    decorations=[RectDecoration(**rect_options)],
     foreground=COLORS["black"],
     icon_first=True,
     scale=0.5,
@@ -357,84 +379,88 @@ groupbox_options = dict(
 )
 checkupdate_options = dict(
     distro="Arch_checkupdates",
-    display_format="\U0000f021  {updates}",
-    initial_text="\U0000f021  0",
-    no_update_string="\U0000f021  0",
-    colour_have_updates=COLORS["foreground"],
-    colour_no_updates=COLORS["foreground"],
+    display_format="\U0000f021  {updates} ",
+    initial_text="\U0000f021  0 ",
+    no_update_string="\U0000f021  0 ",
+    colour_have_updates=COLORS["black"],
+    colour_no_updates=COLORS["black"],
 )
 
 bar_size = 30
-left_screen = Screen(
-    top=bar.Bar(
-        [
-            # Left
-            widget.TextBox(" \U000f08c7 ", name="left_textbox", **textbox_options),
-            widget.Prompt(),
-            widget.Spacer(length=10),
-            widget.WindowName(format="{name}", width=1000, scroll=True),
-            widget.Spacer(length=bar.STRETCH),
-            # Center
-            widget.CurrentLayoutIcon(name="left_layout", **currentlayout_options),
-            widget.Spacer(length=15),
-            widget.GroupBox(**glyph_font, **groupbox_options),
-            widget.Spacer(length=bar.STRETCH),
-            # Right
-            widget.TextBox("\U0000f11d "),
-            widget.GenPollCommand(
-                cmd="curl -s ipinfo.io | jq -r '.country'", shell=True
-            ),
-            widget.Spacer(length=15),
-            widget.CheckUpdates(**checkupdate_options),
-            widget.Spacer(length=15),
-            widget.CPU(format="\U0000f2db {load_percent:2.0f}%"),
-            widget.Spacer(length=15),
-            widget.Memory(format="\U0000f538 {MemPercent:2.0f}%"),
-            widget.Spacer(length=15),
-            widget.ThermalSensor(format="\U0000f2c9 {temp:2.0f}{unit}"),
-            widget.Spacer(length=15),
-            widget.Volume(
-                emoji=True,
-                emoji_list=["\U0000f6a9", "\U0000f026 ", "\U0000f027 ", "\U0000f028 "],
-            ),
-            widget.Volume(unmute_format="{volume:2.0f}%", mute_format="0%"),
-            widget.Spacer(length=15),
-            widget.Clock(format="\U0000f133  %Y-%m-%d  \U0000f017  %H:%M"),
-            widget.Spacer(length=10),
-        ],
-        bar_size,
-    ),
+left_bar = bar.Bar(
+    [
+        # Left
+        widget.TextBox(" \U000f08c7 ", name="left_textbox", **textbox_options),
+        widget.Prompt(),
+        widget.Spacer(length=10),
+        widget.WindowName(format="{name}", width=1000, scroll=True),
+        widget.Spacer(length=bar.STRETCH),
+        # Center
+        widget.CurrentLayoutIcon(name="left_layout", **currentlayout_options),
+        widget.Spacer(length=15),
+        widget.GroupBox(**glyph_font, **groupbox_options),
+        widget.Spacer(length=bar.STRETCH),
+        # Right
+        widget.TextBox(" \U0000f11d ", **first_dec),
+        widget.GenPollCommand(
+            cmd="curl -s ipinfo.io | jq -r '.country'", shell=True, **first_dec
+        ),
+        widget.Spacer(length=10, **first_dec),
+        widget.CheckUpdates(**checkupdate_options, **first_dec),
+        widget.Spacer(length=5),
+        widget.CPU(format=" \U0000f2db {load_percent:2.0f}%", **second_dec),
+        widget.Spacer(length=10, **second_dec),
+        widget.Memory(format="\U0000efc5  {MemPercent:2.0f}%", **second_dec),
+        widget.Spacer(length=10, **second_dec),
+        widget.ThermalSensor(format="\U0000f2c9 {temp:2.0f}{unit} ", **second_dec),
+        widget.Spacer(length=5),
+        widget.Volume(
+            emoji=True,
+            emoji_list=[" \U0000f6a9", " \U0000f026 ", " \U0000f027 ", " \U0000f028 "],
+            **third_dec,
+        ),
+        widget.Volume(unmute_format="{volume:2.0f}% ", mute_format="0%", **third_dec),
+        widget.Spacer(length=5),
+        widget.Clock(format=" \U0000f133  %Y-%m-%d  \U0000f017  %H:%M ", **fourth_dec),
+        widget.Spacer(length=5),
+    ],
+    bar_size,
 )
-right_screen = Screen(
-    top=bar.Bar(
-        [
-            # Left
-            widget.TextBox(" \U000f08c7 ", name="right_textbox", **textbox_options),
-            widget.Spacer(length=10),
-            widget.WindowName(format="{name}", width=1000, scroll=True),
-            widget.Spacer(length=bar.STRETCH),
-            # Center
-            widget.CurrentLayoutIcon(name="right_layout", **currentlayout_options),
-            widget.Spacer(length=15),
-            widget.GroupBox(**glyph_font, **groupbox_options),
-            widget.Spacer(length=bar.STRETCH),
-            # Right
-            widget.Wttr(
-                location={"SBJR": ""},
-                format="%c%C   \U0000f2c9 %t   \U0000e373 %h   \U0000e34a %p   \U0000ef16 %w",
-            ),
-            widget.Spacer(length=15),
-            widget.QuickExit(
-                default_text="[shutdown]",
-                countdown_format="[{} seconds]",
-                foreground=COLORS["magenta"],
-            ),
-            widget.Spacer(length=15),
-            widget.Systray(),
-        ],
-        bar_size,
-    )
+right_bar = bar.Bar(
+    [
+        # Left
+        widget.TextBox(" \U000f08c7 ", name="right_textbox", **textbox_options),
+        widget.Spacer(length=10),
+        widget.WindowName(format="{name}", width=1000, scroll=True),
+        widget.Spacer(length=bar.STRETCH),
+        # Center
+        widget.CurrentLayoutIcon(name="right_layout", **currentlayout_options),
+        widget.Spacer(length=15),
+        widget.GroupBox(**glyph_font, **groupbox_options),
+        widget.Spacer(length=bar.STRETCH),
+        # Right
+        widget.Wttr(
+            location={"SBJR": ""},
+            format="%c%C  \U0000f2c9 %t  \U0000e373 %h  \U0000e34a %p  \U0000ef16 %w",
+            fmt="\U00002800{}\U00002800",  # surround with empty character
+            decorations=[RectDecoration(colour=COLORS["gray"], **rect_options)],
+        ),
+        widget.Spacer(length=10),
+        widget.QuickExit(
+            default_text=" \U0000f011 ",
+            countdown_format=" {} ",
+            foreground=COLORS["black"],
+            decorations=[RectDecoration(colour=COLORS["red"], **rect_options)],
+            **glyph_font,
+        ),
+        widget.Spacer(length=5),
+        widget.Systray(),
+        widget.Spacer(length=5),
+    ],
+    bar_size,
 )
+left_screen = Screen(top=left_bar)
+right_screen = Screen(top=right_bar)
 if not reverse_screens_order:
     screens = [left_screen, right_screen]
 else:
