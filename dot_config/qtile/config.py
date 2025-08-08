@@ -30,7 +30,7 @@ M = "mod1"  # Alt
 S = "shift"
 gap = 10
 
-reverse_screens_order = True
+reverse_screens_order = False
 L = 0 if not reverse_screens_order else 1  # Left screen
 R = 1 - L  # Right screen
 
@@ -453,7 +453,7 @@ right_bar = bar.Bar(
             decorations=[RectDecoration(colour=COLORS["red"], **rect_options)],
             **glyph_font,
         ),
-        widget.Spacer(length=5),
+        widget.Spacer(length=10),
         widget.Systray(),
         widget.Spacer(length=5),
     ],
@@ -474,6 +474,8 @@ else:
 def startup_complete():
     qtile.groups_map["term"].toscreen(L)
     qtile.groups_map["time"].toscreen(R)
+    qtile.focus_screen(R)
+    qtile.focus_screen(L)
 
 
 @hook.subscribe.current_screen_change
