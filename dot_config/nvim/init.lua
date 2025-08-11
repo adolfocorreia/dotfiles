@@ -700,14 +700,12 @@ local PLUGINS = {
   },
 
   -- Project management.
-  -- TODO: evaluate reverting back to ahmedkhalf/project.nvim
-  -- TODO: evaluate notjedi/nvim-rooter.lua
   {
-    "wsdjeg/rooter.nvim",
+    "notjedi/nvim-rooter.lua",
     event = "VeryLazy",
     config = function()
-      require("rooter").setup({
-        root_patterns = { "pyproject.toml", "Project.toml", "Makefile", ".git/", ".venv/", "init.lua", "init.el" },
+      require("nvim-rooter").setup({
+        rooter_patterns = { "pyproject.toml", "Project.toml", "Makefile", ".git", ".venv", "init.lua", "init.el" },
       })
     end,
   },
@@ -1853,7 +1851,6 @@ local PLUGINS = {
           },
         },
       })
-      require("telescope").load_extension("project")
       require("telescope").load_extension("file_browser")
       require("telescope").load_extension("fzf")
       require("telescope").load_extension("undo")
