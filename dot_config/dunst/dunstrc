@@ -1,10 +1,11 @@
 # References:
+# - https://dunst-project.org/documentation
 # - https://github.com/dunst-project/dunst/blob/master/dunstrc
-# - https://github.com/khamer/base16-dunst/blob/master/themes/base16-nord.dunstrc
+# - https://github.com/tinted-theming/base16-dunst/blob/main/themes/base16-tokyo-night-storm.dunstrc
 
 
 [global]
-	offset = 8x32
+	offset = (8, 32)
 
 	font = Iosevka Aile 15
 
