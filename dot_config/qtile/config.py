@@ -16,7 +16,7 @@ import typing
 from libqtile import bar, hook, layout, qtile
 from libqtile.backend.base.window import Window
 from libqtile.command.base import expose_command
-from libqtile.config import Click, Drag, Group, Key, Match, Screen
+from libqtile.config import Click, Drag, DropDown, Group, Key, Match, ScratchPad, Screen
 from libqtile.core.manager import Qtile
 from libqtile.lazy import lazy
 from qtile_extras import widget
@@ -24,10 +24,12 @@ from qtile_extras.widget.decorations import PowerLineDecoration, RectDecoration
 
 import traverse  # pyright: ignore[reportImplicitRelativeImport]
 
+
 ### General customization and settings ###
 
 M = "mod1"  # Alt
 S = "shift"
+C = "control"
 gap = 10
 
 reverse_screens_order = False
@@ -58,8 +60,8 @@ FLOATING_COLOR = COLORS["blue"]
 NONFOCUS_COLOR = COLORS["gray"]
 URGENT_COLOR = COLORS["red"]
 
-### Custom classes and functions ###
 
+### Custom classes and functions ###
 
 class MonadTall(layout.MonadTall):
     def __init__(self, **config):  # pyright: ignore[reportMissingParameterType]
@@ -212,7 +214,7 @@ group_names = [
     ("chat", "\U000f0b79", "max"),
     ("vid",  "\U000f05a0", "max"),
     ("note", "\U000f01c8", "max"),
-    ("time", "\U000f051b", "monadtall"),
+    ("conf", "\U0000e615", "monadtall"),
 ]
 # fmt: on
 groups = [
@@ -244,18 +246,45 @@ groups_by_name = {g.name: g for g in groups}
 
 groups_by_name["chat"].matches.append(Match(wm_class=re.compile("whatsapp-nativefier")))
 groups_by_name["dev"].matches.append(Match(wm_class="code"))
+groups_by_name["dev"].matches.append(Match(wm_class="dev.zed.Zed"))
 groups_by_name["dev"].matches.append(Match(wm_class="Emacs"))
-groups_by_name["dev"].matches.append(Match(wm_class="neovide"))
+groups_by_name["dev"].matches.append(Match(wm_class="jetbrains-pycharm"))
 groups_by_name["note"].matches.append(Match(wm_class="obsidian"))
-groups_by_name["time"].matches.append(Match(wm_class="superProductivity"))
 
 groups_by_name["term"].spawn = "alacritty"
-groups_by_name["time"].spawn = "superproductivity"
+
+# ScratchPads
+dropdown_opts = dict(
+    x=0.2,
+    y=0.0,
+    width=0.6,
+    height=0.7,
+)
+dropdown_list = [
+    DropDown("term", "alacritty --command tmux new-session -A -s pad", **dropdown_opts),
+    DropDown("www", "qutebrowser", **dropdown_opts),
+    DropDown("edit", "l3afpad", **dropdown_opts),
+    DropDown("time", "superproductivity", **dropdown_opts),
+    DropDown("file", "pcmanfm", **dropdown_opts),
+    DropDown("pass", "keepassxc", match=Match(wm_class="keepassxc"), **dropdown_opts),
+]
+groups.append(ScratchPad("pad", dropdown_list))
+
+# fmt: off
+keys.extend([
+    Key([C], "1", lazy.group["pad"].dropdown_toggle("term"), desc="Toggle terminal dropdown"),
+    Key([C], "2", lazy.group["pad"].dropdown_toggle("www"),  desc="Toggle browser dropdown"),
+    Key([C], "3", lazy.group["pad"].dropdown_toggle("edit"), desc="Toggle file editor dropdown"),
+    Key([C], "4", lazy.group["pad"].dropdown_toggle("time"), desc="Toggle timer dropdown"),
+    Key([C], "5", lazy.group["pad"].dropdown_toggle("file"), desc="Toggle file manager dropdown"),
+    Key([C], "6", lazy.group["pad"].dropdown_toggle("pass"), desc="Toggle password manager dropdown"),
+])
+# fmt: on
 
 
 ### Layouts ###
 
-monad_options = dict(
+monad_opts = dict(
     margin=gap,
     ratio=0.6,
     new_client_position="top",
@@ -263,8 +292,8 @@ monad_options = dict(
     border_normal=NONFOCUS_COLOR,
 )
 layouts = [
-    MonadTall(**monad_options),
-    MonadWide(**monad_options),
+    MonadTall(**monad_opts),
+    MonadWide(**monad_opts),
     layout.Max(),
 ]
 
@@ -291,8 +320,8 @@ center_floats = [
     Match(wm_class="Gpicview"),
     Match(wm_class="Gsmartcontrol"),
     Match(wm_class="Hdajackretask"),
+    Match(wm_class="kvantummanager"),
     Match(wm_class="pavucontrol"),
-    Match(wm_class="superProductivity"),
     Match(wm_class="Systemadm"),
     Match(wm_class="Vorta"),
     Match(wm_class="Xdg-desktop-portal-gtk"),
@@ -334,41 +363,41 @@ glyph_font = dict(
     font="Hack Nerd Font Mono",
     fontsize=20,
 )
-rect_options = dict(
+rect_opts = dict(
     filled=True,
     group=True,
     padding_y=4,
     radius=5,
 )
 first_dec = dict(
-    decorations=[RectDecoration(colour=COLORS["red"], **rect_options)],
+    decorations=[RectDecoration(colour=COLORS["red"], **rect_opts)],
     foreground=COLORS["black"],
 )
 second_dec = dict(
-    decorations=[RectDecoration(colour=COLORS["yellow"], **rect_options)],
+    decorations=[RectDecoration(colour=COLORS["yellow"], **rect_opts)],
     foreground=COLORS["black"],
 )
 third_dec = dict(
-    decorations=[RectDecoration(colour=COLORS["green"], **rect_options)],
+    decorations=[RectDecoration(colour=COLORS["green"], **rect_opts)],
     foreground=COLORS["black"],
 )
 fourth_dec = dict(
-    decorations=[RectDecoration(colour=COLORS["cyan"], **rect_options)],
+    decorations=[RectDecoration(colour=COLORS["cyan"], **rect_opts)],
     foreground=COLORS["black"],
 )
-textbox_options = dict(
+textbox_opts = dict(
     decorations=[PowerLineDecoration()],
     foreground=COLORS["black"],
     **glyph_font,
 )
-currentlayout_options = dict(
-    decorations=[RectDecoration(**rect_options)],
+currentlayout_opts = dict(
+    decorations=[RectDecoration(**rect_opts)],
     foreground=COLORS["black"],
     icon_first=True,
     scale=0.5,
     use_mask=True,
 )
-groupbox_options = dict(
+groupbox_opts = dict(
     active=COLORS["foreground"],
     inactive=COLORS["gray"],
     this_current_screen_border=CURRENT_COLOR,
@@ -377,7 +406,7 @@ groupbox_options = dict(
     other_screen_border=NONFOCUS_COLOR,
     urgent_border=URGENT_COLOR,
 )
-checkupdate_options = dict(
+checkupdate_opts = dict(
     distro="Arch_checkupdates",
     display_format="\U0000f021  {updates} ",
     initial_text="\U0000f021  0 ",
@@ -390,15 +419,15 @@ bar_size = 30
 left_bar = bar.Bar(
     [
         # Left
-        widget.TextBox(" \U000f08c7 ", name="left_textbox", **textbox_options),
+        widget.TextBox(" \U000f08c7 ", name="left_textbox", **textbox_opts),
         widget.Prompt(),
         widget.Spacer(length=10),
         widget.WindowName(format="{name}", width=1000, scroll=True),
         widget.Spacer(length=bar.STRETCH),
         # Center
-        widget.CurrentLayoutIcon(name="left_layout", **currentlayout_options),
+        widget.CurrentLayoutIcon(name="left_layout", **currentlayout_opts),
         widget.Spacer(length=15),
-        widget.GroupBox(**glyph_font, **groupbox_options),
+        widget.GroupBox(**glyph_font, **groupbox_opts),
         widget.Spacer(length=bar.STRETCH),
         # Right
         widget.TextBox(" \U0000f11d ", **first_dec),
@@ -406,7 +435,7 @@ left_bar = bar.Bar(
             cmd="curl -s ipinfo.io | jq -r '.country'", shell=True, **first_dec
         ),
         widget.Spacer(length=10, **first_dec),
-        widget.CheckUpdates(**checkupdate_options, **first_dec),
+        widget.CheckUpdates(**checkupdate_opts, **first_dec),
         widget.Spacer(length=5),
         widget.CPU(format=" \U0000f2db {load_percent:2.0f}%", **second_dec),
         widget.Spacer(length=10, **second_dec),
@@ -429,28 +458,28 @@ left_bar = bar.Bar(
 right_bar = bar.Bar(
     [
         # Left
-        widget.TextBox(" \U000f08c7 ", name="right_textbox", **textbox_options),
+        widget.TextBox(" \U000f08c7 ", name="right_textbox", **textbox_opts),
         widget.Spacer(length=10),
         widget.WindowName(format="{name}", width=1000, scroll=True),
         widget.Spacer(length=bar.STRETCH),
         # Center
-        widget.CurrentLayoutIcon(name="right_layout", **currentlayout_options),
+        widget.CurrentLayoutIcon(name="right_layout", **currentlayout_opts),
         widget.Spacer(length=15),
-        widget.GroupBox(**glyph_font, **groupbox_options),
+        widget.GroupBox(**glyph_font, **groupbox_opts),
         widget.Spacer(length=bar.STRETCH),
         # Right
         widget.Wttr(
             location={"SBJR": ""},
             format="%c%C  \U0000f2c9 %t  \U0000e373 %h  \U0000e34a %p  \U0000ef16 %w",
             fmt="\U00002800{}\U00002800",  # surround with empty character
-            decorations=[RectDecoration(colour=COLORS["gray"], **rect_options)],
+            decorations=[RectDecoration(colour=COLORS["gray"], **rect_opts)],
         ),
         widget.Spacer(length=10),
         widget.QuickExit(
             default_text=" \U0000f011 ",
             countdown_format=" {} ",
             foreground=COLORS["black"],
-            decorations=[RectDecoration(colour=COLORS["red"], **rect_options)],
+            decorations=[RectDecoration(colour=COLORS["red"], **rect_opts)],
             **glyph_font,
         ),
         widget.Spacer(length=10),
@@ -469,11 +498,10 @@ else:
 
 ### Hooks ###
 
-
 @hook.subscribe.startup_complete
 def startup_complete():
     qtile.groups_map["term"].toscreen(L)
-    qtile.groups_map["time"].toscreen(R)
+    qtile.groups_map["mail"].toscreen(R)
     qtile.focus_screen(R)
     qtile.focus_screen(L)
 
