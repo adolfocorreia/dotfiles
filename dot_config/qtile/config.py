@@ -264,9 +264,10 @@ dropdown_list = [
     DropDown("term", "alacritty --command tmux new-session -A -s pad", **dropdown_opts),
     DropDown("www", "qutebrowser", **dropdown_opts),
     DropDown("edit", "l3afpad", **dropdown_opts),
-    DropDown("time", "superproductivity", **dropdown_opts),
+    DropDown("calc", "speedcrunch", **dropdown_opts),
     DropDown("file", "pcmanfm", **dropdown_opts),
     DropDown("pass", "keepassxc", match=Match(wm_class="keepassxc"), **dropdown_opts),
+    DropDown("time", "superproductivity", **dropdown_opts),
 ]
 groups.append(ScratchPad("pad", dropdown_list))
 
@@ -275,9 +276,10 @@ keys.extend([
     Key([C], "1", lazy.group["pad"].dropdown_toggle("term"), desc="Toggle terminal dropdown"),
     Key([C], "2", lazy.group["pad"].dropdown_toggle("www"),  desc="Toggle browser dropdown"),
     Key([C], "3", lazy.group["pad"].dropdown_toggle("edit"), desc="Toggle file editor dropdown"),
-    Key([C], "4", lazy.group["pad"].dropdown_toggle("time"), desc="Toggle timer dropdown"),
+    Key([C], "4", lazy.group["pad"].dropdown_toggle("calc"), desc="Toggle calculator dropdown"),
     Key([C], "5", lazy.group["pad"].dropdown_toggle("file"), desc="Toggle file manager dropdown"),
     Key([C], "6", lazy.group["pad"].dropdown_toggle("pass"), desc="Toggle password manager dropdown"),
+    Key([C], "7", lazy.group["pad"].dropdown_toggle("time"), desc="Toggle timer dropdown"),
 ])
 # fmt: on
 
@@ -322,6 +324,7 @@ center_floats = [
     Match(wm_class="Hdajackretask"),
     Match(wm_class="kvantummanager"),
     Match(wm_class="pavucontrol"),
+    Match(wm_class="superProductivity"),
     Match(wm_class="Systemadm"),
     Match(wm_class="Vorta"),
     Match(wm_class="Xdg-desktop-portal-gtk"),
