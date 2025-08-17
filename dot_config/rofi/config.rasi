@@ -34,9 +34,10 @@ configuration {
 
   /* Appearance */
   show-icons: true;
+  icon-theme: "Papirus";
   drun-display-format: "{icon} {name}";
 }
 
-@theme "tokyonight"
+@theme "theme"
 
-/* vim:ft=css
+/* vim: set ft=css */
