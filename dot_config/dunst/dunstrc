@@ -2,31 +2,36 @@
 # - https://dunst-project.org/documentation
 # - https://github.com/dunst-project/dunst/blob/master/dunstrc
 # - https://github.com/tinted-theming/base16-dunst/blob/main/themes/base16-tokyo-night-storm.dunstrc
+# - https://github.com/lactua/dotfiles/blob/master/dots/dunst/.config/dunst/dunstrc
 
 
 [global]
-	offset = (8, 32)
+	origin = top-center
+	offset = 40
 
-	font = Iosevka Aile 15
+	font = "Sans-serif 12"
 
-	frame_color     = "#bb9af7"
-	separator_color = "#bb9af7"
+	frame_width = 4
+	frame_color = "#89b4fa"
+	separator_color= frame
+
+	corner_radius = 10
+
+	icon_corner_radius = 5
+	icon_theme = "Papirus-Dark"
 
 
-[base16_low]
-	msg_urgency = low
-	background  = "#1d202f"
-	foreground  = "#a9b1d6"
+[urgency_low]
+	background  = "#1e1e2e"
+	foreground  = "#cdd6f4"
 
-[base16_normal]
-	msg_urgency = normal
-	background  = "#24283b"
-	foreground  = "#c0caf5"
+[urgency_normal]
+	background  = "#1e1e2e"
+	foreground  = "#cdd6f4"
 
-[base16_critical]
-	msg_urgency = critical
-	background  = "#292e42"
-	foreground  = "#c0caf5"
-	frame_color = "#db4b4b"
+[urgency_critical]
+	background  = "#1e1e2e"
+	foreground  = "#cdd6f4"
+	frame_color = "#fab387"
 
 # vim: ft=cfg
