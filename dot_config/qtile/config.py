@@ -203,20 +203,18 @@ keys = [
 
 ### Groups (workspaces) ###
 
-# fmt: off
 group_names = [
-    ("term", "\U000f07b7", "max"),
-    ("www",  "\U000f059f", "max"),
-    ("dev",  "\U000f05c0", "max"),
-    ("doc",  "\U000f06d3", "max"),
-    ("file", "\U000f0770", "monadtall"),
-    ("mail", "\U000f02ab", "monadtall"),
-    ("chat", "\U000f0b79", "max"),
-    ("vid",  "\U000f05a0", "max"),
-    ("note", "\U000f01c8", "max"),
-    ("conf", "\U0000e615", "monadtall"),
+    ("term", "\U000f07b7", "max"),  # terminal
+    ("webb", "\U000f059f", "monadtall"),  # web browser
+    ("edit", "\U000f05c0", "max"),  # text editor & IDE
+    ("file", "\U000f0770", "monadtall"),  # file manager
+    ("docs", "\U000f03c6", "max"),  # document editor
+    ("team", "\U000f02bb", "max"),  # team communication
+    ("rmtd", "\U000f08b9", "max"),  # remote desktop & VM
+    ("work", "\U0000f0f2", "max"),  # work & other apps
+    ("note", "\U000f01c8", "max"),  # note editor
+    ("conf", "\U0000e615", "monadtall"),  # configuration
 ]
-# fmt: on
 groups = [
     Group(name=name, label=icon, layout=layout) for (name, icon, layout) in group_names
 ]
@@ -244,12 +242,15 @@ for g, key in zip(groups, group_keys):
 
 groups_by_name = {g.name: g for g in groups}
 
-groups_by_name["chat"].matches.append(Match(wm_class=re.compile("whatsapp-nativefier")))
-groups_by_name["dev"].matches.append(Match(wm_class="code"))
-groups_by_name["dev"].matches.append(Match(wm_class="dev.zed.Zed"))
-groups_by_name["dev"].matches.append(Match(wm_class="Emacs"))
-groups_by_name["dev"].matches.append(Match(wm_class="jetbrains-pycharm"))
+groups_by_name["docs"].matches.append(Match(wm_class="libreoffice"))
+groups_by_name["edit"].matches.append(Match(wm_class="code"))
+groups_by_name["edit"].matches.append(Match(wm_class="dev.zed.Zed"))
+groups_by_name["edit"].matches.append(Match(wm_class="Emacs"))
+groups_by_name["edit"].matches.append(Match(wm_class="jetbrains-pycharm"))
 groups_by_name["note"].matches.append(Match(wm_class="obsidian"))
+groups_by_name["team"].matches.append(
+    Match(func=lambda w: "Microsoft Teams" in (w.name or ""))
+)
 
 groups_by_name["term"].spawn = "alacritty"
 
@@ -259,13 +260,24 @@ dropdown_opts = dict(
     y=0.0,
     width=0.6,
     height=0.7,
+    opacity=0.95,
 )
+def _chrm_dd(name: str, domain: str) -> DropDown:
+    return DropDown(
+        name,
+        f"chromium --app=https://{domain}",
+        match=Match(wm_class=domain),
+        **dropdown_opts,
+    )
 dropdown_list = [
     DropDown("term", "alacritty --command tmux new-session -A -s pad", **dropdown_opts),
-    DropDown("www", "qutebrowser", **dropdown_opts),
+    DropDown("webb", "qutebrowser", **dropdown_opts),
     DropDown("edit", "l3afpad", **dropdown_opts),
-    DropDown("calc", "speedcrunch", **dropdown_opts),
     DropDown("file", "pcmanfm", **dropdown_opts),
+    DropDown("calc", "speedcrunch", **dropdown_opts),
+    _chrm_dd("mail", "mail.google.com"),
+    _chrm_dd("gcal", "calendar.google.com"),
+    _chrm_dd("todo", "focus.nirvanahq.com"),
     DropDown("pass", "keepassxc", match=Match(wm_class="keepassxc"), **dropdown_opts),
     DropDown("time", "superproductivity", **dropdown_opts),
 ]
@@ -274,12 +286,15 @@ groups.append(ScratchPad("pad", dropdown_list))
 # fmt: off
 keys.extend([
     Key([C], "1", lazy.group["pad"].dropdown_toggle("term"), desc="Toggle terminal dropdown"),
-    Key([C], "2", lazy.group["pad"].dropdown_toggle("www"),  desc="Toggle browser dropdown"),
+    Key([C], "2", lazy.group["pad"].dropdown_toggle("webb"), desc="Toggle browser dropdown"),
     Key([C], "3", lazy.group["pad"].dropdown_toggle("edit"), desc="Toggle file editor dropdown"),
-    Key([C], "4", lazy.group["pad"].dropdown_toggle("calc"), desc="Toggle calculator dropdown"),
-    Key([C], "5", lazy.group["pad"].dropdown_toggle("file"), desc="Toggle file manager dropdown"),
-    Key([C], "6", lazy.group["pad"].dropdown_toggle("pass"), desc="Toggle password manager dropdown"),
-    Key([C], "7", lazy.group["pad"].dropdown_toggle("time"), desc="Toggle timer dropdown"),
+    Key([C], "4", lazy.group["pad"].dropdown_toggle("file"), desc="Toggle file manager dropdown"),
+    Key([C], "5", lazy.group["pad"].dropdown_toggle("calc"), desc="Toggle calculator dropdown"),
+    Key([C], "6", lazy.group["pad"].dropdown_toggle("mail"), desc="Toggle e-mail dropdown"),
+    Key([C], "7", lazy.group["pad"].dropdown_toggle("gcal"), desc="Toggle calendar dropdown"),
+    Key([C], "8", lazy.group["pad"].dropdown_toggle("todo"), desc="Toggle todo manager dropdown"),
+    Key([C], "9", lazy.group["pad"].dropdown_toggle("pass"), desc="Toggle password manager dropdown"),
+    Key([C], "0", lazy.group["pad"].dropdown_toggle("time"), desc="Toggle timer dropdown"),
 ])
 # fmt: on
 
@@ -402,6 +417,7 @@ currentlayout_opts = dict(
 )
 groupbox_opts = dict(
     active=COLORS["foreground"],
+    disable_drag=True,
     inactive=COLORS["gray"],
     this_current_screen_border=CURRENT_COLOR,
     this_screen_border=NONCURRENT_COLOR,
@@ -504,7 +520,7 @@ else:
 @hook.subscribe.startup_complete
 def startup_complete():
     qtile.groups_map["term"].toscreen(L)
-    qtile.groups_map["mail"].toscreen(R)
+    qtile.groups_map["webb"].toscreen(R)
     qtile.focus_screen(R)
     qtile.focus_screen(L)
 
