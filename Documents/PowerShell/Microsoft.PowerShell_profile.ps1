@@ -218,6 +218,12 @@ Function Invoke-Starship-PreCommand {
   # - https://docs.microsoft.com/en-us/windows/terminal/tutorials/new-tab-same-directory
   # - https://github.com/microsoft/terminal/issues/3158
   $Host.UI.Write("`e]9;9;$pwd`a")
+
+  # Open new WezTerm tab/pane in the same directory
+  # References:
+  # - https://wezterm.org/shell-integration.html
+  $CurrentWorkingPath = (Get-Location).Path -Replace "\\", "/"
+  $Host.UI.Write("`e]7;file://${env:COMPUTERNAME}/${CurrentWorkingPath}`a")
 }
 
 Invoke-Expression $(& starship init powershell)
