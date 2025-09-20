@@ -3,3 +3,5 @@
 Launcher=docklet://trash
 #The sort order for directory items.
 SortBy=name
+#The style for directory items.
+DirectoryStyle=0

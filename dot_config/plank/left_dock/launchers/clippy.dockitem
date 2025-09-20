@@ -3,6 +3,8 @@
 Launcher=docklet://clippy
 #The sort order for directory items.
 SortBy=name
+#The style for directory items.
+DirectoryStyle=0
 
 [DockyClippyPreferences]
 #How many recent clipboard entries to keep.

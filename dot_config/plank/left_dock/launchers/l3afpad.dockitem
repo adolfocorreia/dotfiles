@@ -3,3 +3,5 @@
 Launcher=file:///usr/share/applications/l3afpad.desktop
 #The sort order for directory items.
 SortBy=name
+#The style for directory items.
+DirectoryStyle=0

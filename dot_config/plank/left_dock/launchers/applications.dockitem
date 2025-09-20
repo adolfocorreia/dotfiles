@@ -3,6 +3,8 @@
 Launcher=docklet://applications
 #The sort order for directory items.
 SortBy=name
+#The style for directory items.
+DirectoryStyle=0
 
 [DockyApplicationsPreferences]
 LargeIcons=false

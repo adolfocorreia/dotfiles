@@ -3,7 +3,13 @@
 Launcher=docklet://separator
 #The sort order for directory items.
 SortBy=name
+#The style for directory items.
+DirectoryStyle=0
 
 [DockySeparatorPreferences]
-#Inverts the color of the separator
+#Invert separator color
 InvertColor=false
+#Separator style
+Style=0
+#Custom separator icon
+CustomIcon=
