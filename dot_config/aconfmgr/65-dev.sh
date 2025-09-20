@@ -16,6 +16,7 @@ AddPackage cmake # A cross-platform open-source make system
 AddPackage ctags # Generates an index file of language objects found in source files
 AddPackage direnv # A shell extension that manages your environment
 AddPackage meld # Compare files, directories and working copies
+AddPackage prettier # An opinionated code formatter
 AddPackage vint # Lint tool for Vim script Language
 
 # Data file tools (json, toml, yaml, xml, csv)
@@ -55,6 +56,7 @@ AddPackage tk # A windowing toolkit for use with tcl
 AddPackage uv # An extremely fast Python package installer and resolver written in Rust
 AddPackage yapf # Python style guide checker
 AddPackage --foreign basedpyright # pyright fork with various improvements and pylance features
+AddPackage --foreign ty # An extremely fast Python type checker and language server, written in Rust.
 
 # Julia
 AddPackage --foreign julia-bin # High-level, high-performance, dynamic programming language - official binaries

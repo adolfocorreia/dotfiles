@@ -1,4 +1,5 @@
 # System management tools
+AddPackage btrfs-assistant # An application for managing BTRFS subvolumes and Snapper snapshots
 AddPackage gparted # A Partition Magic clone, frontend to GNU Parted
 AddPackage gsmartcontrol # A graphical user interface for the smartctl hard disk drive health inspection tool.
 AddPackage htop # Interactive process viewer
@@ -8,7 +9,6 @@ AddPackage smartmontools # Control and monitor S.M.A.R.T. enabled ATA and SCSI H
 AddPackage snapper # A tool for managing BTRFS and LVM snapshots. It can create, diff and restore snapshots and provides timelined auto-snapping.
 AddPackage systemd-ui # Graphical front-end for systemd
 AddPackage usbutils # A collection of USB tools to query connected USB devices
-AddPackage --foreign btrfs-assistant # An application for managing BTRFS subvolumes and Snapper snapshots
 
 # Backup tools
 AddPackage borg # Deduplicating backup program with compression and authenticated encryption
@@ -25,5 +25,5 @@ AddPackage at # AT and batch delayed command scheduling utility and daemon
 AddPackage cronie # Daemon that runs specified programs at scheduled times and related tools
 
 # Default runtimes
-CreateLink /usr/lib/jvm/default java-24-openjdk
-CreateLink /usr/lib/jvm/default-runtime java-24-openjdk
+CreateLink /usr/lib/jvm/default java-25-openjdk
+CreateLink /usr/lib/jvm/default-runtime java-25-openjdk

@@ -21,7 +21,7 @@ AddPackage python-adblock # Brave's adblock library in Python
 AddPackage aspell # A spell checker designed to eventually replace Ispell
 AddPackage aspell-en # English dictionary for aspell
 AddPackage hunspell-en_us # US English hunspell dictionaries
-AddPackage libreoffice-fresh # LibreOffice branch which contains new features and program enhancements
+AddPackage libreoffice-still # LibreOffice maintenance branch
 AddPackage --foreign hunspell-pt-br # Brazillian Portuguese grammar, spelling and hyphenation checker to hunspell
 AddPackage --foreign proselint # A linter for prose
 
@@ -37,6 +37,7 @@ AddPackage xchm # Viewer for CHM files (GUI front-end to chmlib)
 AddPackage xreader # Document viewer for files like PDF and Postscript. X-Apps Project.
 AddPackage zathura-djvu # DjVu support for Zathura
 AddPackage zathura-pdf-mupdf # PDF support for Zathura (MuPDF backend) (Supports PDF, ePub, and OpenXPS)
+AddPackage --foreign doxx-git # Terminal .docx viewer inspired by Glow
 
 # Document conversion and manipulation
 AddPackage pandoc-cli # Conversion between documentation formats
@@ -68,5 +69,6 @@ AddPackage yt-dlp # A youtube-dl fork with additional features and fixes
 AddPackage --foreign czkawka-gui-bin # Find and manage duplicate files, empty folders, similar images, and other "lint" (GUI, with HEIF support)
 AddPackage --foreign dropbox # A free service that lets you bring your photos, docs, and videos anywhere and share them easily.
 AddPackage --foreign irpf # Brazilian physical person income tax (IRPF) program
+AddPackage --foreign pinta # Drawing/editing program modeled after Paint.NET. It's goal is to provide a simplified alternative to GIMP for casual users
 AddPackage --foreign superproductivity-bin # ToDo list and Time Tracking
 AddPackage --foreign whatsapp-nativefier # WhatsApp desktop built with nativefier (electron)

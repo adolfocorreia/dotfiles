@@ -327,6 +327,7 @@ mouse = [
 free_floats = [
     Match(wm_class="copyq"),
     Match(wm_class="Gscreenshot"),
+    Match(wm_class="lxtask"),
     Match(wm_class="SpeedCrunch"),
     Match(wm_class="Variety"),
     Match(wm_class="Xarchiver"),

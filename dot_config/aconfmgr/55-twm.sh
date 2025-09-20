@@ -6,6 +6,7 @@ AddPackage --foreign qtile-extras # Unofficial mods for qtile. Tagged release to
 # Window manager support
 AddPackage dmenu # Generic menu for X
 AddPackage dunst # Customizable and lightweight notification-daemon
+AddPackage lxtask # Task manager of the LXDE Desktop
 AddPackage picom # X compositor that may fix tearing issues
 AddPackage polkit-gnome # Legacy polkit authentication agent for GNOME
 AddPackage redshift # Adjusts the color temperature of your screen according to your surroundings.

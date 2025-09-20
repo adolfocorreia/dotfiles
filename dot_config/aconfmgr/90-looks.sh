@@ -9,7 +9,6 @@ AddPackage ttf-caladea # A serif font family metric-compatible with Cambria font
 AddPackage ttf-carlito # Google's Carlito font
 AddPackage ttf-croscore # Chrome OS core fonts
 AddPackage ttf-dejavu # Font family based on the Bitstream Vera Fonts with a wider range of characters
-AddPackage ttf-font-awesome # Iconic font designed for Bootstrap
 AddPackage ttf-hack-nerd # Patched font Hack from nerd fonts library
 AddPackage ttf-iosevkaterm-nerd # Patched font Iosevka Term from nerd fonts library
 AddPackage ttf-liberation # Font family which aims at metric compatibility with Arial, Times New Roman, and Courier New
@@ -18,6 +17,7 @@ AddPackage ttf-nerd-fonts-symbols-mono # High number of extra glyphs from popula
 AddPackage ttf-roboto # Google's signature family of fonts
 AddPackage ttf-roboto-mono # A monospaced addition to the Roboto type family.
 AddPackage ttf-ubuntu-font-family # Ubuntu font family
+AddPackage woff2-font-awesome # Iconic font designed for Bootstrap - woff2 format
 AddPackage --foreign ttf-gentium-basic # Fonts based on the original Gentium design with additional weights
 AddPackage --foreign ttf-material-design-icons-git # Material Design Icons Web Font
 
