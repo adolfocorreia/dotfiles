@@ -33,6 +33,7 @@ tags
 .config/Kvantum
 .config/menus
 .config/mimeapps.list
+.config/papersize
 .config/paru
 .config/picom
 .config/plank
