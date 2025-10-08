@@ -1692,7 +1692,7 @@ local PLUGINS = {
         config = {
           repl_definition = {
             python = {
-              command = { "ipython", "--profile=vi" },
+              command = "ipython",
               format = require("iron.fts.common").bracketed_paste,
             },
           },
