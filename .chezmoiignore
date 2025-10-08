@@ -94,4 +94,6 @@ Documents
 .config/scoop
 
 .vrapperrc
+
+.wslconfig
 {{ end }}
