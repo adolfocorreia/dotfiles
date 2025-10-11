@@ -151,7 +151,6 @@ def _focus_window(qtile: Qtile, transform: Transform) -> Window | Screen | None:
     # Filter to only consider visible objects in the correct direction.
     # The filter currently assumes windows are tiled (i.e., without superpositioning);
     # in case of floating windows, the reference points should be their centers.
-    # TODO: fix windows selection to pick the one in the middle of the screen
     # TODO: add support for floating windows (lambda rect: rect.center.main > focused.center.main)
     visible: list[Rectangle] = list(
         filter(
@@ -193,12 +192,14 @@ def _focus_window(qtile: Qtile, transform: Transform) -> Window | Screen | None:
     assert target.group is not None
     screen = typing.cast(Screen, target.group.screen)
 
-    qtile.focus_screen(screen.index)
-    qtile.core.warp_pointer(target.x + target.width // 2, target.y + target.height // 2)
+    if isinstance(target, Screen):
+        qtile.focus_screen(screen.index)
 
     if isinstance(target, Window):
         target.group.focus(target, True)  # pyright: ignore [reportUnknownMemberType]
         target.focus(False)
         target.bring_to_front()
+
+    qtile.core.warp_pointer(target.x + target.width // 2, target.y + target.height // 2)
 
     return target

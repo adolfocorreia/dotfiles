@@ -1,3 +1,7 @@
+# TODO: resize windows with mouse (à la FancyWM)
+# TODO: add shutdown commands (power menu) to rofi (https://github.com/adi1090x/rofi?tab=readme-ov-file#powermenus)
+# TODO: evaluate widgets: StatusNotifier OpenWeather Pomodoro (use nerd font icon)
+
 # References:
 # - Default config:   https://docs.qtile.org/en/stable/manual/config/default.html
 # - Config variables: https://docs.qtile.org/en/stable/manual/config/index.html#configuration-variables
