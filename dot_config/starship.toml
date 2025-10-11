@@ -6,6 +6,9 @@ right_format = "${custom.date}"
 [conda]
 ignore_base = false
 
+[direnv]
+disabled = false
+
 [custom.date]
 command = """ date +"[%H:%M:%S]" """
 when = "true"
