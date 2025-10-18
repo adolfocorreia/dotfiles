@@ -5,3 +5,7 @@ Launcher=file:///usr/share/applications/l3afpad.desktop
 SortBy=name
 #The style for directory items.
 DirectoryStyle=0
+#Show hidden files.
+ShowHiddenFiles=false
+#Use large icons.
+LargeIcons=false

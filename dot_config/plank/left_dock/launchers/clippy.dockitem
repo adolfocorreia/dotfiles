@@ -5,6 +5,10 @@ Launcher=docklet://clippy
 SortBy=name
 #The style for directory items.
 DirectoryStyle=0
+#Show hidden files.
+ShowHiddenFiles=false
+#Use large icons.
+LargeIcons=false
 
 [DockyClippyPreferences]
 #How many recent clipboard entries to keep.

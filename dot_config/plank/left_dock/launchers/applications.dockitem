@@ -5,7 +5,10 @@ Launcher=docklet://applications
 SortBy=name
 #The style for directory items.
 DirectoryStyle=0
+#Show hidden files.
+ShowHiddenFiles=false
+#Use large icons.
+LargeIcons=false
 
 [DockyApplicationsPreferences]
-LargeIcons=false
 CustomIcon=
