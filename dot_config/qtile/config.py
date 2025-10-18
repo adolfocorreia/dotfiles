@@ -469,7 +469,7 @@ left_bar = bar.Bar(
         widget.Spacer(length=5),
         widget.Volume(
             emoji=True,
-            emoji_list=[" \U0000f6a9", " \U0000f026 ", " \U0000f027 ", " \U0000f028 "],
+            emoji_list=[" \U0000eee8 ", " \U0000f026 ", " \U0000f027 ", " \U0000f028 "],
             **third_dec,
         ),
         widget.Volume(unmute_format="{volume:2.0f}% ", mute_format="0%", **third_dec),
