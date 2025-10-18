@@ -1,3 +1,18 @@
+# Useful bindings:
+# Reference: https://pwmt.org/projects/zathura/documentation
+#   C-r     recolor (invert colors)
+#   tab     switch to index mode
+#   J K     go to next/previous page
+#   P       snap to current page
+#   - + =   zoom in/out/reset
+#   a s     select best-fit/width modes
+#   d       toggle dual page view
+#   r       rotate
+#   f       follow link
+#   F       display links
+#   c       copy link target into clipboard
+
+
 # General settings
 set selection-clipboard   "clipboard"
 set recolor               true
