@@ -40,7 +40,7 @@ AddPackage feh # Fast and light imlib2-based image viewer
 AddPackage gucharmap # Gnome Unicode Charmap
 AddPackage kitty # A modern, hackable, featureful, OpenGL-based terminal emulator
 AddPackage l3afpad # Simple plain text editor for GTK 3
-AddPackage pcmanfm-gtk3 # Extremely fast and lightweight file manager (GTK+ 3 version)
+AddPackage pcmanfm # Extremely fast and lightweight file manager
 AddPackage recoll # Full text search tool based on Xapian backend
 AddPackage speedcrunch # Simple but powerful calculator using Qt
 AddPackage variety # Changes the wallpaper on a regular interval using user-specified or automatically downloaded images.
