@@ -65,9 +65,16 @@ setxkbmap -option compose:menu
 xbindkeys -f $XDG_CONFIG_HOME/X11/xbindkeysrc
 
 # Screen locking
-# Reference: https://wiki.archlinux.org/title/Session_lock
-xset s 600 5
+# References:
+# - https://wiki.archlinux.org/title/Session_lock
+# - https://github.com/google/xsecurelock
+# - https://wiki.archlinux.org/title/Display_Power_Management_Signaling
+# Dim the screen after 600s of inactivity (xsecurelock dimmer), lock the screen 30s later (betterlockscreen)
+xset s 600 30
+export XSECURELOCK_WAIT_TIME_MS=30000  # Time to keep dimmer active (from notification until screen lock)
 xss-lock --notifier=/usr/lib/xsecurelock/dimmer -- betterlockscreen --lock --quiet --time-format "%H:%M" &
+# Turn off monitors after 900s of inactivity
+xset dpms 900 900 900
 readarray -t WP < <(ls ~/Pictures/Wallpapers/variety/**/*.jpg | shuf -n 2)
 betterlockscreen --update ${WP[0]} --update ${WP[1]} &
 
