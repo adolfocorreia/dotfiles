@@ -18,6 +18,7 @@ tags
 .config/pypoetry
 .config/tealdeer
 .config/tmux
+.config/zed
 {{ end }}
 
 
