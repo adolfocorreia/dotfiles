@@ -53,10 +53,10 @@ AddPackage python-rope # Refactoring library
 AddPackage python-whatthepatch # A Python patch parsing library
 AddPackage ruff # An extremely fast Python linter, written in Rust
 AddPackage tk # A windowing toolkit for use with tcl
+AddPackage ty # Extremely fast Python type checker and language server, written in Rust
 AddPackage uv # An extremely fast Python package installer and resolver written in Rust
 AddPackage yapf # Python style guide checker
 AddPackage --foreign basedpyright # pyright fork with various improvements and pylance features
-AddPackage --foreign ty # An extremely fast Python type checker and language server, written in Rust.
 
 # Julia
 AddPackage --foreign julia-bin # High-level, high-performance, dynamic programming language - official binaries

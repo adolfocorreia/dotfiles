@@ -37,8 +37,9 @@ AddPackage rebuild-detector # Detects which packages need to be rebuilt
 AddPackage --foreign aconfmgr-git # A configuration manager for Arch Linux
 AddPackage --foreign informant # An Arch Linux News reader and pacman hook
 AddPackage --foreign pacman-log-orphans-hook # hook to check whether there are any packages marked as unrequired (orphans) via pacman -Qttdq after every pacman run
-AddPackage --foreign paru-bin # Feature packed AUR helper
+AddPackage --foreign paru # Feature packed AUR helper
 AddPackage --foreign rate-mirrors # Everyday-use client-side map-aware mirror ranking tool
 AddPackage --foreign systemd-boot-pacman-hook # Pacman hook to upgrade systemd-boot after systemd upgrade.
+AddPackage --foreign yay # Yet another yogurt. Pacman wrapper and AUR helper written in go.
 
 IgnorePath '/etc/pacman.d/mirrorlist'

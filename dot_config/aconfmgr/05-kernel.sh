@@ -8,8 +8,8 @@ AddPackage intel-ucode # Microcode update files for Intel CPUs
 AddPackage intel-gpu-tools # Tools for development and testing of the Intel DRM driver
 AddPackage intel-media-driver # Intel Media Driver for VAAPI — Broadwell+ iGPUs
 AddPackage intel-media-sdk # Legacy API for hardware video acceleration on Intel GPUs (Broadwell to Rocket Lake)
-AddPackage nvidia-lts # NVIDIA drivers for linux-lts
-AddPackage nvidia # NVIDIA kernel modules
+AddPackage nvidia-open # NVIDIA open kernel modules
+AddPackage nvidia-open-lts # NVIDIA open kernel modules
 AddPackage nvidia-settings # Tool for configuring the NVIDIA graphics driver
 
 # Boot
