@@ -343,25 +343,25 @@
   (popper-group-function #'popper-group-by-directory)
   (popper-mode-line (propertize " POP " 'face 'mode-line-emphasis))
   (popper-reference-buffers
-        '("\\*Messages\\*"
-          "\\*Warnings\\*"
-          "\\*Backtrace\\*"
-          "\\*Compile-Log\\*"
-          "Output\\*"
-          "\\*package update results\\*"
-          "\\*Anaconda\\*"
-          help-mode
-          helpful-mode
-          apropos-mode
-          Man-mode
-          woman-mode
-          devdocs-mode
-          dictionary-mode
-          compilation-mode
-          emacs-lisp-compilation-mode
-          flymake-diagnostics-buffer-mode
-          occur-mode
-          xref--xref-buffer-mode))
+   '("\\*Messages\\*"
+     "\\*Warnings\\*"
+     "\\*Backtrace\\*"
+     "\\*Compile-Log\\*"
+     "Output\\*"
+     "\\*package update results\\*"
+     "\\*Anaconda\\*"
+     help-mode
+     helpful-mode
+     apropos-mode
+     Man-mode
+     woman-mode
+     devdocs-mode
+     dictionary-mode
+     compilation-mode
+     emacs-lisp-compilation-mode
+     flymake-diagnostics-buffer-mode
+     occur-mode
+     xref--xref-buffer-mode))
   :config
   (popper-mode +1)
   (popper-echo-mode +1)
@@ -636,8 +636,8 @@
   (xref-search-program 'ripgrep)
   :config
   (add-to-list 'display-buffer-alist
-          '("\\*xref\\*"
-            (display-buffer-in-side-window) (side . right) (slot . 1) (window-width . 0.35))))
+               '("\\*xref\\*"
+                 (display-buffer-in-side-window) (side . right) (slot . 1) (window-width . 0.35))))
 
 
 ;; Community packages
@@ -725,17 +725,17 @@
     :prefix "C-c"
     "h" '(:ignore t :which-key "harpoon"))
   (bind-keys
-    :prefix "C-c h"
-    :prefix-map my/harpoon-prefix-map
-    ("<return>" . harpoon-add-file)
-    ("h"        . harpoon-toggle-quick-menu)
-    ("1"        . harpoon-go-to-1)
-    ("2"        . harpoon-go-to-2)
-    ("3"        . harpoon-go-to-3)
-    ("4"        . harpoon-go-to-4)
-    ("5"        . harpoon-go-to-5)
-    ("F"        . harpoon-toggle-file)
-    ("C"        . harpoon-clear)))
+   :prefix "C-c h"
+   :prefix-map my/harpoon-prefix-map
+   ("<return>" . harpoon-add-file)
+   ("h"        . harpoon-toggle-quick-menu)
+   ("1"        . harpoon-go-to-1)
+   ("2"        . harpoon-go-to-2)
+   ("3"        . harpoon-go-to-3)
+   ("4"        . harpoon-go-to-4)
+   ("5"        . harpoon-go-to-5)
+   ("F"        . harpoon-toggle-file)
+   ("C"        . harpoon-clear)))
 
 (use-package helpful
   :bind
@@ -923,26 +923,26 @@
     "TAB" '(:ignore t :which-key "tabs")
     "g"   '(:ignore t :which-key "tab-bar-switch"))
   (bind-keys
-    :map evil-window-map
-    ("TAB TAB" . tab-bar-switch-to-recent-tab)
-    ("TAB RET" . tab-switch)
-    ("TAB `"   . tab-bar-switch-to-last-tab)
-    ("TAB n"   . tab-next)
-    ("TAB p"   . tab-previous)
-    ("TAB r"   . tab-rename)
-    ("TAB u"   . tab-undo)
-    ("TAB c"   . tab-close)
-    ("TAB D"   . tab-duplicate)
-    ("TAB b"   . switch-to-buffer-other-tab)
-    ("TAB d"   . dired-other-tab)
-    ("TAB w"   . tab-window-detach)
-    ("TAB f"   . find-file-other-tab)
-    ("TAB P"   . project-other-tab-command)
-    ("TAB 1"   . my/tab-goto-1)
-    ("TAB 2"   . my/tab-goto-2)
-    ("TAB 3"   . my/tab-goto-3)
-    ("TAB 4"   . my/tab-goto-4)
-    ("TAB 5"   . my/tab-goto-5))
+   :map evil-window-map
+   ("TAB TAB" . tab-bar-switch-to-recent-tab)
+   ("TAB RET" . tab-switch)
+   ("TAB `"   . tab-bar-switch-to-last-tab)
+   ("TAB n"   . tab-next)
+   ("TAB p"   . tab-previous)
+   ("TAB r"   . tab-rename)
+   ("TAB u"   . tab-undo)
+   ("TAB c"   . tab-close)
+   ("TAB D"   . tab-duplicate)
+   ("TAB b"   . switch-to-buffer-other-tab)
+   ("TAB d"   . dired-other-tab)
+   ("TAB w"   . tab-window-detach)
+   ("TAB f"   . find-file-other-tab)
+   ("TAB P"   . project-other-tab-command)
+   ("TAB 1"   . my/tab-goto-1)
+   ("TAB 2"   . my/tab-goto-2)
+   ("TAB 3"   . my/tab-goto-3)
+   ("TAB 4"   . my/tab-goto-4)
+   ("TAB 5"   . my/tab-goto-5))
 
   ;; Open Dired buffer with backspace
   (define-key evil-normal-state-map (kbd "DEL") #'dired-jump)
@@ -1121,17 +1121,17 @@
     "Return [beg, end) range defined by text object."
     (save-match-data
       (let ((case-fold-search nil) (beg nil) (end nil))
-         (save-excursion
-           (forward-char)
-           (re-search-backward left-re)
-           (setq beg (car (evil-variable-segment--get-first-matched-group)))
-           (goto-char (+ beg 1))
-           (re-search-forward right-re)
-           (setq end (car (cdr (evil-variable-segment--get-first-matched-group))))
-           ;; If there are '_' characters on both sides of the range, select only the right one
-           (if (and (eq (char-after beg) ?_) (eq (char-before end) ?_))
-               (setq beg (+ beg 1))))
-         (list beg end))))
+        (save-excursion
+          (forward-char)
+          (re-search-backward left-re)
+          (setq beg (car (evil-variable-segment--get-first-matched-group)))
+          (goto-char (+ beg 1))
+          (re-search-forward right-re)
+          (setq end (car (cdr (evil-variable-segment--get-first-matched-group))))
+          ;; If there are '_' characters on both sides of the range, select only the right one
+          (if (and (eq (char-after beg) ?_) (eq (char-before end) ?_))
+              (setq beg (+ beg 1))))
+        (list beg end))))
 
   (evil-define-text-object evil-variable-segment-inner (count &optional beg end type)
     (evil-variable-segment--find-range evil-variable-segment-left-inner-regex evil-variable-segment-right-inner-regex))
@@ -1443,16 +1443,16 @@
     :prefix "C-c"
     "l" '(:ignore t :which-key "eglot"))
   (bind-keys
-    :prefix "C-c l"
-    :prefix-map eglot-mode-map
-    ("a" . eglot-code-actions)
-    ("d" . xref-find-definitions)
-    ("D" . xref-find-definitions-other-window)
-    ("f" . eglot-format)
-    ("r" . eglot-rename)
-    ("R" . xref-find-references)
-    ("s" . consult-eglot-symbols)
-    ("S" . eglot-shutdown)))
+   :prefix "C-c l"
+   :prefix-map eglot-mode-map
+   ("a" . eglot-code-actions)
+   ("d" . xref-find-definitions)
+   ("D" . xref-find-definitions-other-window)
+   ("f" . eglot-format)
+   ("r" . eglot-rename)
+   ("R" . xref-find-references)
+   ("s" . consult-eglot-symbols)
+   ("S" . eglot-shutdown)))
 
 (use-package consult-eglot
   :after (eglot consult)
@@ -1609,8 +1609,8 @@
   (python-base-mode . anaconda-eldoc-mode)
   :config
   (add-to-list 'display-buffer-alist
-          '("\\*Anaconda\\*"
-            (display-buffer-in-side-window) (side . right) (slot . 0) (window-width . 0.35))))
+               '("\\*Anaconda\\*"
+                 (display-buffer-in-side-window) (side . right) (slot . 0) (window-width . 0.35))))
 
 (use-package blacken
   :after python
@@ -1632,17 +1632,17 @@
   :after python
   :bind
   (:map python-mode-map
-    ("C-c t t" . pytest-again)
-    ("C-c t 1" . pytest-one)
-    ("C-c t p" . pytest-pdb-one)
-    ("C-c t a" . pytest-all)
-    ("C-c t A" . pytest-pdb-all)
-    ("C-c t m" . pytest-module)
-    ("C-c t M" . pytest-pdb-module)
-    ("C-c t d" . pytest-directory)
-    ("C-c t D" . pytest-pdb-directory)
-    ("C-c t f" . pytest-last-failed)
-    ("C-c t F" . pytest-pdb-last-failed))
+        ("C-c t t" . pytest-again)
+        ("C-c t 1" . pytest-one)
+        ("C-c t p" . pytest-pdb-one)
+        ("C-c t a" . pytest-all)
+        ("C-c t A" . pytest-pdb-all)
+        ("C-c t m" . pytest-module)
+        ("C-c t M" . pytest-pdb-module)
+        ("C-c t d" . pytest-directory)
+        ("C-c t D" . pytest-pdb-directory)
+        ("C-c t f" . pytest-last-failed)
+        ("C-c t F" . pytest-pdb-last-failed))
   :custom
   (pytest-cmd-flags "--exitfirst --capture=no --durations=10")
   (pytest-project-root-files '(".venv" "setup.py" ".git"))
@@ -2060,23 +2060,23 @@
     :prefix "C-c"
     "c" '(:ignore t :which-key "consult"))
   (bind-keys
-    :prefix "C-c c"
-    :prefix-map my/consult-prefix-map
-    ("c" . consult-buffer)
-    ("b" . consult-buffer)
-    ("f" . consult-find)                ; find file by name
-    ("g" . consult-ripgrep)             ; search for regexes in files
-    ("G" . consult-git-grep)            ; search for regexes in git tracked files
-    ("o" . consult-outline)
-    ("i" . consult-imenu)
-    ("l" . consult-line)                ; search for lines in current buffer
-    ("L" . consult-line-multi)          ; search for lines in all buffer
-    ("m" . consult-mark)                ; search for mark
-    ("y" . consult-yank-from-kill-ring) ; search for previous yanks
-    ("F" . consult-flymake)
-    ("C" . consult-complex-command)     ; find commands in command-history
-    ("H" . consult-history)             ; find commands in current buffer history (e.g. eshell or comint)
-    ("I" . consult-info)))              ; search info pages (full text search)
+   :prefix "C-c c"
+   :prefix-map my/consult-prefix-map
+   ("c" . consult-buffer)
+   ("b" . consult-buffer)
+   ("f" . consult-find)                ; find file by name
+   ("g" . consult-ripgrep)             ; search for regexes in files
+   ("G" . consult-git-grep)            ; search for regexes in git tracked files
+   ("o" . consult-outline)
+   ("i" . consult-imenu)
+   ("l" . consult-line)                ; search for lines in current buffer
+   ("L" . consult-line-multi)          ; search for lines in all buffer
+   ("m" . consult-mark)                ; search for mark
+   ("y" . consult-yank-from-kill-ring) ; search for previous yanks
+   ("F" . consult-flymake)
+   ("C" . consult-complex-command)     ; find commands in command-history
+   ("H" . consult-history)             ; find commands in current buffer history (e.g. eshell or comint)
+   ("I" . consult-info)))              ; search info pages (full text search)
 
 (use-package embark
   :demand t
@@ -2137,19 +2137,19 @@
     :prefix "C-c"
     "p" '(:ignore t :which-key "cape"))
   (bind-keys
-    :prefix "C-c p"
-    :prefix-map my/cape-prefix-map
-    ("p" . completion-at-point)
-    ("d" . cape-dabbrev)
-    ("h" . cape-history)
-    ("f" . cape-file)
-    ("k" . cape-keyword)
-    ("s" . cape-symbol)
-    ("i" . cape-ispell)
-    ("l" . cape-line)
-    ("t" . cape-tex)
-    ("&" . cape-sgml)
-    ("r" . cape-rfc1345)))
+   :prefix "C-c p"
+   :prefix-map my/cape-prefix-map
+   ("p" . completion-at-point)
+   ("d" . cape-dabbrev)
+   ("h" . cape-history)
+   ("f" . cape-file)
+   ("k" . cape-keyword)
+   ("s" . cape-symbol)
+   ("i" . cape-ispell)
+   ("l" . cape-line)
+   ("t" . cape-tex)
+   ("&" . cape-sgml)
+   ("r" . cape-rfc1345)))
 
 ;; TODO: evaluate packages
 ;; eval-in-repl

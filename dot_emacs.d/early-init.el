@@ -50,5 +50,5 @@
 (setq default-input-method nil)
 
 (let
-   ((git-home (getenv "GIT_INSTALL_ROOT")))
-   (if git-home (add-to-list 'exec-path (expand-file-name "cmd" git-home))))
+    ((git-home (getenv "GIT_INSTALL_ROOT")))
+  (if git-home (add-to-list 'exec-path (expand-file-name "cmd" git-home))))
