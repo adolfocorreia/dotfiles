@@ -14,7 +14,7 @@
   "vim_mode": true,
   "base_keymap": "Emacs",
   "theme": {
-    "mode": "system",
+    "mode": "dark",
     "light": "One Light",
     "dark": "Catppuccin Macchiato"
   },
