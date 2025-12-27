@@ -1,26 +1,48 @@
 {
-  "$schema" : "https:\/\/schema.linearmouse.app\/0.9.5",
+  "$schema" : "https:\/\/schema.linearmouse.app\/0.10.2",
   "schemes" : [
     {
-      "scrolling" : {
-        "speed" : {
-          "vertical" : 10
-        },
-        "reverse" : {
-          "vertical" : true
-        }
-      },
       "if" : {
         "device" : {
-          "vendorID" : "0x45e",
           "category" : "mouse",
+          "productID" : "0x916",
           "productName" : "BluetoothMouse3600",
-          "productID" : "0x916"
+          "vendorID" : "0x45e"
         }
       },
       "pointer" : {
         "acceleration" : 0.75,
         "speed" : 0.15
+      },
+      "scrolling" : {
+        "reverse" : {
+          "vertical" : true
+        },
+        "speed" : {
+          "vertical" : 10
+        }
+      }
+    },
+    {
+      "if" : {
+        "device" : {
+          "category" : "mouse",
+          "productID" : "0x8001",
+          "productName" : "BenQ ZOWIE Gaming Mouse",
+          "vendorID" : "0x4a5"
+        }
+      },
+      "pointer" : {
+        "acceleration" : 0.75,
+        "speed" : 0.2
+      },
+      "scrolling" : {
+        "reverse" : {
+          "vertical" : true
+        },
+        "speed" : {
+          "vertical" : 10
+        }
       }
     }
   ]
