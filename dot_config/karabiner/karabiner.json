@@ -36,6 +36,7 @@
                     },
                     {
                         "description": "Press J and K together to act as Return",
+                        "enabled": false,
                         "manipulators": [
                             {
                                 "from": {
@@ -58,6 +59,7 @@
                     },
                     {
                         "description": "SpaceFN: Space enables SpaceFN mode",
+                        "enabled": false,
                         "manipulators": [
                             {
                                 "conditions": [
@@ -95,6 +97,7 @@
                     },
                     {
                         "description": "SpaceFN: Space+[hjkl] to Left, Down, Up, Right",
+                        "enabled": false,
                         "manipulators": [
                             {
                                 "conditions": [
@@ -160,6 +163,7 @@
                     },
                     {
                         "description": "SpaceFN: Space+i to Page Down, Space+o to Page Up",
+                        "enabled": false,
                         "manipulators": [
                             {
                                 "conditions": [
@@ -195,6 +199,7 @@
                     },
                     {
                         "description": "SpaceFN: Space+u to Home, Space+p to End",
+                        "enabled": false,
                         "manipulators": [
                             {
                                 "conditions": [
@@ -230,6 +235,7 @@
                     },
                     {
                         "description": "SpaceFN: Space+v to Space (hold to repeat)",
+                        "enabled": false,
                         "manipulators": [
                             {
                                 "conditions": [
@@ -250,6 +256,7 @@
                     },
                     {
                         "description": "SpaceFN: Space+b to Backspace, Space+n to Forward Delete and Space+m to Return",
+                        "enabled": false,
                         "manipulators": [
                             {
                                 "conditions": [
@@ -300,14 +307,23 @@
                     }
                 ]
             },
-            "name": "Default profile",
-            "selected": true,
-            "simple_modifications": [
+            "devices": [
                 {
-                    "from": { "key_code": "caps_lock" },
-                    "to": [{ "key_code": "left_control" }]
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "product_id": 835,
+                        "vendor_id": 1452
+                    },
+                    "simple_modifications": [
+                        {
+                            "from": { "key_code": "caps_lock" },
+                            "to": [{ "key_code": "left_control" }]
+                        }
+                    ]
                 }
             ],
+            "name": "Default profile",
+            "selected": true,
             "virtual_hid_keyboard": {
                 "country_code": 0,
                 "keyboard_type_v2": "ansi"
