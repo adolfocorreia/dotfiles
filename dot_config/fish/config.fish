@@ -100,8 +100,8 @@ if status is-interactive
         direnv hook fish | source
     end
 
-    # Load starship
-    if type -q starship
+    # Load starship (only on X.org or iTerm)
+    if type -q starship; and test -n "$DISPLAY" -o -n "$LC_TERMINAL"
         starship init fish | source
     end
 
