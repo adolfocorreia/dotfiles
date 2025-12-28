@@ -1192,6 +1192,7 @@ local PLUGINS = {
         ruff = {},
         ty = {},
         julials = {},
+        fish_lsp = {},
         clangd = {},
         jsonls = {
           settings = {
