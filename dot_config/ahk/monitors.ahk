@@ -30,7 +30,7 @@ for x, monitor in monitors {
 ; (see https://www.autohotkey.com/docs/v2/Functions.htm#closures)
 FancyFunction(action) {
     runAction(key) {
-        Run("fancywm.exe --action " . action)
+        FancyWM(action)
     }
     return runAction
 }
