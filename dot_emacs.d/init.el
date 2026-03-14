@@ -701,11 +701,12 @@
   (elfeed-goodies/feed-source-column-width 40)
   (elfeed-goodies/powerline-default-separator 'alternate))
 
-(use-package ellama
-  :bind
-  ("C-c e" . ellama-transient-main-menu)
-  :config
-  (add-hook 'org-ctrl-c-ctrl-c-hook #'ellama-chat-send-last-message))
+(unless ON-WINDOWS
+  (use-package ellama
+    :bind
+    ("C-c e" . ellama-transient-main-menu)
+    :config
+    (add-hook 'org-ctrl-c-ctrl-c-hook #'ellama-chat-send-last-message)))
 
 (use-package envrc
   :hook (after-init . envrc-global-mode))
