@@ -160,7 +160,7 @@ if vim.g.neovide then
   -- Visual effects settings
   vim.g.neovide_cursor_vfx_mode = "pixiedust"
   vim.g.neovide_hide_mouse_when_typing = true
-  vim.g.neovide_transparency = 0.95
+  vim.g.neovide_opacity = 0.95
   vim.g.neovide_theme = "dark"
   vim.g.neovide_window_blurred = true
 
