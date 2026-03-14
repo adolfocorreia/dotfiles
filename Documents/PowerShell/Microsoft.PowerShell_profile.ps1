@@ -159,7 +159,7 @@ Function ls { & eza     @args }
 Function ll { & eza -l  @args }
 Function la { & eza -la @args }
 
-Function mkdir { & coreutils mkdir $args }
+Function mkdir { & mkdir.exe $args }
 
 
 # Create other shell aliases and functions
