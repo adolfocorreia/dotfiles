@@ -9,17 +9,18 @@
 {
   "telemetry": {
     "diagnostics": false,
-    "metrics": false
+    "metrics": false,
   },
   "vim_mode": true,
+  "relative_line_numbers": "enabled",
   "base_keymap": "Emacs",
   "theme": {
     "mode": "dark",
     "light": "One Light",
-    "dark": "Catppuccin Macchiato"
+    "dark": "Catppuccin Macchiato",
   },
   "icon_theme": "Catppuccin Macchiato",
   "title_bar": {
-    "show_sign_in": false
-  }
+    "show_sign_in": false,
+  },
 }
