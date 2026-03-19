@@ -155,9 +155,20 @@ Set-PsFzfOption -EnableFd
 ) | ForEach-Object { if (Test-Path Alias:$_) { Remove-Alias -Force -Name $_ } }
 
 
-Function ls { & eza     @args }
-Function ll { & eza -l  @args }
-Function la { & eza -la @args }
+Function ls (
+    [string[]] [Parameter(ValueFromRemainingArguments)] $rest
+  ) {
+  # Hacky attempt to handle wildcard expansion by PS shell:
+  # exa expects unix-shell-like expansion before it is launched
+  # (see https://github.com/eza-community/eza/issues/337)
+  if ($($rest.Length) -gt 0) {
+      $regular = ($rest | Where-Object { $_ -notmatch '[*\?]+' })
+      $expanded = ($rest | Where-Object { $_ -match '[*\?]+' } | Get-Item -ErrorAction SilentlyContinue | ForEach-Object { $_.Name })
+  }
+  & eza $regular $expanded
+}
+Function ll { ls -l  @args }
+Function la { ls -la @args }
 
 Function mkdir { & mkdir.exe $args }
 
