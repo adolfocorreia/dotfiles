@@ -1776,7 +1776,6 @@
   :config
   (general-def
     :prefix "C-c"
-    :major-modes 'markdown-mode
     "C-a" '(:ignore t :which-key "links")
     "C-c" '(:ignore t :which-key "commands")
     "C-s" '(:ignore t :which-key "styling-headings")
