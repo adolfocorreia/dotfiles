@@ -1,3 +1,4 @@
+CreateLink /etc/systemd/system/autovt@.service /usr/lib/systemd/system/getty@.service
 CreateLink /etc/systemd/system/dbus-org.freedesktop.network1.service /usr/lib/systemd/system/systemd-networkd.service
 CreateLink /etc/systemd/system/dbus-org.freedesktop.oom1.service /usr/lib/systemd/system/systemd-oomd.service
 CreateLink /etc/systemd/system/dbus-org.freedesktop.resolve1.service /usr/lib/systemd/system/systemd-resolved.service
@@ -15,14 +16,8 @@ CreateLink /etc/systemd/system/multi-user.target.wants/systemd-resolved.service 
 CreateLink /etc/systemd/system/multi-user.target.wants/wg-quick@vpn.service /usr/lib/systemd/system/wg-quick@.service
 CreateLink /etc/systemd/system/network-online.target.wants/systemd-networkd-wait-online.service /usr/lib/systemd/system/systemd-networkd-wait-online.service
 CreateLink /etc/systemd/system/sockets.target.wants/cups.socket /usr/lib/systemd/system/cups.socket
-CreateLink /etc/systemd/system/sockets.target.wants/polkit-agent-helper.socket /usr/lib/systemd/system/polkit-agent-helper.socket
 CreateLink /etc/systemd/system/sockets.target.wants/systemd-networkd.socket /usr/lib/systemd/system/systemd-networkd.socket
 CreateLink /etc/systemd/system/sysinit.target.wants/systemd-timesyncd.service /usr/lib/systemd/system/systemd-timesyncd.service
-CreateLink /etc/systemd/system/systemd-hibernate.service.wants/nvidia-hibernate.service /usr/lib/systemd/system/nvidia-hibernate.service
-CreateLink /etc/systemd/system/systemd-hibernate.service.wants/nvidia-resume.service /usr/lib/systemd/system/nvidia-resume.service
-CreateLink /etc/systemd/system/systemd-suspend.service.wants/nvidia-resume.service /usr/lib/systemd/system/nvidia-resume.service
-CreateLink /etc/systemd/system/systemd-suspend.service.wants/nvidia-suspend.service /usr/lib/systemd/system/nvidia-suspend.service
-CreateLink /etc/systemd/system/systemd-suspend-then-hibernate.service.wants/nvidia-resume.service /usr/lib/systemd/system/nvidia-resume.service
 CreateLink /etc/systemd/system/timers.target.wants/borgmatic.timer /usr/lib/systemd/system/borgmatic.timer
 CreateLink /etc/systemd/system/timers.target.wants/btrfs-scrub@mnt-data.timer /usr/lib/systemd/system/btrfs-scrub@.timer
 CreateLink /etc/systemd/system/timers.target.wants/fstrim.timer /usr/lib/systemd/system/fstrim.timer

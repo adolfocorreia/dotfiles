@@ -29,5 +29,5 @@ AddPackage papirus-icon-theme # Papirus icon theme
 AddPackage qt5ct # Qt5 Configuration Utility
 AddPackage qt6ct # Qt 6 Configuration Utility
 AddPackage --foreign gtk-engine-murrine # GTK2 engine to make your desktop look like a 'murrina', an italian word meaning the art glass works done by Venicians glass blowers.
-AddPackage --foreign libadwaita-without-adwaita-git # libadwaita; Includes a patch to not overwrite the system theme
+AddPackage --foreign libadwaita-without-adwaita # libadwaita; Includes a patch to not overwrite the system theme. Because the maintainer likely abandoned the pkg
 AddPackage --foreign tokyonight-gtk-theme-git # A GTK theme based on the Tokyo Night colour palette.
