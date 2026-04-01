@@ -1,5 +1,6 @@
 # Window manager
 AddPackage qtile # A full-featured, pure-Python tiling window manager
+AddPackage python-aiohttp # HTTP client/server for asyncio
 AddPackage python-dbus-fast # A faster version of dbus-next
 AddPackage --foreign qtile-extras # Unofficial mods for qtile. Tagged release to match stable qtile releases.
 

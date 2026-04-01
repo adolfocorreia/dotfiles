@@ -449,7 +449,7 @@ left_bar = bar.Bar(
         widget.WindowName(format="{name}", width=1000, scroll=True),
         widget.Spacer(length=bar.STRETCH),
         # Center
-        widget.CurrentLayoutIcon(name="left_layout", **currentlayout_opts),
+        widget.CurrentLayout(mode="icon", name="left_layout", **currentlayout_opts),
         widget.Spacer(length=15),
         widget.GroupBox(**glyph_font, **groupbox_opts),
         widget.Spacer(length=bar.STRETCH),
@@ -487,7 +487,7 @@ right_bar = bar.Bar(
         widget.WindowName(format="{name}", width=1000, scroll=True),
         widget.Spacer(length=bar.STRETCH),
         # Center
-        widget.CurrentLayoutIcon(name="right_layout", **currentlayout_opts),
+        widget.CurrentLayout(mode="icon", name="right_layout", **currentlayout_opts),
         widget.Spacer(length=15),
         widget.GroupBox(**glyph_font, **groupbox_opts),
         widget.Spacer(length=bar.STRETCH),
