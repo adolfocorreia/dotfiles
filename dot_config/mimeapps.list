@@ -45,4 +45,4 @@ text/plain=l3afpad.desktop;sublime_text.desktop
 x-scheme-handler/about=zen.desktop
 x-scheme-handler/http=zen.desktop
 x-scheme-handler/https=zen.desktop
-x-scheme-handler/jetbrains=jetbrains-toolbox.desktop
+x-scheme-handler/jetbrains=jetbrainsd.desktop
