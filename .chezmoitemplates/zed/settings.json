@@ -1,15 +1,24 @@
-// Zed settings
-//
-// For information on how to configure Zed, see the Zed
-// documentation: https://zed.dev/docs/configuring-zed
-//
-// To see all of Zed's default settings without changing your
-// custom settings, run `zed: open default settings` from the
-// command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "project_panel": {
+    "dock": "left"
+  },
+  "outline_panel": {
+    "dock": "left"
+  },
+  "collaboration_panel": {
+    "dock": "left"
+  },
+  "agent": {
+    "dock": "right",
+    "favorite_models": [],
+    "model_parameters": []
+  },
+  "git_panel": {
+    "dock": "left"
+  },
   "telemetry": {
     "diagnostics": false,
-    "metrics": false,
+    "metrics": false
   },
   "vim_mode": true,
   "relative_line_numbers": "enabled",
@@ -17,10 +26,13 @@
   "theme": {
     "mode": "dark",
     "light": "One Light",
-    "dark": "Catppuccin Macchiato",
+    "dark": "Catppuccin Macchiato"
   },
   "icon_theme": "Catppuccin Macchiato",
-  "title_bar": {
-    "show_sign_in": false,
+  "buffer_font_features": {
+    "calt": false
   },
+  "title_bar": {
+    "show_sign_in": false
+  }
 }
