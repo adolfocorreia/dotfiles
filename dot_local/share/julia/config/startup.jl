@@ -8,11 +8,10 @@ atreplinit() do repl
 
     # Load OhMyREPL
     try
-        @eval import OhMyREPL
+        @eval using OhMyREPL
     catch e
-        @eval import Pkg
-        Pkg.add("OhMyREPL")
-        @eval import OhMyREPL
+        @eval import Pkg; Pkg.add("OhMyREPL")
+        @eval using OhMyREPL
     end
     @async begin
         # Autocomplete brackets breaks copying multiline statements to the REPL
@@ -37,4 +36,3 @@ import Pkg
 if isfile("Project.toml") && isfile("Manifest.toml")
     Pkg.activate(".")
 end
-
