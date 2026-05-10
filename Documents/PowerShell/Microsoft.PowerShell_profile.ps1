@@ -17,7 +17,13 @@ if (-Not [System.Environment]::GetEnvironmentVariable("XDG_CONFIG_HOME", "User")
 
 # My TMP path
 $tmp = "$env:TMP\tmp"
-if (-Not (Test-Path $tmp)) { New-Item -ItemType Directory $tmp }
+if (-Not (Test-Path $tmp)) {
+  New-Item -ItemType Directory $tmp
+  (Get-Item $tmp).Attributes = "ReadOnly, Directory"
+  Add-Content "$tmp\desktop.ini" -Value "[.ShellClassInfo]"
+  Add-Content "$tmp\desktop.ini" -Value "IconResource=C:\WINDOWS\System32\SHELL32.dll,238"
+  (Get-Item "$tmp\desktop.ini").Attributes = "Hidden, System, Archive"
+}
 
 # Set default encoding as UTF-8
 # Reference: https://stackoverflow.com/questions/49476326/displaying-unicode-in-powershell/49481797
@@ -247,4 +253,3 @@ Invoke-Expression $(& starship init powershell)
 $env:_ZO_ECHO = 1
 
 Invoke-Expression (& { (zoxide init --hook pwd powershell | Out-String) } )
-
