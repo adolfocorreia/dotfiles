@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Base
 AddPackage base # Minimal package set to define a basic Arch Linux installation
 AddPackage pacman # A library-based package manager with dependency support

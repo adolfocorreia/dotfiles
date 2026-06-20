@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # LaTeX libs
 AddPackage biber # A Unicode-capable BibTeX replacement for biblatex users
 AddPackage texlive-basic # TeX Live - Essential programs and files

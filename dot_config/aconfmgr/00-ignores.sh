@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Boot partition
 IgnorePath '/boot'
 IgnorePath '/boot/intel-ucode.img'

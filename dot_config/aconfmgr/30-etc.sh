@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 IgnorePath '/etc/machine-id'
 IgnorePath '/etc/os-release'
 IgnorePath '/usr/lib/locale'
@@ -16,7 +18,6 @@ CopyFile /etc/logrotate.conf
 CopyFile /etc/mkinitcpio.conf
 CopyFile /etc/modprobe.d/hda-jack-retask.conf
 CopyFile /etc/pacman.conf
-CopyFile /etc/pacman.d/hooks/xmonad.hook
 CopyFile /etc/rsnapshot.conf
 CopyFile /etc/rsyncd.conf
 CopyFile /etc/security/faillock.conf

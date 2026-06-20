@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Window manager
 AddPackage qtile # A full-featured, pure-Python tiling window manager
 AddPackage python-aiohttp # HTTP client/server for asyncio

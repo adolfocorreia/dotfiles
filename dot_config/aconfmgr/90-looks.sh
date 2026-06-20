@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Fonts
 AddPackage adobe-source-sans-fonts # Sans-serif font family for user interface environments
 AddPackage adobe-source-serif-fonts # Serif typeface designed to complement Source Sans

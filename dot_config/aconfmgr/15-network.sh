@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Wireless
 AddPackage iwd # Internet Wireless Daemon
 
@@ -23,4 +25,3 @@ AddPackage cifs-utils # CIFS filesystem user-space tools
 AddPackage nfs-utils # Support programs for Network File Systems
 
 CreateFile /etc/samba/smb.conf > /dev/null
-

@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Android
 AddPackage android-file-transfer # Android MTP client with minimalistic UI
 AddPackage android-tools # Android platform tools

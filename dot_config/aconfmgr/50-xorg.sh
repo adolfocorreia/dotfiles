@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # X.org packages
 AddPackage imwheel # Mouse wheel configuration tool for XFree86/Xorg
 AddPackage xbindkeys # Launch shell commands with your keyboard or your mouse under X

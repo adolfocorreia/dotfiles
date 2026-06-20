@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Multimedia frameworks
 AddPackage alsa-firmware # Firmware binaries for loader programs in alsa-tools and hotplug firmware loader
 AddPackage alsa-tools # Advanced tools for certain sound cards

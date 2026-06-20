@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Code editors and IDEs
 AddPackage emacs # The extensible, customizable, self-documenting real-time display editor
 AddPackage gvim # Vi Improved, a highly configurable, improved version of the vi text editor (with advanced features, such as a GUI)
@@ -36,6 +38,7 @@ AddPackage shellcheck # Shell script analysis tool
 AddPackage shfmt # Format shell programs
 
 # Python
+AddPackage bandit # Python security linter from OpenStack Security
 AddPackage ipython # Enhanced Interactive Python shell
 AddPackage mypy # Optional static typing for Python (PEP484)
 AddPackage pyenv # Easily switch between multiple versions of Python
@@ -44,7 +47,6 @@ AddPackage python-debugpy # An implementation of the Debug Adapter Protocol for 
 AddPackage python-isort # A Python utility / library to sort Python imports
 AddPackage python-lsp-server # Fork of the python-language-server project, maintained by the Spyder IDE team and the community
 AddPackage python-matplotlib # A python plotting library, making publication quality plots
-AddPackage python-poetry # Python dependency management and packaging made easy
 AddPackage python-pycodestyle # Python style guide checker
 AddPackage python-pydocstyle # Docstring style checker
 AddPackage python-pyflakes # A lint-like tool for Python to identify common errors quickly without executing code
@@ -57,6 +59,7 @@ AddPackage ty # Extremely fast Python type checker and language server, written 
 AddPackage uv # An extremely fast Python package installer and resolver written in Rust
 AddPackage yapf # Python style guide checker
 AddPackage --foreign basedpyright # pyright fork with various improvements and pylance features
+AddPackage --foreign python-radon # A tool that computes various metrics for Python source code
 
 # Julia
 AddPackage --foreign julia-bin # High-level, high-performance, dynamic programming language - official binaries

@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Printer and scanner support
 AddPackage cups # OpenPrinting CUPS - daemon package
 AddPackage cups-pdf # PDF printer for cups

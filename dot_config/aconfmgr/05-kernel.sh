@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Kernel
 AddPackage linux # The Linux kernel and modules
 AddPackage linux-lts # The LTS Linux kernel and modules

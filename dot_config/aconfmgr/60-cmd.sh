@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Command line tools
 AddPackage atool # A script for managing file archives of various types
 AddPackage bat # Cat clone with syntax highlighting and git integration

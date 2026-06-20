@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Security tools
 AddPackage bitwarden # A secure and free password manager for all of your devices
 AddPackage keepassxc # Cross-platform community-driven port of Keepass password manager

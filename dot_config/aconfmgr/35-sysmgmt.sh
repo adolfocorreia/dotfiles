@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # System management tools
 AddPackage btrfs-assistant # An application for managing BTRFS subvolumes and Snapper snapshots
 AddPackage gparted # A Partition Magic clone, frontend to GNU Parted
