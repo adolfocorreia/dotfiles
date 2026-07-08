@@ -24,6 +24,16 @@ config.default_workspace = "main"
 
 config.color_scheme = "tokyonight_night"
 
+-- Leave space for (overlapping) Windows taskbar
+if string.find(wezterm.target_triple, "windows") then
+	config.window_padding = {
+		left = 0,
+		right = 0,
+		top = 0,
+		bottom = 40,
+	}
+end
+
 config.font_size = 10
 config.harfbuzz_features = { "calt=0", "clig=0", "liga=0" } -- disable ligatures
 
