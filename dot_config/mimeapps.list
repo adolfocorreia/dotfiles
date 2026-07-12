@@ -4,8 +4,12 @@
 # - https://wiki.archlinux.org/title/XDG_MIME_Applications
 # - https://github.com/chmln/handlr
 
-# Desktop entries location: /usr/share/applications
-# Default type to applications association: /usr/share/applications/mimeinfo.cache
+# Desktop entries locations:
+# - /usr/share/applications
+# - ~/.local/share/applications
+# Default type to applications associations:
+# - /usr/share/applications/mimeinfo.cache
+# - ~/.local/share/applications/mimeinfo.cache
 
 # Useful commands (handlr):
 # - Open file/URL:
