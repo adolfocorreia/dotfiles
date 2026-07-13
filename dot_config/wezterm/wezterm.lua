@@ -37,6 +37,17 @@ end
 config.font_size = 10
 config.harfbuzz_features = { "calt=0", "clig=0", "liga=0" } -- disable ligatures
 
+wezterm.on("close-other-panes", function(window, pane)
+	local tab = window:active_tab()
+	local panes = tab:panes()
+	for _, p in ipairs(panes) do
+		if p:pane_id() ~= pane:pane_id() then
+			p:activate()
+			window:perform_action(act.CloseCurrentPane({ confirm = false }), p)
+		end
+	end
+end)
+
 config.disable_default_key_bindings = true
 config.leader = { mods = "CTRL", key = "q" }
 config.keys = {
@@ -51,7 +62,9 @@ config.keys = {
 	{ key = "x", mods = "LEADER", action = act.CloseCurrentTab({ confirm = true }) },
 	{ key = "n", mods = "LEADER", action = act.ActivateTabRelative(1) },
 	{ key = "p", mods = "LEADER", action = act.ActivateTabRelative(-1) },
-	{ key = "w", mods = "LEADER", action = act.ShowTabNavigator },
+	{ key = "t", mods = "LEADER", action = act.ShowTabNavigator },
+	{ key = "w", mods = "LEADER", action = act.CloseCurrentPane({ confirm = true }) },
+	{ key = "o", mods = "LEADER", action = act.EmitEvent("close-other-panes") },
 	{ key = "s", mods = "LEADER", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
 	{ key = "v", mods = "LEADER", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
 	{ key = "h", mods = "LEADER", action = act.ActivatePaneDirection("Left") },
