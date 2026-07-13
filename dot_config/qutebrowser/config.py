@@ -4,12 +4,14 @@
 # https://qutebrowser.org/doc/help/commands.html
 # qute://help
 
+# ruff: noqa: F821
+# ty: ignore[unresolved-reference]
+
 import os
 import platform
 
-# pylint: disable=C0111
-config = config  # noqa: F821 pylint: disable=E0602,C0103
-c = c            # noqa: F821 pylint: disable=E0602,C0103
+config = config
+c = c
 
 
 # Load existing settings made via :set
@@ -21,6 +23,8 @@ config.load_autoconfig()
 # - https://qutebrowser.org/doc/help/settings.html#bindings.default
 # - qute://help/img/cheatsheet-big.png
 # Show current bindings with :bind
+
+# fmt: off
 
 # Unbind quit and tab-close
 config.unbind("<Ctrl+q>", mode="normal")
@@ -76,6 +80,8 @@ config.bind("<Ctrl+g>", "mode-leave", mode="command")
 config.bind("<Ctrl+g>", "mode-leave", mode="hint")
 config.bind("<Ctrl+g>", "mode-leave", mode="insert")
 
+# fmt: on
+
 
 # General configuration
 c.auto_save.session = True
@@ -94,7 +100,7 @@ c.downloads.position = "bottom"
 c.hints.chars = "asdfhjkl"
 c.hints.uppercase = True
 c.qt.args = ["autoplay-policy=user-gesture-required"]
-#c.qt.chromium.process_model = "process-per-site"
+# c.qt.chromium.process_model = "process-per-site"
 c.scrolling.bar = "always"
 c.session.lazy_restore = True
 c.statusbar.position = "bottom"
@@ -105,17 +111,18 @@ c.tabs.position = "top"
 # Ad-blocking
 c.content.blocking.method = "both"
 c.content.blocking.adblock.lists = [
-    'https://easylist.to/easylist/easylist.txt',
-    'https://easylist.to/easylist/easyprivacy.txt',
-    'https://easylist.to/easylist/fanboy-social.txt',
-    'https://fanboy.co.nz/fanboy-annoyance.txt',
-    'https://fanboy.co.nz/fanboy-antifacebook.txt',
-    'https://easylist-downloads.adblockplus.org/abp-filters-anti-cv.txt',
-    'http://www.i-dont-care-about-cookies.eu/abp/',
-    'http://ewpratten.github.io/youtube_ad_blocklist/adblockplus.txt',
+    "https://easylist.to/easylist/easylist.txt",
+    "https://easylist.to/easylist/easyprivacy.txt",
+    "https://easylist.to/easylist/fanboy-social.txt",
+    "https://fanboy.co.nz/fanboy-annoyance.txt",
+    "https://fanboy.co.nz/fanboy-antifacebook.txt",
+    "https://easylist-downloads.adblockplus.org/abp-filters-anti-cv.txt",
+    "http://www.i-dont-care-about-cookies.eu/abp/",
+    "http://ewpratten.github.io/youtube_ad_blocklist/adblockplus.txt",
 ]
 
 # Search engines
+# fmt: off
 c.url.searchengines["DEFAULT"] = "https://search.brave.com/search?q={}"
 c.url.searchengines[",b"]      = "https://search.brave.com/search?q={}"
 c.url.searchengines[",d"]      = "https://duckduckgo.com/?q={}"
@@ -128,6 +135,7 @@ c.url.searchengines[",y"]      = "https://youtube.com/results?search_query={}"
 c.url.searchengines[",aw"]     = "https://wiki.archlinux.org/index.php?search={}"
 c.url.searchengines[",ap"]     = "https://archlinux.org/packages/?q={}"
 c.url.searchengines[",aa"]     = "https://aur.archlinux.org/packages/?K={}"
+# fmt: on
 
 
 # Fonts
@@ -138,7 +146,6 @@ if platform.system() == "Darwin":
 else:
     c.fonts.default_size = "10pt"
     c.fonts.hints = "bold 9pt default_family"
-
 
 
 # Platform specific configuration
@@ -165,3 +172,8 @@ else:
     cmd = "mpv --profile=qutebrowser"
 config.bind(",V", "hint links spawn %s {hint-url}" % cmd)
 config.bind(",v", "spawn %s {url}" % cmd)
+
+# Disable GPU rendering on Linux to avoid startup crashes
+# Reference: https://github.com/qutebrowser/qutebrowser/issues/8911
+if platform.system() == "Linux":
+    c.qt.force_software_rendering = "chromium"
