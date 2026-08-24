@@ -83,6 +83,9 @@ set splitright
 " Use Idea to join lines smartly
 set ideajoin
 
+" Keep vim mode when refactoring code (instead of switching to Select mode)
+set idearefactormode=keep
+
 " Use gray icon on status bar
 set ideastatusicon=gray
 
