@@ -66,11 +66,11 @@ AddPackage tgpt # AI Chatbots in terminal without needing API keys
 AddPackage bibletime # Bible study tool
 AddPackage handbrake # Multithreaded video transcoder
 AddPackage obsidian # A powerful knowledge base that works on top of a local folder of plain text Markdown files
+AddPackage pinta # Drawing/editing program modeled after Paint.NET. It's goal is to provide a simplified alternative to GIMP for casual users
 AddPackage transmission-gtk # Fast, easy, and free BitTorrent client (GTK+ GUI)
 AddPackage yt-dlp # A youtube-dl fork with additional features and fixes
 AddPackage --foreign czkawka-gui-bin # Find and manage duplicate files, empty folders, similar images, and other "lint" (GUI, with HEIF support)
 AddPackage --foreign dropbox # A free service that lets you bring your photos, docs, and videos anywhere and share them easily.
 AddPackage --foreign irpf # Brazilian physical person income tax (IRPF) program
-AddPackage --foreign pinta # Drawing/editing program modeled after Paint.NET. It's goal is to provide a simplified alternative to GIMP for casual users
 AddPackage --foreign superproductivity-bin # ToDo list and Time Tracking
 AddPackage --foreign whatsapp-nativefier # WhatsApp desktop built with nativefier (electron)

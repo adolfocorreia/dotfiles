@@ -85,6 +85,11 @@ if status is-interactive
     # Sponge plugin settings
     set sponge_purge_only_on_exit true
 
+    # Hook aur-scan and paru
+    if type -q aur-scan
+        source /usr/share/aur-scan/integration.fish
+    end
+
     # Load conda
     if type -q conda
         conda "shell.fish" "hook" $argv | source

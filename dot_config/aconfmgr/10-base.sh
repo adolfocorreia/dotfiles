@@ -33,12 +33,15 @@ AddPackage git # the fast distributed version control system
 
 # Arch utils
 AddPackage archlinux-contrib # Collection of contrib scripts used in Arch Linux
+AddPackage informant # An Arch Linux News reader and pacman hook
 AddPackage lostfiles # Find orphaned files not owned by any Arch packages
 AddPackage pkgfile # a pacman .files metadata explorer
 AddPackage rate-mirrors # Everyday-use client-side map-aware mirror ranking tool
 AddPackage rebuild-detector # Detects which packages need to be rebuilt
 AddPackage --foreign aconfmgr-git # A configuration manager for Arch Linux
-AddPackage --foreign informant # An Arch Linux News reader and pacman hook
+AddPackage --foreign aurscan-manticore-release-git # LLM-powered pre-build malware scanner for AUR packages (with paru / yay hooks) -- git release
+AddPackage --foreign aur-scanner # Security scanner for Arch Linux AUR packages - detect malicious PKGBUILDs before installation
+AddPackage --foreign execstack # set the executable stack flag of ELF binaries and libraries
 AddPackage --foreign pacman-log-orphans-hook # hook to check whether there are any packages marked as unrequired (orphans) via pacman -Qttdq after every pacman run
 AddPackage --foreign paru # Feature packed AUR helper
 AddPackage --foreign systemd-boot-pacman-hook # Pacman hook to upgrade systemd-boot after systemd upgrade.

@@ -29,8 +29,8 @@ AddPackage --foreign dasel # Select, put and delete data from JSON, TOML, YAML, 
 # Git tools
 AddPackage gitu # A TUI Git client inspired by Magit
 AddPackage lazygit # Simple terminal UI for git commands
-AddPackage pre-commit # A framework for managing and maintaining multi-language pre-commit hooks
 AddPackage --foreign git-town-bin # Git workflow automation to keep branches in sync and reduce merge conflicts.Written in Go.(Prebuilt version)
+AddPackage --foreign prek # ⚡ Better 'pre-commit', re-engineered in Rust
 AddPackage --foreign python-commitizen # Create committing rules for projects, auto bump versions, and auto changelog generation
 
 # Shell

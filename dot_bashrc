@@ -30,6 +30,9 @@ else
   alias vi='vim -u NONE'
 fi
 
+# Hook aur-scan and paru
+alias paru='aur-scan-wrap paru'
+
 
 # Find packages that provide unavailable commands.
 [[ -r /usr/share/doc/pkgfile/command-not-found.bash ]] && . /usr/share/doc/pkgfile/command-not-found.bash
