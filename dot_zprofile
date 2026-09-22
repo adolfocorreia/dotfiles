@@ -12,7 +12,7 @@ export XDG_STATE_HOME="${HOME}/.local/state"
 
 
 # Configure MacPorts.
-#[[ -d /opt/local/bin ]] && export PATH="/opt/local/bin:/opt/local/sbin:${PATH}"
+[[ -d /opt/local/bin ]] && export PATH="/opt/local/bin:/opt/local/sbin:${PATH}"
 
 
 # Configure Homebrew.
