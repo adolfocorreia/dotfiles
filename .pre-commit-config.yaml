@@ -21,11 +21,11 @@ repos:
     hooks:
       - id: gitleaks
   - repo: https://github.com/shellcheck-py/shellcheck-py
-    rev: v0.11.0.1
+    rev: v0.11.0.1-1
     hooks:
       - id: shellcheck
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.23.0
+    rev: v0.23.3
     hooks:
       - id: markdownlint-cli2
   - repo: https://github.com/google/yamlfmt
@@ -33,11 +33,11 @@ repos:
     hooks:
       - id: yamlfmt
   - repo: https://github.com/domluna/JuliaFormatter.jl
-    rev: v2.10.1
+    rev: v2.14.0
     hooks:
       - id: julia-formatter
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.21.2
+    rev: v3.22.0
     hooks:
       - id: pyupgrade
   - repo: https://github.com/pre-commit/pygrep-hooks
@@ -54,11 +54,11 @@ repos:
       - id: rst-inline-touching-normal
       - id: text-unicode-replacement-char
   - repo: https://github.com/pycqa/isort
-    rev: 9.0.0b1
+    rev: "9.0.2"
     hooks:
       - id: isort
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.21
+    rev: v0.17.0
     hooks:
       - id: ruff-check
       - id: ruff-format
