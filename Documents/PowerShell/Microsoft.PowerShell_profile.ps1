@@ -41,6 +41,9 @@ Update-Path
 # Install the PSFzf module (https://github.com/kelleyma49/PSFzf) using the command "Install-Module PSFzf"
 Import-Module PSFzf
 
+# Install the CommandNotFound module
+Import-Module -Name Microsoft.WinGet.CommandNotFound
+
 
 
 ## PSReadLine configuration
