@@ -1,6 +1,7 @@
 # Add non-breaking space as the last character in prompt
 # (used for searching last command in tmux)
 format = "$all "
+
 right_format = "${custom.date}"
 
 [conda]
@@ -13,8 +14,8 @@ disabled = false
 command = """ date +"[%H:%M:%S]" """
 when = "true"
 description = "The current time stamp"
-os = "linux"
+os = "unix"
 
 [status]
 disabled = false
-format = "[$symbol$hex_status]($style) "
+format = "[$common_meaning$signal_name $hex_status]($style) "
