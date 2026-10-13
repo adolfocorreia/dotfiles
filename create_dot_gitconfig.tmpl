@@ -20,6 +20,10 @@
 [web]
 	browser = links
 
+[credential]
+	helper = !\"PATH/TO/SCOOP/apps/git/current/ucrt64/bin/git-credential-manager.exe\"
+	selected = wincred
+
 {{ else if eq .chezmoi.os "linux" -}}
 [credential]
 	helper = /usr/lib/git-core/git-credential-libsecret
@@ -61,3 +65,12 @@
 	plus-empty-line-marker-style  = syntax "#283b4d"
 	line-numbers-plus-style       = "#266d6a"
 	line-numbers-zero-style       = "#3b4261"
+
+
+# LFS setup
+
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
